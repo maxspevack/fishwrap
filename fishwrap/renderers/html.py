@@ -5,8 +5,8 @@ import random # Import random
 from datetime import datetime
 from zoneinfo import ZoneInfo
 from urllib.parse import urlparse
-from press import _config
-from press import utils
+from fishwrap import _config
+from fishwrap import utils
 
 def get_css_block():
     css_lines = [

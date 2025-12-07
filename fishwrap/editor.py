@@ -1,8 +1,8 @@
 import json
 from urllib.parse import urlparse # Still needed for urlparse in run_editor
 import difflib
-from press import _config
-from press import scoring
+from fishwrap import _config
+from fishwrap import scoring
 
 # Removed clean_url function as it's no longer used in organize_and_cluster
 

@@ -4,7 +4,7 @@ import re
 import html
 import email.utils
 from datetime import datetime
-from press import _config
+from fishwrap import _config
 
 # Shared SSL context for scraping (permissive)
 _ssl_context = ssl.create_default_context()

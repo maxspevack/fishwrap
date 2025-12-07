@@ -1,4 +1,4 @@
-from press import _config
+from fishwrap import _config
 
 def identify_scoring_profile(article):
     """

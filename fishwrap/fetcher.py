@@ -4,8 +4,8 @@ import xml.etree.ElementTree as ET
 from datetime import datetime
 import os
 import re
-from press import _config
-from press import utils
+from fishwrap import _config
+from fishwrap import utils
 
 NAMESPACES = {
     'atom': 'http://www.w3.org/2005/Atom',
@@ -106,8 +106,8 @@ from datetime import datetime
 import os
 import re
 from tqdm import tqdm
-from press import _config
-from press import utils
+from fishwrap import _config
+from fishwrap import utils
 
 # ... (Keep imports and constants)
 

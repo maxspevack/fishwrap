@@ -2,9 +2,9 @@ import json
 import os
 from datetime import datetime
 from zoneinfo import ZoneInfo
-from press import _config
-from press.renderers import html as html_renderer
-from press.renderers import pdf as pdf_renderer
+from fishwrap import _config
+from fishwrap.renderers import html as html_renderer
+from fishwrap.renderers import pdf as pdf_renderer
 
 def generate_issues():
     if not os.path.exists(_config.ENHANCED_ISSUE_FILE):

@@ -1,7 +1,7 @@
 import html
 from weasyprint import HTML, CSS
-from press import _config
-from press import utils
+from fishwrap import _config
+from fishwrap import utils
 
 # PDF-Specific CSS (Classic Newspaper)
 PDF_CSS = """

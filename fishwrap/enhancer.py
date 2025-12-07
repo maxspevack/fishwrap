@@ -6,8 +6,8 @@ import time
 import html
 import re
 from newspaper import Article # External library
-from press import _config
-from press import utils
+from fishwrap import _config
+from fishwrap import utils
 import xml.etree.ElementTree as ET
 
 # Load Cookie
