@@ -1,0 +1,12 @@
+beautifulsoup4
+feedfinder2
+feedparser
+markdown
+newspaper3k
+nltk
+PyYAML
+regex
+requests
+rich
+tqdm
+weasyprint

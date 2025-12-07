@@ -1,0 +1,312 @@
+Starting automated run: Tue Dec  9 09:19:49 PST 2025
+
+[FETCHER] Starting... (DB: 547 -> 547 after pruning)
+
+========================================
+ FETCHER SUMMARY
+========================================
+ Feeds Processed:   25/25
+ Total Items Seen:  426
+ New Items Added:   0
+ Existing Updated:  392
+ Database Size:     547
+========================================
+
+
+[EDITOR] Starting... (Candidates: 547)
+
+============================================================
+ EDITOR SUMMARY
+============================================================
+ Section    | Candidates | Selected | Min Score 
+------------------------------------------------------------
+ News       | 344        | 30       | 7500      
+ Sports     | 77         | 29       | 3000      
+ Tech       | 58         | 12       | 2000      
+ Culture    | 68         | 20       | 2000      
+------------------------------------------------------------
+ TOTAL      | 547        | 91       |
+============================================================
+
+
+[ENHANCER] Starting... (Run Sheet: 91 items)
+
+========================================
+ ENHANCER SUMMARY
+========================================
+ Total Articles: 91
+ Cache Hits:     86
+ Network Fetches:5
+ Errors/Partial: 0
+========================================
+
+[PRINTER] Loaded 91 articles for printing.
+
+========================================
+ PRINTER SUMMARY
+========================================
+ Issue:     Vol. 1, Issue 3
+ HTML:      press/latest.html
+========================================
+
+Run complete: Tue Dec  9 09:20:34 PST 2025
+Starting automated run: Tue Dec  9 12:00:05 PST 2025
+
+[FETCHER] Starting... (DB: 599 -> 567 after pruning)
+
+========================================
+ FETCHER SUMMARY
+========================================
+ Feeds Processed:   25/25
+ Total Items Seen:  444
+ New Items Added:   61
+ Existing Updated:  351
+ Database Size:     628
+========================================
+
+
+[EDITOR] Starting... (Candidates: 628)
+
+============================================================
+ EDITOR SUMMARY
+============================================================
+ Section    | Candidates | Selected | Min Score 
+------------------------------------------------------------
+ News       | 399        | 30       | 7500      
+ Sports     | 88         | 28       | 3000      
+ Tech       | 66         | 13       | 2000      
+ Culture    | 75         | 20       | 2000      
+------------------------------------------------------------
+ TOTAL      | 628        | 91       |
+============================================================
+
+
+[ENHANCER] Starting... (Run Sheet: 91 items)
+
+========================================
+ ENHANCER SUMMARY
+========================================
+ Total Articles: 91
+ Cache Hits:     83
+ Network Fetches:8
+ Errors/Partial: 1
+========================================
+
+[PRINTER] Loaded 91 articles for printing.
+
+========================================
+ PRINTER SUMMARY
+========================================
+ Issue:     Vol. 1, Issue 3
+ HTML:      press/latest.html
+========================================
+
+Run complete: Tue Dec  9 12:01:10 PST 2025
+Starting automated run: Tue Dec  9 17:00:04 PST 2025
+
+[FETCHER] Starting... (DB: 675 -> 657 after pruning)
+
+========================================
+ FETCHER SUMMARY
+========================================
+ Feeds Processed:   25/25
+ Total Items Seen:  451
+ New Items Added:   26
+ Existing Updated:  396
+ Database Size:     683
+========================================
+
+
+[EDITOR] Starting... (Candidates: 683)
+
+============================================================
+ EDITOR SUMMARY
+============================================================
+ Section    | Candidates | Selected | Min Score 
+------------------------------------------------------------
+ News       | 430        | 30       | 7500      
+ Sports     | 102        | 30       | 3000      
+ Tech       | 72         | 16       | 2000      
+ Culture    | 79         | 20       | 2000      
+------------------------------------------------------------
+ TOTAL      | 683        | 96       |
+============================================================
+
+
+[ENHANCER] Starting... (Run Sheet: 96 items)
+
+========================================
+ ENHANCER SUMMARY
+========================================
+ Total Articles: 96
+ Cache Hits:     91
+ Network Fetches:5
+ Errors/Partial: 2
+========================================
+
+[PRINTER] Loaded 96 articles for printing.
+
+========================================
+ PRINTER SUMMARY
+========================================
+ Issue:     Vol. 1, Issue 3
+ HTML:      press/latest.html
+========================================
+
+Run complete: Tue Dec  9 17:01:01 PST 2025
+Starting automated run: Tue Dec  9 22:02:38 PST 2025
+
+[FETCHER] Starting... (DB: 686 -> 632 after pruning)
+
+========================================
+ FETCHER SUMMARY
+========================================
+ Feeds Processed:   25/25
+ Total Items Seen:  433
+ New Items Added:   49
+ Existing Updated:  353
+ Database Size:     681
+========================================
+
+
+[EDITOR] Starting... (Candidates: 681)
+
+============================================================
+ EDITOR SUMMARY
+============================================================
+ Section    | Candidates | Selected | Min Score 
+------------------------------------------------------------
+ News       | 424        | 30       | 7500      
+ Sports     | 87         | 27       | 3000      
+ Tech       | 84         | 19       | 2000      
+ Culture    | 86         | 20       | 2000      
+------------------------------------------------------------
+ TOTAL      | 681        | 96       |
+============================================================
+
+
+[ENHANCER] Starting... (Run Sheet: 96 items)
+
+========================================
+ ENHANCER SUMMARY
+========================================
+ Total Articles: 96
+ Cache Hits:     90
+ Network Fetches:6
+ Errors/Partial: 2
+========================================
+
+[PRINTER] Loaded 96 articles for printing.
+
+========================================
+ PRINTER SUMMARY
+========================================
+ Issue:     Vol. 1, Issue 3
+ HTML:      press/latest.html
+========================================
+
+Run complete: Tue Dec  9 22:18:57 PST 2025
+Starting automated run: Wed Dec 10 07:06:20 PST 2025
+
+[FETCHER] Starting... (DB: 681 -> 506 after pruning)
+
+========================================
+ FETCHER SUMMARY
+========================================
+ Feeds Processed:   25/25
+ Total Items Seen:  425
+ New Items Added:   163
+ Existing Updated:  230
+ Database Size:     669
+========================================
+
+
+[EDITOR] Starting... (Candidates: 669)
+
+============================================================
+ EDITOR SUMMARY
+============================================================
+ Section    | Candidates | Selected | Min Score 
+------------------------------------------------------------
+ News       | 415        | 30       | 7500      
+ Sports     | 89         | 27       | 3000      
+ Tech       | 73         | 16       | 2000      
+ Culture    | 92         | 20       | 2000      
+------------------------------------------------------------
+ TOTAL      | 669        | 93       |
+============================================================
+
+
+[ENHANCER] Starting... (Run Sheet: 93 items)
+
+========================================
+ ENHANCER SUMMARY
+========================================
+ Total Articles: 93
+ Cache Hits:     66
+ Network Fetches:27
+ Errors/Partial: 5
+========================================
+
+[PRINTER] Loaded 93 articles for printing.
+
+========================================
+ PRINTER SUMMARY
+========================================
+ Issue:     Vol. 1, Issue 4
+ HTML:      press/latest.html
+========================================
+
+Run complete: Wed Dec 10 07:23:25 PST 2025
+Starting automated run: Wed Dec 10 12:00:05 PST 2025
+
+[FETCHER] Starting... (DB: 641 -> 637 after pruning)
+
+========================================
+ FETCHER SUMMARY
+========================================
+ Feeds Processed:   25/25
+ Total Items Seen:  439
+ New Items Added:   5
+ Existing Updated:  399
+ Database Size:     642
+========================================
+
+
+[EDITOR] Starting... (Candidates: 642)
+
+============================================================
+ EDITOR SUMMARY
+============================================================
+ Section    | Candidates | Selected | Min Score 
+------------------------------------------------------------
+ News       | 405        | 25       | 7500      
+ Sports     | 94         | 25       | 3000      
+ Tech       | 60         | 10       | 2000      
+ Culture    | 83         | 15       | 2000      
+------------------------------------------------------------
+ TOTAL      | 642        | 75       |
+============================================================
+
+
+[ENHANCER] Starting... (Run Sheet: 75 items)
+
+========================================
+ ENHANCER SUMMARY
+========================================
+ Total Articles: 75
+ Cache Hits:     74
+ Network Fetches:1
+ Errors/Partial: 1
+========================================
+
+[PRINTER] Loaded 75 articles for printing.
+
+========================================
+ PRINTER SUMMARY
+========================================
+ Issue:     Vol. 1, Issue 4
+ HTML:      press/latest.html
+========================================
+
+Run complete: Wed Dec 10 12:00:59 PST 2025
