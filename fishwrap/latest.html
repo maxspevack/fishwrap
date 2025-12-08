@@ -1,0 +1,2335 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Daily Clamour - Wednesday, December 10, 2025</title>
+    <!-- Fonts: Special Elite (Headlines), Courier Prime (Mono), Georgia (Body) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Courier+Prime:ital,wght@0,400;0,700;1,400&family=Special+Elite&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/png" href="static/images/favicon.png">
+    <style>
+/* Variables - Vintage Clamour Theme */
+:root {
+    --bg-color: #fdfbf7; /* Cream Paper */
+    --card-bg: #ffffff; /* Slightly lighter than bg */
+    --text-color: #2f2f2f; /* Deep Sepia/Black Ink */
+    --muted-color: #7f8c8d;
+    --accent-primary: #2c3e50; /* Slate */
+    --accent-red: #c0392b; /* Urgent News Red */
+    --accent-blue: #2980b9; /* Link Blue */
+    --border-color: #dcdcdc;
+    --font-head: 'Special Elite', cursive;
+    --font-body: 'Georgia', serif;
+    --font-mono: 'Courier Prime', monospace;
+}
+
+/* Base Styles */
+body {
+    font-family: var(--font-body);
+    color: var(--text-color);
+    background-color: var(--bg-color);
+    background-image: url('static/textures/newsprint-texture.png');
+    background-repeat: repeat;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    min-height: 100vh;
+}
+a { color: var(--text-color); text-decoration: none; }
+a:hover { text-decoration: underline; color: var(--accent-blue); }
+h1, h2, h3 { margin: 0; font-weight: 700; font-family: var(--font-head); }
+
+/* Sidebar Nav */
+ .sidebar {
+    width: 280px;
+    background: rgba(44, 62, 80, 0.95); /* Dark Slate Contrast Sidebar */
+    color: #ecf0f1;
+    padding: 30px 20px;
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    border-right: 4px solid #1a252f;
+    box-shadow: 2px 0 10px rgba(0,0,0,0.3);
+    z-index: 50;
+}
+ .sidebar a { color: #ecf0f1; text-decoration: none; }
+ .sidebar a:hover { color: #fff; }
+
+ .brand-logo {
+    width: 100%;
+    max-width: 220px;
+    margin: 0 auto 10px auto;
+    display: block;
+    filter: drop-shadow(0 2px 4px rgba(0,0,0,0.5));
+}
+ .mascot-container {
+    text-align: center;
+    margin-bottom: 20px;
+    padding-bottom: 20px;
+    border-bottom: 1px dashed rgba(255,255,255,0.2);
+}
+ .mascot-img {
+    width: 140px;
+    height: auto;
+    transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+ .mascot-img:hover { transform: scale(1.1) rotate(-5deg); }
+
+ .motto {
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    color: #bdc3c7;
+    font-style: italic;
+    margin-bottom: 5px;
+    text-align: center;
+}
+ .meta-block {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    color: #95a5a6;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+ .nav-links { list-style: none; padding: 0; margin: 20px 0 0 0; }
+ .nav-item { margin-bottom: 10px; }
+ .nav-link {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 15px;
+    border-radius: 4px;
+    background: rgba(255,255,255,0.05);
+    transition: all 0.2s;
+    border-left: 3px solid transparent;
+    font-family: var(--font-head);
+    letter-spacing: 1px;
+}
+ .nav-link:hover { background: rgba(255,255,255,0.1); border-left-color: var(--accent-red); transform: translateX(5px); }
+
+/* Sidebar Footer */
+ .sidebar-footer {
+    margin-top: auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+    padding-top: 20px;
+    border-top: 1px dashed rgba(255,255,255,0.2);
+}
+ .icon-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    opacity: 0.6;
+    transition: all 0.2s;
+    padding: 0;
+    display: block;
+}
+ .icon-btn img, .icon-btn svg { width: 28px; height: 28px; display: block; }
+ .icon-btn:hover { opacity: 1; transform: scale(1.1); }
+
+/* Main Content Area */
+ .main-content {
+    flex-grow: 1;
+    padding: 40px;
+    overflow-y: auto;
+}
+
+/* Section Layout */
+ .section-block { margin-bottom: 60px; scroll-margin-top: 20px; }
+ .section-header {
+    display: flex;
+    align-items: baseline;
+    margin-bottom: 25px;
+    padding-bottom: 10px;
+    border-bottom: 3px double var(--text-color);
+}
+ .section-title { font-size: 2.2rem; margin-right: 15px; text-transform: uppercase; letter-spacing: -1px; }
+ .section-tag { font-family: var(--font-mono); font-size: 0.9rem; color: var(--muted-color); text-transform: uppercase; }
+
+ .bento-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 25px;
+    grid-auto-flow: dense;
+    grid-auto-rows: 120px;
+}
+
+/* Card Styles (Newspaper Clipping Look) */
+ .card {
+    background: var(--card-bg);
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    transition: transform 0.2s, box-shadow 0.2s;
+    border: 1px solid var(--border-color);
+    box-shadow: 3px 3px 0 rgba(0,0,0,0.1);
+    overflow: hidden;
+    position: relative;
+    color: var(--text-color);
+}
+ .card:hover {
+    transform: translateY(-2px) rotate(0.5deg);
+    box-shadow: 5px 5px 0 rgba(0,0,0,0.2);
+    border-color: var(--accent-primary);
+}
+ .card-meta {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.75rem;
+    color: var(--muted-color);
+    margin-bottom: 10px;
+    font-family: var(--font-mono);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    border-bottom: 1px dotted #ccc;
+    padding-bottom: 4px;
+}
+ .domain { font-weight: 700; color: var(--accent-primary); }
+
+ /* Typography Clamping */
+ .card h3 {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    margin: 0;
+    line-height: 1.3;
+    font-family: var(--font-head);
+ }
+
+ /* Type Sizes */
+ .card.feature { grid-column: span 2; grid-row: span 2; background: #fffdf0; }
+ .card.feature h3 { font-size: 2.0rem; font-weight: 400; -webkit-line-clamp: 5; line-height: 1.1; }
+
+ .card.standard { grid-column: span 1; grid-row: span 2; }
+ .card.standard h3 { font-size: 1.4rem; -webkit-line-clamp: 6; }
+
+ .card.compact { grid-column: span 1; grid-row: span 1; padding: 15px; }
+ .card.compact h3 { font-size: 1.0rem; -webkit-line-clamp: 3; }
+
+/* Responsive */
+@media (max-width: 1100px) { .bento-grid { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 768px) {
+    body { flex-direction: column; }
+    .sidebar { width: 100%; height: auto; position: relative; padding: 20px; border-right: none; border-bottom: 4px solid #1a252f; box-shadow: none; }
+    .nav-links { display: flex; overflow-x: auto; gap: 10px; margin-top: 10px; }
+    .nav-item { margin: 0; white-space: nowrap; }
+    .bento-grid { grid-template-columns: 1fr; grid-auto-rows: auto; }
+    .card.feature, .card.standard, .card.compact { grid-column: auto; grid-row: auto; min-height: 150px; }
+}
+
+/* Debug Overlay (Vintage Style) */
+ .debug-card {
+    display: none;
+    position: absolute; top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(255, 255, 255, 0.95);
+    padding: 15px;
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    z-index: 100;
+    overflow-y: auto;
+    color: #000;
+    border: 2px solid red;
+}
+body.debug-active .debug-card { display: block; }
+ .debug-header { font-weight: 700; border-bottom: 1px solid #000; margin-bottom: 5px; }
+ .debug-row { display: flex; justify-content: space-between; margin-bottom: 2px; }
+ .debug-total { border-top: 2px solid #000; margin-top: 5px; font-weight: 700; display: flex; justify-content: space-between; font-size: 0.9rem; }
+    </style>
+</head>
+<body>
+
+<nav class="sidebar">
+    <div class="mascot-container">
+        <img src="static/images/daily-clamour-logo.png" alt="The Daily Clamour" class="brand-logo">
+        <div class="motto">"Often Wrong, Never in Doubt"</div>
+        <img src="static/images/scoop-mascot.png" alt="Scoop The Pearl" class="mascot-img">
+        
+        <div class="meta-block">
+            <span class="meta-date">Wednesday, December 10, 2025</span>
+            <span>Vol. 1, Issue 4</span>
+        </div>
+    </div>
+    
+    <ul class="nav-links">
+        
+        <li class="nav-item">
+            <a href="#news" class="nav-link">
+                <span>News</span>
+            </a>
+        </li>
+        
+        <li class="nav-item">
+            <a href="#sports" class="nav-link">
+                <span>Sports</span>
+            </a>
+        </li>
+        
+        <li class="nav-item">
+            <a href="#tech" class="nav-link">
+                <span>Technology</span>
+            </a>
+        </li>
+        
+        <li class="nav-item">
+            <a href="#culture" class="nav-link">
+                <span>Culture</span>
+            </a>
+        </li>
+        
+    </ul>
+    
+    <div class="sidebar-footer">
+        <a href="https://github.com/maxspevack/fishwrap" target="_blank" class="icon-btn" title="View Source on GitHub">
+            <svg role="img" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" fill="#fff"><title>GitHub</title><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"></path></svg>
+        </a>
+        <button class="icon-btn" onclick="document.body.classList.toggle('debug-active')" title="Toggle Debug Overlay">
+            <img src="static/images/tools-icon.png" alt="Debug Tools">
+        </button>
+    </div>
+</nav>
+
+<main class="main-content">
+    
+        <div id="news" class="section-block">
+            <div class="section-header">
+                <h2 class="section-title">News</h2>
+                <span class="section-tag">Headlines & Commentary</span>
+            </div>
+            <div class="bento-grid">
+        
+            <a href="https://www.reddit.com/r/CFB/comments/1pjjbmr/wetzel_breaking_exmichigan_coach_sherrone_moore/" target="_blank" class="card feature" style="border-top: 4px solid #d35400;">
+                <div class="card-meta">
+                    <span class="domain">reddit.com</span>
+                </div>
+                <h3>[Wetzel] Breaking: Ex-Michigan coach Sherrone Moore was detained by police in Saline, Mich. this evening and turned over to police in Pittsfield Township for investigation into potential charges, reporting with @PeteThamel</h3>
+                
+                <div class="debug-card">
+                    
+                    <div class="debug-section">
+                        <div class="debug-header">CLASSIFICATION</div>
+                        <div class="debug-row"><span class="label">Reason</span><span class="val">keyword_strong_match</span></div>
+                    </div>
+                    
+                    <div class="debug-section">
+                        <div class="debug-header">SCORE CARD</div>
+                        <div class='debug-row'><span class='label'>Stats</span><span class='val'>+10160</span></div>
+                        <div class="debug-total">
+                            <span>TOTAL</span>
+                            <span>10160</span>
+                        </div>
+                    </div>
+                </div>
+                
+            </a>
+            
+            <a href="https://redstate.com/chase-jennings/2025/12/10/master-messenger-trump-goes-full-maga-at-pennsylvania-rally-hands-gop-the-2026-talking-points-n2196984" target="_blank" class="card feature" style="border-top: 4px solid #8e44ad;">
+                <div class="card-meta">
+                    <span class="domain">redstate.com</span>
+                </div>
+                <h3>Master Messenger: Trump Goes Full MAGA at Pennsylvania Rally, Hands GOP the 2026 Talking Points</h3>
+                
+                <div class="debug-card">
+                    
+                    <div class="debug-section">
+                        <div class="debug-header">CLASSIFICATION</div>
+                        <div class="debug-row"><span class="label">Reason</span><span class="val">keyword_strong_match</span></div>
+                    </div>
+                    
+                    <div class="debug-section">
+                        <div class="debug-header">SCORE CARD</div>
+                        <div class='debug-row'><span class='label'>Base</span><span class='val'>+6500</span></div><div class='debug-row'><span class='label'>keyword_boost: </span><span class='val'>+500</span></div><div class='debug-row'><span class='label'>keyword_boost: </span><span class='val'>+500</span></div><div class='debug-row'><span class='label'>keyword_boost: </span><span class='val'>+500</span></div><div class='debug-row'><span class='label'>Cluster</span><span class='val'>+1000</span></div>
+                        <div class="debug-total">
+                            <span>TOTAL</span>
+                            <span>9000</span>
+                        </div>
+                    </div>
+                </div>
+                
+            </a>
+            
+            <a href="https://nypost.com/2025/12/10/us-news/trump-admin-set-to-scrutinize-foreign-visitors-social-media-history/" target="_blank" class="card standard" style="border-top: 4px solid #2980b9;">
+                <div class="card-meta">
+                    <span class="domain">nypost.com</span>
+                </div>
+                <h3>Trump admin set to scrutinize foreign visitors’ social media history</h3>
+                
+                <div class="debug-card">
+                    
+                    <div class="debug-section">
+                        <div class="debug-header">CLASSIFICATION</div>
+                        <div class="debug-row"><span class="label">Reason</span><span class="val">source_default</span></div>
+                    </div>
+                    
+                    <div class="debug-section">
+                        <div class="debug-header">SCORE CARD</div>
+                        <div class='debug-row'><span class='label'>Base</span><span class='val'>+6500</span></div><div class='debug-row'><span class='label'>keyword_boost: </span><span class='val'>+500</span></div><div class='debug-row'><span class='label'>Cluster</span><span class='val'>+2000</span></div>
+                        <div class="debug-total">
+                            <span>TOTAL</span>
+                            <span>9000</span>
+                        </div>
+                    </div>
+                </div>
+                
+            </a>
+            
+            <a href="https://thepostmillennial.com/somali-college-student-in-minnesota-threatens-to-pop-immigration-agents-in-tiktok-video" target="_blank" class="card standard" style="border-top: 4px solid #c0392b;">
+                <div class="card-meta">
+                    <span class="domain">thepostmillennial.com</span>
+                </div>
+                <h3>Somali college student in Minnesota threatens to ‘pop’ immigration agents in TikTok video</h3>
+                
+                <div class="debug-card">
+                    
+                    <div class="debug-section">
+                        <div class="debug-header">CLASSIFICATION</div>
+                        <div class="debug-row"><span class="label">Reason</span><span class="val">source_default</span></div>
+                    </div>
+                    
+                    <div class="debug-section">
+                        <div class="debug-header">SCORE CARD</div>
+                        <div class='debug-row'><span class='label'>Base</span><span class='val'>+6500</span></div><div class='debug-row'><span class='label'>keyword_boost: </span><span class='val'>+500</span></div><div class='debug-row'><span class='label'>Cluster</span><span class='val'>+2000</span></div>
+                        <div class="debug-total">
+                            <span>TOTAL</span>
+                            <span>9000</span>
+                        </div>
+                    </div>
+                </div>
+                
+            </a>
+            
+            <a href="https://www.breitbart.com/europe/2025/12/10/zelensky-says-ukraine-could-hold-elections-within-months-if-security-guaranteed/" target="_blank" class="card standard" style="border-top: 4px solid #27ae60;">
+                <div class="card-meta">
+                    <span class="domain">breitbart.com</span>
+                </div>
+                <h3>Zelensky Says Ukraine Could Hold Elections Within Months, If Security Guaranteed</h3>
+                
+                <div class="debug-card">
+                    
+                    <div class="debug-section">
+                        <div class="debug-header">CLASSIFICATION</div>
+                        <div class="debug-row"><span class="label">Reason</span><span class="val">keyword_strong_match</span></div>
+                    </div>
+                    
+                    <div class="debug-section">
+                        <div class="debug-header">SCORE CARD</div>
+                        <div class='debug-row'><span class='label'>Base</span><span class='val'>+6500</span></div><div class='debug-row'><span class='label'>keyword_boost: </span><span class='val'>+500</span></div><div class='debug-row'><span class='label'>keyword_boost: </span><span class='val'>+500</span></div><div class='debug-row'><span class='label'>Cluster</span><span class='val'>+1000</span></div>
+                        <div class="debug-total">
+                            <span>TOTAL</span>
+                            <span>8500</span>
+                        </div>
+                    </div>
+                </div>
+                
+            </a>
+            
+            <a href="https://www.foxnews.com/politics/pro-trump-clerk-convicted-2020-election-scheme-threatened-attacked-prison-lawyer-says" target="_blank" class="card standard" style="border-top: 4px solid #2980b9;">
+                <div class="card-meta">
+                    <span class="domain">foxnews.com</span>
+                </div>
+                <h3>Pro-Trump clerk convicted in 2020 election scheme threatened, attacked in prison, lawyer says</h3>
+                
+                <div class="debug-card">
+                    
+                    <div class="debug-section">
+                        <div class="debug-header">CLASSIFICATION</div>
+                        <div class="debug-row"><span class="label">Reason</span><span class="val">keyword_strong_match</span></div>
+                    </div>
+                    
+                    <div class="debug-section">
+                        <div class="debug-header">SCORE CARD</div>
+                        <div class='debug-row'><span class='label'>Base</span><span class='val'>+6500</span></div><div class='debug-row'><span class='label'>keyword_boost: </span><span class='val'>+500</span></div><div class='debug-row'><span class='label'>keyword_boost: </span><span class='val'>+500</span></div><div class='debug-row'><span class='label'>Cluster</span><span class='val'>+1000</span></div>
+                        <div class="debug-total">
+                            <span>TOTAL</span>
+                            <span>8500</span>
+                        </div>
+                    </div>
+                </div>
+                
+            </a>
+            
+            <a href="https://www.foxnews.com/politics/senate-gop-barrels-past-blockade-advance-nearly-100-trump-nominees" target="_blank" class="card compact" style="border-top: 4px solid #d35400;">
+                <div class="card-meta">
+                    <span class="domain">foxnews.com</span>
+                </div>
+                <h3>Senate GOP barrels past blockade to advance nearly 100 Trump nominees</h3>
+                
+                <div class="debug-card">
+                    
+                    <div class="debug-section">
+                        <div class="debug-header">CLASSIFICATION</div>
+                        <div class="debug-row"><span class="label">Reason</span><span class="val">keyword_strong_match</span></div>
+                    </div>
+                    
+                    <div class="debug-section">
+                        <div class="debug-header">SCORE CARD</div>
+                        <div class='debug-row'><span class='label'>Base</span><span class='val'>+6500</span></div><div class='debug-row'><span class='label'>keyword_boost: </span><span class='val'>+500</span></div><div class='debug-row'><span class='label'>keyword_boost: </span><span class='val'>+500</span></div><div class='debug-row'><span class='label'>Cluster</span><span class='val'>+1000</span></div>
+                        <div class="debug-total">
+                            <span>TOTAL</span>
+                            <span>8500</span>
+                        </div>
+                    </div>
+                </div>
+                
+            </a>
+            
+            <a href="https://justthenews.com/politics-policy/us-navy-seizes-oil-tanker-venezuelan-coast?utm_source=justthenews.com&utm_medium=feed&utm_campaign=external-news-aggregators" target="_blank" class="card compact" style="border-top: 4px solid #2980b9;">
+                <div class="card-meta">
+                    <span class="domain">justthenews.com</span>
+                </div>
+                <h3>U.S. Navy seizes oil tanker off Venezuelan coast</h3>
+                
+                <div class="debug-card">
+                    
+                    <div class="debug-section">
+                        <div class="debug-header">CLASSIFICATION</div>
+                        <div class="debug-row"><span class="label">Reason</span><span class="val">source_default</span></div>
+                    </div>
+                    
+                    <div class="debug-section">
+                        <div class="debug-header">SCORE CARD</div>
+                        <div class='debug-row'><span class='label'>Base</span><span class='val'>+6500</span></div><div class='debug-row'><span class='label'>Cluster</span><span class='val'>+2000</span></div>
+                        <div class="debug-total">
+                            <span>TOTAL</span>
+                            <span>8500</span>
+                        </div>
+                    </div>
+                </div>
+                
+            </a>
+            
+            <a href="https://nypost.com/2025/12/10/us-news/ukraine-russia-deal-at-decisive-moment-as-pressure-builds-for-christmas-peace-pact/" target="_blank" class="card compact" style="border-top: 4px solid #c0392b;">
+                <div class="card-meta">
+                    <span class="domain">nypost.com</span>
+                </div>
+                <h3>Ukraine-Russia deal at ‘decisive moment’ as Trump pressures Zelensky for Christmas peace pact</h3>
+                
+                <div class="debug-card">
+                    
+                    <div class="debug-section">
+                        <div class="debug-header">CLASSIFICATION</div>
+                        <div class="debug-row"><span class="label">Reason</span><span class="val">source_default</span></div>
+                    </div>
+                    
+                    <div class="debug-section">
+                        <div class="debug-header">SCORE CARD</div>
+                        <div class='debug-row'><span class='label'>Base</span><span class='val'>+6500</span></div><div class='debug-row'><span class='label'>keyword_boost: </span><span class='val'>+500</span></div><div class='debug-row'><span class='label'>keyword_boost: </span><span class='val'>+500</span></div><div class='debug-row'><span class='label'>keyword_boost: </span><span class='val'>+500</span></div>
+                        <div class="debug-total">
+                            <span>TOTAL</span>
+                            <span>8000</span>
+                        </div>
+                    </div>
+                </div>
+                
+            </a>
+            
+            <a href="https://nypost.com/2025/12/10/us-news/trump-unveils-hotly-anticipated-immigration-gold-card-at-white-house/" target="_blank" class="card compact" style="border-top: 4px solid #8e44ad;">
+                <div class="card-meta">
+                    <span class="domain">nypost.com</span>
+                </div>
+                <h3>Trump unveils hotly-anticipated immigration ‘gold card’ at White House</h3>
+                
+                <div class="debug-card">
+                    
+                    <div class="debug-section">
+                        <div class="debug-header">CLASSIFICATION</div>
+                        <div class="debug-row"><span class="label">Reason</span><span class="val">keyword_strong_match</span></div>
+                    </div>
+                    
+                    <div class="debug-section">
+                        <div class="debug-header">SCORE CARD</div>
+                        <div class='debug-row'><span class='label'>Base</span><span class='val'>+6500</span></div><div class='debug-row'><span class='label'>keyword_boost: </span><span class='val'>+500</span></div><div class='debug-row'><span class='label'>keyword_boost: </span><span class='val'>+500</span></div><div class='debug-row'><span class='label'>keyword_boost: </span><span class='val'>+500</span></div>
+                        <div class="debug-total">
+                            <span>TOTAL</span>
+                            <span>8000</span>
+                        </div>
+                    </div>
+                </div>
+                
+            </a>
+            
+            <a href="https://www.foxnews.com/politics/trump-rips-indiana-gop-leader-over-redistricting-fight-warns-republicans-could-face-maga-primary" target="_blank" class="card compact" style="border-top: 4px solid #2980b9;">
+                <div class="card-meta">
+                    <span class="domain">foxnews.com</span>
+                </div>
+                <h3>Trump rips Indiana GOP leader over redistricting fight, warns Republicans could face ‘MAGA primary’</h3>
+                
+                <div class="debug-card">
+                    
+                    <div class="debug-section">
+                        <div class="debug-header">CLASSIFICATION</div>
+                        <div class="debug-row"><span class="label">Reason</span><span class="val">keyword_strong_match</span></div>
+                    </div>
+                    
+                    <div class="debug-section">
+                        <div class="debug-header">SCORE CARD</div>
+                        <div class='debug-row'><span class='label'>Base</span><span class='val'>+6500</span></div><div class='debug-row'><span class='label'>keyword_boost: </span><span class='val'>+500</span></div><div class='debug-row'><span class='label'>keyword_boost: </span><span class='val'>+500</span></div><div class='debug-row'><span class='label'>keyword_boost: </span><span class='val'>+500</span></div>
+                        <div class="debug-total">
+                            <span>TOTAL</span>
+                            <span>8000</span>
+                        </div>
+                    </div>
+                </div>
+                
+            </a>
+            
+            <a href="https://www.zerohedge.com/geopolitical/russia-rejects-new-zelensky-offer-energy-ceasefire-grid-repair-woes-worsen" target="_blank" class="card compact" style="border-top: 4px solid #2980b9;">
+                <div class="card-meta">
+                    <span class="domain">zerohedge.com</span>
+                </div>
+                <h3>Russia Rejects New Zelensky Offer Of &#x27;Energy Ceasefire&#x27; As Grid Repair Woes Worsen</h3>
+                
+                <div class="debug-card">
+                    
+                    <div class="debug-section">
+                        <div class="debug-header">CLASSIFICATION</div>
+                        <div class="debug-row"><span class="label">Reason</span><span class="val">source_default</span></div>
+                    </div>
+                    
+                    <div class="debug-section">
+                        <div class="debug-header">SCORE CARD</div>
+                        <div class='debug-row'><span class='label'>Base</span><span class='val'>+6500</span></div><div class='debug-row'><span class='label'>keyword_boost: </span><span class='val'>+500</span></div><div class='debug-row'><span class='label'>Cluster</span><span class='val'>+1000</span></div>
+                        <div class="debug-total">
+                            <span>TOTAL</span>
+                            <span>8000</span>
+                        </div>
+                    </div>
+                </div>
+                
+            </a>
+            
+            <a href="https://justthenews.com/government/courts-law/federal-judge-blocks-trumps-national-guard-deployment-los-angeles?utm_source=justthenews.com&utm_medium=feed&utm_campaign=external-news-aggregators" target="_blank" class="card compact" style="border-top: 4px solid #8e44ad;">
+                <div class="card-meta">
+                    <span class="domain">justthenews.com</span>
+                </div>
+                <h3>Federal judge blocks Trump&#x27;s National Guard deployment to Los Angeles</h3>
+                
+                <div class="debug-card">
+                    
+                    <div class="debug-section">
+                        <div class="debug-header">CLASSIFICATION</div>
+                        <div class="debug-row"><span class="label">Reason</span><span class="val">keyword_strong_match</span></div>
+                    </div>
+                    
+                    <div class="debug-section">
+                        <div class="debug-header">SCORE CARD</div>
+                        <div class='debug-row'><span class='label'>Base</span><span class='val'>+6500</span></div><div class='debug-row'><span class='label'>keyword_boost: </span><span class='val'>+500</span></div><div class='debug-row'><span class='label'>Cluster</span><span class='val'>+1000</span></div>
+                        <div class="debug-total">
+                            <span>TOTAL</span>
+                            <span>8000</span>
+                        </div>
+                    </div>
+                </div>
+                
+            </a>
+            
+            <a href="https://www.foxnews.com/politics/trump-warns-colombias-president-gustavo-petro-he-will-next-drug-trafficking-rift" target="_blank" class="card compact" style="border-top: 4px solid #2980b9;">
+                <div class="card-meta">
+                    <span class="domain">foxnews.com</span>
+                </div>
+                <h3>Trump warns Colombian President Gustavo Petro he will ‘be next’ amid drug trafficking rift</h3>
+                
+                <div class="debug-card">
+                    
+                    <div class="debug-section">
+                        <div class="debug-header">CLASSIFICATION</div>
+                        <div class="debug-row"><span class="label">Reason</span><span class="val">keyword_strong_match</span></div>
+                    </div>
+                    
+                    <div class="debug-section">
+                        <div class="debug-header">SCORE CARD</div>
+                        <div class='debug-row'><span class='label'>Base</span><span class='val'>+6500</span></div><div class='debug-row'><span class='label'>keyword_boost: </span><span class='val'>+500</span></div><div class='debug-row'><span class='label'>Cluster</span><span class='val'>+1000</span></div>
+                        <div class="debug-total">
+                            <span>TOTAL</span>
+                            <span>8000</span>
+                        </div>
+                    </div>
+                </div>
+                
+            </a>
+            
+            <a href="https://redstate.com/katie-jerkovich/2025/12/10/gop-takes-up-jasmine-crocketts-democrat-challenge-and-it-backfires-spectacularly-n2197010" target="_blank" class="card compact" style="border-top: 4px solid #c0392b;">
+                <div class="card-meta">
+                    <span class="domain">redstate.com</span>
+                </div>
+                <h3>GOP Supercut Video Takes Up Crockett&#x27;s Challenge on Finding a &#x27;Clip of a Democrat Invoking Violence&#x27;</h3>
+                
+                <div class="debug-card">
+                    
+                    <div class="debug-section">
+                        <div class="debug-header">CLASSIFICATION</div>
+                        <div class="debug-row"><span class="label">Reason</span><span class="val">keyword_strong_match</span></div>
+                    </div>
+                    
+                    <div class="debug-section">
+                        <div class="debug-header">SCORE CARD</div>
+                        <div class='debug-row'><span class='label'>Base</span><span class='val'>+6500</span></div><div class='debug-row'><span class='label'>keyword_boost: </span><span class='val'>+500</span></div><div class='debug-row'><span class='label'>Cluster</span><span class='val'>+1000</span></div>
+                        <div class="debug-total">
+                            <span>TOTAL</span>
+                            <span>8000</span>
+                        </div>
+                    </div>
+                </div>
+                
+            </a>
+            
+            <a href="https://www.zerohedge.com/military/trump-make-phone-call-over-thai-cambodia-border-crisis-500000-flee" target="_blank" class="card compact" style="border-top: 4px solid #8e44ad;">
+                <div class="card-meta">
+                    <span class="domain">zerohedge.com</span>
+                </div>
+                <h3>Trump To &quot;Make Phone Call&quot; Over Thai-Cambodia Border Crisis As 500,000 Flee </h3>
+                
+                <div class="debug-card">
+                    
+                    <div class="debug-section">
+                        <div class="debug-header">CLASSIFICATION</div>
+                        <div class="debug-row"><span class="label">Reason</span><span class="val">keyword_strong_match</span></div>
+                    </div>
+                    
+                    <div class="debug-section">
+                        <div class="debug-header">SCORE CARD</div>
+                        <div class='debug-row'><span class='label'>Base</span><span class='val'>+6500</span></div><div class='debug-row'><span class='label'>keyword_boost: </span><span class='val'>+500</span></div><div class='debug-row'><span class='label'>keyword_boost: </span><span class='val'>+500</span></div>
+                        <div class="debug-total">
+                            <span>TOTAL</span>
+                            <span>7500</span>
+                        </div>
+                    </div>
+                </div>
+                
+            </a>
+            
+            <a href="https://nypost.com/2025/12/10/us-news/marco-rubio-instructs-diplomats-to-use-times-new-roman-font-to-restore-decorum/" target="_blank" class="card compact" style="border-top: 4px solid #c0392b;">
+                <div class="card-meta">
+                    <span class="domain">nypost.com</span>
+                </div>
+                <h3>Marco Rubio instructs diplomats to use Times New Roman font, eliminating Biden-era diversity initiative</h3>
+                
+                <div class="debug-card">
+                    
+                    <div class="debug-section">
+                        <div class="debug-header">CLASSIFICATION</div>
+                        <div class="debug-row"><span class="label">Reason</span><span class="val">source_default</span></div>
+                    </div>
+                    
+                    <div class="debug-section">
+                        <div class="debug-header">SCORE CARD</div>
+                        <div class='debug-row'><span class='label'>Base</span><span class='val'>+6500</span></div><div class='debug-row'><span class='label'>keyword_boost: </span><span class='val'>+500</span></div><div class='debug-row'><span class='label'>keyword_boost: </span><span class='val'>+500</span></div>
+                        <div class="debug-total">
+                            <span>TOTAL</span>
+                            <span>7500</span>
+                        </div>
+                    </div>
+                </div>
+                
+            </a>
+            
+            <a href="https://nypost.com/2025/12/10/us-news/elon-musk-suggests-ilhan-omar-committed-treason-with-2024-pro-somalia-remarks-after-trump-rants-about-lawmaker-at-rally/" target="_blank" class="card compact" style="border-top: 4px solid #8e44ad;">
+                <div class="card-meta">
+                    <span class="domain">nypost.com</span>
+                </div>
+                <h3>Elon Musk suggests Ilhan Omar committed ‘treason’ with 2024 pro-Somalia remarks after Trump rants about lawmaker at rally</h3>
+                
+                <div class="debug-card">
+                    
+                    <div class="debug-section">
+                        <div class="debug-header">CLASSIFICATION</div>
+                        <div class="debug-row"><span class="label">Reason</span><span class="val">source_default</span></div>
+                    </div>
+                    
+                    <div class="debug-section">
+                        <div class="debug-header">SCORE CARD</div>
+                        <div class='debug-row'><span class='label'>Base</span><span class='val'>+6500</span></div><div class='debug-row'><span class='label'>keyword_boost: </span><span class='val'>+500</span></div><div class='debug-row'><span class='label'>keyword_boost: </span><span class='val'>+500</span></div>
+                        <div class="debug-total">
+                            <span>TOTAL</span>
+                            <span>7500</span>
+                        </div>
+                    </div>
+                </div>
+                
+            </a>
+            
+            <a href="https://www.breitbart.com/economy/2025/12/10/paychecks-outpace-inflation-for-fifth-straight-quarter/" target="_blank" class="card compact" style="border-top: 4px solid #27ae60;">
+                <div class="card-meta">
+                    <span class="domain">breitbart.com</span>
+                </div>
+                <h3>Paychecks Outpace Inflation for Fifth Straight Quarter</h3>
+                
+                <div class="debug-card">
+                    
+                    <div class="debug-section">
+                        <div class="debug-header">CLASSIFICATION</div>
+                        <div class="debug-row"><span class="label">Reason</span><span class="val">source_default</span></div>
+                    </div>
+                    
+                    <div class="debug-section">
+                        <div class="debug-header">SCORE CARD</div>
+                        <div class='debug-row'><span class='label'>Base</span><span class='val'>+6500</span></div><div class='debug-row'><span class='label'>keyword_boost: </span><span class='val'>+500</span></div><div class='debug-row'><span class='label'>keyword_boost: </span><span class='val'>+500</span></div>
+                        <div class="debug-total">
+                            <span>TOTAL</span>
+                            <span>7500</span>
+                        </div>
+                    </div>
+                </div>
+                
+            </a>
+            
+            <a href="https://www.foxnews.com/politics/trump-tells-mexico-fix-cross-border-sewage-problem-flowing-us-communities-immediately" target="_blank" class="card compact" style="border-top: 4px solid #8e44ad;">
+                <div class="card-meta">
+                    <span class="domain">foxnews.com</span>
+                </div>
+                <h3>Trump tells Mexico to fix cross-border sewage problem flowing into US communities &#x27;IMMEDIATELY&#x27;</h3>
+                
+                <div class="debug-card">
+                    
+                    <div class="debug-section">
+                        <div class="debug-header">CLASSIFICATION</div>
+                        <div class="debug-row"><span class="label">Reason</span><span class="val">source_default</span></div>
+                    </div>
+                    
+                    <div class="debug-section">
+                        <div class="debug-header">SCORE CARD</div>
+                        <div class='debug-row'><span class='label'>Base</span><span class='val'>+6500</span></div><div class='debug-row'><span class='label'>keyword_boost: </span><span class='val'>+500</span></div><div class='debug-row'><span class='label'>keyword_boost: </span><span class='val'>+500</span></div>
+                        <div class="debug-total">
+                            <span>TOTAL</span>
+                            <span>7500</span>
+                        </div>
+                    </div>
+                </div>
+                
+            </a>
+            
+            <a href="https://justthenews.com/nation/culture/musk-says-doge-was-somewhat-successful-would-not-do-again?utm_source=justthenews.com&utm_medium=feed&utm_campaign=external-news-aggregators" target="_blank" class="card compact" style="border-top: 4px solid #27ae60;">
+                <div class="card-meta">
+                    <span class="domain">justthenews.com</span>
+                </div>
+                <h3>Musk: DOGE was &#x27;somewhat successful,&#x27; had he focused on companies, Teslas wouldn&#x27;t have been torched</h3>
+                
+                <div class="debug-card">
+                    
+                    <div class="debug-section">
+                        <div class="debug-header">CLASSIFICATION</div>
+                        <div class="debug-row"><span class="label">Reason</span><span class="val">source_default</span></div>
+                    </div>
+                    
+                    <div class="debug-section">
+                        <div class="debug-header">SCORE CARD</div>
+                        <div class='debug-row'><span class='label'>Base</span><span class='val'>+6500</span></div><div class='debug-row'><span class='label'>keyword_boost: </span><span class='val'>+500</span></div><div class='debug-row'><span class='label'>keyword_boost: </span><span class='val'>+500</span></div>
+                        <div class="debug-total">
+                            <span>TOTAL</span>
+                            <span>7500</span>
+                        </div>
+                    </div>
+                </div>
+                
+            </a>
+            
+            <a href="https://nypost.com/2025/12/10/us-news/trump-backs-senate-gop-bill-to-give-americans-1500-checks-for-health-care/" target="_blank" class="card compact" style="border-top: 4px solid #27ae60;">
+                <div class="card-meta">
+                    <span class="domain">nypost.com</span>
+                </div>
+                <h3>Trump backs Senate GOP bill to give Americans $1,500 checks for health care — here’s who qualifies</h3>
+                
+                <div class="debug-card">
+                    
+                    <div class="debug-section">
+                        <div class="debug-header">CLASSIFICATION</div>
+                        <div class="debug-row"><span class="label">Reason</span><span class="val">keyword_strong_match</span></div>
+                    </div>
+                    
+                    <div class="debug-section">
+                        <div class="debug-header">SCORE CARD</div>
+                        <div class='debug-row'><span class='label'>Base</span><span class='val'>+6500</span></div><div class='debug-row'><span class='label'>keyword_boost: </span><span class='val'>+500</span></div><div class='debug-row'><span class='label'>keyword_boost: </span><span class='val'>+500</span></div>
+                        <div class="debug-total">
+                            <span>TOTAL</span>
+                            <span>7500</span>
+                        </div>
+                    </div>
+                </div>
+                
+            </a>
+            
+            <a href="https://reason.com/2025/12/10/trump-says-china-didnt-buy-soybeans-while-biden-was-president-heres-what-the-data-show/" target="_blank" class="card compact" style="border-top: 4px solid #d35400;">
+                <div class="card-meta">
+                    <span class="domain">reason.com</span>
+                </div>
+                <h3>Trump Says China Didn&#x27;t Buy Soybeans While Biden Was President. Here&#x27;s What the Data Show.</h3>
+                
+                <div class="debug-card">
+                    
+                    <div class="debug-section">
+                        <div class="debug-header">CLASSIFICATION</div>
+                        <div class="debug-row"><span class="label">Reason</span><span class="val">keyword_strong_match</span></div>
+                    </div>
+                    
+                    <div class="debug-section">
+                        <div class="debug-header">SCORE CARD</div>
+                        <div class='debug-row'><span class='label'>Base</span><span class='val'>+6500</span></div><div class='debug-row'><span class='label'>keyword_boost: </span><span class='val'>+500</span></div><div class='debug-row'><span class='label'>keyword_boost: </span><span class='val'>+500</span></div>
+                        <div class="debug-total">
+                            <span>TOTAL</span>
+                            <span>7500</span>
+                        </div>
+                    </div>
+                </div>
+                
+            </a>
+            
+            <a href="https://thepostmillennial.com/marco-rubio-tells-diplomats-to-use-times-new-roman-font-after-bidens-dei-mandated-calibri" target="_blank" class="card compact" style="border-top: 4px solid #2980b9;">
+                <div class="card-meta">
+                    <span class="domain">thepostmillennial.com</span>
+                </div>
+                <h3>Marco Rubio tells diplomats to use Times New Roman font after Biden&#x27;s DEI-mandated Calibri</h3>
+                
+                <div class="debug-card">
+                    
+                    <div class="debug-section">
+                        <div class="debug-header">CLASSIFICATION</div>
+                        <div class="debug-row"><span class="label">Reason</span><span class="val">source_default</span></div>
+                    </div>
+                    
+                    <div class="debug-section">
+                        <div class="debug-header">SCORE CARD</div>
+                        <div class='debug-row'><span class='label'>Base</span><span class='val'>+6500</span></div><div class='debug-row'><span class='label'>keyword_boost: </span><span class='val'>+500</span></div><div class='debug-row'><span class='label'>keyword_boost: </span><span class='val'>+500</span></div>
+                        <div class="debug-total">
+                            <span>TOTAL</span>
+                            <span>7500</span>
+                        </div>
+                    </div>
+                </div>
+                
+            </a>
+            
+            <a href="https://thepostmillennial.com/northern-states-saw-record-illegal-border-crossings-under-biden-admin" target="_blank" class="card compact" style="border-top: 4px solid #27ae60;">
+                <div class="card-meta">
+                    <span class="domain">thepostmillennial.com</span>
+                </div>
+                <h3>Northern states saw record illegal border crossings under Biden admin</h3>
+                
+                <div class="debug-card">
+                    
+                    <div class="debug-section">
+                        <div class="debug-header">CLASSIFICATION</div>
+                        <div class="debug-row"><span class="label">Reason</span><span class="val">keyword_strong_match</span></div>
+                    </div>
+                    
+                    <div class="debug-section">
+                        <div class="debug-header">SCORE CARD</div>
+                        <div class='debug-row'><span class='label'>Base</span><span class='val'>+6500</span></div><div class='debug-row'><span class='label'>keyword_boost: </span><span class='val'>+500</span></div><div class='debug-row'><span class='label'>keyword_boost: </span><span class='val'>+500</span></div>
+                        <div class="debug-total">
+                            <span>TOTAL</span>
+                            <span>7500</span>
+                        </div>
+                    </div>
+                </div>
+                
+            </a>
+            </div></div>
+        <div id="sports" class="section-block">
+            <div class="section-header">
+                <h2 class="section-title">Sports</h2>
+                <span class="section-tag">Features & Highlights</span>
+            </div>
+            <div class="bento-grid">
+        
+            <a href="https://www.reddit.com/r/CFB/comments/1pjfd6e/thamel_sherrone_moore_has_been_fired_by_michigan/" target="_blank" class="card standard" style="border-top: 4px solid #8e44ad;">
+                <div class="card-meta">
+                    <span class="domain">reddit.com</span>
+                </div>
+                <h3>[Thamel] Sherrone Moore has been fired by Michigan, per @DanWetzel and @AdamSchefter. The firing is set to be for cause.</h3>
+                
+                <div class="debug-card">
+                    
+                    <div class="debug-section">
+                        <div class="debug-header">CLASSIFICATION</div>
+                        <div class="debug-row"><span class="label">Reason</span><span class="val">source_default</span></div>
+                    </div>
+                    
+                    <div class="debug-section">
+                        <div class="debug-header">SCORE CARD</div>
+                        <div class='debug-row'><span class='label'>Stats</span><span class='val'>+14145</span></div>
+                        <div class="debug-total">
+                            <span>TOTAL</span>
+                            <span>14145</span>
+                        </div>
+                    </div>
+                </div>
+                
+            </a>
+            
+            <a href="https://www.reddit.com/r/nfl/comments/1pj8jc8/highlight_philip_rivers_was_asked_what_his/" target="_blank" class="card standard" style="border-top: 4px solid #c0392b;">
+                <div class="card-meta">
+                    <span class="domain">reddit.com</span>
+                </div>
+                <h3>[Highlight] Philip Rivers was asked what his current weight is: &quot;I&#x27;m not sure… Not what it was when I walked off the field in Buffalo. But I ain&#x27;t ran away from anybody anyway.&quot;</h3>
+                
+                <div class="debug-card">
+                    
+                    <div class="debug-section">
+                        <div class="debug-header">CLASSIFICATION</div>
+                        <div class="debug-row"><span class="label">Reason</span><span class="val">source_default</span></div>
+                    </div>
+                    
+                    <div class="debug-section">
+                        <div class="debug-header">SCORE CARD</div>
+                        <div class='debug-row'><span class='label'>Stats</span><span class='val'>+13187</span></div>
+                        <div class="debug-total">
+                            <span>TOTAL</span>
+                            <span>13187</span>
+                        </div>
+                    </div>
+                </div>
+                
+            </a>
+            
+            <a href="https://www.reddit.com/r/nfl/comments/1pj7s0k/highlight_colts_qb_philip_river_has_arrived_no/" target="_blank" class="card standard" style="border-top: 4px solid #d35400;">
+                <div class="card-meta">
+                    <span class="domain">reddit.com</span>
+                </div>
+                <h3>[Highlight] Colts QB Philip River has arrived: &quot;No Zoom?!? Let&#x27;s go!!!</h3>
+                
+                <div class="debug-card">
+                    
+                    <div class="debug-section">
+                        <div class="debug-header">CLASSIFICATION</div>
+                        <div class="debug-row"><span class="label">Reason</span><span class="val">source_default</span></div>
+                    </div>
+                    
+                    <div class="debug-section">
+                        <div class="debug-header">SCORE CARD</div>
+                        <div class='debug-row'><span class='label'>Stats</span><span class='val'>+11587</span></div>
+                        <div class="debug-total">
+                            <span>TOTAL</span>
+                            <span>11587</span>
+                        </div>
+                    </div>
+                </div>
+                
+            </a>
+            
+            <a href="https://www.reddit.com/r/CFB/comments/1pjfkyi/thamel_michigan_um_head_football_coach_sherrone/" target="_blank" class="card standard" style="border-top: 4px solid #2980b9;">
+                <div class="card-meta">
+                    <span class="domain">reddit.com</span>
+                </div>
+                <h3>[Thamel] Michigan: &quot;U-M head football coach Sherrone Moore has been terminated, with cause, effective immediately. Following a University investigation, credible evidence was found that Coach Moore engaged in an inappropriate relationship with a staff member.&quot;</h3>
+                
+                <div class="debug-card">
+                    
+                    <div class="debug-section">
+                        <div class="debug-header">CLASSIFICATION</div>
+                        <div class="debug-row"><span class="label">Reason</span><span class="val">keyword_strong_match</span></div>
+                    </div>
+                    
+                    <div class="debug-section">
+                        <div class="debug-header">SCORE CARD</div>
+                        <div class='debug-row'><span class='label'>Stats</span><span class='val'>+10445</span></div>
+                        <div class="debug-total">
+                            <span>TOTAL</span>
+                            <span>10445</span>
+                        </div>
+                    </div>
+                </div>
+                
+            </a>
+            
+            <a href="https://www.reddit.com/r/nfl/comments/1pjayiw/highlight_philip_rivers_back_in_action_at_practice/" target="_blank" class="card compact" style="border-top: 4px solid #d35400;">
+                <div class="card-meta">
+                    <span class="domain">reddit.com</span>
+                </div>
+                <h3>[Highlight] Philip Rivers back in action at practice</h3>
+                
+                <div class="debug-card">
+                    
+                    <div class="debug-section">
+                        <div class="debug-header">CLASSIFICATION</div>
+                        <div class="debug-row"><span class="label">Reason</span><span class="val">source_default</span></div>
+                    </div>
+                    
+                    <div class="debug-section">
+                        <div class="debug-header">SCORE CARD</div>
+                        <div class='debug-row'><span class='label'>Stats</span><span class='val'>+8216</span></div>
+                        <div class="debug-total">
+                            <span>TOTAL</span>
+                            <span>8216</span>
+                        </div>
+                    </div>
+                </div>
+                
+            </a>
+            
+            <a href="https://defector.com/whose-league-is-it-anyway" target="_blank" class="card compact" style="border-top: 4px solid #27ae60;">
+                <div class="card-meta">
+                    <span class="domain">defector.com</span>
+                </div>
+                <h3>Whose League Is It Anyway?</h3>
+                
+                <div class="debug-card">
+                    
+                    <div class="debug-section">
+                        <div class="debug-header">CLASSIFICATION</div>
+                        <div class="debug-row"><span class="label">Reason</span><span class="val">source_default</span></div>
+                    </div>
+                    
+                    <div class="debug-section">
+                        <div class="debug-header">SCORE CARD</div>
+                        <div class='debug-row'><span class='label'>Base</span><span class='val'>+6500</span></div><div class='debug-row'><span class='label'>source_boost: d</span><span class='val'>+1500</span></div>
+                        <div class="debug-total">
+                            <span>TOTAL</span>
+                            <span>8000</span>
+                        </div>
+                    </div>
+                </div>
+                
+            </a>
+            
+            <a href="https://defector.com/piers-morgan-nick-kyrgios-aryna-sabalenka-transphobia" target="_blank" class="card compact" style="border-top: 4px solid #8e44ad;">
+                <div class="card-meta">
+                    <span class="domain">defector.com</span>
+                </div>
+                <h3>An Extended Conversation Between Piers Morgan, Nick Kyrgios, And Aryna Sabalenka Was Always Going To Turn Transphobic</h3>
+                
+                <div class="debug-card">
+                    
+                    <div class="debug-section">
+                        <div class="debug-header">CLASSIFICATION</div>
+                        <div class="debug-row"><span class="label">Reason</span><span class="val">source_default</span></div>
+                    </div>
+                    
+                    <div class="debug-section">
+                        <div class="debug-header">SCORE CARD</div>
+                        <div class='debug-row'><span class='label'>Base</span><span class='val'>+6500</span></div><div class='debug-row'><span class='label'>source_boost: d</span><span class='val'>+1500</span></div>
+                        <div class="debug-total">
+                            <span>TOTAL</span>
+                            <span>8000</span>
+                        </div>
+                    </div>
+                </div>
+                
+            </a>
+            
+            <a href="https://defector.com/defector-watches-a-christmas-movie-my-secret-santa" target="_blank" class="card compact" style="border-top: 4px solid #c0392b;">
+                <div class="card-meta">
+                    <span class="domain">defector.com</span>
+                </div>
+                <h3>Defector Watches A Christmas Movie: ‘My Secret Santa’</h3>
+                
+                <div class="debug-card">
+                    
+                    <div class="debug-section">
+                        <div class="debug-header">CLASSIFICATION</div>
+                        <div class="debug-row"><span class="label">Reason</span><span class="val">source_default</span></div>
+                    </div>
+                    
+                    <div class="debug-section">
+                        <div class="debug-header">SCORE CARD</div>
+                        <div class='debug-row'><span class='label'>Base</span><span class='val'>+6500</span></div><div class='debug-row'><span class='label'>source_boost: d</span><span class='val'>+1500</span></div>
+                        <div class="debug-total">
+                            <span>TOTAL</span>
+                            <span>8000</span>
+                        </div>
+                    </div>
+                </div>
+                
+            </a>
+            
+            <a href="https://defector.com/notre-dames-ongoing-diaper-blowout-is-bringing-college-football-together" target="_blank" class="card compact" style="border-top: 4px solid #c0392b;">
+                <div class="card-meta">
+                    <span class="domain">defector.com</span>
+                </div>
+                <h3>Notre Dame’s Ongoing Diaper Blowout Is Bringing College Football Together</h3>
+                
+                <div class="debug-card">
+                    
+                    <div class="debug-section">
+                        <div class="debug-header">CLASSIFICATION</div>
+                        <div class="debug-row"><span class="label">Reason</span><span class="val">source_default</span></div>
+                    </div>
+                    
+                    <div class="debug-section">
+                        <div class="debug-header">SCORE CARD</div>
+                        <div class='debug-row'><span class='label'>Base</span><span class='val'>+6500</span></div><div class='debug-row'><span class='label'>source_boost: d</span><span class='val'>+1500</span></div>
+                        <div class="debug-total">
+                            <span>TOTAL</span>
+                            <span>8000</span>
+                        </div>
+                    </div>
+                </div>
+                
+            </a>
+            
+            <a href="https://defector.com/is-this-the-last-time-i-mess-up" target="_blank" class="card compact" style="border-top: 4px solid #d35400;">
+                <div class="card-meta">
+                    <span class="domain">defector.com</span>
+                </div>
+                <h3>I Shall Never Mess Up Again</h3>
+                
+                <div class="debug-card">
+                    
+                    <div class="debug-section">
+                        <div class="debug-header">CLASSIFICATION</div>
+                        <div class="debug-row"><span class="label">Reason</span><span class="val">source_default</span></div>
+                    </div>
+                    
+                    <div class="debug-section">
+                        <div class="debug-header">SCORE CARD</div>
+                        <div class='debug-row'><span class='label'>Base</span><span class='val'>+6500</span></div><div class='debug-row'><span class='label'>source_boost: d</span><span class='val'>+1500</span></div>
+                        <div class="debug-total">
+                            <span>TOTAL</span>
+                            <span>8000</span>
+                        </div>
+                    </div>
+                </div>
+                
+            </a>
+            
+            <a href="https://defector.com/the-tulip-clause" target="_blank" class="card compact" style="border-top: 4px solid #d35400;">
+                <div class="card-meta">
+                    <span class="domain">defector.com</span>
+                </div>
+                <h3>The Tulip Clause</h3>
+                
+                <div class="debug-card">
+                    
+                    <div class="debug-section">
+                        <div class="debug-header">CLASSIFICATION</div>
+                        <div class="debug-row"><span class="label">Reason</span><span class="val">source_default</span></div>
+                    </div>
+                    
+                    <div class="debug-section">
+                        <div class="debug-header">SCORE CARD</div>
+                        <div class='debug-row'><span class='label'>Base</span><span class='val'>+6500</span></div><div class='debug-row'><span class='label'>source_boost: d</span><span class='val'>+1500</span></div>
+                        <div class="debug-total">
+                            <span>TOTAL</span>
+                            <span>8000</span>
+                        </div>
+                    </div>
+                </div>
+                
+            </a>
+            
+            <a href="https://defector.com/if-it-wins-like-a-duck" target="_blank" class="card compact" style="border-top: 4px solid #8e44ad;">
+                <div class="card-meta">
+                    <span class="domain">defector.com</span>
+                </div>
+                <h3>If It Wins Like A Duck</h3>
+                
+                <div class="debug-card">
+                    
+                    <div class="debug-section">
+                        <div class="debug-header">CLASSIFICATION</div>
+                        <div class="debug-row"><span class="label">Reason</span><span class="val">source_default</span></div>
+                    </div>
+                    
+                    <div class="debug-section">
+                        <div class="debug-header">SCORE CARD</div>
+                        <div class='debug-row'><span class='label'>Base</span><span class='val'>+6500</span></div><div class='debug-row'><span class='label'>source_boost: d</span><span class='val'>+1500</span></div>
+                        <div class="debug-total">
+                            <span>TOTAL</span>
+                            <span>8000</span>
+                        </div>
+                    </div>
+                </div>
+                
+            </a>
+            
+            <a href="https://www.foxnews.com/sports/nfl-week-15-schedule-3-teams-have-playoff-clinching-scenarios" target="_blank" class="card compact" style="border-top: 4px solid #2980b9;">
+                <div class="card-meta">
+                    <span class="domain">foxnews.com</span>
+                </div>
+                <h3>NFL Week 15 schedule: 3 teams have playoff-clinching scenarios</h3>
+                
+                <div class="debug-card">
+                    
+                    <div class="debug-section">
+                        <div class="debug-header">CLASSIFICATION</div>
+                        <div class="debug-row"><span class="label">Reason</span><span class="val">keyword_strong_match</span></div>
+                    </div>
+                    
+                    <div class="debug-section">
+                        <div class="debug-header">SCORE CARD</div>
+                        <div class='debug-row'><span class='label'>Base</span><span class='val'>+6500</span></div><div class='debug-row'><span class='label'>keyword_boost: </span><span class='val'>+500</span></div><div class='debug-row'><span class='label'>keyword_boost: </span><span class='val'>+500</span></div>
+                        <div class="debug-total">
+                            <span>TOTAL</span>
+                            <span>7500</span>
+                        </div>
+                    </div>
+                </div>
+                
+            </a>
+            
+            <a href="https://www.breitbart.com/sports/2025/12/10/furious-egypt-iran-protest-against-world-cup-soccer-lgbtqi-pride-match-in-seattle/" target="_blank" class="card compact" style="border-top: 4px solid #27ae60;">
+                <div class="card-meta">
+                    <span class="domain">breitbart.com</span>
+                </div>
+                <h3>Furious Egypt, Iran Protest Against World Cup Soccer LGBTQI+ &#x27;Pride&#x27; Match in Seattle</h3>
+                
+                <div class="debug-card">
+                    
+                    <div class="debug-section">
+                        <div class="debug-header">CLASSIFICATION</div>
+                        <div class="debug-row"><span class="label">Reason</span><span class="val">keyword_strong_match</span></div>
+                    </div>
+                    
+                    <div class="debug-section">
+                        <div class="debug-header">SCORE CARD</div>
+                        <div class='debug-row'><span class='label'>Base</span><span class='val'>+6500</span></div><div class='debug-row'><span class='label'>Cluster</span><span class='val'>+1000</span></div>
+                        <div class="debug-total">
+                            <span>TOTAL</span>
+                            <span>7500</span>
+                        </div>
+                    </div>
+                </div>
+                
+            </a>
+            
+            <a href="https://www.reddit.com/r/nfl/comments/1pjc0kz/schefter_twominute_warning_the_nfl_notified_teams/" target="_blank" class="card compact" style="border-top: 4px solid #d35400;">
+                <div class="card-meta">
+                    <span class="domain">reddit.com</span>
+                </div>
+                <h3>[Schefter] Two-minute warning: The NFL notified teams today that it will shorten the time between picks in the first round of the draft from 10 to 8 minutes starting with the 2026 draft in Pittsburgh.</h3>
+                
+                <div class="debug-card">
+                    
+                    <div class="debug-section">
+                        <div class="debug-header">CLASSIFICATION</div>
+                        <div class="debug-row"><span class="label">Reason</span><span class="val">source_default</span></div>
+                    </div>
+                    
+                    <div class="debug-section">
+                        <div class="debug-header">SCORE CARD</div>
+                        <div class='debug-row'><span class='label'>Stats</span><span class='val'>+6842</span></div><div class='debug-row'><span class='label'>keyword_boost: </span><span class='val'>+500</span></div>
+                        <div class="debug-total">
+                            <span>TOTAL</span>
+                            <span>7342</span>
+                        </div>
+                    </div>
+                </div>
+                
+            </a>
+            
+            <a href="https://www.reddit.com/r/nfl/comments/1pjhpw9/highlight_a_melancholy_joe_burrow_talks_about/" target="_blank" class="card compact" style="border-top: 4px solid #d35400;">
+                <div class="card-meta">
+                    <span class="domain">reddit.com</span>
+                </div>
+                <h3>[Highlight] A melancholy Joe Burrow talks about needing to find fun in football during his birthday press conference</h3>
+                
+                <div class="debug-card">
+                    
+                    <div class="debug-section">
+                        <div class="debug-header">CLASSIFICATION</div>
+                        <div class="debug-row"><span class="label">Reason</span><span class="val">source_default</span></div>
+                    </div>
+                    
+                    <div class="debug-section">
+                        <div class="debug-header">SCORE CARD</div>
+                        <div class='debug-row'><span class='label'>Stats</span><span class='val'>+7284</span></div>
+                        <div class="debug-total">
+                            <span>TOTAL</span>
+                            <span>7284</span>
+                        </div>
+                    </div>
+                </div>
+                
+            </a>
+            
+            <a href="https://www.reddit.com/r/nfl/comments/1pjlxi5/highlight_colts_hc_shane_steichen_was_asked_if/" target="_blank" class="card compact" style="border-top: 4px solid #27ae60;">
+                <div class="card-meta">
+                    <span class="domain">reddit.com</span>
+                </div>
+                <h3>[Highlight] Colts HC Shane Steichen was asked if Philip Rivers is the first player he’s ever coached who’s older than him:
+
+“Ummm… I’ve coached him when he was older than me before. So, obviously, with age, everyone gets older. That was true 10 years ago.”</h3>
+                
+                <div class="debug-card">
+                    
+                    <div class="debug-section">
+                        <div class="debug-header">CLASSIFICATION</div>
+                        <div class="debug-row"><span class="label">Reason</span><span class="val">source_default</span></div>
+                    </div>
+                    
+                    <div class="debug-section">
+                        <div class="debug-header">SCORE CARD</div>
+                        <div class='debug-row'><span class='label'>Stats</span><span class='val'>+7071</span></div>
+                        <div class="debug-total">
+                            <span>TOTAL</span>
+                            <span>7071</span>
+                        </div>
+                    </div>
+                </div>
+                
+            </a>
+            
+            <a href="https://www.foxnews.com/sports/pro-soccer-players-open-up-spreading-peace-through-sport-world-cup-which-sport-football" target="_blank" class="card compact" style="border-top: 4px solid #2980b9;">
+                <div class="card-meta">
+                    <span class="domain">foxnews.com</span>
+                </div>
+                <h3>Pro soccer players open up on spreading peace through the sport at World Cup — and which sport is &#x27;football&#x27;</h3>
+                
+                <div class="debug-card">
+                    
+                    <div class="debug-section">
+                        <div class="debug-header">CLASSIFICATION</div>
+                        <div class="debug-row"><span class="label">Reason</span><span class="val">keyword_strong_match</span></div>
+                    </div>
+                    
+                    <div class="debug-section">
+                        <div class="debug-header">SCORE CARD</div>
+                        <div class='debug-row'><span class='label'>Base</span><span class='val'>+6500</span></div>
+                        <div class="debug-total">
+                            <span>TOTAL</span>
+                            <span>6500</span>
+                        </div>
+                    </div>
+                </div>
+                
+            </a>
+            
+            <a href="https://thepostmillennial.com/philly-high-school-football-players-miss-championship-game-after-arrest-for-felony-theft-at-florida-dicks-sporting-goods" target="_blank" class="card compact" style="border-top: 4px solid #2980b9;">
+                <div class="card-meta">
+                    <span class="domain">thepostmillennial.com</span>
+                </div>
+                <h3>Philly high school football players miss championship game after arrest for felony theft at Florida Dick&#x27;s Sporting Goods</h3>
+                
+                <div class="debug-card">
+                    
+                    <div class="debug-section">
+                        <div class="debug-header">CLASSIFICATION</div>
+                        <div class="debug-row"><span class="label">Reason</span><span class="val">keyword_strong_match</span></div>
+                    </div>
+                    
+                    <div class="debug-section">
+                        <div class="debug-header">SCORE CARD</div>
+                        <div class='debug-row'><span class='label'>Base</span><span class='val'>+6500</span></div>
+                        <div class="debug-total">
+                            <span>TOTAL</span>
+                            <span>6500</span>
+                        </div>
+                    </div>
+                </div>
+                
+            </a>
+            
+            <a href="https://www.foxnews.com/sports/former-michigan-football-coach-sherrone-moores-scandal-sparks-social-media-reactions" target="_blank" class="card compact" style="border-top: 4px solid #27ae60;">
+                <div class="card-meta">
+                    <span class="domain">foxnews.com</span>
+                </div>
+                <h3>Former Michigan football coach Sherrone Moore&#x27;s scandal sparks social media reactions</h3>
+                
+                <div class="debug-card">
+                    
+                    <div class="debug-section">
+                        <div class="debug-header">CLASSIFICATION</div>
+                        <div class="debug-row"><span class="label">Reason</span><span class="val">keyword_strong_match</span></div>
+                    </div>
+                    
+                    <div class="debug-section">
+                        <div class="debug-header">SCORE CARD</div>
+                        <div class='debug-row'><span class='label'>Base</span><span class='val'>+6500</span></div>
+                        <div class="debug-total">
+                            <span>TOTAL</span>
+                            <span>6500</span>
+                        </div>
+                    </div>
+                </div>
+                
+            </a>
+            
+            <a href="https://www.reddit.com/r/CFB/comments/1pj4469/matt_fortuna_the_acc_accidentally_ccd_notre_dame/" target="_blank" class="card compact" style="border-top: 4px solid #c0392b;">
+                <div class="card-meta">
+                    <span class="domain">reddit.com</span>
+                </div>
+                <h3>[Matt Fortuna]: The ACC accidentally cc’d Notre Dame on conference-wide emails discussing Notre Dame.</h3>
+                
+                <div class="debug-card">
+                    
+                    <div class="debug-section">
+                        <div class="debug-header">CLASSIFICATION</div>
+                        <div class="debug-row"><span class="label">Reason</span><span class="val">source_default</span></div>
+                    </div>
+                    
+                    <div class="debug-section">
+                        <div class="debug-header">SCORE CARD</div>
+                        <div class='debug-row'><span class='label'>Stats</span><span class='val'>+6176</span></div>
+                        <div class="debug-total">
+                            <span>TOTAL</span>
+                            <span>6176</span>
+                        </div>
+                    </div>
+                </div>
+                
+            </a>
+            
+            <a href="https://www.reddit.com/r/CFB/comments/1pjmmbk/tony_paul_detroit_news_fired_um_football_coach/" target="_blank" class="card compact" style="border-top: 4px solid #d35400;">
+                <div class="card-meta">
+                    <span class="domain">reddit.com</span>
+                </div>
+                <h3>[Tony Paul | Detroit News] Fired UM football coach Sherrone Moore is in the Washtenaw County jail tonight, per court records.</h3>
+                
+                <div class="debug-card">
+                    
+                    <div class="debug-section">
+                        <div class="debug-header">CLASSIFICATION</div>
+                        <div class="debug-row"><span class="label">Reason</span><span class="val">keyword_strong_match</span></div>
+                    </div>
+                    
+                    <div class="debug-section">
+                        <div class="debug-header">SCORE CARD</div>
+                        <div class='debug-row'><span class='label'>Stats</span><span class='val'>+5024</span></div>
+                        <div class="debug-total">
+                            <span>TOTAL</span>
+                            <span>5024</span>
+                        </div>
+                    </div>
+                </div>
+                
+            </a>
+            
+            <a href="https://www.reddit.com/r/nfl/comments/1pjd055/highlight_philip_rivers_throwing_with_the_colts/" target="_blank" class="card compact" style="border-top: 4px solid #2980b9;">
+                <div class="card-meta">
+                    <span class="domain">reddit.com</span>
+                </div>
+                <h3>[Highlight] Philip Rivers throwing with the Colts in his first practice</h3>
+                
+                <div class="debug-card">
+                    
+                    <div class="debug-section">
+                        <div class="debug-header">CLASSIFICATION</div>
+                        <div class="debug-row"><span class="label">Reason</span><span class="val">source_default</span></div>
+                    </div>
+                    
+                    <div class="debug-section">
+                        <div class="debug-header">SCORE CARD</div>
+                        <div class='debug-row'><span class='label'>Stats</span><span class='val'>+4421</span></div>
+                        <div class="debug-total">
+                            <span>TOTAL</span>
+                            <span>4421</span>
+                        </div>
+                    </div>
+                </div>
+                
+            </a>
+            
+            <a href="https://www.reddit.com/r/CFB/comments/1pjg4uc/auerbach_kalen_deboer_would_be_the_obvious_top/" target="_blank" class="card compact" style="border-top: 4px solid #2980b9;">
+                <div class="card-meta">
+                    <span class="domain">reddit.com</span>
+                </div>
+                <h3>[Auerbach] Kalen DeBoer would be the obvious top name for Michigan.</h3>
+                
+                <div class="debug-card">
+                    
+                    <div class="debug-section">
+                        <div class="debug-header">CLASSIFICATION</div>
+                        <div class="debug-row"><span class="label">Reason</span><span class="val">source_default</span></div>
+                    </div>
+                    
+                    <div class="debug-section">
+                        <div class="debug-header">SCORE CARD</div>
+                        <div class='debug-row'><span class='label'>Stats</span><span class='val'>+4041</span></div>
+                        <div class="debug-total">
+                            <span>TOTAL</span>
+                            <span>4041</span>
+                        </div>
+                    </div>
+                </div>
+                
+            </a>
+            
+            <a href="https://www.reddit.com/r/sports/comments/1pjfpmo/44year_old_qb_phillip_rivers_taking_reps_at_colts/" target="_blank" class="card compact" style="border-top: 4px solid #c0392b;">
+                <div class="card-meta">
+                    <span class="domain">reddit.com</span>
+                </div>
+                <h3>44-year old QB Phillip Rivers taking reps at Colts practice</h3>
+                
+                <div class="debug-card">
+                    
+                    <div class="debug-section">
+                        <div class="debug-header">CLASSIFICATION</div>
+                        <div class="debug-row"><span class="label">Reason</span><span class="val">source_default</span></div>
+                    </div>
+                    
+                    <div class="debug-section">
+                        <div class="debug-header">SCORE CARD</div>
+                        <div class='debug-row'><span class='label'>Stats</span><span class='val'>+3920</span></div>
+                        <div class="debug-total">
+                            <span>TOTAL</span>
+                            <span>3920</span>
+                        </div>
+                    </div>
+                </div>
+                
+            </a>
+            </div></div>
+        <div id="tech" class="section-block">
+            <div class="section-header">
+                <h2 class="section-title">Technology</h2>
+                <span class="section-tag">Hacker News & Engineering</span>
+            </div>
+            <div class="bento-grid">
+        
+            <a href="https://www.reddit.com/r/technology/comments/1pj1rri/tesla_is_the_most_unreliable_used_car_brand_in/" target="_blank" class="card feature" style="border-top: 4px solid #c0392b;">
+                <div class="card-meta">
+                    <span class="domain">reddit.com</span>
+                </div>
+                <h3>Tesla is the most unreliable used car brand in America, even behind Jeep and Chrysler</h3>
+                
+                <div class="debug-card">
+                    
+                    <div class="debug-section">
+                        <div class="debug-header">CLASSIFICATION</div>
+                        <div class="debug-row"><span class="label">Reason</span><span class="val">source_default</span></div>
+                    </div>
+                    
+                    <div class="debug-section">
+                        <div class="debug-header">SCORE CARD</div>
+                        <div class='debug-row'><span class='label'>Stats</span><span class='val'>+35341</span></div>
+                        <div class="debug-total">
+                            <span>TOTAL</span>
+                            <span>35341</span>
+                        </div>
+                    </div>
+                </div>
+                
+            </a>
+            
+            <a href="https://www.reddit.com/r/technology/comments/1piyeek/man_charged_for_wiping_phone_before_cbp_could/" target="_blank" class="card feature" style="border-top: 4px solid #d35400;">
+                <div class="card-meta">
+                    <span class="domain">reddit.com</span>
+                </div>
+                <h3>Man Charged for Wiping Phone Before CBP Could Search It</h3>
+                
+                <div class="debug-card">
+                    
+                    <div class="debug-section">
+                        <div class="debug-header">CLASSIFICATION</div>
+                        <div class="debug-row"><span class="label">Reason</span><span class="val">source_default</span></div>
+                    </div>
+                    
+                    <div class="debug-section">
+                        <div class="debug-header">SCORE CARD</div>
+                        <div class='debug-row'><span class='label'>Stats</span><span class='val'>+11126</span></div>
+                        <div class="debug-total">
+                            <span>TOTAL</span>
+                            <span>11126</span>
+                        </div>
+                    </div>
+                </div>
+                
+            </a>
+            
+            <a href="https://www.reddit.com/r/technology/comments/1pjb41e/openai_is_in_trouble/" target="_blank" class="card standard" style="border-top: 4px solid #c0392b;">
+                <div class="card-meta">
+                    <span class="domain">reddit.com</span>
+                </div>
+                <h3>OpenAI Is in Trouble</h3>
+                
+                <div class="debug-card">
+                    
+                    <div class="debug-section">
+                        <div class="debug-header">CLASSIFICATION</div>
+                        <div class="debug-row"><span class="label">Reason</span><span class="val">source_default</span></div>
+                    </div>
+                    
+                    <div class="debug-section">
+                        <div class="debug-header">SCORE CARD</div>
+                        <div class='debug-row'><span class='label'>Stats</span><span class='val'>+8172</span></div><div class='debug-row'><span class='label'>Cluster</span><span class='val'>+1000</span></div>
+                        <div class="debug-total">
+                            <span>TOTAL</span>
+                            <span>9172</span>
+                        </div>
+                    </div>
+                </div>
+                
+            </a>
+            
+            <a href="https://www.reddit.com/r/technology/comments/1pjdqvt/openais_house_of_cards_seems_primed_to_collapse/" target="_blank" class="card standard" style="border-top: 4px solid #8e44ad;">
+                <div class="card-meta">
+                    <span class="domain">reddit.com</span>
+                </div>
+                <h3>OpenAI&#x27;s house of cards seems primed to collapse</h3>
+                
+                <div class="debug-card">
+                    
+                    <div class="debug-section">
+                        <div class="debug-header">CLASSIFICATION</div>
+                        <div class="debug-row"><span class="label">Reason</span><span class="val">source_default</span></div>
+                    </div>
+                    
+                    <div class="debug-section">
+                        <div class="debug-header">SCORE CARD</div>
+                        <div class='debug-row'><span class='label'>Stats</span><span class='val'>+8971</span></div>
+                        <div class="debug-total">
+                            <span>TOTAL</span>
+                            <span>8971</span>
+                        </div>
+                    </div>
+                </div>
+                
+            </a>
+            
+            <a href="https://lwn.net/Articles/1049965/" target="_blank" class="card compact" style="border-top: 4px solid #8e44ad;">
+                <div class="card-meta">
+                    <span class="domain">lwn.net</span>
+                </div>
+                <h3>10 Years of Let&#x27;s Encrypt Certificates</h3>
+                
+                <div class="debug-card">
+                    
+                    <div class="debug-section">
+                        <div class="debug-header">CLASSIFICATION</div>
+                        <div class="debug-row"><span class="label">Reason</span><span class="val">source_default</span></div>
+                    </div>
+                    
+                    <div class="debug-section">
+                        <div class="debug-header">SCORE CARD</div>
+                        <div class='debug-row'><span class='label'>Base</span><span class='val'>+6500</span></div><div class='debug-row'><span class='label'>source_boost: l</span><span class='val'>+500</span></div>
+                        <div class="debug-total">
+                            <span>TOTAL</span>
+                            <span>7000</span>
+                        </div>
+                    </div>
+                </div>
+                
+            </a>
+            
+            <a href="https://lwn.net/Articles/1049963/" target="_blank" class="card compact" style="border-top: 4px solid #c0392b;">
+                <div class="card-meta">
+                    <span class="domain">lwn.net</span>
+                </div>
+                <h3>Kroah-Hartman: Linux CVEs, more than you ever wanted to know</h3>
+                
+                <div class="debug-card">
+                    
+                    <div class="debug-section">
+                        <div class="debug-header">CLASSIFICATION</div>
+                        <div class="debug-row"><span class="label">Reason</span><span class="val">source_default</span></div>
+                    </div>
+                    
+                    <div class="debug-section">
+                        <div class="debug-header">SCORE CARD</div>
+                        <div class='debug-row'><span class='label'>Base</span><span class='val'>+6500</span></div><div class='debug-row'><span class='label'>source_boost: l</span><span class='val'>+500</span></div>
+                        <div class="debug-total">
+                            <span>TOTAL</span>
+                            <span>7000</span>
+                        </div>
+                    </div>
+                </div>
+                
+            </a>
+            
+            <a href="https://lwn.net/Articles/1049423/" target="_blank" class="card compact" style="border-top: 4px solid #c0392b;">
+                <div class="card-meta">
+                    <span class="domain">lwn.net</span>
+                </div>
+                <h3>[$] Mix and match Linux distributions with Distrobox</h3>
+                
+                <div class="debug-card">
+                    
+                    <div class="debug-section">
+                        <div class="debug-header">CLASSIFICATION</div>
+                        <div class="debug-row"><span class="label">Reason</span><span class="val">source_default</span></div>
+                    </div>
+                    
+                    <div class="debug-section">
+                        <div class="debug-header">SCORE CARD</div>
+                        <div class='debug-row'><span class='label'>Base</span><span class='val'>+6500</span></div><div class='debug-row'><span class='label'>source_boost: l</span><span class='val'>+500</span></div>
+                        <div class="debug-total">
+                            <span>TOTAL</span>
+                            <span>7000</span>
+                        </div>
+                    </div>
+                </div>
+                
+            </a>
+            
+            <a href="https://www.zerohedge.com/ai/chinas-deepseek-using-banned-nvidia-chips-develop-next-major-model" target="_blank" class="card compact" style="border-top: 4px solid #d35400;">
+                <div class="card-meta">
+                    <span class="domain">zerohedge.com</span>
+                </div>
+                <h3>China&#x27;s DeepSeek Using Banned Nvidia Chips To Develop Next Major Model</h3>
+                
+                <div class="debug-card">
+                    
+                    <div class="debug-section">
+                        <div class="debug-header">CLASSIFICATION</div>
+                        <div class="debug-row"><span class="label">Reason</span><span class="val">keyword_strong_match</span></div>
+                    </div>
+                    
+                    <div class="debug-section">
+                        <div class="debug-header">SCORE CARD</div>
+                        <div class='debug-row'><span class='label'>Base</span><span class='val'>+6500</span></div>
+                        <div class="debug-total">
+                            <span>TOTAL</span>
+                            <span>6500</span>
+                        </div>
+                    </div>
+                </div>
+                
+            </a>
+            
+            <a href="https://www.reddit.com/r/technology/comments/1pj6lg3/a_developer_accidentally_found_csam_in_ai_data/" target="_blank" class="card compact" style="border-top: 4px solid #2980b9;">
+                <div class="card-meta">
+                    <span class="domain">reddit.com</span>
+                </div>
+                <h3>A Developer Accidentally Found CSAM in AI Data. Google Banned Him For It | Mark Russo reported the dataset to all the right organizations, but still couldn&#x27;t get into his accounts for months</h3>
+                
+                <div class="debug-card">
+                    
+                    <div class="debug-section">
+                        <div class="debug-header">CLASSIFICATION</div>
+                        <div class="debug-row"><span class="label">Reason</span><span class="val">keyword_strong_match</span></div>
+                    </div>
+                    
+                    <div class="debug-section">
+                        <div class="debug-header">SCORE CARD</div>
+                        <div class='debug-row'><span class='label'>Stats</span><span class='val'>+5739</span></div>
+                        <div class="debug-total">
+                            <span>TOTAL</span>
+                            <span>5739</span>
+                        </div>
+                    </div>
+                </div>
+                
+            </a>
+            
+            <a href="https://www.reddit.com/r/technology/comments/1pjn4ip/marco_rubio_bans_calibri_font_at_state_department/" target="_blank" class="card compact" style="border-top: 4px solid #8e44ad;">
+                <div class="card-meta">
+                    <span class="domain">reddit.com</span>
+                </div>
+                <h3>Marco Rubio bans Calibri font at State Department for being too DEI</h3>
+                
+                <div class="debug-card">
+                    
+                    <div class="debug-section">
+                        <div class="debug-header">CLASSIFICATION</div>
+                        <div class="debug-row"><span class="label">Reason</span><span class="val">source_default</span></div>
+                    </div>
+                    
+                    <div class="debug-section">
+                        <div class="debug-header">SCORE CARD</div>
+                        <div class='debug-row'><span class='label'>Stats</span><span class='val'>+4625</span></div><div class='debug-row'><span class='label'>keyword_boost: </span><span class='val'>+500</span></div>
+                        <div class="debug-total">
+                            <span>TOTAL</span>
+                            <span>5125</span>
+                        </div>
+                    </div>
+                </div>
+                
+            </a>
+            
+            <a href="https://www.reddit.com/r/technology/comments/1pjd2ym/us_republicans_and_democrats_push_for/" target="_blank" class="card compact" style="border-top: 4px solid #8e44ad;">
+                <div class="card-meta">
+                    <span class="domain">reddit.com</span>
+                </div>
+                <h3>US Republicans and Democrats push for Australian-style kids&#x27; social media ban</h3>
+                
+                <div class="debug-card">
+                    
+                    <div class="debug-section">
+                        <div class="debug-header">CLASSIFICATION</div>
+                        <div class="debug-row"><span class="label">Reason</span><span class="val">source_default</span></div>
+                    </div>
+                    
+                    <div class="debug-section">
+                        <div class="debug-header">SCORE CARD</div>
+                        <div class='debug-row'><span class='label'>Stats</span><span class='val'>+3534</span></div>
+                        <div class="debug-total">
+                            <span>TOTAL</span>
+                            <span>3534</span>
+                        </div>
+                    </div>
+                </div>
+                
+            </a>
+            
+            <a href="https://news.ycombinator.com/item?id=46220488" target="_blank" class="card compact" style="border-top: 4px solid #2980b9;">
+                <div class="card-meta">
+                    <span class="domain">heise.de</span>
+                </div>
+                <h3>Valve: HDMI Forum Continues to Block HDMI 2.1 for Linux</h3>
+                
+                <div class="debug-card">
+                    
+                    <div class="debug-section">
+                        <div class="debug-header">CLASSIFICATION</div>
+                        <div class="debug-row"><span class="label">Reason</span><span class="val">source_default</span></div>
+                    </div>
+                    
+                    <div class="debug-section">
+                        <div class="debug-header">SCORE CARD</div>
+                        <div class='debug-row'><span class='label'>Stats</span><span class='val'>+1331</span></div><div class='debug-row'><span class='label'>Cluster</span><span class='val'>+2000</span></div>
+                        <div class="debug-total">
+                            <span>TOTAL</span>
+                            <span>3331</span>
+                        </div>
+                    </div>
+                </div>
+                
+            </a>
+            
+            <a href="https://www.reddit.com/r/technology/comments/1pjl9dj/after_npr_and_pbs_defunding_fcc_receives_call_to/" target="_blank" class="card compact" style="border-top: 4px solid #2980b9;">
+                <div class="card-meta">
+                    <span class="domain">reddit.com</span>
+                </div>
+                <h3>After NPR and PBS defunding, FCC receives call to take away station licenses | NPR and PBS stations targeted by conservative group &#x27;Center for American Rights&#x27;, a nonprofit law firm involved in FCC Chairman Brendan Carr’s news-distortion probes.</h3>
+                
+                <div class="debug-card">
+                    
+                    <div class="debug-section">
+                        <div class="debug-header">CLASSIFICATION</div>
+                        <div class="debug-row"><span class="label">Reason</span><span class="val">source_default</span></div>
+                    </div>
+                    
+                    <div class="debug-section">
+                        <div class="debug-header">SCORE CARD</div>
+                        <div class='debug-row'><span class='label'>Stats</span><span class='val'>+2793</span></div>
+                        <div class="debug-total">
+                            <span>TOTAL</span>
+                            <span>2793</span>
+                        </div>
+                    </div>
+                </div>
+                
+            </a>
+            
+            <a href="https://www.reddit.com/r/technology/comments/1pj5fp5/the_military_almost_got_the_right_to_repair/" target="_blank" class="card compact" style="border-top: 4px solid #8e44ad;">
+                <div class="card-meta">
+                    <span class="domain">reddit.com</span>
+                </div>
+                <h3>The Military Almost Got the Right to Repair. Lawmakers Just Took It Away</h3>
+                
+                <div class="debug-card">
+                    
+                    <div class="debug-section">
+                        <div class="debug-header">CLASSIFICATION</div>
+                        <div class="debug-row"><span class="label">Reason</span><span class="val">source_default</span></div>
+                    </div>
+                    
+                    <div class="debug-section">
+                        <div class="debug-header">SCORE CARD</div>
+                        <div class='debug-row'><span class='label'>Stats</span><span class='val'>+2672</span></div>
+                        <div class="debug-total">
+                            <span>TOTAL</span>
+                            <span>2672</span>
+                        </div>
+                    </div>
+                </div>
+                
+            </a>
+            
+            <a href="https://www.reddit.com/r/technology/comments/1pj8vis/foreign_tourists_required_to_disclose_5_years_of/" target="_blank" class="card compact" style="border-top: 4px solid #27ae60;">
+                <div class="card-meta">
+                    <span class="domain">reddit.com</span>
+                </div>
+                <h3>Foreign tourists required to disclose 5 years of social media activity in US proposal</h3>
+                
+                <div class="debug-card">
+                    
+                    <div class="debug-section">
+                        <div class="debug-header">CLASSIFICATION</div>
+                        <div class="debug-row"><span class="label">Reason</span><span class="val">source_default</span></div>
+                    </div>
+                    
+                    <div class="debug-section">
+                        <div class="debug-header">SCORE CARD</div>
+                        <div class='debug-row'><span class='label'>Stats</span><span class='val'>+1373</span></div><div class='debug-row'><span class='label'>Cluster</span><span class='val'>+1000</span></div>
+                        <div class="debug-total">
+                            <span>TOTAL</span>
+                            <span>2373</span>
+                        </div>
+                    </div>
+                </div>
+                
+            </a>
+            </div></div>
+        <div id="culture" class="section-block">
+            <div class="section-header">
+                <h2 class="section-title">Culture</h2>
+                <span class="section-tag">Life, Society, & Entertainment</span>
+            </div>
+            <div class="bento-grid">
+        
+            <a href="https://www.reddit.com/r/movies/comments/1pj7t9c/official_poster_for_supergirl/" target="_blank" class="card feature" style="border-top: 4px solid #c0392b;">
+                <div class="card-meta">
+                    <span class="domain">reddit.com</span>
+                </div>
+                <h3>Official Poster for &#x27;Supergirl&#x27;</h3>
+                
+                <div class="debug-card">
+                    
+                    <div class="debug-section">
+                        <div class="debug-header">CLASSIFICATION</div>
+                        <div class="debug-row"><span class="label">Reason</span><span class="val">source_default</span></div>
+                    </div>
+                    
+                    <div class="debug-section">
+                        <div class="debug-header">SCORE CARD</div>
+                        <div class='debug-row'><span class='label'>Stats</span><span class='val'>+32748</span></div>
+                        <div class="debug-total">
+                            <span>TOTAL</span>
+                            <span>32748</span>
+                        </div>
+                    </div>
+                </div>
+                
+            </a>
+            
+            <a href="https://www.reddit.com/r/television/comments/1pj8qtb/iceland_becomes_the_fifth_country_to_boycott/" target="_blank" class="card feature" style="border-top: 4px solid #27ae60;">
+                <div class="card-meta">
+                    <span class="domain">reddit.com</span>
+                </div>
+                <h3>Iceland becomes the fifth country to boycott Eurovision over Israel’s participation</h3>
+                
+                <div class="debug-card">
+                    
+                    <div class="debug-section">
+                        <div class="debug-header">CLASSIFICATION</div>
+                        <div class="debug-row"><span class="label">Reason</span><span class="val">source_default</span></div>
+                    </div>
+                    
+                    <div class="debug-section">
+                        <div class="debug-header">SCORE CARD</div>
+                        <div class='debug-row'><span class='label'>Stats</span><span class='val'>+11594</span></div><div class='debug-row'><span class='label'>keyword_boost: </span><span class='val'>+500</span></div>
+                        <div class="debug-total">
+                            <span>TOTAL</span>
+                            <span>12094</span>
+                        </div>
+                    </div>
+                </div>
+                
+            </a>
+            
+            <a href="https://pagesix.com/2025/12/10/celebrity-news/rhoslc-star-jen-shah-released-from-prison-after-serving-nearly-3-years/" target="_blank" class="card compact" style="border-top: 4px solid #27ae60;">
+                <div class="card-meta">
+                    <span class="domain">pagesix.com</span>
+                </div>
+                <h3>‘RHOSLC’ alum Jen Shah released from prison after serving nearly 3 years</h3>
+                
+                <div class="debug-card">
+                    
+                    <div class="debug-section">
+                        <div class="debug-header">CLASSIFICATION</div>
+                        <div class="debug-row"><span class="label">Reason</span><span class="val">source_default</span></div>
+                    </div>
+                    
+                    <div class="debug-section">
+                        <div class="debug-header">SCORE CARD</div>
+                        <div class='debug-row'><span class='label'>Base</span><span class='val'>+6500</span></div><div class='debug-row'><span class='label'>Cluster</span><span class='val'>+1000</span></div>
+                        <div class="debug-total">
+                            <span>TOTAL</span>
+                            <span>7500</span>
+                        </div>
+                    </div>
+                </div>
+                
+            </a>
+            
+            <a href="https://www.reddit.com/r/movies/comments/1piynq1/what_scene_in_a_movie_drives_you_nuts_because_it/" target="_blank" class="card compact" style="border-top: 4px solid #8e44ad;">
+                <div class="card-meta">
+                    <span class="domain">reddit.com</span>
+                </div>
+                <h3>What scene in a movie drives you nuts because it makes no sense?</h3>
+                
+                <div class="debug-card">
+                    
+                    <div class="debug-section">
+                        <div class="debug-header">CLASSIFICATION</div>
+                        <div class="debug-row"><span class="label">Reason</span><span class="val">source_default</span></div>
+                    </div>
+                    
+                    <div class="debug-section">
+                        <div class="debug-header">SCORE CARD</div>
+                        <div class='debug-row'><span class='label'>Stats</span><span class='val'>+6507</span></div>
+                        <div class="debug-total">
+                            <span>TOTAL</span>
+                            <span>6507</span>
+                        </div>
+                    </div>
+                </div>
+                
+            </a>
+            
+            <a href="https://www.breitbart.com/entertainment/2025/12/10/beyonces-team-demands-removal-of-survivor-song-used-in-jair-bolsonaro-movie-teaser/" target="_blank" class="card compact" style="border-top: 4px solid #c0392b;">
+                <div class="card-meta">
+                    <span class="domain">breitbart.com</span>
+                </div>
+                <h3>Beyonce&#x27;s Team Demands Removal of ‘Survivor’ Song Used in Jair Bolsonaro Movie Teaser</h3>
+                
+                <div class="debug-card">
+                    
+                    <div class="debug-section">
+                        <div class="debug-header">CLASSIFICATION</div>
+                        <div class="debug-row"><span class="label">Reason</span><span class="val">keyword_strong_match</span></div>
+                    </div>
+                    
+                    <div class="debug-section">
+                        <div class="debug-header">SCORE CARD</div>
+                        <div class='debug-row'><span class='label'>Base</span><span class='val'>+6500</span></div>
+                        <div class="debug-total">
+                            <span>TOTAL</span>
+                            <span>6500</span>
+                        </div>
+                    </div>
+                </div>
+                
+            </a>
+            
+            <a href="https://pagesix.com/2025/12/10/style/sofia-richie-grainge-and-hailey-bieber-swear-by-this-make-up-for-ever-lip-liner/" target="_blank" class="card compact" style="border-top: 4px solid #2980b9;">
+                <div class="card-meta">
+                    <span class="domain">pagesix.com</span>
+                </div>
+                <h3>Sofia Richie Grainge, Hailey Bieber and Jennifer Lopez swear by this viral lip liner</h3>
+                
+                <div class="debug-card">
+                    
+                    <div class="debug-section">
+                        <div class="debug-header">CLASSIFICATION</div>
+                        <div class="debug-row"><span class="label">Reason</span><span class="val">source_default</span></div>
+                    </div>
+                    
+                    <div class="debug-section">
+                        <div class="debug-header">SCORE CARD</div>
+                        <div class='debug-row'><span class='label'>Base</span><span class='val'>+6500</span></div>
+                        <div class="debug-total">
+                            <span>TOTAL</span>
+                            <span>6500</span>
+                        </div>
+                    </div>
+                </div>
+                
+            </a>
+            
+            <a href="https://pagesix.com/2025/12/10/society/bill-de-blasio-tucson-mayor-hooked-up-first-time-they-met/" target="_blank" class="card compact" style="border-top: 4px solid #c0392b;">
+                <div class="card-meta">
+                    <span class="domain">pagesix.com</span>
+                </div>
+                <h3>Bill de Blasio and Tucson mayor Roxanna Valenzuela hooked up hours after meeting — while he was dating Nomiki Konst</h3>
+                
+                <div class="debug-card">
+                    
+                    <div class="debug-section">
+                        <div class="debug-header">CLASSIFICATION</div>
+                        <div class="debug-row"><span class="label">Reason</span><span class="val">source_default</span></div>
+                    </div>
+                    
+                    <div class="debug-section">
+                        <div class="debug-header">SCORE CARD</div>
+                        <div class='debug-row'><span class='label'>Base</span><span class='val'>+6500</span></div>
+                        <div class="debug-total">
+                            <span>TOTAL</span>
+                            <span>6500</span>
+                        </div>
+                    </div>
+                </div>
+                
+            </a>
+            
+            <a href="https://pagesix.com/2025/12/10/entertainment/where-taylor-swift-stands-on-travis-and-jason-kelces-spotify-wrapped/" target="_blank" class="card compact" style="border-top: 4px solid #c0392b;">
+                <div class="card-meta">
+                    <span class="domain">pagesix.com</span>
+                </div>
+                <h3>Where Taylor Swift stands on Travis and Jason Kelce’s Spotify Wrapped</h3>
+                
+                <div class="debug-card">
+                    
+                    <div class="debug-section">
+                        <div class="debug-header">CLASSIFICATION</div>
+                        <div class="debug-row"><span class="label">Reason</span><span class="val">source_default</span></div>
+                    </div>
+                    
+                    <div class="debug-section">
+                        <div class="debug-header">SCORE CARD</div>
+                        <div class='debug-row'><span class='label'>Base</span><span class='val'>+6500</span></div>
+                        <div class="debug-total">
+                            <span>TOTAL</span>
+                            <span>6500</span>
+                        </div>
+                    </div>
+                </div>
+                
+            </a>
+            
+            <a href="https://pagesix.com/2025/12/10/entertainment/taylor-swift-cries-over-challenging-eras-tour-in-new-trailer-for-disney-doc/" target="_blank" class="card compact" style="border-top: 4px solid #8e44ad;">
+                <div class="card-meta">
+                    <span class="domain">pagesix.com</span>
+                </div>
+                <h3>Taylor Swift cries over challenging Eras Tour in new trailer for Disney doc</h3>
+                
+                <div class="debug-card">
+                    
+                    <div class="debug-section">
+                        <div class="debug-header">CLASSIFICATION</div>
+                        <div class="debug-row"><span class="label">Reason</span><span class="val">source_default</span></div>
+                    </div>
+                    
+                    <div class="debug-section">
+                        <div class="debug-header">SCORE CARD</div>
+                        <div class='debug-row'><span class='label'>Base</span><span class='val'>+6500</span></div>
+                        <div class="debug-total">
+                            <span>TOTAL</span>
+                            <span>6500</span>
+                        </div>
+                    </div>
+                </div>
+                
+            </a>
+            
+            <a href="https://pagesix.com/2025/12/10/celebrity-news/andy-dick-sparks-fears-of-overdose-after-being-found-unresponsive/" target="_blank" class="card compact" style="border-top: 4px solid #d35400;">
+                <div class="card-meta">
+                    <span class="domain">pagesix.com</span>
+                </div>
+                <h3>Comedian Andy Dick sparks fears of overdose after being found unresponsive on LA street</h3>
+                
+                <div class="debug-card">
+                    
+                    <div class="debug-section">
+                        <div class="debug-header">CLASSIFICATION</div>
+                        <div class="debug-row"><span class="label">Reason</span><span class="val">source_default</span></div>
+                    </div>
+                    
+                    <div class="debug-section">
+                        <div class="debug-header">SCORE CARD</div>
+                        <div class='debug-row'><span class='label'>Base</span><span class='val'>+6500</span></div>
+                        <div class="debug-total">
+                            <span>TOTAL</span>
+                            <span>6500</span>
+                        </div>
+                    </div>
+                </div>
+                
+            </a>
+            
+            <a href="https://pagesix.com/2025/12/10/celebrity-news/gwen-stefani-and-blake-shelton-shut-down-split-rumors-with-shopping-outing/" target="_blank" class="card compact" style="border-top: 4px solid #2980b9;">
+                <div class="card-meta">
+                    <span class="domain">pagesix.com</span>
+                </div>
+                <h3>Gwen Stefani and Blake Shelton shut down split rumors with shopping outing</h3>
+                
+                <div class="debug-card">
+                    
+                    <div class="debug-section">
+                        <div class="debug-header">CLASSIFICATION</div>
+                        <div class="debug-row"><span class="label">Reason</span><span class="val">source_default</span></div>
+                    </div>
+                    
+                    <div class="debug-section">
+                        <div class="debug-header">SCORE CARD</div>
+                        <div class='debug-row'><span class='label'>Base</span><span class='val'>+6500</span></div>
+                        <div class="debug-total">
+                            <span>TOTAL</span>
+                            <span>6500</span>
+                        </div>
+                    </div>
+                </div>
+                
+            </a>
+            
+            <a href="https://pagesix.com/2025/12/10/celebrity-news/amanda-seyfried-refuses-to-apologize-for-calling-charlie-kirk-hateful/" target="_blank" class="card compact" style="border-top: 4px solid #c0392b;">
+                <div class="card-meta">
+                    <span class="domain">pagesix.com</span>
+                </div>
+                <h3>Amanda Seyfried refuses to apologize for calling Charlie Kirk ‘hateful’: ‘Pretty damn factual’</h3>
+                
+                <div class="debug-card">
+                    
+                    <div class="debug-section">
+                        <div class="debug-header">CLASSIFICATION</div>
+                        <div class="debug-row"><span class="label">Reason</span><span class="val">source_default</span></div>
+                    </div>
+                    
+                    <div class="debug-section">
+                        <div class="debug-header">SCORE CARD</div>
+                        <div class='debug-row'><span class='label'>Base</span><span class='val'>+6500</span></div>
+                        <div class="debug-total">
+                            <span>TOTAL</span>
+                            <span>6500</span>
+                        </div>
+                    </div>
+                </div>
+                
+            </a>
+            
+            <a href="https://pagesix.com/2025/12/10/celebrity-news/how-below-deck-star-fraser-olenders-is-doing-after-vaping-induced-heart-attack/" target="_blank" class="card compact" style="border-top: 4px solid #2980b9;">
+                <div class="card-meta">
+                    <span class="domain">pagesix.com</span>
+                </div>
+                <h3>How ‘Below Deck’ star Fraser Olender is doing after vaping-induced heart attack</h3>
+                
+                <div class="debug-card">
+                    
+                    <div class="debug-section">
+                        <div class="debug-header">CLASSIFICATION</div>
+                        <div class="debug-row"><span class="label">Reason</span><span class="val">source_default</span></div>
+                    </div>
+                    
+                    <div class="debug-section">
+                        <div class="debug-header">SCORE CARD</div>
+                        <div class='debug-row'><span class='label'>Base</span><span class='val'>+6500</span></div>
+                        <div class="debug-total">
+                            <span>TOTAL</span>
+                            <span>6500</span>
+                        </div>
+                    </div>
+                </div>
+                
+            </a>
+            
+            <a href="https://pagesix.com/2025/12/10/parents/hilaria-baldwin-divulges-the-gross-amount-of-money-she-made-by-selling-first-photo-of-baby/" target="_blank" class="card compact" style="border-top: 4px solid #8e44ad;">
+                <div class="card-meta">
+                    <span class="domain">pagesix.com</span>
+                </div>
+                <h3>Hilaria Baldwin divulges the ‘gross’ amount of money she made by selling first photo of baby</h3>
+                
+                <div class="debug-card">
+                    
+                    <div class="debug-section">
+                        <div class="debug-header">CLASSIFICATION</div>
+                        <div class="debug-row"><span class="label">Reason</span><span class="val">source_default</span></div>
+                    </div>
+                    
+                    <div class="debug-section">
+                        <div class="debug-header">SCORE CARD</div>
+                        <div class='debug-row'><span class='label'>Base</span><span class='val'>+6500</span></div>
+                        <div class="debug-total">
+                            <span>TOTAL</span>
+                            <span>6500</span>
+                        </div>
+                    </div>
+                </div>
+                
+            </a>
+            
+            <a href="https://pagesix.com/2025/12/10/celebrity-news/kelly-osbourne-debuts-new-look-in-london-after-dramatic-weight-loss/" target="_blank" class="card compact" style="border-top: 4px solid #c0392b;">
+                <div class="card-meta">
+                    <span class="domain">pagesix.com</span>
+                </div>
+                <h3>Kelly Osbourne debuts new look in London after dramatic weight loss</h3>
+                
+                <div class="debug-card">
+                    
+                    <div class="debug-section">
+                        <div class="debug-header">CLASSIFICATION</div>
+                        <div class="debug-row"><span class="label">Reason</span><span class="val">source_default</span></div>
+                    </div>
+                    
+                    <div class="debug-section">
+                        <div class="debug-header">SCORE CARD</div>
+                        <div class='debug-row'><span class='label'>Base</span><span class='val'>+6500</span></div>
+                        <div class="debug-total">
+                            <span>TOTAL</span>
+                            <span>6500</span>
+                        </div>
+                    </div>
+                </div>
+                
+            </a>
+            </div></div>
+</main>
+
+</body>
+</html>

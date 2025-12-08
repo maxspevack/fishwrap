@@ -30,6 +30,11 @@ if [ $PIPE_STATUS -eq 0 ]; then
     # Copy the output file to index.html
     cp "$PROJECT_DIR/fishwrap/latest.html" "$DEPLOY_DIR/index.html"
     
+    # Copy Static Assets
+    # Explicitly create the destination directory
+    mkdir -p "$DEPLOY_DIR/static"
+    cp -r "$PROJECT_DIR/fishwrap/static/"* "$DEPLOY_DIR/static/"
+    
     # Create CNAME file
     echo "$DOMAIN" > "$DEPLOY_DIR/CNAME"
     
