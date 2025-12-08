@@ -191,10 +191,10 @@ EDITORIAL_POLICIES = [
 
 # --- 8. Printer Settings ---
 SECTIONS = [
-    {'id': 'news', 'title': 'News', 'description': 'Headlines & Commentary'},
-    {'id': 'sports', 'title': 'Sports', 'description': 'Features & Highlights'},
-    {'id': 'tech', 'title': 'Technology', 'description': 'Hacker News & Engineering'},
-    {'id': 'culture', 'title': 'Culture', 'description': 'Life, Society, & Entertainment'}
+    {'id': 'news', 'title': 'News', 'description': 'Scoops, Scandals, & Scoundrels'},
+    {'id': 'sports', 'title': 'Sports', 'description': 'The Toy Department'},
+    {'id': 'tech', 'title': 'Technology', 'description': 'Indistinguishable From Magic'},
+    {'id': 'culture', 'title': 'Culture', 'description': 'Bread & Circuses'}
 ]
 
 # --- 9. Visual Formatting Thresholds ---

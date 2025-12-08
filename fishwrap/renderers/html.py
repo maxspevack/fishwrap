@@ -30,7 +30,7 @@ def get_css_block():
         "    font-family: var(--font-body);",
         "    color: var(--text-color);",
         "    background-color: var(--bg-color);",
-        "    background-image: url('static/textures/newsprint-texture.png');",
+        "    background-image: url('static/textures/newsprint.png');",
         "    background-repeat: repeat;",
         "    margin: 0;",
         "    padding: 0;",
@@ -44,8 +44,10 @@ def get_css_block():
         "/* Sidebar Nav */",
         " .sidebar {",
         "    width: 280px;",
-        "    background: rgba(44, 62, 80, 0.95); /* Dark Slate Contrast Sidebar */",
-        "    color: #ecf0f1;",
+        "    background-color: var(--bg-color);",
+        "    background-image: url('static/textures/newsprint-texture.png');",
+        "    background-repeat: repeat;",
+        "    color: var(--text-color);",
         "    padding: 30px 20px;",
         "    position: sticky;",
         "    top: 0;",
@@ -53,12 +55,12 @@ def get_css_block():
         "    box-sizing: border-box;",
         "    display: flex;",
         "    flex-direction: column;",
-        "    border-right: 4px solid #1a252f;",
-        "    box-shadow: 2px 0 10px rgba(0,0,0,0.3);",
+        "    border-right: 8px double var(--text-color); /* Thicker double line gutter */",
+        "    box-shadow: 2px 0 10px rgba(0,0,0,0.2);",
         "    z-index: 50;",
         "}",
-        " .sidebar a { color: #ecf0f1; text-decoration: none; }",
-        " .sidebar a:hover { color: #fff; }",
+        " .sidebar a { color: var(--text-color); text-decoration: none; }",
+        " .sidebar a:hover { color: var(--accent-blue); }",
         "",
         " .brand-logo {",
         "    width: 100%;",
@@ -71,7 +73,7 @@ def get_css_block():
         "    text-align: center;",
         "    margin-bottom: 20px;",
         "    padding-bottom: 20px;",
-        "    border-bottom: 1px dashed rgba(255,255,255,0.2);",
+        "    border-bottom: 1px dashed var(--text-color);",
         "}",
         " .mascot-img {",
         "    width: 140px;",
@@ -83,7 +85,7 @@ def get_css_block():
         " .motto {",
         "    font-family: var(--font-mono);",
         "    font-size: 0.8rem;",
-        "    color: #bdc3c7;",
+        "    color: var(--muted-color);",
         "    font-style: italic;",
         "    margin-bottom: 5px;",
         "    text-align: center;",
@@ -91,28 +93,51 @@ def get_css_block():
         " .meta-block {",
         "    font-family: var(--font-mono);",
         "    font-size: 0.7rem;",
-        "    color: #95a5a6;",
+        "    color: var(--muted-color);",
         "    text-align: center;",
         "    display: flex;",
         "    flex-direction: column;",
         "    gap: 2px;",
         "}",
         "",
-        " .nav-links { list-style: none; padding: 0; margin: 20px 0 0 0; }",
+        " .nav-links {",
+        "    list-style: none;",
+        "    padding: 0;",
+        "    margin: 20px 0 0 0;",
+        "    flex-grow: 1;",
+        "    overflow-y: auto;",
+        "    -webkit-overflow-scrolling: touch; /* For smoother iOS scrolling */",
+        " }",
         " .nav-item { margin-bottom: 10px; }",
         " .nav-link {",
         "    display: flex;",
-        "    justify-content: space-between;",
+        "    justify-content: flex-start;",
         "    align-items: center;",
-        "    padding: 12px 15px;",
+        "    gap: 15px;",
+        "    padding: 10px 15px;",
         "    border-radius: 4px;",
-        "    background: rgba(255,255,255,0.05);",
+        "    background: rgba(0,0,0,0.03); /* Slight background for hover */",
         "    transition: all 0.2s;",
         "    border-left: 3px solid transparent;",
+        "    color: var(--text-color);",
+        "    min-height: 60px;",
+        "}",
+        " .nav-link:hover { background: rgba(0,0,0,0.08); border-left-color: var(--accent-red); transform: translateX(5px); }",
+        " .nav-icon {",
+        "    height: 50px;",
+        "    width: auto;",
+        "    object-fit: contain;",
+        "    filter: drop-shadow(1px 1px 0 rgba(0,0,0,0.2));",
+        "    transition: transform 0.2s;",
+        " }",
+        " .nav-link:hover .nav-icon { transform: scale(1.1) rotate(5deg); }",
+        " .nav-label {",
         "    font-family: var(--font-head);",
         "    letter-spacing: 1px;",
-        "}",
-        " .nav-link:hover { background: rgba(255,255,255,0.1); border-left-color: var(--accent-red); transform: translateX(5px); }",
+        "    font-size: 1.2rem;",
+        "    font-weight: 700;",
+        "    text-transform: uppercase;",
+        " }",
         "",
         "/* Sidebar Footer */",
         " .sidebar-footer {",
@@ -122,13 +147,13 @@ def get_css_block():
         "    justify-content: center;",
         "    gap: 20px;",
         "    padding-top: 20px;",
-        "    border-top: 1px dashed rgba(255,255,255,0.2);",
+        "    border-top: 1px dashed var(--text-color);",
         "}",
         " .icon-btn {",
         "    background: none;",
         "    border: none;",
         "    cursor: pointer;",
-        "    opacity: 0.6;",
+        "    opacity: 0.8;",
         "    transition: all 0.2s;",
         "    padding: 0;",
         "    display: block;",
@@ -219,7 +244,7 @@ def get_css_block():
         "@media (max-width: 1100px) { .bento-grid { grid-template-columns: repeat(2, 1fr); } }",
         "@media (max-width: 768px) {",
         "    body { flex-direction: column; }",
-        "    .sidebar { width: 100%; height: auto; position: relative; padding: 20px; border-right: none; border-bottom: 4px solid #1a252f; box-shadow: none; }",
+        "    .sidebar { width: 100%; height: auto; position: relative; padding: 20px; border-right: none; border-bottom: 4px solid var(--text-color); box-shadow: none; }",
         "    .nav-links { display: flex; overflow-x: auto; gap: 10px; margin-top: 10px; }",
         "    .nav-item { margin: 0; white-space: nowrap; }",
         "    .bento-grid { grid-template-columns: 1fr; grid-auto-rows: auto; }",
@@ -264,10 +289,13 @@ def render(data, stats, vol_issue_str, date_str):
         sid = section_def['id']
         count = len(data.get(sid, []))
         if count == 0: continue
+        
+        # Mascots for each section
         nav_html += f"""
         <li class="nav-item">
             <a href="#{sid}" class="nav-link">
-                <span>{section_def['title']}</span>
+                <img src="static/images/{sid}-scoop.png" class="nav-icon" alt="{section_def['title']}">
+                <span class="nav-label">{section_def['title']}</span>
             </a>
         </li>
         """
@@ -398,7 +426,10 @@ def render(data, stats, vol_issue_str, date_str):
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Courier+Prime:ital,wght@0,400;0,700;1,400&family=Special+Elite&display=swap" rel="stylesheet">
-    <link rel="icon" type="image/png" href="static/images/favicon.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="static/images/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="static/images/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="static/images/favicon-16x16.png">
+    <link rel="shortcut icon" href="static/images/favicon.ico">
     <style>
 {css_block}
     </style>
@@ -409,7 +440,7 @@ def render(data, stats, vol_issue_str, date_str):
     <div class="mascot-container">
         <img src="static/images/daily-clamour-logo.png" alt="The Daily Clamour" class="brand-logo">
         <div class="motto">"Often Wrong, Never in Doubt"</div>
-        <img src="static/images/scoop-mascot.png" alt="Scoop The Pearl" class="mascot-img">
+        <img src="static/images/scoop.png" alt="Scoop the Pearl" class="mascot-img">
         
         <div class="meta-block">
             <span class="meta-date">{date_str}</span>
@@ -423,10 +454,10 @@ def render(data, stats, vol_issue_str, date_str):
     
     <div class="sidebar-footer">
         <a href="https://github.com/maxspevack/fishwrap" target="_blank" class="icon-btn" title="View Source on GitHub">
-            <svg role="img" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" fill="#fff"><title>GitHub</title><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"></path></svg>
+            <svg role="img" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><title>GitHub</title><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"></path></svg>
         </a>
         <button class="icon-btn" onclick="document.body.classList.toggle('debug-active')" title="Toggle Debug Overlay">
-            <img src="static/images/tools-icon.png" alt="Debug Tools">
+            <img src="static/images/debug-scoop.png" alt="Debug Tools">
         </button>
     </div>
 </nav>

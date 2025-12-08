@@ -1,6 +1,16 @@
+# Python artifacts
 venv/
 __pycache__/
 *.pyc
+
+# macOS artifacts
 .DS_Store
+
+# Fishwrap generated artifacts (relative to repo root)
+fishwrap/enhanced_issue.json
+fishwrap/run_sheet.json
+fishwrap/latest.html
+fishwrap/latest.pdf
+fishwrap/publication_stats.json
+fishwrap/logs/
 fishwrap/secrets.json
-*.log
