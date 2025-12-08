@@ -1,6 +1,6 @@
 # Experiments & Investigations
 
-This directory contains temporary scripts and one-off investigations to help tune the "Gemini Gazette" algorithms.
+This directory contains temporary scripts and one-off investigations to help tune the "Daily Clamour" algorithms.
 
 ## Scripts
 

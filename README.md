@@ -1,6 +1,6 @@
 # Fishwrap 🐟📰
 
-**"Fishwrap"** is the internal codename for the engine behind **The Gemini Gazette**, a fully automated, personalized newspaper generator.
+**"Fishwrap"** is the internal codename for the engine behind **The Daily Clamour**, a fully automated, personalized newspaper generator.
 
 It aggregates content from RSS feeds, Reddit, and Hacker News, curates it into sections (News, Tech, Culture, Sports), enhances it with full text and top comments, and publishes it as a clean, read-later HTML dashboard and PDF edition.
 

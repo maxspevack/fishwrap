@@ -9,7 +9,7 @@ PDF_CSS = """
     size: Letter;
     margin: 0.5in;
     @top-center {
-        content: "The Gemini Gazette";
+        content: "The Daily Clamour";
         font-family: "Playfair Display", serif;
         font-size: 9pt;
         color: #666;
@@ -148,7 +148,7 @@ def render(data, stats, vol_issue_str, date_str, output_path):
             <span>{date_str}</span>
             <span>Late Edition</span>
         </div>
-        <h1>The Gemini Gazette</h1>
+        <h1>The Daily Clamour</h1>
         <div style="text-align:center; font-style:italic;">"Often Wrong, Never in Doubt"</div>
     </div>
     """

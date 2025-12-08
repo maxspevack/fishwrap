@@ -23,9 +23,13 @@ update:
 	@echo "Updating Python dependencies..."
 	@$(PIP) install --upgrade -r requirements.txt
 
-# --- Gemini Gazette (Newspaper) ---
+# --- # --- Daily Clamour (Newspaper) ---
 run-fishwrap:
-	@echo "Running the Gemini Gazette pipeline..."
+	@echo "Running the Daily Clamour pipeline..." (Newspaper) ---
+run-fishwrap:
+	@echo "Running the # --- Daily Clamour (Newspaper) ---
+run-fishwrap:
+	@echo "Running the Daily Clamour pipeline..." pipeline..."
 	@$(PYTHON) -m fishwrap.fetcher
 	@$(PYTHON) -m fishwrap.editor
 	@$(PYTHON) -m fishwrap.enhancer

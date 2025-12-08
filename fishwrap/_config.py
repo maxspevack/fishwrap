@@ -28,13 +28,13 @@ FEEDS = [
 ]
 
 # --- 2. File Paths ---
-ARTICLES_DB_FILE = 'press/articles_db.json'
-RUN_SHEET_FILE = 'press/run_sheet.json'
-ENHANCED_ISSUE_FILE = 'press/enhanced_issue.json'
-SECRETS_FILE = 'press/secrets.json'
-STATS_FILE = 'press/publication_stats.json'
-LATEST_HTML_FILE = 'press/latest.html'
-LATEST_PDF_FILE = 'press/latest.pdf'
+ARTICLES_DB_FILE = 'fishwrap/articles_db.json'
+RUN_SHEET_FILE = 'fishwrap/run_sheet.json'
+ENHANCED_ISSUE_FILE = 'fishwrap/enhanced_issue.json'
+SECRETS_FILE = 'fishwrap/secrets.json'
+STATS_FILE = 'fishwrap/publication_stats.json'
+LATEST_HTML_FILE = 'fishwrap/latest.html'
+LATEST_PDF_FILE = 'fishwrap/latest.pdf'
 
 # --- 3. Pipeline Settings ---
 TIMEZONE = "US/Pacific"

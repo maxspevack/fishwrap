@@ -1,6 +1,6 @@
 # Press Package 🗞️
 
-The core engine for **The Gemini Gazette**.
+The core engine for **The Daily Clamour**.
 
 ## Directory Structure
 
