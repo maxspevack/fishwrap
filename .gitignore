@@ -7,9 +7,15 @@ __pycache__/
 .DS_Store
 
 # Fishwrap generated artifacts (relative to repo root)
-fishwrap/enhanced_issue.json
-fishwrap/run_sheet.json
-fishwrap/latest.html
-fishwrap/latest.pdf
-fishwrap/logs/
-fishwrap/secrets.json
+# The main application/library artifacts (Vanilla Fishwrap)
+articles_db.json
+publication_stats.json
+run_sheet.json
+enhanced_issue.json
+latest.html
+latest.pdf
+logs/
+secrets.json
+
+# User specific deployments (like The Daily Clamour)
+daily_clamour/

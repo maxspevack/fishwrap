@@ -23,9 +23,22 @@ update:
 	@echo "Updating Python dependencies..."
 	@$(PIP) install --upgrade -r requirements.txt
 
-# --- Daily Clamour (Newspaper) ---
-run-fishwrap:
-	@echo "Running the Daily Clamour pipeline..."
+# --- Production: The Daily Clamour ---
+# Aliased to 'run-fishwrap' for backward compatibility with launchd scripts
+run-fishwrap: run-clamour
+
+run-clamour:
+	@echo "Running The Daily Clamour..."
+	@export FISHWRAP_CONFIG=$(CURDIR)/daily_clamour/config.py && \
+	$(PYTHON) -m fishwrap.fetcher && \
+	$(PYTHON) -m fishwrap.editor && \
+	$(PYTHON) -m fishwrap.enhancer && \
+	$(PYTHON) -m fishwrap.printer
+
+# --- Demo: Vanilla Fishwrap ---
+run-vanilla:
+	@echo "Running Vanilla Fishwrap Demo..."
+	@# Runs with default internal config (basic theme, demo feeds)
 	@$(PYTHON) -m fishwrap.fetcher
 	@$(PYTHON) -m fishwrap.editor
 	@$(PYTHON) -m fishwrap.enhancer
