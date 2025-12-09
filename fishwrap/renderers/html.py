@@ -45,7 +45,7 @@ def get_css_block():
         " .sidebar {",
         "    width: 280px;",
         "    background-color: var(--bg-color);",
-        "    background-image: url('static/textures/newsprint-texture.png');",
+        "    background-image: url('static/textures/newsprint.png');",
         "    background-repeat: repeat;",
         "    color: var(--text-color);",
         "    padding: 30px 20px;",
@@ -438,7 +438,7 @@ def render(data, stats, vol_issue_str, date_str):
 
 <nav class="sidebar">
     <div class="mascot-container">
-        <img src="static/images/daily-clamour-logo.png" alt="The Daily Clamour" class="brand-logo">
+        <img src="static/images/daily-clamour.png" alt="The Daily Clamour" class="brand-logo">
         <div class="motto">"Often Wrong, Never in Doubt"</div>
         <img src="static/images/scoop.png" alt="Scoop the Pearl" class="mascot-img">
         
