@@ -1,39 +1,65 @@
 # Fishwrap 🐟📰
 
-**"Fishwrap"** is the internal codename for the engine behind **The Daily Clamour**, a fully automated, personalized newspaper generator.
+**Fishwrap** is a Python-based personalized newspaper engine. It aggregates content from RSS feeds, curates it into sections (e.g., News, Tech, Sports), enhances it with full text and metadata, and renders it into a clean, read-later HTML dashboard.
 
-It aggregates content from RSS feeds, Reddit, and Hacker News, curates it into sections (News, Tech, Culture, Sports), enhances it with full text and top comments, and publishes it as a clean, read-later HTML dashboard and PDF edition.
+See a live example of Fishwrap in production at **[The Daily Clamour](https://dailyclamour.com)**.
 
 ## 🚀 Quick Start
 
-### 1. Setup Environment
+Fishwrap comes with a "Vanilla" demo configuration that gets you running in minutes.
+
+### 1. Setup
 ```bash
+git clone https://github.com/maxspevack/fishwrap.git
+cd fishwrap
 make setup
-source venv/bin/activate
 ```
 
-### 2. Run the Press
-To run the full pipeline (Fetch -> Edit -> Enhance -> Print):
+### 2. Run the Demo
+This will fetch a sample set of feeds (NYT, BBC, ESPN, The Verge, etc.) and generate a newspaper.
 ```bash
-make run-fishwrap
+make run-vanilla
 ```
 
-### 3. Output
-The generated editions are saved to the project root:
-*   `fishwrap/latest.html` (Interactive Bento Grid)
-*   `fishwrap/latest.pdf` (Print Edition)
+### 3. Read Your Paper
+Open the generated file in your browser:
+```
+open demo/output/latest.html
+```
 
-## 🏗 Project Structure
+## 🛠 Creating Your Own Publication
 
-*   **`fishwrap/`**: The core Python package containing the logic pipeline.
-    *   [Read the Package Documentation](fishwrap/README.md)
-*   **`venv/`**: Python virtual environment.
-*   **`articles_db.json`**: The persistent master database of all fetched articles.
-*   **`auto_publish.sh`**: Helper script for `launchd` automation.
+To create your own newspaper, use the `demo/` directory as a template.
 
-## ⚙️ Automation
+1.  **Copy the Demo:**
+    ```bash
+    cp -r demo my_paper
+    ```
+2.  **Configure:**
+    Edit `my_paper/config.py` to add your favorite RSS feeds and adjust editorial weights.
+3.  **Run:**
+    You can run it by pointing the engine to your config:
+    ```bash
+    export FISHWRAP_CONFIG=$(pwd)/my_paper/config.py
+    python3 -m fishwrap.fetcher
+    python3 -m fishwrap.editor
+    # ... etc
+    ```
 
-The system is designed to run automatically via `launchd` using the provided `auto_publish.sh` script.
+## 🏗 Architecture
+
+Fishwrap operates as a linear pipeline:
+
+1.  **Fetcher:** Ingests raw RSS/JSON feeds and stores them in a local database.
+2.  **Editor:** Curates the edition, selecting top stories based on "Impact Score" (Votes, Comments, Freshness).
+3.  **Enhancer:** Scrapes full article text and metadata.
+4.  **Printer:** Renders the final output using a customizable Theme engine.
+
+## 📂 Repository Structure
+
+*   **`fishwrap/`**: The core Python engine (stateless).
+*   **`demo/`**: A reference implementation with a basic configuration and theme.
+*   **`daily_clamour/`**: (Internal) The production configuration for *The Daily Clamour*.
 
 ## 📜 License
-Private personal project.
+BSD 3-Clause.

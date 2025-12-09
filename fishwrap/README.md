@@ -1,43 +1,46 @@
-# Press Package 🗞️
+# Fishwrap Engine ⚙️
 
-The core engine for **The Daily Clamour**.
+This directory contains the core source code for Fishwrap.
 
-## Directory Structure
+## Pipeline Modules
 
-*   **`_config.py`**: Central configuration (Feeds, Scoring Rules, Thresholds).
-*   **`fetcher.py`**: Ingestion engine. Fetches RSS/JSON, standardizes data, parses HN comments, and performs upserts.
-*   **`editor.py`**: Logic core. Handles Classification, Scoring, Clustering, and Selection.
-*   **`enhancer.py`**: Content enricher. Scrapes full text and fetches comments.
-*   **`printer.py`**: Output orchestrator.
-*   **`scoring.py`**: Algorithms for calculating article Impact Score.
-*   **`utils.py`**: Shared helpers (Network, Date Parsing, HTML Cleaning).
-*   **`renderers/`**:
-    *   **`html.py`**: Generates the "Bento Grid" HTML dashboard with Dracula theme.
-    *   **`pdf.py`**: Generates the PDF edition.
+The system is designed to be run as a sequence of modules:
 
-## Key Features
+### 1. `fishwrap.fetcher`
+*   **Input:** RSS Feeds defined in your config.
+*   **Process:** Downloads feeds, parses entries, and performs "upserts" into the `articles_db.json`.
+*   **Smart Features:** Prioritizes Hacker News comments over link targets.
 
-### The "Smart Grid" (HTML)
-The HTML renderer uses a strict CSS Grid system to prevent "masonry gaps" and enforce visual hierarchy.
-*   **Lead Cards:** 2 cols x 2 rows. Large font. Max 2 per section.
-*   **Feature Cards:** 1 col x 2 rows. Medium font. Max 4 per section.
-*   **Compact Cards:** 1 col x 1 row. Small font. Unlimited.
-*   **Logic:** Scores determine size, but strict quotas prevent layout breakage. If a "Lead" quota is full, the article is gracefully downgraded to "Feature" styling.
+### 2. `fishwrap.editor`
+*   **Input:** `articles_db.json`.
+*   **Process:** Scans candidates, scores them against your `EDITORIAL_POLICIES`, and selects the top $N$ stories per section.
+*   **Output:** `run_sheet.json` (The "Front Page" plan).
 
-### Debug Mode v2
-The generated HTML includes a hidden debug layer. Click the ⚙️ icon in the sidebar to toggle "Debug Active" state.
-*   **Absolute Overlay:** Hovering/Clicking a card in debug mode reveals a semi-transparent absolute overlay covering the card.
-*   **Data Exposed:**
-    *   **Classification:** Rules triggered (Keywords, Source affinity).
-    *   **Score Breakdown:** Exact math for Base points, Policy boosts, and Dynamic stats (Votes/Comments).
-    *   **Cluster Info:** Which duplicate headlines were merged into this story.
+### 3. `fishwrap.enhancer`
+*   **Input:** `run_sheet.json`.
+*   **Process:** Uses `newspaper3k` to download full article text and authors.
+*   **Output:** `enhanced_issue.json`.
 
-### Hacker News Integration
-The engine treats Hacker News and `hnrss.org` feeds specially.
-*   **Linking:** Articles preferentially link to the *comments* page (the discussion) rather than the target URL, as the value often lies in the thread.
-*   **Scoring:** Scores are derived dynamically from Points and Comment counts.
+### 4. `fishwrap.printer`
+*   **Input:** `enhanced_issue.json`.
+*   **Process:** Loads the active **Theme** (defined in config) and renders the HTML.
+*   **Output:** `latest.html`.
 
-## Developer Notes
-*   **Timezones:** All internal timestamps are UTC. Output is rendered in the configured local timezone (`US/Pacific`).
-*   **Persistence:** `articles_db.json` is the source of truth. Delete it to force a fresh fetch of all feeds.
-*   **Execution:** Run via `/newspaper` (which triggers `~/gemini_publish.sh`) or `python3 -m press.fetcher` etc.
+## Configuration
+
+Fishwrap relies on a configuration file injected at runtime via the `FISHWRAP_CONFIG` environment variable.
+
+If `FISHWRAP_CONFIG` is not set, it defaults to an internal schema that defines:
+*   `FEEDS`: List of RSS URLs.
+*   `THEME`: Path to the theme directory.
+*   `EDITION_SIZE`: How many articles per section.
+*   `VISUAL_THRESHOLDS`: Score cutoffs for "Lead" vs "Standard" cards.
+
+## Theming
+
+Themes are located in directories containing:
+*   `css/style.css`
+*   `templates/layout.html`, `card.html`, etc.
+*   `static/` (Images/Assets)
+
+The engine automatically loads the theme specified in `config.THEME`.
