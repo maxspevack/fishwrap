@@ -1,65 +1,67 @@
 # Fishwrap 🐟📰
 
-**Fishwrap** is a Python-based personalized newspaper engine. It aggregates content from RSS feeds, curates it into sections (e.g., News, Tech, Sports), enhances it with full text and metadata, and renders it into a clean, read-later HTML dashboard.
+**"Yesterday's News, Tomorrow's Wrapper."**
 
-See a live example of Fishwrap in production at **[The Daily Clamour](https://dailyclamour.com)**.
+**Fishwrap** is a bespoke, automated newspaper engine for the digital age. It takes the chaos of the internet (RSS feeds, Reddit threads, Hacker News), applies editorial judgment (your rules), enhances it with full-text content, and prints a beautiful, distraction-free HTML edition.
 
-## 🚀 Quick Start
+It's not just an aggregator; it's a **publication platform** for an audience of one.
 
-Fishwrap comes with a "Vanilla" demo configuration that gets you running in minutes.
+👀 **See it in action:** [The Daily Clamour](https://dailyclamour.com) (Running live on Fishwrap).
 
-### 1. Setup
+---
+
+## 🗞️ Stop the Presses! (Quick Start)
+
+Want to see what Fishwrap can do? We ship with a **Vanilla Demo** edition that aggregates top tech, news, and sports stories right out of the box.
+
+### 1. Hire the Staff
+Clone the repo and install dependencies:
 ```bash
 git clone https://github.com/maxspevack/fishwrap.git
 cd fishwrap
 make setup
 ```
 
-### 2. Run the Demo
-This will fetch a sample set of feeds (NYT, BBC, ESPN, The Verge, etc.) and generate a newspaper.
+### 2. Print the Late Edition
+Run the full pipeline (Fetch -> Edit -> Enhance -> Print) using the demo configuration:
 ```bash
 make run-vanilla
 ```
 
-### 3. Read Your Paper
-Open the generated file in your browser:
-```
+### 3. Read All About It
+Open your fresh-off-the-press newspaper:
+```bash
 open demo/output/latest.html
 ```
 
-## 🛠 Creating Your Own Publication
+---
 
-To create your own newspaper, use the `demo/` directory as a template.
+## 🧐 From the Editor's Desk (Documentation)
 
-1.  **Copy the Demo:**
-    ```bash
-    cp -r demo my_paper
-    ```
-2.  **Configure:**
-    Edit `my_paper/config.py` to add your favorite RSS feeds and adjust editorial weights.
-3.  **Run:**
-    You can run it by pointing the engine to your config:
-    ```bash
-    export FISHWRAP_CONFIG=$(pwd)/my_paper/config.py
-    python3 -m fishwrap.fetcher
-    python3 -m fishwrap.editor
-    # ... etc
-    ```
+Ready to start your own publication? We have dedicated guides for that.
 
-## 🏗 Architecture
+*   **[The Starter Kit (demo/README.md)](demo/README.md):** 
+    *   *Read this first!* How to copy the demo, add your own feeds, change the logo, and publish your own paper.
+    
+*   **[The Engine Room (fishwrap/README.md)](fishwrap/README.md):** 
+    *   *For Engineers.* Deep dive into the pipeline, the `load_template` system, and how to write custom renderers.
 
-Fishwrap operates as a linear pipeline:
+---
 
-1.  **Fetcher:** Ingests raw RSS/JSON feeds and stores them in a local database.
-2.  **Editor:** Curates the edition, selecting top stories based on "Impact Score" (Votes, Comments, Freshness).
-3.  **Enhancer:** Scrapes full article text and metadata.
-4.  **Printer:** Renders the final output using a customizable Theme engine.
+## 🏗 How the Sausage is Made (Architecture)
 
-## 📂 Repository Structure
+Fishwrap operates as a linear, four-stage assembly line:
 
-*   **`fishwrap/`**: The core Python engine (stateless).
-*   **`demo/`**: A reference implementation with a basic configuration and theme.
-*   **`daily_clamour/`**: (Internal) The production configuration for *The Daily Clamour*.
+1.  **🕵️‍♀️ The Fetcher:** Scours the web (RSS/JSON). Smartly handles Hacker News to prioritize discussion over links.
+2.  **✏️ The Editor:** The brains of the operation. Scores stories based on "Impact" (Votes + Comments + Freshness) and your custom `EDITORIAL_POLICIES`. Curates the "Front Page".
+3.  **🔬 The Enhancer:** The heavy lifter. Scrapes full article text, bylines, and metadata so you never have to click a clickbait link again.
+4.  **🖨 The Printer:** The artist. Takes the enhanced content and renders it into a Theme (like our "Vintage" or "Basic" styles).
+
+## 📂 Archives (Repository Structure)
+
+*   **`fishwrap/`**: The stateless Python core. Contains the logic for the pipeline.
+*   **`demo/`**: The "Vanilla" reference implementation. A clean slate for you to build on.
+*   **`daily_clamour/`**: An example production instance (The Daily Clamour).
 
 ## 📜 License
 BSD 3-Clause.
