@@ -23,13 +23,9 @@ update:
 	@echo "Updating Python dependencies..."
 	@$(PIP) install --upgrade -r requirements.txt
 
-# --- # --- Daily Clamour (Newspaper) ---
+# --- Daily Clamour (Newspaper) ---
 run-fishwrap:
-	@echo "Running the Daily Clamour pipeline..." (Newspaper) ---
-run-fishwrap:
-	@echo "Running the # --- Daily Clamour (Newspaper) ---
-run-fishwrap:
-	@echo "Running the Daily Clamour pipeline..." pipeline..."
+	@echo "Running the Daily Clamour pipeline..."
 	@$(PYTHON) -m fishwrap.fetcher
 	@$(PYTHON) -m fishwrap.editor
 	@$(PYTHON) -m fishwrap.enhancer

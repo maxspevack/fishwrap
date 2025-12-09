@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fishwrap Edition - {date_str}</title>
+    <style>
+{css_block}
+    </style>
+</head>
+<body>
+
+<div class="layout-container">
+    <aside class="sidebar">
+        <div class="brand-title">Fishwrap</div>
+        <div class="meta-info">
+            <div>{date_str}</div>
+            <div>{vol_issue_str}</div>
+        </div>
+        
+        <ul class="nav-list">
+            {nav_html}
+        </ul>
+    </aside>
+
+    <main class="main-content">
+        {content_html}
+    </main>
+</div>
+
+</body>
+</html>

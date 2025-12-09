@@ -39,6 +39,7 @@ LATEST_PDF_FILE = 'fishwrap/latest.pdf'
 # --- 3. Pipeline Settings ---
 TIMEZONE = "US/Pacific"
 FOUNDING_DATE = "2025-12-07"
+THEME = "daily_clamour/themes/vintage"
 MAX_ARTICLE_LENGTH = 15000
 EXPIRATION_HOURS = 24
 USER_AGENT = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.114 Safari/537.36'
