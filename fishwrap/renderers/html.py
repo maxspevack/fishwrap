@@ -8,29 +8,24 @@ from urllib.parse import urlparse
 from fishwrap import _config
 from fishwrap import utils
 
-import json
-import os
-import html
-import random
-from datetime import datetime
-from zoneinfo import ZoneInfo
-from urllib.parse import urlparse
-from fishwrap import _config
-from fishwrap import utils
-
 def load_template(template_name):
     """Loads a template file from the configured theme directory."""
-    # Base dir is the package root (fishwrap/fishwrap/)
-    package_dir = os.path.dirname(os.path.dirname(__file__))
-    # Project root is one level up (fishwrap/)
-    project_root = os.path.dirname(package_dir)
     
-    # 1. Try resolving relative to Project Root (User Themes)
-    theme_path = os.path.join(project_root, _config.THEME)
-    
-    # 2. If not found, try resolving relative to Package Internal Themes
-    if not os.path.exists(theme_path):
-         theme_path = os.path.join(package_dir, 'themes', _config.THEME)
+    # If _config.THEME is an absolute path, use it directly
+    if os.path.isabs(_config.THEME):
+        theme_path = _config.THEME
+    else:
+        # Base dir is the package root (fishwrap/fishwrap/)
+        package_dir = os.path.dirname(os.path.dirname(__file__))
+        # Project root is one level up (fishwrap/)
+        project_root = os.path.dirname(package_dir)
+        
+        # 1. Try resolving relative to Project Root (User Themes)
+        theme_path = os.path.join(project_root, _config.THEME)
+        
+        # 2. If not found, try resolving relative to Package Internal Themes
+        if not os.path.exists(theme_path):
+             theme_path = os.path.join(package_dir, 'themes', _config.THEME)
 
     if template_name == 'css':
         path = os.path.join(theme_path, 'css', 'style.css')
