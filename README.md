@@ -67,6 +67,7 @@ Fishwrap operates as a linear, four-stage assembly line:
 
 We are actively improving Fishwrap. Current focus areas include:
 
+*   **📊 Scoring Algorithms:** Experiment with normalizing "Impact Scores" across diverse sources (e.g., Reddit, Hacker News). The goal is to ensure a "big deal" article from one source is fairly compared to another by applying a "grade on a curve" per source. This will prevent sources with naturally higher engagement from always dominating the front page.
 *   **📄 PDF Generation:** The PDF renderer is currently disabled. We plan to re-enable it with full support for the new Theming engine, allowing for "Print Editions" of your custom paper.
 *   **📱 Advanced Mobile:** While the grid is responsive, we want to add features like collapsible sections and "List View" toggles for phone users.
 *   **🎨 Theme Gallery:** We aim to create more reference themes (e.g., "Dark Mode Terminal", "Modern Magazine") to showcase the engine's flexibility.
