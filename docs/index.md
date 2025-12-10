@@ -1,37 +1,66 @@
 ---
 layout: default
-title: Home
+title: The Manifesto
 nav_order: 1
 ---
 
-# Fishwrap 🐟📰
+# Fishwrap 🐟
 
-**"Yesterday's News, Tomorrow's Wrapper."**
+**The algorithm you can read. The feed that ends.**
 
-Fishwrap is a bespoke, automated newspaper engine for the digital age. It transforms the chaos of the internet into a calm, curated, and distraction-free daily briefing.
-
-[Get Started on GitHub](https://github.com/maxspevack/fishwrap){: .btn .btn-primary .fs-5 .mb-4 .mb-md-0 .mr-2 } [View Demo](https://dailyclamour.com){: .btn .fs-5 .mb-4 .mb-md-0 }
-
----
-
-## Why Fishwrap?
-
-### 🕵️‍♀️ Your Private Newsroom
-Stop doom-scrolling. Fishwrap acts as your personal editorial staff. It fetches content from your favorite RSS feeds, Reddit communities, and Hacker News discussions, applying *your* specific rules to decide what matters.
-
-### 🚫 No Clickbait, Just Content
-The built-in **Enhancer** scrapes the full text of every article. You get a clean, unified reading experience without ads, pop-ups, or paywall snippets. Read the story, not the wrapper.
-
-### 📊 Smart Scoring
-Fishwrap doesn't just list headlines. It calculates an **Impact Score** for every item based on votes, comments, and freshness. You define the formula. Want to prioritize heated discussions on Hacker News? You can.
+> "One of the insights of the Victorian Revival was that it was not necessarily a good thing for everyone to read a completely different newspaper in the morning; so the higher one rose in the society, the more similar one's Times became to one's peers'."
+>
+> — **Neal Stephenson**, *The Diamond Age*
 
 ---
 
-## Quick Start
+## The Manifesto: Aperture & Artifacts
 
-Fishwrap is a Python application you run on your own machine or server.
+We are drowning in infinite streams.
 
-1.  **Clone the Repo:**
+Social media, news aggregators, and "For You" pages are designed to be bottomless. They optimize for **engagement**, which usually means rage, anxiety, or addiction. They treat you like a pair of eyeballs to be monetized.
+
+**Fishwrap is the "Anti-Feed."**
+
+It is an open-source newspaper engine designed for the **Diamond Age** of information. It is built on three radical ideas:
+
+### 1. Finiteness is a Status Symbol
+In a world of cheap, infinite content, the ultimate luxury is **an ending**.
+Like the bespoke *Times* delivered to the elite in Stephenson's Neo-Victorian future, a newspaper should be an **Artifact**—a discrete object with a beginning, a middle, and a last page. Fishwrap transforms the chaos of the web into a finite HTML or PDF edition that you can read, finish, and put away. The peasants scroll; the elite read.
+
+### 2. The Fishbowl (Transparency)
+If an algorithm decides what you read, you must be able to read the algorithm.
+Most feeds are black boxes. Fishwrap is a **Fishbowl**. Our scoring logic is a clear, simple Python script (`scoring.py`) that you can audit, edit, and control. You decide if "AI Hype" gets a boost or a penalty. You are the Editor-in-Chief.
+
+### 3. The Aperture of Time
+We don't just aggregate; we condense.
+In *Anathem*, the intellectuals (Avout) filtered information through time to separate signal from noise.
+*   **The Feed (The Saecular World):** Screams about everything, instantly. We ignore this.
+*   **The Paper (1-Day Aperture):** A 24-hour summary. Only what matters *today*.
+*   **The Chronicle (1-Year Aperture):** (Coming Soon) A re-aggregation of the year's best stories. As in *Anathem*, "the only criterion for a news item... was that it still had to seem interesting."
+
+---
+
+## The Service: RSS Bankruptcy
+
+Do you have 2,000 unread items in Feedly? Do you have a "Read Later" folder in Pocket that is effectively a graveyard?
+
+**You are suffering from Information Hoarding.**
+
+Fishwrap is your bankruptcy lawyer. We read the 2,000 items for you. We apply *your* rules to find the 15 that matter. We print them into a beautiful, distraction-free edition. We throw the rest in the trash.
+
+### Who is this for?
+*   **The Hacker:** Who wants to `git clone` their news consumption and write Python rules to banish "Individual-1" from their reality.
+*   **The Specialist:** Who needs a high-signal "briefing" on **AI**, **Cybersecurity**, or **Pop Culture** without the SEO sludge.
+*   **The Curator:** Who wants to publish a "Daily Digest" for their team or community.
+
+---
+
+## Get Started
+
+Fishwrap is a Python application you run on your own machine.
+
+1.  **Clone the Newsroom:**
     ```bash
     git clone https://github.com/maxspevack/fishwrap.git
     cd fishwrap
@@ -46,16 +75,4 @@ Fishwrap is a Python application you run on your own machine or server.
 3.  **Read:**
     Open `demo/output/latest.html` in your browser.
 
----
-
-## Documentation
-
-*   [**Versioning Strategy**](VERSIONING.md): How we manage releases.
-*   [**Release Notes**](RELEASE_NOTES.md): What's new in the latest version.
-*   [**Architecture Deep Dive**](https://github.com/maxspevack/fishwrap/blob/main/fishwrap/README.md): Understanding the Fetch/Edit/Enhance/Print pipeline.
-
----
-
-## About
-
-Fishwrap is an open-source project created by [Max Spevack](https://spevack.org). It is licensed under the BSD 3-Clause License.
+[View Source on GitHub](https://github.com/maxspevack/fishwrap){: .btn .btn-primary .fs-5 .mb-4 .mb-md-0 .mr-2 } [See the Live Demo](https://dailyclamour.com){: .btn .fs-5 .mb-4 .mb-md-0 }
