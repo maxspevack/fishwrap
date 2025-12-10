@@ -32,6 +32,11 @@ A specialized briefing for security analysts. It prioritizes CVEs, active exploi
 
 ---
 
-## 🤖 The Hallucination (Coming Soon)
+## 🤖 The Hallucination
 **Vertical:** AI & LLM Research  
-**Focus:** Filtering the hype cycle to find working code and papers.
+**Configuration:** AI Pilot (`demo/ai_config.py`)  
+**Theme:** Basic
+
+A filter for the AI hype cycle. It separates **Research** (Arxiv papers) and **Working Code** (Github/Models) from the noise of opinion pieces and "AGI is coming" clickbait.
+
+[**Read The Hallucination**](ai/)

@@ -53,6 +53,15 @@ run-cyber:
 	$(PYTHON) -m fishwrap.enhancer && \
 	$(PYTHON) -m fishwrap.printer
 
+# --- Demo: AI Fishwrap ---
+run-ai:
+	@echo "Running AI Fishwrap Demo..."
+	@export FISHWRAP_CONFIG=$(CURDIR)/demo/ai_config.py && \
+	$(PYTHON) -m fishwrap.fetcher && \
+	$(PYTHON) -m fishwrap.editor && \
+	$(PYTHON) -m fishwrap.enhancer && \
+	$(PYTHON) -m fishwrap.printer
+
 # --- Core Pipeline (for external calls) ---
 run-core-pipeline:
 	@echo "Running Fishwrap core pipeline..."
