@@ -3,6 +3,7 @@ feedfinder2
 feedparser
 markdown
 newspaper3k
+lxml_html_clean
 nltk
 PyYAML
 regex
