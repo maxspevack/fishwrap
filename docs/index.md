@@ -16,28 +16,26 @@ nav_order: 1
 
 ## The Manifesto: Aperture & Artifacts
 
-We are drowning in infinite streams.
-
-Social media, news aggregators, and "For You" pages are designed to be bottomless. They optimize for **engagement**, which usually means rage, anxiety, or addiction. They treat you like a pair of eyeballs to be monetized.
+We are drowning in infinite streams. Social media, news aggregators, and "For You" pages are designed to be bottomless black boxes. They optimize for **engagement**—often meaning rage or addiction—and hide their logic.
 
 **Fishwrap is the "Anti-Feed."**
 
-It is an open-source newspaper engine designed for the **Diamond Age** of information. It is built on three radical ideas:
+It is a "Glass-Box" briefing engine designed for the **Diamond Age** of information. It is built on three radical ideas:
 
 ### 1. Finiteness is a Status Symbol
 In a world of cheap, infinite content, the ultimate luxury is **an ending**.
-Like the bespoke *Times* delivered to the elite in Stephenson's Neo-Victorian future, a newspaper should be an **Artifact**—a discrete object with a beginning, a middle, and a last page. Fishwrap transforms the chaos of the web into a finite HTML or PDF edition that you can read, finish, and put away. The peasants scroll; the elite read.
+Like the bespoke *Times* delivered to the elite in Stephenson's Neo-Victorian future, a newspaper should be an **Artifact**—a discrete object with a beginning, a middle, and a last page. Fishwrap transforms the chaos of the web into a finite HTML or PDF edition that you can read, finish, and put away. The poor scroll; the elite read.
 
-### 2. The Fishbowl (Transparency)
-If an algorithm decides what you read, you must be able to read the algorithm.
-Most feeds are black boxes. Fishwrap is a **Fishbowl**. Our scoring logic is a clear, simple Python script (`scoring.py`) that you can audit, edit, and control. You decide if "AI Hype" gets a boost or a penalty. You are the Editor-in-Chief.
+### 2. The Glass Box (Transparency)
+Most feeds are black boxes. Fishwrap is a **Glass Box**.
+The value of transparency isn't that you *will* tune the algorithm every day, but that you **can**. Trust comes from the **option to verify**. Our scoring logic is a clear, simple Python script (`scoring.py`) that you can audit, edit, and control. You are the Editor-in-Chief.
 
 ### 3. The Aperture of Time
 We don't just aggregate; we condense.
 In *Anathem*, the intellectuals (Avout) filtered information through time to separate signal from noise.
-*   **The Feed (The Saecular World):** Screams about everything, instantly. We ignore this.
+*   **The Feed (0-Year):** The raw noise of the Saecular world. We ignore this.
 *   **The Paper (1-Day Aperture):** A 24-hour summary. Only what matters *today*.
-*   **The Chronicle (1-Year Aperture):** (Coming Soon) A re-aggregation of the year's best stories. As in *Anathem*, "the only criterion for a news item... was that it still had to seem interesting."
+*   **The Chronicle (1-Year Aperture):** (Coming Soon) A re-aggregation of the year's best stories. If it's not interesting a year later, it was never news.
 
 ---
 
@@ -50,8 +48,8 @@ Do you have 2,000 unread items in Feedly? Do you have a "Read Later" folder in P
 Fishwrap is your bankruptcy lawyer. We read the 2,000 items for you. We apply *your* rules to find the 15 that matter. We print them into a beautiful, distraction-free edition. We throw the rest in the trash.
 
 ### Who is this for?
-*   **The Hacker:** Who wants to `git clone` their news consumption and write Python rules to banish "Individual-1" from their reality.
-*   **The Specialist:** Who needs a high-signal "briefing" on **AI**, **Cybersecurity**, or **Pop Culture** without the SEO sludge.
+*   **The Analyst:** Who needs an **auditable**, high-signal briefing on **Cybersecurity** or **Geopolitics** without the marketing fluff.
+*   **The Hacker:** Who wants to `git clone` their news consumption and write Python rules to banish "Elon Musk" from their reality.
 *   **The Curator:** Who wants to publish a "Daily Digest" for their team or community.
 
 ---
