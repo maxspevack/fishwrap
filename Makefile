@@ -48,8 +48,17 @@ run-vanilla:
 
 # --- Cleanup ---
 clean:
-	@echo "Cleaning up build artifacts..."
-	rm -rf fishwrap/logs/*.log fishwrap/logs/*.err fishwrap/run_sheet.json fishwrap/enhanced_issue.json
-	rm -f fishwrap/latest.html fishwrap/latest.pdf
-	# Note: articles_db.json is preserved intentionally as it contains the persistent history.
+	@echo "Cleaning up generated artifacts..."
+	# Demo artifacts
+	rm -f demo/data/*.json demo/output/*.html demo/output/*.pdf
+	# Daily Clamour artifacts
+	rm -f daily_clamour/data/*.json daily_clamour/output/*.html daily_clamour/output/*.pdf
+	# Logs
+	rm -rf fishwrap/logs/* fishwrap/fishwrap/logs/*
 	@echo "Cleanup complete."
+
+clean-all: clean
+	@echo "Cleaning up virtual environment and Python bytecode..."
+	rm -rf venv
+	find . -depth -name "__pycache__" -exec rm -rf {} \;
+	@echo "Full cleanup complete."
