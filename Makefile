@@ -44,6 +44,14 @@ run-vanilla:
 	$(PYTHON) -m fishwrap.enhancer && \
 	$(PYTHON) -m fishwrap.printer
 
+# --- Core Pipeline (for external calls) ---
+run-core-pipeline:
+	@echo "Running Fishwrap core pipeline..."
+	$(PYTHON) -m fishwrap.fetcher && \
+	$(PYTHON) -m fishwrap.editor && \
+	$(PYTHON) -m fishwrap.enhancer && \
+	$(PYTHON) -m fishwrap.printer
+
 
 
 # --- Cleanup ---
