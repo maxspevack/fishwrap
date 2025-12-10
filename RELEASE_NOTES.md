@@ -2,7 +2,7 @@
 
 This document chronicles the notable changes across versions of the Fishwrap engine.
 
-## v1.0.0 (YYYY-MM-DD)
+## v1.0.0 (2025-12-11)
 
 ### Summary
 Initial major release of the refactored Fishwrap engine. This version introduces a clear architectural separation between the core engine, a standalone demo implementation, and product-specific instances (like The Daily Clamour). It includes a robust theming system, configurable pipelines, and improved documentation for developers and users.
