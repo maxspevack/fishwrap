@@ -72,5 +72,14 @@ We are actively improving Fishwrap. Current focus areas include:
 *   **📱 Advanced Mobile:** While the grid is responsive, we want to add features like collapsible sections and "List View" toggles for phone users.
 *   **🎨 Theme Gallery:** We aim to create more reference themes (e.g., "Dark Mode Terminal", "Modern Magazine") to showcase the engine's flexibility.
 
+---
+
+## 🏷️ Version & Releases
+
+*   **[Versioning Strategy (VERSIONING.md)](VERSIONING.md):** Understand how Fishwrap's version numbers (MAJOR.MINOR.PATCH) are determined.
+*   **[Release Notes (RELEASE_NOTES.md)](RELEASE_NOTES.md):** See what's new in each release, from features to bug fixes.
+
+---
+
 ## 📜 License
 BSD 3-Clause.
