@@ -83,8 +83,8 @@ We are actively improving Fishwrap. Current focus areas include:
 
 ## 🏷️ Version & Releases
 
-*   **[Versioning Strategy (VERSIONING.md)](VERSIONING.md):** Understand how Fishwrap's version numbers (MAJOR.MINOR.PATCH) are determined.
-*   **[Release Notes (RELEASE_NOTES.md)](RELEASE_NOTES.md):** See what's new in each release, from features to bug fixes.
+*   **[Versioning Strategy (docs/VERSIONING.md)](docs/VERSIONING.md):** Understand how Fishwrap's version numbers (MAJOR.MINOR.PATCH) are determined.
+*   **[Release Notes (docs/RELEASE_NOTES.md)](docs/RELEASE_NOTES.md):** See what's new in each release, from features to bug fixes.
 
 ---
 
