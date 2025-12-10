@@ -1,27 +1,12 @@
 import os
 import sys
 
-# --- 1. Default Feeds (Generic Demo) ---
-FEEDS = [
-  # News
-  "https://rss.nytimes.com/services/xml/rss/nyt/HomePage.xml",
-  "https://feeds.bbci.co.uk/news/world/rss.xml",
-  
-  # Sports
-  "https://www.espn.com/espn/rss/news",
-  "https://sports.yahoo.com/rss/",
-  
-  # Tech
-  "https://www.theverge.com/rss/index.xml",
-  "https://feeds.arstechnica.com/arstechnica/index",
-  
-  # Culture
-  "https://www.rollingstone.com/feed",
-  "https://variety.com/feed"
-]
+# --- 1. Feeds (Sources) ---
+# Intentionally empty in the core engine. Must be provided by config.
+FEEDS = []
 
 # --- 2. File Paths ---
-# By default, data lives in the current working directory
+# Default placeholders. Should be overridden by config.
 ARTICLES_DB_FILE = 'articles_db.json'
 RUN_SHEET_FILE = 'run_sheet.json'
 ENHANCED_ISSUE_FILE = 'enhanced_issue.json'
@@ -33,48 +18,22 @@ LATEST_PDF_FILE = 'latest.pdf'
 # --- 3. Pipeline Settings ---
 TIMEZONE = "UTC"
 FOUNDING_DATE = "2024-01-01"
-THEME = "basic" # Points to fishwrap/themes/basic
+THEME = "basic" 
 MAX_ARTICLE_LENGTH = 10000
 EXPIRATION_HOURS = 24
 USER_AGENT = 'Fishwrap/1.0 (+https://github.com/maxspevack/fishwrap)'
 
 # --- 4. Editor Settings ---
-EDITION_SIZE = {
-    'news': 10,
-    'sports': 5,
-    'tech': 10,
-    'culture': 5 
-}
-
-MIN_SECTION_SCORES = {
-    'news': 1000,
-    'sports': 1000,
-    'tech': 1000,
-    'culture': 1000 
-}
+EDITION_SIZE = {}
+MIN_SECTION_SCORES = {}
 
 # --- 5. Source Affinity ---
-SOURCE_SECTIONS = {
-    'rss.nytimes.com': 'news',
-    'feeds.bbci.co.uk': 'news',
-    'www.espn.com': 'sports',
-    'sports.yahoo.com': 'sports',
-    'www.theverge.com': 'tech',
-    'feeds.arstechnica.com': 'tech',
-    'www.rollingstone.com': 'culture',
-    'variety.com': 'culture'
-}
+SOURCE_SECTIONS = {}
 
 # --- 6. Classification Keywords ---
-KEYWORDS = {
-    'news': ['government', 'election', 'war', 'economy', 'world', 'politics', 'senate', 'biden', 'trump'],
-    'sports': ['football', 'basketball', 'soccer', 'tennis', 'nfl', 'nba', 'mlb', 'league', 'game', 'score'],
-    'tech': ['software', 'ai', 'crypto', 'linux', 'apple', 'google', 'microsoft', 'app', 'device', 'code'],
-    'culture': ['movie', 'music', 'book', 'art', 'celebrity', 'film', 'star', 'hollywood', 'album']
-}
+KEYWORDS = {}
 
 # --- 7. Editorial Policies ---
-# (Empty by default)
 BOOST_UNIT_VALUE = 100
 FUZZY_BOOST_MULTIPLIER = 1.5
 SCORING_PROFILES = {
@@ -84,20 +43,10 @@ SCORING_PROFILES = {
 EDITORIAL_POLICIES = []
 
 # --- 8. Printer Settings ---
-SECTIONS = [
-    {'id': 'news', 'title': 'News', 'description': 'World Events'},
-    {'id': 'sports', 'title': 'Sports', 'description': 'Games & Scores'},
-    {'id': 'tech', 'title': 'Technology', 'description': 'Computing & Science'},
-    {'id': 'culture', 'title': 'Culture', 'description': 'Arts & Entertainment'}
-]
+SECTIONS = []
 
 # --- 9. Visual Thresholds ---
-VISUAL_THRESHOLDS = {
-    'news':    {'lead': 5000,  'feature': 3000},
-    'tech':    {'lead': 5000,  'feature': 3000},
-    'culture': {'lead': 5000,  'feature': 3000},
-    'sports':  {'lead': 5000, 'feature': 3000}
-}
+VISUAL_THRESHOLDS = {}
 
 # -----------------------------------------------------------------------------
 # DYNAMIC CONFIG LOADING
@@ -107,10 +56,6 @@ config_path = os.environ.get('FISHWRAP_CONFIG')
 if config_path:
     if os.path.exists(config_path):
         # print(f"[CONFIG] Loading external config from: {config_path}")
-        
-        # We use exec to run the config file in this namespace
-        # This allows the config file to access 'os', 'sys', etc if needed
-        # and simply set variables like THEME = "vintage"
         try:
             with open(config_path, 'r') as f:
                 exec(f.read())

@@ -1,10 +1,46 @@
 import json
 import os
+import shutil
 from datetime import datetime, timedelta
 from zoneinfo import ZoneInfo
 from fishwrap import _config
 from fishwrap.renderers import html as html_renderer
 from fishwrap.renderers import pdf as pdf_renderer
+
+def copy_static_assets():
+    """Copies static assets from the active theme to the output directory."""
+    # Resolve Theme Directory
+    package_dir = os.path.dirname(__file__)
+    project_root = os.path.dirname(package_dir)
+    
+    # 1. Try resolving relative to Project Root (User Themes)
+    theme_path = os.path.join(project_root, _config.THEME)
+    
+    # 2. If not found, try resolving relative to Package Internal Themes
+    if not os.path.exists(theme_path):
+         theme_path = os.path.join(package_dir, 'themes', _config.THEME)
+    
+    src_static = os.path.join(theme_path, 'static')
+    
+    # Resolve Output Directory
+    output_dir = os.path.dirname(_config.LATEST_HTML_FILE)
+    # Handle case where output dir is empty (current dir)
+    if not output_dir:
+        output_dir = "."
+        
+    dest_static = os.path.join(output_dir, 'static')
+
+    if os.path.exists(src_static):
+        # Remove existing static in output to ensure clean state
+        if os.path.exists(dest_static):
+            shutil.rmtree(dest_static)
+        
+        shutil.copytree(src_static, dest_static)
+        # print(f"[PRINTER] Copied static assets from {src_static} to {dest_static}")
+    else:
+        # Create empty static dir if theme has none, to prevent 404s if referenced
+        os.makedirs(dest_static, exist_ok=True)
+        # print(f"[PRINTER] No static assets found in {theme_path}")
 
 def generate_issues():
     if not os.path.exists(_config.ENHANCED_ISSUE_FILE):
@@ -65,7 +101,10 @@ def generate_issues():
     with open(_config.LATEST_HTML_FILE, 'w') as f:
         f.write(html_content)
     
-    # --- 2. Generate PDF ---
+    # --- 2. Copy Static Assets ---
+    copy_static_assets()
+    
+    # --- 3. Generate PDF ---
     # print("[PRINTER] Generating PDF Edition...")
     # pdf_renderer.render(data, stats, vol_issue_str, date_str, _config.LATEST_PDF_FILE)
     

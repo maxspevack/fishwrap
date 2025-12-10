@@ -44,12 +44,16 @@ a:hover { text-decoration: underline; }
     box-sizing: border-box;
 }
 
-.brand-title {
-    font-size: 1.5rem;
-    font-weight: bold;
+.brand-logo-container {
     margin-bottom: 20px;
-    border-bottom: 2px solid var(--accent-color);
     padding-bottom: 10px;
+    border-bottom: 2px solid var(--accent-color);
+}
+
+.brand-logo-svg {
+    max-width: 100%;
+    height: auto;
+    display: block;
 }
 
 .meta-info {

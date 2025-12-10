@@ -38,11 +38,11 @@ run-clamour:
 # --- Demo: Vanilla Fishwrap ---
 run-vanilla:
 	@echo "Running Vanilla Fishwrap Demo..."
-	@# Runs with default internal config (basic theme, demo feeds)
-	@$(PYTHON) -m fishwrap.fetcher
-	@$(PYTHON) -m fishwrap.editor
-	@$(PYTHON) -m fishwrap.enhancer
-	@$(PYTHON) -m fishwrap.printer
+	@export FISHWRAP_CONFIG=$(CURDIR)/demo/config.py && \
+	$(PYTHON) -m fishwrap.fetcher && \
+	$(PYTHON) -m fishwrap.editor && \
+	$(PYTHON) -m fishwrap.enhancer && \
+	$(PYTHON) -m fishwrap.printer
 
 
 
