@@ -6,6 +6,14 @@ This directory contains the core source code for Fishwrap.
 
 The system is designed to be run as a sequence of modules:
 
+```mermaid
+graph LR
+    A[feeds.json] -->|Fetch| B(Articles DB)
+    B -->|Edit| C(Run Sheet)
+    C -->|Enhance| D(Enhanced Issue)
+    D -->|Print| E[latest.html / .pdf]
+```
+
 ### 1. `fishwrap.fetcher`
 *   **Input:** RSS Feeds defined in your config.
 *   **Process:** Downloads feeds, parses entries, and performs "upserts" into the `articles_db.json`.
@@ -13,7 +21,7 @@ The system is designed to be run as a sequence of modules:
 
 ### 2. `fishwrap.editor`
 *   **Input:** `articles_db.json`.
-*   **Process:** Scans candidates, scores them against your `EDITORIAL_POLICIES`, and selects the top $N$ stories per section.
+*   **Process:** Scans candidates, scores them based on **Impact** (Votes + Comments + Freshness) and your `EDITORIAL_POLICIES`. Selects the top $N$ stories per section.
 *   **Output:** `run_sheet.json` (The "Front Page" plan).
 
 ### 3. `fishwrap.enhancer`
