@@ -17,7 +17,7 @@ Want to see what Fishwrap can do? We ship with a **Vanilla Demo** edition that a
 ### 1. Hire the Staff
 Clone the repo and install dependencies:
 ```bash
-git clone https://github.com/maxspevack/fishwrap.git
+git clone https://fishwrap.org/maxspevack/fishwrap.git # Using the new domain!
 cd fishwrap
 make setup
 ```
@@ -45,6 +45,13 @@ Ready to start your own publication? We have dedicated guides for that.
     
 *   **[The Engine Room (fishwrap/README.md)](fishwrap/README.md):** 
     *   *For Engineers.* Deep dive into the pipeline, the `load_template` system, and how to write custom renderers.
+
+---
+
+## 🌐 Fishwrap Online
+
+*   **Product Website:** [fishwrap.io](https://fishwrap.io) - Discover the Fishwrap platform and its capabilities.
+*   **Open Source Project & Docs:** [fishwrap.org](https://fishwrap.org) - Dive into the codebase, contribute, and find extensive documentation.
 
 ---
 
