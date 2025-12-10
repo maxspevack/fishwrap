@@ -32,7 +32,7 @@ LATEST_PDF_FILE = 'demo/output/latest.pdf'
 
 # --- 3. Pipeline Settings ---
 TIMEZONE = "UTC"
-FOUNDING_DATE = "2024-01-01"
+FOUNDING_DATE = "2025-12-07"
 THEME = "demo/themes/basic" 
 MAX_ARTICLE_LENGTH = 10000
 EXPIRATION_HOURS = 24
