@@ -47,13 +47,18 @@ run-vanilla:
 
 
 # --- Cleanup ---
-clean:
-	@echo "Cleaning up generated artifacts..."
-	# Demo artifacts
+clean-demo:
+	@echo "Cleaning up Demo artifacts..."
 	rm -f demo/data/*.json demo/output/*.html demo/output/*.pdf
-	# Daily Clamour artifacts
+	rm -rf demo/output/static
+
+clean-clamour:
+	@echo "Cleaning up Daily Clamour artifacts..."
 	rm -f daily_clamour/data/*.json daily_clamour/output/*.html daily_clamour/output/*.pdf
-	# Logs
+	rm -rf daily_clamour/output/static
+
+clean: clean-demo clean-clamour
+	@echo "Cleaning up logs..."
 	rm -rf fishwrap/logs/* fishwrap/fishwrap/logs/*
 	@echo "Cleanup complete."
 
