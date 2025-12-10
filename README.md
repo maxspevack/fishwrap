@@ -48,14 +48,14 @@ Ready to start your own publication? We have dedicated guides for that.
 
 ---
 
-## 🏗 How the Sausage is Made (Architecture)
+## 🏢 Tour the Newsroom (Architecture)
 
-Fishwrap operates as a linear, four-stage assembly line:
+Step inside the bustling Fishwrap newsroom and meet our dedicated staff:
 
-1.  **🕵️‍♀️ The Fetcher:** Scours the web (RSS/JSON). Smartly handles Hacker News to prioritize discussion over links.
-2.  **✏️ The Editor:** The brains of the operation. Scores stories based on "Impact" (Votes + Comments + Freshness) and your custom `EDITORIAL_POLICIES`. Curates the "Front Page".
-3.  **🔬 The Enhancer:** The heavy lifter. Scrapes full article text, bylines, and metadata so you never have to click a clickbait link again.
-4.  **🖨 The Printer:** The artist. Takes the enhanced content and renders it into a Theme (like our "Vintage" or "Basic" styles).
+1.  **🕵️‍♀️ The Beat Reporter (Fetcher):** Our tireless scouts scour the digital streets (RSS feeds, social aggregators) for breaking stories. They're particularly adept at sniffing out discussions on Hacker News.
+2.  **✏️ The News Desk Editor (Editor):** Here's where the magic happens. Our sharp-eyed editors classify incoming stories, debate their "Impact Score" (combining votes, comments, and freshness), and apply our strict `EDITORIAL_POLICIES` to decide what makes the front page.
+3.  **🔬 The Investigative Unit (Enhancer):** No clickbait here! This team digs deep, fetching the full article text and vital metadata so our readers get the complete picture, not just a headline.
+4.  **🖨 The Press Operator (Printer):** Finally, the presses roll! Our skilled operators take the curated, enhanced content and lay it out beautifully according to the chosen Theme (whether it's "Vintage Clamour" or our clean "Basic" style).
 
 ## 📂 Archives (Repository Structure)
 
