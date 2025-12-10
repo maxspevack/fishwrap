@@ -21,10 +21,14 @@ A general-purpose newspaper showing how Fishwrap handles a standard mix of RSS f
 
 ---
 
-## 🛡️ The Zero Day (Coming Soon)
+## 🛡️ The Zero Day
 **Vertical:** Cybersecurity & Threat Intelligence  
-**Focus:** High-signal CVEs and exploit warnings.  
-**Philosophy:** "Glass Box" transparency for security analysts.
+**Configuration:** Cyber Pilot (`demo/cyber_config.py`)  
+**Theme:** Basic
+
+A specialized briefing for security analysts. It prioritizes CVEs, active exploits, and high-signal threat intelligence, filtering out vendor marketing.
+
+[**Read The Zero Day**](cyber/)
 
 ---
 

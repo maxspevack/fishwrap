@@ -1,0 +1,20 @@
+<svg width="240" height="60" viewBox="0 0 240 60" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background -->
+  <rect width="240" height="60" fill="#ffffff"/>
+  
+  <!-- Icon: A simple rolled newspaper -->
+  <g transform="translate(10, 10)">
+    <rect x="0" y="0" width="30" height="40" fill="#ddd" stroke="#333" stroke-width="2"/>
+    <line x1="5" y1="10" x2="25" y2="10" stroke="#333" stroke-width="2"/>
+    <line x1="5" y1="18" x2="25" y2="18" stroke="#333" stroke-width="2"/>
+    <line x1="5" y1="26" x2="25" y2="26" stroke="#333" stroke-width="2"/>
+    <line x1="5" y1="34" x2="15" y2="34" stroke="#333" stroke-width="2"/>
+  </g>
+
+  <!-- Text -->
+  <text x="55" y="38" font-family="'Helvetica Neue', Arial, sans-serif" font-weight="bold" font-size="28" fill="#333">Fishwrap</text>
+  <text x="185" y="38" font-family="'Courier New', Courier, monospace" font-size="14" fill="#666" font-style="italic">Demo</text>
+  
+  <!-- Underline -->
+  <line x1="55" y1="45" x2="230" y2="45" stroke="#333" stroke-width="3"/>
+</svg>

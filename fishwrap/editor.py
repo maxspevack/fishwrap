@@ -1,12 +1,14 @@
 import json
-from urllib.parse import urlparse # Still needed for urlparse in run_editor
+from urllib.parse import urlparse
 import difflib
 from fishwrap import _config
 from fishwrap import scoring
 
-# Removed clean_url function as it's no longer used in organize_and_cluster
-
 def classify_article(article):
+    """
+    Classifies an article into a section based on Source or Content keywords.
+    Dynamically uses keys from _config.KEYWORDS and _config.SECTIONS.
+    """
     title = article.get('title', '').lower()
     content = (article.get('content') or '').lower()[:500]
     cats = [c.lower() for c in article.get('categories', [])]
@@ -24,44 +26,42 @@ def classify_article(article):
     def score_keywords(keywords):
         return sum(1 for k in keywords if f" {k} " in f" {text_blob} ")
 
+    # Calculate scores for ALL defined keyword categories
     scores = {k: score_keywords(v) for k, v in _config.KEYWORDS.items()}
     
     reason = "fallback"
-    final_cat = 'culture' # Fallback
+    # Default fallback is the LAST section defined in config (usually 'culture' or 'general')
+    final_cat = _config.SECTIONS[-1]['id'] 
     
     # 3. Override Logic (Content beats Source if signal is strong)
-    if scores['sports'] >= 3: 
-        final_cat = 'sports'
-        reason = "keyword_strong_match"
-    elif scores['tech'] >= 3: 
-        final_cat = 'tech'
-        reason = "keyword_strong_match"
-    elif scores['news'] >= 2: 
-        final_cat = 'news'
-        reason = "keyword_strong_match"
-    elif scores['culture'] >= 3: 
-        final_cat = 'culture'
-        reason = "keyword_strong_match"
+    # We iterate through sections in order of definition (Priority is implicit in order)
+    # Or we can stick to a simple threshold.
     
-    # 4. Return Default if exists
-    elif default_section:
-        final_cat = default_section
-        reason = "source_default"
+    match_found = False
     
-    # 5. Fallback for unknown sources (Standard Logic)
-    elif scores['news'] >= 1: 
-        final_cat = 'news'
-        reason = "keyword_weak_match"
-    elif scores['sports'] >= 1: 
-        final_cat = 'sports'
-        reason = "keyword_weak_match"
-    elif scores['tech'] >= 1: 
-        final_cat = 'tech'
-        reason = "keyword_weak_match"
-    elif scores['culture'] >= 1: 
-        final_cat = 'culture'
-        reason = "keyword_weak_match"
-    
+    # Check for Strong Matches (>= 3)
+    for section in _config.SECTIONS:
+        sid = section['id']
+        if scores.get(sid, 0) >= 3:
+            final_cat = sid
+            reason = "keyword_strong_match"
+            match_found = True
+            break # First strong match wins
+            
+    if not match_found:
+        # 4. Return Default (Source) if exists
+        if default_section:
+            final_cat = default_section
+            reason = "source_default"
+        else:
+            # 5. Check for Weak Matches (>= 1)
+            for section in _config.SECTIONS:
+                sid = section['id']
+                if scores.get(sid, 0) >= 1:
+                    final_cat = sid
+                    reason = "keyword_weak_match"
+                    break
+
     # Debug Info
     debug_info = {
         'scores': scores,
@@ -74,8 +74,6 @@ def classify_article(article):
 def organize_and_cluster(articles):
     """
     Performs GLOBAL fuzzy deduplication first, then buckets into sections.
-    This ensures that if a story appears in multiple sections (e.g. News vs Culture),
-    they merge into the highest-scoring version (likely News) and don't split votes.
     """
     # 1. Sort ALL articles by score descending
     articles.sort(key=lambda x: x.get('impact_score', 0), reverse=True)
@@ -112,25 +110,28 @@ def organize_and_cluster(articles):
                     leader['score_breakdown']['fuzzy_matches'] = []
                 leader['score_breakdown']['fuzzy_matches'].append(candidate_title)
                 
-                # print(f"[EDITOR] Fuzzy Boost: Merging '{candidate.get('title')}' into '{leader.get('title')}' (Sim: {similarity:.2f}). Score: {old_score} -> {leader['impact_score']}")
                 break # Stop checking other clusters, we found a home
         
         if not is_duplicate:
             clusters.append(candidate)
             
-    # 3. Bucketize the Leaders
-    final_buckets = {'news': [], 'sports': [], 'tech': [], 'culture': []}
+    # 3. Bucketize the Leaders (Dynamic)
+    # Initialize buckets for ALL configured sections
+    final_buckets = {section['id']: [] for section in _config.SECTIONS}
+    
+    # Fallback bucket key (first one)
+    default_bucket_key = _config.SECTIONS[0]['id']
     
     for article in clusters:
         cat = article.get('temp_section')
-        # Skip logic is handled upstream by scoring penalties, but safe to check
         if not cat or cat.startswith('skip'): 
             continue
             
         if cat in final_buckets:
             final_buckets[cat].append(article)
         else:
-            final_buckets['news'].append(article)
+            # If category invalid, dump in default
+            final_buckets[default_bucket_key].append(article)
             
     return final_buckets
 
@@ -142,26 +143,28 @@ def run_editor():
     
     # --- Phase 1: Classify & Score ---
     scored_articles = []
-    section_candidates = {'news': 0, 'sports': 0, 'tech': 0, 'culture': 0}
+    
+    # Dynamic Candidate Counter
+    section_candidates = {section['id']: 0 for section in _config.SECTIONS}
     
     for aid, article in raw_db.items():
         cat, cls_debug = classify_article(article)
         article['temp_section'] = cat
-        article['classification_debug'] = cls_debug # SAVE DEBUG INFO
+        article['classification_debug'] = cls_debug 
         
         if cat.startswith('skip'):
             article['impact_score'] = 0
             article['score_breakdown'] = {}
         else:
-            section_candidates[cat] += 1
-            # ... (rest of scoring logic)
+            if cat in section_candidates:
+                section_candidates[cat] += 1
             
             score, breakdown = scoring.compute_score(article, section=cat)
             article['impact_score'] = score
             article['score_breakdown'] = breakdown
             scored_articles.append(article)
 
-    # --- Phase 2: Organize & Cluster (The Black Box) ---
+    # --- Phase 2: Organize & Cluster ---
     buckets = organize_and_cluster(scored_articles)
 
     # --- Phase 3: Select & Save ---
@@ -171,11 +174,15 @@ def run_editor():
     print("\n" + "="*60)
     print(f" EDITOR SUMMARY")
     print("="*60)
-    print(f" {'Section':<10} | {'Candidates':<10} | {'Selected':<8} | {'Min Score':<10}")
+    print(f" {'Section':<20} | {'Candidates':<10} | {'Selected':<8} | {'Min Score':<10}")
     print("-" * 60)
     
-    for cat, capacity in _config.EDITION_SIZE.items():
-        items = buckets[cat]
+    # Iterate through Configured Sections to maintain order
+    for section_def in _config.SECTIONS:
+        cat = section_def['id']
+        capacity = _config.EDITION_SIZE.get(cat, 5) # Default capacity if missing
+        
+        items = buckets.get(cat, [])
         items.sort(key=lambda x: x.get('impact_score', 0), reverse=True)
         
         # Filter by Minimum Score
@@ -186,10 +193,10 @@ def run_editor():
         run_sheet[cat] = selected
         total_selected += len(selected)
         
-        print(f" {cat.capitalize():<10} | {section_candidates.get(cat, 0):<10} | {len(selected):<8} | {min_score:<10}")
+        print(f" {section_def['title'][:20]:<20} | {section_candidates.get(cat, 0):<10} | {len(selected):<8} | {min_score:<10}")
 
     print("-" * 60)
-    print(f" {'TOTAL':<10} | {len(raw_db):<10} | {total_selected:<8} |")
+    print(f" {'TOTAL':<20} | {len(raw_db):<10} | {total_selected:<8} |")
     print("=" * 60 + "\n")
         
     with open(_config.RUN_SHEET_FILE, 'w') as f:

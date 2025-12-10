@@ -92,7 +92,10 @@ def render(data, stats, vol_issue_str, date_str):
         
         for i, article in enumerate(articles):
             score = article.get('impact_score', 0)
-            thresholds = _config.VISUAL_THRESHOLDS.get(sid, _config.VISUAL_THRESHOLDS['news'])
+            
+            # Safe Fallback: Use Section's own thresholds, or the first available set in config
+            default_thresholds = list(_config.VISUAL_THRESHOLDS.values())[0] if _config.VISUAL_THRESHOLDS else {'lead': 5000, 'feature': 3000}
+            thresholds = _config.VISUAL_THRESHOLDS.get(sid, default_thresholds)
             
             if score >= thresholds['lead']: proposed_type = "feature"
             elif score >= thresholds['feature']: proposed_type = "standard"
