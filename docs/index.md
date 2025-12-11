@@ -4,9 +4,11 @@ title: The Anti-Feed
 nav_order: 1
 ---
 
-# Fishwrap 🐟
-
-**The algorithm you can read. The feed that ends.**
+<div align="center">
+  <img src="static/images/fishwrap_logo.svg" alt="Fishwrap" width="400">
+  <br>
+  <h3>The algorithm you can read. The feed that ends.</h3>
+</div>
 
 > "One of the insights of the Victorian Revival was that it was not necessarily a good thing for everyone to read a completely different newspaper in the morning; so the higher one rose in the society, the more similar one's Times became to one's peers'."
 >

@@ -1,14 +1,19 @@
-# Fishwrap 🐟📰
+<div align="center">
+  <img src="docs/static/images/fishwrap_logo.svg" alt="Fishwrap" width="400">
+  <br>
+  <b>The algorithm you can read. The feed that ends.</b>
+</div>
 
-**"The algorithm you can read. The feed that ends."**
+<br>
 
 **Fishwrap** is a "Glass-Box" daily briefing engine. It transforms the chaos of the internet (RSS feeds, Reddit threads, Hacker News) into finite, auditable **Artifacts**—beautiful, distraction-free HTML or PDF editions.
 
 It is designed to be the "Anti-Feed" for the Diamond Age.
 
-### 🌟 Live Demo
-**[The Daily Clamour](https://dailyclamour.com)**
-Our flagship production instance. A daily tech & culture newspaper automated entirely by this repo.
+👀 **See it in action:**
+*   [The Daily Clamour](https://dailyclamour.com) (Live Production Instance)
+*   [The Zero Day](https://fishwrap.org/demo/cyber/) (Cybersecurity Demo)
+*   [The Hallucination](https://fishwrap.org/demo/ai/) (AI Research Demo)
 
 ---
 
@@ -17,6 +22,7 @@ Our flagship production instance. A daily tech & culture newspaper automated ent
 Fishwrap ships with three reference "Verticals" to demonstrate its flexibility.
 
 ### 1. Hire the Staff
+Clone the repo and install dependencies:
 ```bash
 git clone https://github.com/maxspevack/fishwrap.git
 cd fishwrap
@@ -66,6 +72,12 @@ Everything is driven by a simple Python configuration file. You are the Editor-i
 *   **`fishwrap/`**: The core stateless engine.
 *   **`demo/`**: Reference configurations (`config.py`, `cyber_config.py`, `ai_config.py`) and themes.
 *   **`docs/`**: The source for [fishwrap.org](https://fishwrap.org).
+
+---
+
+## 🔮 Development Notes & Roadmap
+
+*   **Config Refactoring:** The `config.py` files currently contain both user-facing settings (FEEDS, SECTIONS, KEYWORDS) and internal/sensitive settings (SECRETS_FILE path, etc.). This needs to be refactored to separate these concerns, making it easier for users to customize without exposing internals. This change will need to propagate to all demo configs and the `daily_clamour` instance.
 
 ---
 
