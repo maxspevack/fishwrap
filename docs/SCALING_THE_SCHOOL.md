@@ -30,7 +30,7 @@ Imagine judging a fish contest, but every day you force the judges to re-evaluat
 ### 2. The Cluster Bomb (O(N²))
 This was the real killer. To prevent duplicate stories (e.g., five different outlets reporting "AI is taking our jobs"), we used a **Fuzzy Deduplication** algorithm.
 
-We compared every candidate article against every selected article using `difflib` (Levenshtein distance).
+We compared every candidate article against every selected article using `difflib` (Levenshtein distance). (Full disclosure: We didn't learn this in school. Google told us this is what you use when strings are "kinda" the same.)
 
 ```python
 # The Horror
@@ -75,7 +75,9 @@ We added a hard **48-hour window**. If the fish are from different eras, we don'
 #### 2. The Jaccard Pre-Filter 🪓
 This was the *piece de resistance*. `difflib` is accurate but slow. Python `sets` are stupid but fast.
 
-Before running the expensive DNA test (`difflib`), we now do a "Jaccard Index" check (Set Intersection). We break the titles into sets of words.
+Before running the expensive DNA test (`difflib`), we now do a "Jaccard Index" check (Set Intersection). (Again, purely a StackOverflow discovery. We assume "Jaccard" was a smart guy, but we just know `set.intersection()` is fast.)
+
+We break the titles into sets of words.
 
 *   **Article A:** "Gemini" "Launches" "New" "Rocket"
 *   **Article B:** "Local" "Man" "Eats" "Pie"
@@ -132,10 +134,8 @@ We went from a system that choked on 1,000 items to one that can easily handle 1
 1.  **Don't compute at read-time what you can compute at write-time.**
 2.  **Cheap checks first.** Always filter your data with a "hatchet" (sets/integers) before you go in with a "scalpel" (fuzzy logic/AI).
 3.  **Memory != Display.** Just because you don't show it to the user doesn't mean you shouldn't remember it. State is necessary for deduplication.
-4.  **There's always a bigger fish.**
-    ![There's always a bigger fish](https://i.redd.it/iriscb26whx01.jpg)
-    (But now our code is fast enough to catch it).
+4.  **There's always a bigger fish.** (But now our code is fast enough to catch it).
 
 Thanks for listening. Get back to work.
 
-— Max
+<img src="https://i.redd.it/iriscb26whx01.jpg" style="width: 100%; border-radius: 8px;" alt="There's always a bigger fish">
