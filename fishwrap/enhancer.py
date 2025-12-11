@@ -143,7 +143,7 @@ def enhance_articles():
         for article in articles:
             link = article.get('link', '')
             source_url = article.get('source_url', '')
-            aid = article.get('id')
+            aid = str(article.get('id'))
             
             # Initialize defaults
             article['full_content'] = article.get('content') or ''
