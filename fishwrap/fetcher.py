@@ -6,6 +6,8 @@ import os
 import re
 from fishwrap import _config
 from fishwrap import utils
+from fishwrap import editor
+from fishwrap import scoring
 
 NAMESPACES = {
     'atom': 'http://www.w3.org/2005/Atom',
@@ -69,34 +71,37 @@ def fetch_reddit_json(url):
 
 def upsert_article(db, new_article):
     """
-    Simple Upsert Logic.
-    - If seen in DB -> Update stats (max) and timestamp (latest).
-    - If new -> Insert.
+    Upsert Logic with Pre-Computed Scoring.
     """
     aid = new_article['id']
+    res = "new"
     
     if aid in db:
-        # Update Existing
         existing = db[aid]
+        res = "updated"
         
-        # Keep max stats (e.g. if Reddit score goes up)
-        existing['stats_score'] = max(existing.get('stats_score', 0), new_article.get('stats_score', 0))
-        existing['stats_comments'] = max(existing.get('stats_comments', 0), new_article.get('stats_comments', 0))
+        # Merge Persistent Data into new_article
+        new_article['stats_score'] = max(existing.get('stats_score', 0), new_article.get('stats_score', 0))
+        new_article['stats_comments'] = max(existing.get('stats_comments', 0), new_article.get('stats_comments', 0))
         
-        # Update timestamp to latest seen (keeps it fresh in pruning window)
-        if new_article['timestamp'] > existing['timestamp']:
-            existing['timestamp'] = new_article['timestamp']
-            
-        # Backfill comments_url if missing in existing but present in new
-        if 'comments_url' not in existing and 'comments_url' in new_article:
-            existing['comments_url'] = new_article['comments_url']
-            
-        return "updated"
-        
-    else:
-        # Insert New
-        db[aid] = new_article
-        return "new"
+        if existing['timestamp'] > new_article['timestamp']:
+             new_article['timestamp'] = existing['timestamp']
+             
+        if 'comments_url' in existing and 'comments_url' not in new_article:
+             new_article['comments_url'] = existing['comments_url']
+             
+    # --- PRE-COMPUTE SCORING ---
+    cat, cls_debug = editor.classify_article(new_article)
+    score, breakdown = scoring.compute_score(new_article, section=cat)
+    
+    new_article['_computed_category'] = cat
+    new_article['_computed_score'] = score
+    new_article['_computed_breakdown'] = breakdown
+    new_article['_computed_debug'] = cls_debug
+    # ---------------------------
+
+    db[aid] = new_article
+    return res
 
 
 import json

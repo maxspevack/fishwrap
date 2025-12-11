@@ -73,22 +73,50 @@ def classify_article(article):
 
 def organize_and_cluster(articles):
     """
-    Performs GLOBAL fuzzy deduplication first, then buckets into sections.
+    Performs GLOBAL fuzzy deduplication using Time-Windowed Blocking.
+    Only compares articles published within a 48-hour window of each other.
     """
     # 1. Sort ALL articles by score descending
     articles.sort(key=lambda x: x.get('impact_score', 0), reverse=True)
     
     clusters = []
     
+    # 48 hours in seconds
+    WINDOW_SECONDS = 48 * 3600
+    
+    # Pre-tokenize all titles once to avoid re-splitting in loop
+    # Store as a dict for fast lookup: { id(obj): set(['word1', 'word2']) }
+    # We use id(obj) because articles are mutable dicts
+    token_cache = {}
+    for a in articles:
+        # Simple tokenizer: lowercase, split by space, keep items len > 3 (skip 'the', 'and', etc)
+        words = set(w for w in a.get('title', '').lower().split() if len(w) > 3)
+        token_cache[id(a)] = words
+
     # 2. Global Clustering Loop
     for candidate in articles:
         is_duplicate = False
         candidate_title = candidate.get('title', '').lower()
+        candidate_ts = candidate.get('timestamp', 0)
+        candidate_words = token_cache[id(candidate)]
         
         for leader in clusters:
+            # OPTIMIZATION 1: Time Window Check
+            # If the candidate is too far apart from the leader in time, skip expensive diff
+            leader_ts = leader.get('timestamp', 0)
+            if abs(candidate_ts - leader_ts) > WINDOW_SECONDS:
+                continue
+            
+            # OPTIMIZATION 2: Jaccard Pre-Filter
+            # If they don't share ANY meaningful words (len > 3), they can't be fuzzy duplicates.
+            # set.isdisjoint() is implemented in C and is extremely fast.
+            leader_words = token_cache[id(leader)]
+            if candidate_words.isdisjoint(leader_words):
+                continue
+
             leader_title = leader.get('title', '').lower()
             
-            # Fuzzy Match
+            # Fuzzy Match (Expensive)
             similarity = difflib.SequenceMatcher(None, leader_title, candidate_title).ratio()
             
             if similarity > 0.70: # Threshold
@@ -97,7 +125,7 @@ def organize_and_cluster(articles):
                 # Apply Boost (Use Configured Multiplier)
                 multiplier = getattr(_config, 'FUZZY_BOOST_MULTIPLIER', 1)
                 boost_unit = _config.BOOST_UNIT_VALUE * multiplier
-                old_score = leader['impact_score']
+                
                 leader['impact_score'] += boost_unit
                 
                 # Update Breakdown for Transparency
@@ -141,30 +169,39 @@ def run_editor():
         
     print(f"\n[EDITOR] Starting... (Candidates: {len(raw_db)})")
     
-    # --- Phase 1: Classify & Score ---
+    # --- Phase 1: Load Scored Articles (Lightweight) ---
     scored_articles = []
     
     # Dynamic Candidate Counter
     section_candidates = {section['id']: 0 for section in _config.SECTIONS}
     
     for aid, article in raw_db.items():
-        cat, cls_debug = classify_article(article)
+        # Fallback for articles not yet migrated (safety check)
+        if '_computed_category' not in article:
+            cat, cls_debug = classify_article(article)
+            score, bd = scoring.compute_score(article, section=cat)
+            article['_computed_category'] = cat
+            article['_computed_score'] = score
+            article['_computed_breakdown'] = bd
+            article['_computed_debug'] = cls_debug
+            
+        cat = article['_computed_category']
+        
+        # Populate fields expected by template/logic
         article['temp_section'] = cat
-        article['classification_debug'] = cls_debug 
+        article['impact_score'] = article['_computed_score']
+        article['score_breakdown'] = article['_computed_breakdown']
+        article['classification_debug'] = article.get('_computed_debug', {})
         
         if cat.startswith('skip'):
-            article['impact_score'] = 0
-            article['score_breakdown'] = {}
-        else:
-            if cat in section_candidates:
-                section_candidates[cat] += 1
+            continue
             
-            score, breakdown = scoring.compute_score(article, section=cat)
-            article['impact_score'] = score
-            article['score_breakdown'] = breakdown
-            scored_articles.append(article)
+        if cat in section_candidates:
+            section_candidates[cat] += 1
+            
+        scored_articles.append(article)
 
-    # --- Phase 2: Organize & Cluster ---
+    # --- Phase 2: Organize & Cluster (Windowed) ---
     buckets = organize_and_cluster(scored_articles)
 
     # --- Phase 3: Select & Save ---
