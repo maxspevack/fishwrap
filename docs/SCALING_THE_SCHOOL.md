@@ -20,28 +20,16 @@ We were drowning in our own net. Here is the story of how we fixed it.
 
 ## 📉 The Smell: "Groundhog Day" & The Cluster Bomb
 
-We identified rotting carcasses in our codebase.
+We identified three rotting carcasses in our codebase.
 
 ### 1. The "Groundhog Day" Scoring (O(N*K))
-Every time the Editor ran, it pulled *every* article from the database history and re-scored it. It scanned every title against hundreds of keywords (`K`) to determine if it was "News," "Tech," or "Garbage."
-
-Imagine judging a fish contest, but every day you force the judges to re-evaluate the fish from last Tuesday, measuring them again with a magnifying glass. It was redundant, CPU-intensive, and scaled linearly with the number of keywords.
+Every time the Editor ran, it pulled *every* article from the database history and re-scored it. It scanned every title against hundreds of keywords (`K`) to determine if it was "News," "Tech," or "Garbage." It was redundant, CPU-intensive, and scaled linearly with the number of keywords.
 
 ### 2. The Cluster Bomb (O(N²))
-This was the real killer. To prevent duplicate stories (e.g., five different outlets reporting "AI is taking our jobs"), we used a **Fuzzy Deduplication** algorithm.
+This was the real killer. To prevent duplicate stories, we used a **Fuzzy Deduplication** algorithm that compared every candidate article against every selected article using `difflib`. With 1,000 items, that’s potentially **1,000,000** complex string comparisons.
 
-We compared every candidate article against every selected article using `difflib` (Levenshtein distance). (Full disclosure: We didn't learn this in school. Google told us this is what you use when strings are "kinda" the same.)
-
-```python
-# The Horror
-for candidate in huge_list_of_fish:
-    for leader in existing_clusters:
-        # This is a heavy math operation!
-        if difflib.ratio(candidate.title, leader.title) > 0.7:
-            mark_as_duplicate()
-```
-
-With 1,000 items, that’s potentially **1,000,000** complex string comparisons. We were effectively trying to DNA-test every fish in the ocean against every other fish to see if they were siblings.
+### 3. The Checkout Line (Sequential I/O)
+Our Fetcher and Enhancer were running sequentially. We downloaded one RSS feed, waited, then downloaded the next. If one site was slow, the whole pipeline froze. It was like checking out groceries with only one cashier open.
 
 ---
 
@@ -69,22 +57,12 @@ The database became our "Golden Record." The Editor stopped being a judge and st
 We still needed to deduplicate (cluster), but we needed to stop comparing everything to everything. We applied two filters:
 
 #### 1. The Time Window ⏳
-News gets stale. A story about a server outage today is not a duplicate of a server outage from 1999.
-We added a hard **48-hour window**. If the fish are from different eras, we don't compare them.
+News gets stale. We added a hard **48-hour window**. If the fish are from different eras, we don't compare them.
 
 #### 2. The Jaccard Pre-Filter 🪓
 This was the *piece de resistance*. `difflib` is accurate but slow. Python `sets` are stupid but fast.
 
-Before running the expensive DNA test (`difflib`), we now do a "Jaccard Index" check (Set Intersection). (Again, purely a StackOverflow discovery. We assume "Jaccard" was a smart guy, but we just know `set.intersection()` is fast.)
-
-We break the titles into sets of words.
-
-*   **Article A:** "Gemini" "Launches" "New" "Rocket"
-*   **Article B:** "Local" "Man" "Eats" "Pie"
-
-**Intersection:** 0 words.
-
-If the sets are disjoint, we **SKIP** the expensive check. We only run `difflib` if the titles share actual DNA (words).
+Before running the expensive DNA test (`difflib`), we now do a "Jaccard Index" check (Set Intersection). (Full disclosure: We didn't learn this in school. Google told us this is what you use when strings are "kinda" the same.)
 
 ```python
 # The Optimization
@@ -106,10 +84,10 @@ run_expensive_difflib()
 
 We discovered a flaw in our freshness logic. We wanted to print only 24-hour-old news, so we deleted everything older than 24 hours from the database.
 
-**The Bug:** If an article was 25 hours old, we deleted it. But if the RSS feed *still contained* that article, the Fetcher would see it, say "Hey, I don't know this ID!", and import it as a **New Item**. We called these "Zombie Articles." They would rise from the dead, bypassing our "Old News" filters because they looked brand new.
+**The Bug:** If an article was 25 hours old, we deleted it. But if the RSS feed *still contained* that article, the Fetcher would see it, say "Hey, I don't know this ID!", and import it as a **New Item**. We called these "Zombie Articles."
 
 **The Fix:** We decoupled **Retention** from **Publication**.
-1.  **Retention (Memory):** The Database now keeps items for **48 hours**. This acts as a memory buffer. If the RSS feed re-submits a 25-hour-old item, we recognize the ID and ignore it.
+1.  **Retention (Memory):** The Database now keeps items for **48 hours**. This acts as a memory buffer.
 2.  **Publication (Freshness):** The Editor now strictly filters for items `< 24 hours` old when building the page.
 
 We store the past to understand the present, but we only print the present.
@@ -118,9 +96,6 @@ We store the past to understand the present, but we only print the present.
 *aka "Why stand in line when you can open 10 doors?"*
 
 We fixed the CPU bottlenecks (Editor), but our I/O was stuck in the 90s.
-The **Fetcher** (downloading RSS feeds) and the **Enhancer** (scraping text) were running sequentially. One feed at a time. One article at a time.
-
-If `nytimes.com` was slow, the entire pipeline paused to wait for it. It was like checking out groceries with only one cashier.
 
 **The Fix:** `concurrent.futures.ThreadPoolExecutor`.
 We refactored the I/O-heavy loops to spawn **10 worker threads**. Now, we fetch 10 feeds at once. We scrape 10 articles at once. The network latency overlaps, and we crush the wait time.
@@ -156,7 +131,5 @@ We went from a system that choked on 1,000 items to one that can easily handle 1
 3.  **Memory != Display.** Just because you don't show it to the user doesn't mean you shouldn't remember it. State is necessary for deduplication.
 4.  **Network I/O is for the birds.** Never block the main thread on the internet. Parallelize it.
 5.  **There's always a bigger fish.**
-    <img src="https://i.redd.it/iriscb26whx01.jpg" style="width: 100%; border-radius: 8px;" alt="There's always a bigger fish">
-    (But now our code is fast enough to catch it).
 
-Thanks for listening. Get back to work.
+<img src="https://i.redd.it/iriscb26whx01.jpg" style="width: 100%; border-radius: 8px; margin-top: 20px;" alt="There's always a bigger fish">
