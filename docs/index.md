@@ -36,8 +36,14 @@ The value of transparency isn't that you *will* tune the algorithm every day, bu
 We don't just aggregate; we condense.
 In *Anathem*, the intellectuals filtered information through time to separate signal from noise.
 *   **The Feed (0-Year):** The raw noise of the Saecular world. We ignore this.
-*   **The Paper (1-Day Aperture):** A 24-hour summary. Only what matters *today*.
+*   **The Paper (12-Hour Aperture):** A bi-diurnal summary. Only what matters *now*.
 *   **The Chronicle (1-Year Aperture):** (Coming Soon) A re-aggregation of the year's best stories. If it's not interesting a year later, it was never news.
+
+### 4. The Bi-Diurnal Schedule
+Scarcity creates value. If we publish every hour, we are a slow RSS reader. By publishing **Twice Daily** (06:00 and 17:00), we create an event.
+*   **The Morning Edition:** Read with coffee. Sets the stage for the day.
+*   **The Evening Edition:** Read with a drink. Summarizes what actually mattered.
+This schedule grants you permission to *ignore* the news for the 11 hours between editions. That "permission to ignore" is our actual product.
 
 ---
 
@@ -49,7 +55,7 @@ The flagship implementation of Fishwrap is **The Daily Clamour**.
   <img src="https://dailyclamour.com/static/images/daily-clamour.png" alt="The Daily Clamour" width="300" style="border: 2px solid #333; border-radius: 8px; padding: 10px; background: #fdfbf7;">
 </a>
 
-It runs on a strict schedule, publishing a finite edition 4 times a day.
+It runs on a strict schedule, publishing a finite edition twice daily.
 
 ---
 
