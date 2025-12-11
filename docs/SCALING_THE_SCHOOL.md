@@ -47,7 +47,7 @@ With 1,000 items, that’s potentially **1,000,000** complex string comparisons.
 
 ## 🛠️ The Fix: The Industrial Revolution
 
-We realized we couldn't just tune the engine; we had to rebuild the factory. We implemented three major strategies.
+We realized we couldn't just tune the engine; we had to rebuild the factory. We implemented four major strategies.
 
 ### Strategy A: The Golden Record (Architecture)
 *aka "Score Once, Read Many"*
@@ -114,15 +114,35 @@ We discovered a flaw in our freshness logic. We wanted to print only 24-hour-old
 
 We store the past to understand the present, but we only print the present.
 
+### Strategy D: The Speed of Light (Parallelism)
+*aka "Why stand in line when you can open 10 doors?"*
+
+We fixed the CPU bottlenecks (Editor), but our I/O was stuck in the 90s.
+The **Fetcher** (downloading RSS feeds) and the **Enhancer** (scraping text) were running sequentially. One feed at a time. One article at a time.
+
+If `nytimes.com` was slow, the entire pipeline paused to wait for it. It was like checking out groceries with only one cashier.
+
+**The Fix:** `concurrent.futures.ThreadPoolExecutor`.
+We refactored the I/O-heavy loops to spawn **10 worker threads**. Now, we fetch 10 feeds at once. We scrape 10 articles at once. The network latency overlaps, and we crush the wait time.
+
+**The measurements speak for themselves:**
+
+| Component | Sequential (Before) | Parallel (After) | Improvement |
+| :--- | :--- | :--- | :--- |
+| **Fetcher** (26 feeds) | ~17.0s | ~2.5s | **6.8x Faster** |
+| **Enhancer** (36 articles) | ~34.0s | ~4.3s | **7.9x Faster** |
+| **Total I/O Time** | ~51.0s | ~6.8s | **7.5x Faster** |
+
 ---
 
 ## 🚀 The Results: Holy Mackerel!
 
-We deployed the new pipeline to `dailyclamour.com`.
+We deployed the new pipeline to `dailyclamour.com`. The total transformation is staggering.
 
-| Metric | Before | After | Improvement |
+| Metric | Before Optimization | After Optimization | Improvement |
 | :--- | :--- | :--- | :--- |
 | **Editor Runtime** | ~45 seconds | < 0.5 seconds | **~90x Faster** |
+| **Pipeline I/O** | ~51 seconds | ~7 seconds | **~7x Faster** |
 | **Complexity** | O(N²) | O(N) (Effective) | **Logarithmic** |
 | **Zombie Outbreaks**| Frequent | 0 | **Safe** |
 | **Engineer Mood** | 🤬 | 🍺 | **Significant** |
@@ -134,8 +154,9 @@ We went from a system that choked on 1,000 items to one that can easily handle 1
 1.  **Don't compute at read-time what you can compute at write-time.**
 2.  **Cheap checks first.** Always filter your data with a "hatchet" (sets/integers) before you go in with a "scalpel" (fuzzy logic/AI).
 3.  **Memory != Display.** Just because you don't show it to the user doesn't mean you shouldn't remember it. State is necessary for deduplication.
-4.  **There's always a bigger fish.** (But now our code is fast enough to catch it).
+4.  **Network I/O is for the birds.** Never block the main thread on the internet. Parallelize it.
+5.  **There's always a bigger fish.**
+    <img src="https://i.redd.it/iriscb26whx01.jpg" style="width: 100%; border-radius: 8px;" alt="There's always a bigger fish">
+    (But now our code is fast enough to catch it).
 
 Thanks for listening. Get back to work.
-
-<img src="https://i.redd.it/iriscb26whx01.jpg" style="width: 100%; border-radius: 8px;" alt="There's always a bigger fish">
