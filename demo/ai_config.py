@@ -20,7 +20,7 @@ LATEST_HTML_FILE = 'demo/output/ai_latest.html'
 LATEST_PDF_FILE = 'demo/output/ai_latest.pdf'
 
 # --- 3. Pipeline Settings ---
-TIMEZONE = "UTC"
+TIMEZONE = "US/Pacific"
 FOUNDING_DATE = "2025-12-07"
 THEME = "demo/themes/basic"
 MAX_ARTICLE_LENGTH = 20000 # Papers can be long
