@@ -46,8 +46,8 @@ RUN_SHEET_FILE = 'demo/data/ai_run_sheet.json'
 ENHANCED_ISSUE_FILE = 'demo/data/ai_enhanced_issue.json'
 SECRETS_FILE = 'demo/secrets.json'
 STATS_FILE = 'demo/data/ai_publication_stats.json'
-LATEST_HTML_FILE = 'demo/output/ai_latest.html'
-LATEST_PDF_FILE = 'demo/output/ai_latest.pdf'
+LATEST_HTML_FILE = 'demo/output/ai_index.html'
+LATEST_PDF_FILE = 'demo/output/ai_edition.pdf'
 
 # --- 3. Pipeline Settings ---
 TIMEZONE = "US/Pacific"

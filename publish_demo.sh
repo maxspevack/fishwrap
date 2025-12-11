@@ -16,15 +16,15 @@ DOCS_DIR="$REPO_ROOT/docs/demo/$VERTICAL"
 # Define Source Paths based on Vertical
 case "$VERTICAL" in
     "vanilla")
-        OUTPUT_FILE="$REPO_ROOT/demo/output/latest.html"
+        OUTPUT_FILE="$REPO_ROOT/demo/output/index.html"
         THEME_STATIC="$REPO_ROOT/demo/themes/basic/static"
         ;;
     "cyber")
-        OUTPUT_FILE="$REPO_ROOT/demo/output/cyber_latest.html"
+        OUTPUT_FILE="$REPO_ROOT/demo/output/cyber_index.html"
         THEME_STATIC="$REPO_ROOT/demo/themes/basic/static"
         ;;
     "ai")
-        OUTPUT_FILE="$REPO_ROOT/demo/output/ai_latest.html"
+        OUTPUT_FILE="$REPO_ROOT/demo/output/ai_index.html"
         THEME_STATIC="$REPO_ROOT/demo/themes/basic/static"
         ;;
     *)

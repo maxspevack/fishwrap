@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Fishwrap Edition - Friday, December 12, 2025</title>
+    <title>Fishwrap Edition - Thursday, December 11, 2025</title>
     <style>
 :root {
     --bg-color: #ffffff;
@@ -247,12 +247,18 @@ body.debug-active .debug-overlay { display: block; }
             <img src="static/images/fishwrap_logo.svg" alt="Fishwrap Logo" class="brand-logo-svg">
         </div>
         <div class="meta-info">
-            <div>Friday, December 12, 2025</div>
-            <div>Vol. 1, Issue 6</div>
+            <div>Thursday, December 11, 2025</div>
+            <div>Vol. 1, Issue 5</div>
         </div>
         
         <ul class="nav-list">
             <li class="nav-item">
+    <a href="#zero-days" class="nav-link">🚨 Zero-Days & Critical Exploits</a>
+</li>
+<li class="nav-item">
+    <a href="#threat-intel" class="nav-link">Threat Intelligence</a>
+</li>
+<li class="nav-item">
     <a href="#vulnerability-news" class="nav-link">Vulnerability News</a>
 </li>
 <li class="nav-item">
@@ -271,17 +277,51 @@ body.debug-active .debug-overlay { display: block; }
     </aside>
 
     <main class="main-content">
-        <section id="vulnerability-news" class="section-block">
+        <section id="zero-days" class="section-block">
     <div class="section-header">
-        <h2 class="section-title">Vulnerability News</h2>
-        <span class="section-desc">Latest CVEs, research, and patch releases.</span>
+        <h2 class="section-title">🚨 Zero-Days & Critical Exploits</h2>
+        <span class="section-desc">Immediate threats and active exploitation.</span>
     </div>
     <div class="bento-grid">
-        <a href="https://www.bleepingcomputer.com/news/security/unpatched-gogs-zero-day-rce-flaw-actively-exploited-in-attacks/" target="_blank" class="card feature" style="border-top: 4px solid #d35400;">
+        <a href="https://securityaffairs.com/185593/hacking/critical-gogs-zero-day-under-attack-700-servers-hacked.html" target="_blank" class="card standard" style="border-top: 4px solid #2980b9;">
     <div class="card-meta">
-        <span class="domain">bleepingcomputer.com</span>
+        <span class="domain">securityaffairs.com</span>
     </div>
-    <h3>Hackers exploit unpatched Gogs zero-day to breach 700 servers</h3>
+    <h3>Critical Gogs zero-day under attack, 700 servers hacked</h3>
+    <div class="debug-overlay">
+    <div class="debug-section">
+        <strong>Classification:</strong> 
+                    <div class="debug-section">
+                        <div class="debug-header">CLASSIFICATION</div>
+                        <div class="debug-row"><span class="label">Reason</span><span class="val">keyword_weak_match</span></div>
+                    </div>
+                    
+    </div>
+    <div class="debug-section">
+        <strong>Score Breakdown:</strong>
+        <div class='debug-row'><span class='label'>Base</span><span class='val'>+5000</span></div><div class='debug-row'><span class='label'>keyword_boost: </span><span class='val'>+5000</span></div><div class='debug-row'><span class='label'>keyword_boost: </span><span class='val'>+5000</span></div>
+        <div style="border-top: 1px solid #ccc; margin-top: 5px; font-weight: bold; display: flex; justify-content: space-between;">
+            <span>TOTAL</span>
+            <span>15000</span>
+        </div>
+    </div>
+</div>
+
+</a>
+
+    </div>
+</section>
+<section id="threat-intel" class="section-block">
+    <div class="section-header">
+        <h2 class="section-title">Threat Intelligence</h2>
+        <span class="section-desc">Major advisories, APT activity, and campaign analysis.</span>
+    </div>
+    <div class="bento-grid">
+        <a href="https://unit42.paloaltonetworks.com/cve-2025-55182-react-and-cve-2025-66478-next/" target="_blank" class="card standard" style="border-top: 4px solid #c0392b;">
+    <div class="card-meta">
+        <span class="domain">unit42.paloaltonetworks.com</span>
+    </div>
+    <h3>Exploitation of Critical Vulnerability in React Server Components (Updated December 11)</h3>
     <div class="debug-overlay">
     <div class="debug-section">
         <strong>Classification:</strong> 
@@ -293,7 +333,7 @@ body.debug-active .debug-overlay { display: block; }
     </div>
     <div class="debug-section">
         <strong>Score Breakdown:</strong>
-        <div class='debug-row'><span class='label'>Base</span><span class='val'>+5000</span></div><div class='debug-row'><span class='label'>keyword_boost: </span><span class='val'>+2500</span></div><div class='debug-row'><span class='label'>keyword_boost: </span><span class='val'>+2500</span></div>
+        <div class='debug-row'><span class='label'>Base</span><span class='val'>+5000</span></div><div class='debug-row'><span class='label'>keyword_boost: </span><span class='val'>+5000</span></div>
         <div style="border-top: 1px solid #ccc; margin-top: 5px; font-weight: bold; display: flex; justify-content: space-between;">
             <span>TOTAL</span>
             <span>10000</span>
@@ -302,7 +342,41 @@ body.debug-active .debug-overlay { display: block; }
 </div>
 
 </a>
-<a href="https://www.bleepingcomputer.com/news/security/google-fixes-eighth-chrome-zero-day-exploited-in-attacks-in-2025/" target="_blank" class="card feature" style="border-top: 4px solid #2980b9;">
+
+    </div>
+</section>
+<section id="vulnerability-news" class="section-block">
+    <div class="section-header">
+        <h2 class="section-title">Vulnerability News</h2>
+        <span class="section-desc">Latest CVEs, research, and patch releases.</span>
+    </div>
+    <div class="bento-grid">
+        <a href="https://thehackernews.com/2025/12/unpatched-gogs-zero-day-exploited.html" target="_blank" class="card feature" style="border-top: 4px solid #8e44ad;">
+    <div class="card-meta">
+        <span class="domain">thehackernews.com</span>
+    </div>
+    <h3>Unpatched Gogs Zero-Day Exploited Across 700+ Instances Amid Active Attacks</h3>
+    <div class="debug-overlay">
+    <div class="debug-section">
+        <strong>Classification:</strong> 
+                    <div class="debug-section">
+                        <div class="debug-header">CLASSIFICATION</div>
+                        <div class="debug-row"><span class="label">Reason</span><span class="val">keyword_strong_match</span></div>
+                    </div>
+                    
+    </div>
+    <div class="debug-section">
+        <strong>Score Breakdown:</strong>
+        <div class='debug-row'><span class='label'>Base</span><span class='val'>+5000</span></div><div class='debug-row'><span class='label'>keyword_boost: </span><span class='val'>+5000</span></div>
+        <div style="border-top: 1px solid #ccc; margin-top: 5px; font-weight: bold; display: flex; justify-content: space-between;">
+            <span>TOTAL</span>
+            <span>10000</span>
+        </div>
+    </div>
+</div>
+
+</a>
+<a href="https://www.bleepingcomputer.com/news/security/google-fixes-eighth-chrome-zero-day-exploited-in-attacks-in-2025/" target="_blank" class="card feature" style="border-top: 4px solid #8e44ad;">
     <div class="card-meta">
         <span class="domain">bleepingcomputer.com</span>
     </div>
@@ -318,7 +392,7 @@ body.debug-active .debug-overlay { display: block; }
     </div>
     <div class="debug-section">
         <strong>Score Breakdown:</strong>
-        <div class='debug-row'><span class='label'>Base</span><span class='val'>+5000</span></div><div class='debug-row'><span class='label'>keyword_boost: </span><span class='val'>+2500</span></div><div class='debug-row'><span class='label'>keyword_boost: </span><span class='val'>+2500</span></div>
+        <div class='debug-row'><span class='label'>Base</span><span class='val'>+5000</span></div><div class='debug-row'><span class='label'>keyword_boost: </span><span class='val'>+5000</span></div>
         <div style="border-top: 1px solid #ccc; margin-top: 5px; font-weight: bold; display: flex; justify-content: space-between;">
             <span>TOTAL</span>
             <span>10000</span>
@@ -327,11 +401,36 @@ body.debug-active .debug-overlay { display: block; }
 </div>
 
 </a>
-<a href="https://www.bleepingcomputer.com/news/security/hackers-exploit-gladinet-centrestack-cryptographic-flaw-in-rce-attacks/" target="_blank" class="card standard" style="border-top: 4px solid #c0392b;">
+<a href="https://www.darkreading.com/vulnerabilities-threats/attackers-exploited-gogs-zero-day-months" target="_blank" class="card standard" style="border-top: 4px solid #8e44ad;">
     <div class="card-meta">
-        <span class="domain">bleepingcomputer.com</span>
+        <span class="domain">darkreading.com</span>
     </div>
-    <h3>Hackers exploit Gladinet CentreStack cryptographic flaw in RCE attacks</h3>
+    <h3>Attackers Exploited Gogs Zero-Day Flaw for Months</h3>
+    <div class="debug-overlay">
+    <div class="debug-section">
+        <strong>Classification:</strong> 
+                    <div class="debug-section">
+                        <div class="debug-header">CLASSIFICATION</div>
+                        <div class="debug-row"><span class="label">Reason</span><span class="val">keyword_strong_match</span></div>
+                    </div>
+                    
+    </div>
+    <div class="debug-section">
+        <strong>Score Breakdown:</strong>
+        <div class='debug-row'><span class='label'>Base</span><span class='val'>+5000</span></div><div class='debug-row'><span class='label'>keyword_boost: </span><span class='val'>+5000</span></div>
+        <div style="border-top: 1px solid #ccc; margin-top: 5px; font-weight: bold; display: flex; justify-content: space-between;">
+            <span>TOTAL</span>
+            <span>10000</span>
+        </div>
+    </div>
+</div>
+
+</a>
+<a href="https://www.darkreading.com/threat-intelligence/hactivists-target-critical-infrastructure" target="_blank" class="card standard" style="border-top: 4px solid #c0392b;">
+    <div class="card-meta">
+        <span class="domain">darkreading.com</span>
+    </div>
+    <h3>Feds: Pro-Russia Hacktivists Target US Critical Infrastructure</h3>
     <div class="debug-overlay">
     <div class="debug-section">
         <strong>Classification:</strong> 
@@ -343,20 +442,129 @@ body.debug-active .debug-overlay { display: block; }
     </div>
     <div class="debug-section">
         <strong>Score Breakdown:</strong>
-        <div class='debug-row'><span class='label'>Base</span><span class='val'>+5000</span></div><div class='debug-row'><span class='label'>keyword_boost: </span><span class='val'>+2500</span></div>
+        <div class='debug-row'><span class='label'>Base</span><span class='val'>+5000</span></div><div class='debug-row'><span class='label'>keyword_boost: </span><span class='val'>+5000</span></div>
         <div style="border-top: 1px solid #ccc; margin-top: 5px; font-weight: bold; display: flex; justify-content: space-between;">
             <span>TOTAL</span>
-            <span>7500</span>
+            <span>10000</span>
         </div>
     </div>
 </div>
 
 </a>
-<a href="https://thehackernews.com/2025/12/react2shell-exploitation-delivers.html" target="_blank" class="card standard" style="border-top: 4px solid #8e44ad;">
+<a href="https://securityaffairs.com/185566/hacking/google-fixed-a-new-actively-exploited-chrome-zero-day.html" target="_blank" class="card standard" style="border-top: 4px solid #27ae60;">
     <div class="card-meta">
-        <span class="domain">thehackernews.com</span>
+        <span class="domain">securityaffairs.com</span>
     </div>
-    <h3>React2Shell Exploitation Delivers Crypto Miners and New Malware Across Multiple Sectors</h3>
+    <h3>Google fixed a new actively exploited Chrome zero-day</h3>
+    <div class="debug-overlay">
+    <div class="debug-section">
+        <strong>Classification:</strong> 
+                    <div class="debug-section">
+                        <div class="debug-header">CLASSIFICATION</div>
+                        <div class="debug-row"><span class="label">Reason</span><span class="val">keyword_strong_match</span></div>
+                    </div>
+                    
+    </div>
+    <div class="debug-section">
+        <strong>Score Breakdown:</strong>
+        <div class='debug-row'><span class='label'>Base</span><span class='val'>+5000</span></div><div class='debug-row'><span class='label'>keyword_boost: </span><span class='val'>+5000</span></div>
+        <div style="border-top: 1px solid #ccc; margin-top: 5px; font-weight: bold; display: flex; justify-content: space-between;">
+            <span>TOTAL</span>
+            <span>10000</span>
+        </div>
+    </div>
+</div>
+
+</a>
+<a href="https://www.bleepingcomputer.com/news/security/uk-fines-lastpass-over-2022-data-breach-impacting-16-million-users/" target="_blank" class="card standard" style="border-top: 4px solid #27ae60;">
+    <div class="card-meta">
+        <span class="domain">bleepingcomputer.com</span>
+    </div>
+    <h3>UK fines LastPass over 2022 data breach impacting 1.6 million users</h3>
+    <div class="debug-overlay">
+    <div class="debug-section">
+        <strong>Classification:</strong> 
+                    <div class="debug-section">
+                        <div class="debug-header">CLASSIFICATION</div>
+                        <div class="debug-row"><span class="label">Reason</span><span class="val">source_default</span></div>
+                    </div>
+                    
+    </div>
+    <div class="debug-section">
+        <strong>Score Breakdown:</strong>
+        <div class='debug-row'><span class='label'>Base</span><span class='val'>+5000</span></div><div class='debug-row'><span class='label'>keyword_boost: </span><span class='val'>+2500</span></div><div class='debug-row'><span class='label'>Cluster</span><span class='val'>+1000</span></div>
+        <div style="border-top: 1px solid #ccc; margin-top: 5px; font-weight: bold; display: flex; justify-content: space-between;">
+            <span>TOTAL</span>
+            <span>8500</span>
+        </div>
+    </div>
+</div>
+
+</a>
+<a href="https://www.bleepingcomputer.com/news/security/new-consentfix-attack-hijacks-microsoft-accounts-via-azure-cli/" target="_blank" class="card compact" style="border-top: 4px solid #c0392b;">
+    <div class="card-meta">
+        <span class="domain">bleepingcomputer.com</span>
+    </div>
+    <h3>New ConsentFix attack hijacks Microsoft accounts via Azure CLI</h3>
+    <div class="debug-overlay">
+    <div class="debug-section">
+        <strong>Classification:</strong> 
+                    <div class="debug-section">
+                        <div class="debug-header">CLASSIFICATION</div>
+                        <div class="debug-row"><span class="label">Reason</span><span class="val">source_default</span></div>
+                    </div>
+                    
+    </div>
+    <div class="debug-section">
+        <strong>Score Breakdown:</strong>
+        <div class='debug-row'><span class='label'>Base</span><span class='val'>+5000</span></div><div class='debug-row'><span class='label'>Cluster</span><span class='val'>+2000</span></div>
+        <div style="border-top: 1px solid #ccc; margin-top: 5px; font-weight: bold; display: flex; justify-content: space-between;">
+            <span>TOTAL</span>
+            <span>7000</span>
+        </div>
+    </div>
+</div>
+
+</a>
+
+    </div>
+</section>
+<section id="community-watch" class="section-block">
+    <div class="section-header">
+        <h2 class="section-title">Community Watch</h2>
+        <span class="section-desc">Discussions, tools, and deeper analysis.</span>
+    </div>
+    <div class="bento-grid">
+        <a href="https://securityaffairs.com/185546/security/fortinet-fixed-two-critical-authentication-bypass-vulnerabilities.html" target="_blank" class="card feature" style="border-top: 4px solid #8e44ad;">
+    <div class="card-meta">
+        <span class="domain">securityaffairs.com</span>
+    </div>
+    <h3>Fortinet fixed two critical authentication-bypass vulnerabilities</h3>
+    <div class="debug-overlay">
+    <div class="debug-section">
+        <strong>Classification:</strong> 
+                    <div class="debug-section">
+                        <div class="debug-header">CLASSIFICATION</div>
+                        <div class="debug-row"><span class="label">Reason</span><span class="val">fallback</span></div>
+                    </div>
+                    
+    </div>
+    <div class="debug-section">
+        <strong>Score Breakdown:</strong>
+        <div class='debug-row'><span class='label'>Base</span><span class='val'>+5000</span></div><div class='debug-row'><span class='label'>keyword_boost: </span><span class='val'>+5000</span></div>
+        <div style="border-top: 1px solid #ccc; margin-top: 5px; font-weight: bold; display: flex; justify-content: space-between;">
+            <span>TOTAL</span>
+            <span>10000</span>
+        </div>
+    </div>
+</div>
+
+</a>
+<a href="https://www.helpnetsecurity.com/2025/12/11/black-duck-signal/" target="_blank" class="card standard" style="border-top: 4px solid #2980b9;">
+    <div class="card-meta">
+        <span class="domain">helpnetsecurity.com</span>
+    </div>
+    <h3>Black Duck Signal applies LLM intelligence to code and supply chain risk</h3>
     <div class="debug-overlay">
     <div class="debug-section">
         <strong>Classification:</strong> 
@@ -377,45 +585,36 @@ body.debug-active .debug-overlay { display: block; }
 </div>
 
 </a>
-<a href="https://thehackernews.com/2025/12/warning-winrar-vulnerability-cve-2025.html" target="_blank" class="card standard" style="border-top: 4px solid #2980b9;">
+<a href="https://www.reddit.com/r/netsec/comments/1pjmnlx/how_widespread_is_the_impact_of_critical_security/" target="_blank" class="card standard" style="border-top: 4px solid #d35400;">
     <div class="card-meta">
-        <span class="domain">thehackernews.com</span>
+        <span class="domain">reddit.com</span>
     </div>
-    <h3>Warning: WinRAR Vulnerability CVE-2025-6218 Under Active Attack by Multiple Threat Groups</h3>
+    <h3>How widespread is the impact of Critical Security Vulnerability in React Server Components(CVE-2025-55182)</h3>
     <div class="debug-overlay">
     <div class="debug-section">
         <strong>Classification:</strong> 
                     <div class="debug-section">
                         <div class="debug-header">CLASSIFICATION</div>
-                        <div class="debug-row"><span class="label">Reason</span><span class="val">keyword_strong_match</span></div>
+                        <div class="debug-row"><span class="label">Reason</span><span class="val">source_default</span></div>
                     </div>
                     
     </div>
     <div class="debug-section">
         <strong>Score Breakdown:</strong>
-        <div class='debug-row'><span class='label'>Base</span><span class='val'>+5000</span></div><div class='debug-row'><span class='label'>keyword_boost: </span><span class='val'>+2500</span></div>
+        <div class='debug-row'><span class='label'>Stats</span><span class='val'>+13</span></div><div class='debug-row'><span class='label'>keyword_boost: </span><span class='val'>+5000</span></div><div class='debug-row'><span class='label'>keyword_boost: </span><span class='val'>+1500</span></div>
         <div style="border-top: 1px solid #ccc; margin-top: 5px; font-weight: bold; display: flex; justify-content: space-between;">
             <span>TOTAL</span>
-            <span>7500</span>
+            <span>6513</span>
         </div>
     </div>
 </div>
 
 </a>
-
-    </div>
-</section>
-<section id="community-watch" class="section-block">
-    <div class="section-header">
-        <h2 class="section-title">Community Watch</h2>
-        <span class="section-desc">Discussions, tools, and deeper analysis from the community.</span>
-    </div>
-    <div class="bento-grid">
-        <a href="https://thehackernews.com/2025/12/threatsday-bulletin-spyware-alerts.html" target="_blank" class="card standard" style="border-top: 4px solid #8e44ad;">
+<a href="https://www.reddit.com/r/cybersecurity/comments/1pk6zum/35b_accounts_1_critical_flaw_meta_closes_whatsapp/" target="_blank" class="card standard" style="border-top: 4px solid #c0392b;">
     <div class="card-meta">
-        <span class="domain">thehackernews.com</span>
+        <span class="domain">reddit.com</span>
     </div>
-    <h3>ThreatsDay Bulletin: Spyware Alerts, Mirai Strikes, Docker Leaks, ValleyRAT Rootkit — and 20 More Stories</h3>
+    <h3>3.5B Accounts, 1 Critical Flaw: Meta Closes WhatsApp Data-Harvesting</h3>
     <div class="debug-overlay">
     <div class="debug-section">
         <strong>Classification:</strong> 
@@ -427,35 +626,10 @@ body.debug-active .debug-overlay { display: block; }
     </div>
     <div class="debug-section">
         <strong>Score Breakdown:</strong>
-        <div class='debug-row'><span class='label'>Base</span><span class='val'>+5000</span></div>
+        <div class='debug-row'><span class='label'>Stats</span><span class='val'>+5</span></div><div class='debug-row'><span class='label'>keyword_boost: </span><span class='val'>+5000</span></div>
         <div style="border-top: 1px solid #ccc; margin-top: 5px; font-weight: bold; display: flex; justify-content: space-between;">
             <span>TOTAL</span>
-            <span>5000</span>
-        </div>
-    </div>
-</div>
-
-</a>
-<a href="https://thehackernews.com/2025/12/nanoremote-malware-uses-google-drive.html" target="_blank" class="card standard" style="border-top: 4px solid #d35400;">
-    <div class="card-meta">
-        <span class="domain">thehackernews.com</span>
-    </div>
-    <h3>NANOREMOTE Malware Uses Google Drive API for Hidden Control on Windows Systems</h3>
-    <div class="debug-overlay">
-    <div class="debug-section">
-        <strong>Classification:</strong> 
-                    <div class="debug-section">
-                        <div class="debug-header">CLASSIFICATION</div>
-                        <div class="debug-row"><span class="label">Reason</span><span class="val">fallback</span></div>
-                    </div>
-                    
-    </div>
-    <div class="debug-section">
-        <strong>Score Breakdown:</strong>
-        <div class='debug-row'><span class='label'>Base</span><span class='val'>+5000</span></div>
-        <div style="border-top: 1px solid #ccc; margin-top: 5px; font-weight: bold; display: flex; justify-content: space-between;">
-            <span>TOTAL</span>
-            <span>5000</span>
+            <span>5005</span>
         </div>
     </div>
 </div>
@@ -486,7 +660,7 @@ body.debug-active .debug-overlay { display: block; }
 </div>
 
 </a>
-<a href="https://thehackernews.com/2025/12/three-pcie-encryption-weaknesses-expose.html" target="_blank" class="card standard" style="border-top: 4px solid #27ae60;">
+<a href="https://thehackernews.com/2025/12/three-pcie-encryption-weaknesses-expose.html" target="_blank" class="card compact" style="border-top: 4px solid #8e44ad;">
     <div class="card-meta">
         <span class="domain">thehackernews.com</span>
     </div>
@@ -511,11 +685,11 @@ body.debug-active .debug-overlay { display: block; }
 </div>
 
 </a>
-<a href="https://thehackernews.com/2025/12/fortinet-ivanti-and-sap-issue-urgent.html" target="_blank" class="card compact" style="border-top: 4px solid #27ae60;">
+<a href="https://securityaffairs.com/185552/hacktivism/pro-russia-hacktivist-support-ukrainian-faces-us-charges.html" target="_blank" class="card compact" style="border-top: 4px solid #8e44ad;">
     <div class="card-meta">
-        <span class="domain">thehackernews.com</span>
+        <span class="domain">securityaffairs.com</span>
     </div>
-    <h3>Fortinet, Ivanti, and SAP Issue Urgent Patches for Authentication and Code Execution Flaws</h3>
+    <h3>Pro-Russia Hacktivist Support: Ukrainian Faces US Charges</h3>
     <div class="debug-overlay">
     <div class="debug-section">
         <strong>Classification:</strong> 

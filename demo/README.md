@@ -6,7 +6,7 @@ This directory contains a reference implementation of a Fishwrap publication. Us
 
 *   **`config.py`**: The brain of your newspaper. Define your feeds, timezone, and file paths here.
 *   **`data/`**: Where your database (`articles_db.json`) and run logs live.
-*   **`output/`**: Where the generated newspaper (`latest.html`) is saved.
+*   **`output/`**: Where the generated newspaper (`index.html`) is saved.
 *   **`themes/basic/`**: A clean, unbranded theme to get you started.
 
 ## Customization

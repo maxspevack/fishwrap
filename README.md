@@ -31,19 +31,19 @@ Run the pipeline for the edition you want to print:
 *   **The Vanilla Edition (General News):**
     ```bash
     make run-vanilla
-    open demo/output/latest.html
+    open demo/output/index.html
     ```
 
 *   **The Zero Day (Cybersecurity):**
     ```bash
     make run-cyber
-    open demo/output/cyber_latest.html
+    open demo/output/cyber_index.html
     ```
 
 *   **The Hallucination (AI Research):**
     ```bash
     make run-ai
-    open demo/output/ai_latest.html
+    open demo/output/ai_index.html
     ```
 
 ---

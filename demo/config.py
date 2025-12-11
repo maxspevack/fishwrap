@@ -48,8 +48,8 @@ RUN_SHEET_FILE = 'demo/data/run_sheet.json'
 ENHANCED_ISSUE_FILE = 'demo/data/enhanced_issue.json'
 SECRETS_FILE = 'demo/secrets.json'
 STATS_FILE = 'demo/data/publication_stats.json'
-LATEST_HTML_FILE = 'demo/output/latest.html'
-LATEST_PDF_FILE = 'demo/output/latest.pdf'
+LATEST_HTML_FILE = 'demo/output/index.html'
+LATEST_PDF_FILE = 'demo/output/edition.pdf'
 
 # --- 3. Pipeline Settings ---
 TIMEZONE = "US/Pacific"

@@ -11,7 +11,7 @@ graph LR
     A[feeds.json] -->|Fetch| B(Articles DB)
     B -->|Edit| C(Run Sheet)
     C -->|Enhance| D(Enhanced Issue)
-    D -->|Print| E[latest.html / .pdf]
+    D -->|Print| E[index.html / .pdf]
 ```
 
 ### 1. `fishwrap.fetcher`
@@ -39,7 +39,7 @@ graph LR
 ### 4. `fishwrap.printer`
 *   **Input:** `enhanced_issue.json`.
 *   **Process:** Loads the active **Theme** (defined in config) and renders the HTML.
-*   **Output:** `latest.html`.
+*   **Output:** `index.html`.
 
 ## Configuration
 

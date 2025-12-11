@@ -46,8 +46,8 @@ RUN_SHEET_FILE = 'demo/data/cyber_run_sheet.json'
 ENHANCED_ISSUE_FILE = 'demo/data/cyber_enhanced_issue.json'
 SECRETS_FILE = 'demo/secrets.json' 
 STATS_FILE = 'demo/data/cyber_publication_stats.json'
-LATEST_HTML_FILE = 'demo/output/cyber_latest.html'
-LATEST_PDF_FILE = 'demo/output/cyber_latest.pdf'
+LATEST_HTML_FILE = 'demo/output/cyber_index.html'
+LATEST_PDF_FILE = 'demo/output/cyber_edition.pdf'
 
 # --- 3. Pipeline Settings ---
 TIMEZONE = "US/Pacific"

@@ -12,8 +12,8 @@ RUN_SHEET_FILE = 'run_sheet.json'
 ENHANCED_ISSUE_FILE = 'enhanced_issue.json'
 SECRETS_FILE = 'secrets.json'
 STATS_FILE = 'publication_stats.json'
-LATEST_HTML_FILE = 'latest.html'
-LATEST_PDF_FILE = 'latest.pdf'
+LATEST_HTML_FILE = 'index.html'
+LATEST_PDF_FILE = 'edition.pdf'
 
 # --- 3. Pipeline Settings ---
 TIMEZONE = "UTC"
