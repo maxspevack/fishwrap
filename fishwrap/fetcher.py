@@ -130,8 +130,10 @@ def update_database():
     initial_db_count = len(db)
     
     # 2. Prune Old Articles
+    # We keep articles in the DB for 2x the expiration time to act as a "Deduplication Memory"
+    # This prevents us from re-fetching and treating as new an item that just fell out of the print window.
     current_time = datetime.now().timestamp()
-    cutoff = current_time - (_config.EXPIRATION_HOURS * 3600)
+    cutoff = current_time - (_config.EXPIRATION_HOURS * 3600 * 2)
     
     keys_to_delete = [aid for aid, article in db.items() if article['timestamp'] < cutoff]
     for k in keys_to_delete:

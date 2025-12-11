@@ -1,6 +1,7 @@
 import json
 from urllib.parse import urlparse
 import difflib
+from datetime import datetime
 from fishwrap import _config
 from fishwrap import scoring
 
@@ -215,14 +216,21 @@ def run_editor():
     print("-" * 60)
     
     # Iterate through Configured Sections to maintain order
+    current_time_ts = datetime.now().timestamp()
+    print_cutoff = current_time_ts - (_config.EXPIRATION_HOURS * 3600)
+
     for section_def in _config.SECTIONS:
         cat = section_def['id']
         capacity = _config.EDITION_SIZE.get(cat, 5) # Default capacity if missing
         
         items = buckets.get(cat, [])
+        
+        # Filter 1: Freshness (Strict Print Window)
+        items = [i for i in items if i.get('timestamp', 0) >= print_cutoff]
+
         items.sort(key=lambda x: x.get('impact_score', 0), reverse=True)
         
-        # Filter by Minimum Score
+        # Filter 2: Minimum Score
         min_score = _config.MIN_SECTION_SCORES.get(cat, 0)
         items = [i for i in items if i.get('impact_score', 0) >= min_score]
         
