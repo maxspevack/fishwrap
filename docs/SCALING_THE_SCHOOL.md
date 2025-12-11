@@ -35,7 +35,7 @@ Our Fetcher and Enhancer were running sequentially. We downloaded one RSS feed, 
 
 ## 🛠️ The Fix: The Industrial Revolution
 
-We realized we couldn't just tune the engine; we had to rebuild the factory. We implemented five major strategies.
+We realized we couldn't just tune the engine; we had to rebuild the factory. We implemented six major strategies.
 
 ### Strategy A: The Golden Record (Architecture)
 *aka "Score Once, Read Many"*
@@ -102,22 +102,22 @@ We refactored the I/O-heavy loops to spawn **10 worker threads**. Now, we fetch 
 
 **The Initial Result:** Total I/O time dropped from ~51s to ~7s. **7.5x Faster.**
 
-But then we hit a new problem...
-
 ### Strategy E: Traffic Control (Rate Limiting)
 *aka "Don't DDoS Reddit"*
 
 Our new parallel fetcher was *too* fast. We unleashed 10 concurrent threads against Reddit's API, and Reddit immediately slapped us with **HTTP 429: Too Many Requests**.
 
-We had effectively DDoS'd our own data sources.
-
 **The Fix:** Domain-Based Locks (`threading.Lock`).
-We implemented a polite "Token Bucket" style rate limiter.
-*   **Global Lock:** We track the last request time for each domain.
-*   **The Wait:** If a thread wants to hit `reddit.com`, it grabs the "Reddit Lock." If the last request was < 2 seconds ago, it sleeps.
-*   **Concurrency Preserved:** This only serializes requests to *the same domain*. We can still fetch from `nytimes.com`, `bbc.co.uk`, and `reddit.com` simultaneously. We just won't hit Reddit 10 times in 10ms.
+We implemented a polite "Token Bucket" style rate limiter. We serialize requests to the *same domain* (wait 2s between Reddit calls) while keeping different domains parallel. We are fast, but polite.
 
-**Result:** 0 Errors. The pipeline is slightly slower than the "unsafe" version, but it is **stable** and polite.
+### Strategy F: Solving Memento (State Preservation)
+*aka "Don't Forget What You Just Learned"*
+
+We found a regression: The **Enhancer** would scrape text (expensive), save it to the DB, but then the **Fetcher** (in the next run) would overwrite that entry with raw RSS data, wiping out the scraped text. We were re-scraping the same 80 articles every hour.
+
+**The Fix:** Merge, don't overwrite.
+The Fetcher now respects existing fields (`full_content`, `is_enhanced`) when updating an article.
+**Result:** **100% Cache Hit Rate** on subsequent runs. Zero wasted bandwidth.
 
 ---
 
@@ -131,6 +131,7 @@ We deployed the new pipeline to `dailyclamour.com`. The total transformation is 
 | **Pipeline I/O** | ~51 seconds | ~15 seconds | **~3.5x Faster** |
 | **Complexity** | O(N²) | O(N) (Effective) | **Logarithmic** |
 | **Zombie Outbreaks**| Frequent | 0 | **Safe** |
+| **Cache Hit Rate** | 0% (Buggy) | 100% | **Optimal** |
 | **Engineer Mood** | 🤬 | 🍺 | **Significant** |
 
 We went from a system that choked on 1,000 items to one that can easily handle 10,000+ without breaking a sweat.
@@ -142,6 +143,7 @@ We went from a system that choked on 1,000 items to one that can easily handle 1
 3.  **Memory != Display.** Just because you don't show it to the user doesn't mean you shouldn't remember it. State is necessary for deduplication.
 4.  **Network I/O is for the birds.** Never block the main thread on the internet. Parallelize it.
 5.  **With great power comes great responsibility.** If you parallelize, you must rate-limit. Be a good citizen.
-6.  **There's always a bigger fish.**
+6.  **Persist your wins.** Make sure your write-path doesn't overwrite your expensive read-path data.
+7.  **There's always a bigger fish.**
 
 <img src="https://i.redd.it/iriscb26whx01.jpg" style="width: 100%; border-radius: 8px; margin-top: 20px;" alt="There's always a bigger fish">
