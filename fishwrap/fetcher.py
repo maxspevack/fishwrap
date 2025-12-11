@@ -179,6 +179,11 @@ def upsert_article(db, new_article):
              
         if 'comments_url' in existing and 'comments_url' not in new_article:
              new_article['comments_url'] = existing['comments_url']
+
+        # Preserver Enhancer Artifacts
+        if 'full_content' in existing: new_article['full_content'] = existing['full_content']
+        if 'comments_full' in existing: new_article['comments_full'] = existing['comments_full']
+        if 'is_enhanced' in existing: new_article['is_enhanced'] = existing['is_enhanced']
              
     # --- PRE-COMPUTE SCORING ---
     cat, cls_debug = editor.classify_article(new_article)

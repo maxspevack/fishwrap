@@ -29,7 +29,6 @@ def fetch_json(url):
         if content:
             return json.loads(content)
     except Exception as e:
-        # print(f"Error parsing JSON from {url}: {e}")
         pass
     return None
 
@@ -49,8 +48,6 @@ def fetch_hn_comments_api(item_id, limit=10):
         item_data = fetch_json(api_url)
         if not item_data or 'kids' not in item_data:
             return []
-        # Sequential fetch within a thread is fine, or could parallelize this too?
-        # For now, keep simple. 10 requests is fast enough if the main loop is parallel.
         for kid_id in item_data['kids'][:limit]:
             c_data = fetch_json(f"https://hacker-news.firebaseio.com/v0/item/{kid_id}.json")
             if c_data and 'text' in c_data and not c_data.get('deleted'):
@@ -126,24 +123,17 @@ def process_article(article, db_cache):
     has_error = False
 
     if not link:
-        return article, False, False # Skip, effectively processed
+        return article, False, False 
 
     # Check DB Cache
     cached_art = db_cache.get(aid)
-    has_cached_content = cached_art and cached_art.get('full_content') and (len(cached_art['full_content']) > 20 or cached_art['full_content'].startswith("See discussion:"))
-    has_cached_comments = cached_art and cached_art.get('comments_full') and len(cached_art['comments_full']) > 0
     
-    domain = urlparse(link).netloc
-    needs_fetch = True
+    # Improved Cache Logic:
+    # If explicitly marked as 'enhanced', trust it.
+    # Otherwise fallback to checking content length (legacy support).
+    is_enhanced = cached_art and cached_art.get('is_enhanced', False)
     
-    is_discussion_site = 'reddit.com' in domain or 'news.ycombinator' in domain or 'hnrss' in source_url
-    if has_cached_content:
-        if is_discussion_site:
-            if has_cached_comments: needs_fetch = False
-        else:
-            needs_fetch = False
-            
-    if not needs_fetch:
+    if is_enhanced:
         article['full_content'] = cached_art.get('full_content', article['full_content'])
         article['comments_full'] = cached_art.get('comments_full', [])
         return article, True, False
@@ -151,7 +141,7 @@ def process_article(article, db_cache):
     # Perform Enhancement (Network I/O)
     try:
         # --- REDDIT ---
-        if 'reddit.com' in domain:
+        if 'reddit.com' in urlparse(link).netloc:
             json_url = link.split('?')[0] + '.json'
             data = fetch_json(json_url)
             if data:
@@ -160,7 +150,8 @@ def process_article(article, db_cache):
                     article['full_content'] = f"See discussion: {link}"
 
         # --- HN / LWN ---
-        elif 'hnrss' in source_url or 'news.ycombinator' in domain or 'lwn.net' in domain:
+        elif 'hnrss' in source_url or 'news.ycombinator' in urlparse(link).netloc or 'lwn.net' in urlparse(link).netloc:
+            domain = urlparse(link).netloc
             if 'hnrss' in source_url or 'news.ycombinator' in domain:
                 hn_id = extract_hn_id(link)
                 if not hn_id:
@@ -181,7 +172,7 @@ def process_article(article, db_cache):
                     article['full_content'] = article.get('content') or "No content available."
 
         # --- DEFECTOR ---
-        elif 'defector.com' in domain and DEFECTOR_COOKIE:
+        elif 'defector.com' in urlparse(link).netloc and DEFECTOR_COOKIE:
             headers = {'User-Agent': _config.USER_AGENT, 'Cookie': DEFECTOR_COOKIE}
             html_c = utils.fetch_url(link, headers=headers)
             if html_c:
@@ -203,6 +194,9 @@ def process_article(article, db_cache):
     except Exception:
         has_error = True
 
+    # Mark as enhanced regardless of success to prevent infinite retry loops
+    article['is_enhanced'] = True
+    
     return article, False, has_error
 
 def enhance_articles():
@@ -212,7 +206,7 @@ def enhance_articles():
     with open(_config.RUN_SHEET_FILE, 'r') as f:
         run_sheet_raw = json.load(f)
 
-    # Load master DB for persistence/caching
+    # Load master DB
     db = {}
     if os.path.exists(_config.ARTICLES_DB_FILE):
         try:
@@ -221,8 +215,6 @@ def enhance_articles():
         except Exception:
             pass
 
-    # Flatten run sheet for parallel processing
-    # We keep track of sections via 'section' key injected into article dict
     all_articles = []
     for sid, arts in run_sheet_raw.items():
         for a in arts:
@@ -238,7 +230,6 @@ def enhance_articles():
     MAX_WORKERS = 10
     
     with ThreadPoolExecutor(max_workers=MAX_WORKERS) as executor:
-        # Submit tasks
         future_to_article = {executor.submit(process_article, article, db): article for article in all_articles}
         
         with tqdm(total=len(all_articles), desc="Enhancing", unit="article") as pbar:
@@ -250,16 +241,18 @@ def enhance_articles():
                     else: stats['misses'] += 1
                     if error: stats['errors'] += 1
                     
-                    # Add to result bucket
                     sid = enhanced_art['section']
                     enhanced_results[sid].append(enhanced_art)
                     
-                    # Update Master DB (if new data found)
-                    if not hit and not error:
+                    # Update Master DB
+                    # We update if NOT HIT (meaning we tried to fetch).
+                    # Even if error=True, we save the 'is_enhanced' flag to avoid retrying.
+                    if not hit:
                         aid = str(enhanced_art.get('id'))
                         if aid in db:
                             db[aid]['full_content'] = enhanced_art.get('full_content')
                             db[aid]['comments_full'] = enhanced_art.get('comments_full')
+                            db[aid]['is_enhanced'] = True 
                             db_updated = True
                             
                 except Exception as e:
