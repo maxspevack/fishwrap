@@ -2,13 +2,11 @@
 FEEDS = [
     # --- Official Labs & Research ---
     "https://openai.com/blog/rss.xml",
-    "https://research.google/blog/rss/index.xml",
     "https://deepmind.google/blog/rss.xml",
     "https://blogs.microsoft.com/ai/feed/",
     "https://aws.amazon.com/blogs/machine-learning/feed/",
     "https://blogs.nvidia.com/feed/",
     "https://bair.berkeley.edu/blog/feed.xml",
-    "https://news.mit.edu/rss/topic/artificial-intelligence",
     
     # --- Arxiv (The Firehose) ---
     "http://export.arxiv.org/rss/cs.CL", # Computation and Language
@@ -19,7 +17,6 @@ FEEDS = [
     # --- Engineering & Code ---
     "https://huggingface.co/blog/feed.xml",
     "https://blog.tensorflow.org/feeds/posts/default",
-    "https://pytorch.org/feed.xml",
     "https://simonwillison.net/atom/entries/",
     "https://lilianweng.github.io/index.xml",
     
@@ -66,10 +63,10 @@ EDITION_SIZE = {
 }
 
 MIN_SECTION_SCORES = {
-    'models': 3000,
-    'research': 2000,
-    'engineering': 1500,
-    'discussion': 1000
+    'models': 1000,
+    'research': 1000,
+    'engineering': 500,
+    'discussion': 500
 }
 
 # --- 5. Source Affinity ---
@@ -140,9 +137,9 @@ EDITORIAL_POLICIES = [
 # --- 8. Printer Settings ---
 SECTIONS = [
     {'id': 'models', 'title': '✨ New Models & Weights', 'description': 'Fresh releases you can run locally.'},
-    {'id': 'research', 'title': 'Research Papers', 'description': 'Arxiv preprints and academic breakthroughs.'},
-    {'id': 'engineering', 'title': 'Engineering & Code', 'description': 'Tools, libraries, and implementation details.'},
-    {'id': 'discussion', 'title': 'The Discourse', 'description': 'Debates, ethics, and industry moves.'}
+    {'id': 'research', 'title': '🔬 Research Papers', 'description': 'Arxiv preprints and academic breakthroughs.'},
+    {'id': 'engineering', 'title': '🛠️ Engineering & Code', 'description': 'Tools, libraries, and implementation details.'},
+    {'id': 'discussion', 'title': '💬 The Discourse', 'description': 'Debates, ethics, and industry moves.'}
 ]
 
 # --- 9. Visual Formatting Thresholds ---

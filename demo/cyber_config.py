@@ -5,17 +5,13 @@ FEEDS = [
     "https://www.bleepingcomputer.com/feed/",
     "https://www.darkreading.com/rss.xml",
     "https://threatpost.com/feed/",
-    "https://thecyberwire.com/feeds/rss.xml",
     "https://securityaffairs.co/wordpress/feed",
     "https://therecord.media/feed",
     "https://www.helpnetsecurity.com/feed/",
-    "https://grahamcluley.com/feed/",
     
     # --- Threat Intel & Vendor Research ---
     "https://research.checkpoint.com/feed/",
-    "https://www.mcafee.com/blogs/other-blogs/mcafee-labs/feed/",
     "https://securelist.com/feed/", 
-    "https://blog.talosintelligence.com/feeds/posts/default", 
     "https://unit42.paloaltonetworks.com/feed/",
     "https://www.mandiant.com/resources/blog/rss.xml",
     "https://www.crowdstrike.com/blog/feed/",
@@ -32,7 +28,6 @@ FEEDS = [
     "https://www.troyhunt.com/rss/",
     
     # --- Community & Signals ---
-    "https://otx.alienvault.com/otxapi/pulses/subscribe/public/atom",
     "https://www.reddit.com/r/netsec.json",
     "https://www.reddit.com/r/cybersecurity.json",
     "https://hnrss.org/newest?q=security+OR+vulnerability+OR+exploit+OR+breach",
@@ -66,10 +61,10 @@ EDITION_SIZE = {
 }
 
 MIN_SECTION_SCORES = {
-    'zero-days': 15000,
-    'threat-intel': 10000,
-    'vulnerability-news': 7000,
-    'community-watch': 5000
+    'zero-days': 5000,
+    'threat-intel': 3000,
+    'vulnerability-news': 2000,
+    'community-watch': 1000
 }
 
 # --- 5. Source Affinity ---
@@ -140,9 +135,9 @@ EDITORIAL_POLICIES = [
 # --- 8. Printer Settings ---
 SECTIONS = [
     {'id': 'zero-days', 'title': '🚨 Zero-Days & Critical Exploits', 'description': 'Immediate threats and active exploitation.'},
-    {'id': 'threat-intel', 'title': 'Threat Intelligence', 'description': 'Major advisories, APT activity, and campaign analysis.'},
-    {'id': 'vulnerability-news', 'title': 'Vulnerability News', 'description': 'Latest CVEs, research, and patch releases.'},
-    {'id': 'community-watch', 'title': 'Community Watch', 'description': 'Discussions, tools, and deeper analysis.'}
+    {'id': 'threat-intel', 'title': '🕵️ Threat Intelligence', 'description': 'Major advisories, APT activity, and campaign analysis.'},
+    {'id': 'vulnerability-news', 'title': '🐛 Vulnerability News', 'description': 'Latest CVEs, research, and patch releases.'},
+    {'id': 'community-watch', 'title': '🔭 Community Watch', 'description': 'Discussions, tools, and deeper analysis.'}
 ]
 
 # --- 9. Visual Formatting Thresholds ---

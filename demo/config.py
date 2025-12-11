@@ -6,9 +6,7 @@ FEEDS = [
     # --- Global News ---
     "https://rss.nytimes.com/services/xml/rss/nyt/HomePage.xml",
     "https://feeds.bbci.co.uk/news/world/rss.xml",
-    "https://www.reutersagency.com/feed/?best-regions=north-america&post_type=best",
     "https://feeds.npr.org/1001/rss.xml",
-    "https://apnews.com/rss/fronts/topnews",
     "https://www.aljazeera.com/xml/rss/all.xml",
     
     # --- Technology ---
@@ -25,7 +23,6 @@ FEEDS = [
     "https://www.espn.com/espn/rss/news",
     "https://sports.yahoo.com/rss/",
     "https://www.cbssports.com/rss/headlines/",
-    "https://bleacherreport.com/articles/feed",
     "https://old.reddit.com/r/nfl.json",
     "https://old.reddit.com/r/nba.json",
     "https://old.reddit.com/r/soccer.json",
@@ -37,7 +34,6 @@ FEEDS = [
     "https://gizmodo.com/rss",
     "https://mashable.com/feed",
     "https://lifehacker.com/rss",
-    "https://www.avclub.com/rss",
     "https://old.reddit.com/r/movies.json",
     "https://old.reddit.com/r/books.json"
 ]
@@ -149,10 +145,10 @@ EDITORIAL_POLICIES = [
 
 # --- 8. Printer Settings ---
 SECTIONS = [
-    {'id': 'news', 'title': 'News', 'description': 'World Events & Politics'},
-    {'id': 'tech', 'title': 'Technology', 'description': 'The Future, Distributed.'},
-    {'id': 'sports', 'title': 'Sports', 'description': 'Games & Scores'},
-    {'id': 'culture', 'title': 'Culture', 'description': 'Arts & Entertainment'}
+    {'id': 'news', 'title': '🌍 News', 'description': 'World Events & Politics'},
+    {'id': 'tech', 'title': '💾 Technology', 'description': 'The Future, Distributed.'},
+    {'id': 'sports', 'title': '🏈 Sports', 'description': 'Games & Scores'},
+    {'id': 'culture', 'title': '🎭 Culture', 'description': 'Arts & Entertainment'}
 ]
 
 # --- 9. Visual Thresholds ---

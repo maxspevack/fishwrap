@@ -39,18 +39,15 @@ In *Anathem*, the intellectuals filtered information through time to separate si
 
 ---
 
-## The Service: RSS Bankruptcy
+## See it Live
 
-Do you have 2,000 unread items in Feedly? Do you have a "Read Later" folder in Pocket that is effectively a graveyard?
+The flagship implementation of Fishwrap is **The Daily Clamour**.
 
-**You are suffering from Information Hoarding.**
+<a href="https://dailyclamour.com" target="_blank">
+  <img src="https://dailyclamour.com/static/images/daily-clamour.png" alt="The Daily Clamour" width="300" style="border: 2px solid #333; border-radius: 8px; padding: 10px; background: #fdfbf7;">
+</a>
 
-Fishwrap is your bankruptcy lawyer. We read the 2,000 items for you. We apply *your* rules to find the 15 that matter. We print them into a beautiful, distraction-free edition. We throw the rest in the trash.
-
-### Who is this for?
-*   **The Analyst:** Who needs an **auditable**, high-signal briefing on **Cybersecurity** or **Geopolitics** without the marketing fluff.
-*   **The Hacker:** Who wants to `git clone` their news consumption and write Python rules to banish "Individual-1" from their reality.
-*   **The Curator:** Who wants to publish a "Daily Digest" for their team or community.
+It runs on a strict schedule, publishing a finite edition 4 times a day.
 
 ---
 
@@ -73,4 +70,4 @@ Fishwrap is a Python application you run on your own machine.
 3.  **Read:**
     Open `demo/output/index.html` in your browser.
 
-[View Source on GitHub](https://github.com/maxspevack/fishwrap){: .btn .btn-primary .fs-5 .mb-4 .mb-md-0 .mr-2 } [See the Live Demo](https://dailyclamour.com){: .btn .fs-5 .mb-4 .mb-md-0 }
+[View Source on GitHub](https://github.com/maxspevack/fishwrap){: .btn .btn-primary .fs-5 .mb-4 .mb-md-0 .mr-2 } [Visit Daily Clamour](https://dailyclamour.com){: .btn .fs-5 .mb-4 .mb-md-0 }

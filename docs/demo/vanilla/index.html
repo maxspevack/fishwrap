@@ -6,12 +6,19 @@
     <title>Fishwrap Edition - Thursday, December 11, 2025</title>
     <style>
 :root {
-    --bg-color: #ffffff;
-    --text-color: #333333;
-    --accent-color: #000000;
-    --link-color: #0000EE;
-    --border-color: #dddddd;
-    --font-family: 'Helvetica Neue', Arial, sans-serif;
+    /* Dark Theme Palette */
+    --bg-color: #121212;
+    --sidebar-bg: #1a1a1a;
+    --card-bg: #1e1e1e;
+    --text-color: #e0e0e0;
+    --muted-color: #a0a0a0;
+    --border-color: #333333;
+    --accent-color: #ff9f43; /* Professional Orange/Amber accent */
+    --link-color: #54a0ff;
+    --success-color: #1dd1a1;
+    --font-family: 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+    --card-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+    --card-hover-shadow: 0 8px 12px rgba(0, 0, 0, 0.5);
 }
 
 body {
@@ -21,23 +28,24 @@ body {
     margin: 0;
     padding: 0;
     line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
 }
 
-a { color: var(--link-color); text-decoration: none; }
-a:hover { text-decoration: underline; }
+a { color: var(--link-color); text-decoration: none; transition: color 0.2s; }
+a:hover { color: #82ccdd; text-decoration: none; }
 
 .layout-container {
     display: flex;
-    max-width: 1400px;
+    max-width: 1600px; /* Slightly wider for modern screens */
     margin: 0 auto;
     min-height: 100vh;
 }
 
 /* Sidebar */
 .sidebar {
-    width: 250px;
-    padding: 20px;
-    background-color: #f8f8f8;
+    width: 280px;
+    padding: 30px 20px;
+    background-color: var(--sidebar-bg);
     border-right: 1px solid var(--border-color);
     flex-shrink: 0;
     display: flex;
@@ -52,39 +60,67 @@ a:hover { text-decoration: underline; }
 }
 
 .brand-logo-container {
-    margin-bottom: 20px;
-    padding-bottom: 10px;
-    border-bottom: 2px solid var(--accent-color);
+    margin-bottom: 30px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid var(--border-color);
+    text-align: center;
 }
 
-.brand-logo-svg {
-    max-width: 100%;
+.brand-logo-img {
+    max-width: 180px;
     height: auto;
     display: block;
+    margin: 0 auto;
+    /* Invert logo for dark mode if needed, or rely on it being robust */
+    filter: drop-shadow(0 2px 4px rgba(0,0,0,0.5));
+}
+
+.demo-label {
+    display: block;
+    margin-top: 10px;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    color: var(--accent-color);
+    font-weight: bold;
 }
 
 .meta-info {
-    font-size: 0.8rem;
-    color: #666;
-    margin-bottom: 20px;
+    font-size: 0.85rem;
+    color: var(--muted-color);
+    margin-bottom: 30px;
+    text-align: center;
+    background: rgba(255,255,255,0.05);
+    padding: 10px;
+    border-radius: 6px;
 }
 
 .nav-list {
     list-style: none;
     padding: 0;
-    flex-grow: 1; /* Pushes footer down */
+    margin: 0;
+    flex-grow: 1; 
 }
 
 .nav-item {
-    margin-bottom: 10px;
+    margin-bottom: 5px;
 }
 
 .nav-link {
-    display: block;
-    padding: 8px 0;
+    display: flex;
+    align-items: center;
+    padding: 10px 15px;
     color: var(--text-color);
-    font-weight: bold;
-    border-bottom: 1px solid #eee;
+    font-weight: 500;
+    border-radius: 6px;
+    transition: background 0.2s, color 0.2s;
+    border-left: 3px solid transparent;
+}
+
+.nav-link:hover {
+    background: rgba(255,255,255,0.08);
+    color: #fff;
+    border-left-color: var(--accent-color);
 }
 
 .sidebar-footer {
@@ -92,151 +128,211 @@ a:hover { text-decoration: underline; }
     padding-top: 20px;
     display: flex;
     flex-direction: column;
-    gap: 10px;
-    /* border-top: 1px solid #ddd; Removed per instruction */
+    gap: 15px;
+    border-top: 1px solid var(--border-color);
 }
 
 .github-link {
     display: inline-flex;
     align-items: center;
-    gap: 8px;
-    color: #333;
+    justify-content: center;
+    gap: 10px;
+    color: var(--muted-color);
     font-size: 0.9rem;
-    font-weight: bold;
+    font-weight: 500;
+    padding: 8px;
+    border-radius: 6px;
+    transition: all 0.2s;
+}
+.github-link:hover {
+    color: #fff;
+    background: rgba(255,255,255,0.1);
 }
 .github-icon {
-    width: 24px;
-    height: 24px;
+    width: 20px;
+    height: 20px;
     fill: currentColor;
 }
 
 .btn-debug {
     display: block;
     width: 100%;
-    padding: 8px;
-    background: #eee;
-    border: 1px solid #ccc;
+    padding: 10px;
+    background: transparent;
+    border: 1px solid var(--border-color);
+    color: var(--muted-color);
     cursor: pointer;
     font-size: 0.8rem;
-    border-radius: 4px;
+    font-weight: 600;
+    border-radius: 6px;
+    transition: all 0.2s;
+    text-transform: uppercase;
+    letter-spacing: 1px;
 }
-.btn-debug:hover { background: #ddd; }
+.btn-debug:hover { 
+    background: rgba(255,255,255,0.05);
+    color: var(--accent-color);
+    border-color: var(--accent-color);
+}
 
 /* Main Content */
 .main-content {
     flex-grow: 1;
-    padding: 40px;
+    padding: 40px 60px;
 }
 
 .section-block {
-    margin-bottom: 60px;
+    margin-bottom: 80px;
+    scroll-margin-top: 20px;
 }
 
 .section-header {
-    border-bottom: 2px solid var(--accent-color);
-    margin-bottom: 20px;
+    border-bottom: 1px solid var(--border-color);
+    margin-bottom: 30px;
+    padding-bottom: 15px;
     display: flex;
     align-items: baseline;
-    gap: 15px;
+    gap: 20px;
 }
 
 .section-title {
-    font-size: 2rem;
+    font-size: 2.2rem;
+    font-weight: 300; /* Lighter font weight for modern look */
     margin: 0;
+    color: #fff;
+    letter-spacing: -0.5px;
 }
 
 .section-desc {
-    color: #666;
-    font-style: italic;
+    color: var(--muted-color);
+    font-size: 1rem;
+    font-weight: 400;
 }
 
 /* Grid Layout */
 .bento-grid {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
-    gap: 20px;
+    gap: 24px;
     grid-auto-flow: dense;
-    grid-auto-rows: minmax(100px, auto);
+    /* grid-auto-rows: minmax(180px, auto); Removed fixed height constraint */ 
 }
 
 .card {
     border: 1px solid var(--border-color);
-    padding: 15px;
-    background: #fff;
+    padding: 24px;
+    background: var(--card-bg);
     display: flex;
     flex-direction: column;
-    transition: box-shadow 0.2s;
-    position: relative; /* Context for debug overlay */
+    transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
+    position: relative;
+    border-radius: 8px;
+    box-shadow: var(--card-shadow);
 }
 
 .card:hover {
-    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    transform: translateY(-4px);
+    box-shadow: var(--card-hover-shadow);
+    border-color: var(--accent-color);
+    z-index: 2;
 }
 
 .card-meta {
-    font-size: 0.75rem;
-    color: #888;
-    margin-bottom: 8px;
+    font-size: 0.7rem;
+    color: var(--accent-color);
+    margin-bottom: 12px;
     text-transform: uppercase;
-    font-weight: bold;
+    font-weight: 700;
+    letter-spacing: 1px;
+    display: flex;
+    justify-content: space-between;
 }
 
 .card h3 {
-    margin: 0;
-    font-size: 1.1rem;
-    line-height: 1.4;
+    margin: 0 0 12px 0;
+    font-weight: 600;
+    color: #fff;
+    line-height: 1.3;
 }
+
+.card p {
+    font-size: 0.95rem;
+    color: var(--muted-color);
+    margin: 0;
+    display: -webkit-box;
+    -webkit-line-clamp: 4;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+/* Sizes & Visual Hierarchy */
+.card.feature {
+    grid-column: span 2;
+    grid-row: span 2;
+    background: linear-gradient(145deg, #252525, #1e1e1e);
+}
+.card.feature h3 { font-size: 1.8rem; font-weight: 700; }
+.card.feature p { font-size: 1.1rem; -webkit-line-clamp: 6; }
+
+.card.standard {
+    grid-column: span 1;
+    grid-row: span 2;
+}
+.card.standard h3 { font-size: 1.3rem; }
+
+.card.compact {
+    grid-column: span 1;
+    grid-row: span 1;
+    padding: 20px;
+}
+.card.compact h3 { font-size: 1.1rem; }
+.card.compact p { -webkit-line-clamp: 3; }
+
 
 /* Debug Overlay */
 .debug-overlay {
     display: none;
     position: absolute;
     top: 0; left: 0; right: 0; bottom: 0;
-    background: rgba(255, 255, 255, 0.96);
-    padding: 10px;
-    font-size: 0.75rem;
-    color: #333;
-    border: 2px solid red;
+    background: rgba(0, 0, 0, 0.92);
+    padding: 20px;
+    font-size: 0.85rem;
+    color: #0f0; /* Matrix green */
+    font-family: 'Courier New', monospace;
+    border: 1px solid #0f0;
     overflow-y: auto;
-    z-index: 10;
+    z-index: 100;
+    border-radius: 8px;
 }
 
 body.debug-active .debug-overlay { display: block; }
 
-.debug-section { margin-bottom: 8px; }
-.debug-row { display: flex; justify-content: space-between; border-bottom: 1px dotted #eee; }
-
-/* Sizes */
-.card.feature {
-    grid-column: span 2;
-    grid-row: span 2;
-    background-color: #fafafa;
-}
-.card.feature h3 { font-size: 1.5rem; }
-
-.card.standard {
-    grid-column: span 1;
-    grid-row: span 2;
-}
-.card.standard h3 { font-size: 1.2rem; }
-
-.card.compact {
-    grid-column: span 1;
-    grid-row: span 1;
-}
+.debug-section { margin-bottom: 15px; border-bottom: 1px dashed #005500; padding-bottom: 10px; }
+.debug-header { font-weight: bold; color: #fff; margin-bottom: 5px; text-transform: uppercase; }
+.debug-row { display: flex; justify-content: space-between; margin-bottom: 3px; }
+.debug-row span:first-child { color: #888; }
 
 /* Responsive */
-@media (max-width: 1024px) {
+@media (max-width: 1200px) {
+    .bento-grid { grid-template-columns: repeat(3, 1fr); }
+    .card.feature { grid-column: span 2; }
+}
+
+@media (max-width: 900px) {
     .bento-grid { grid-template-columns: repeat(2, 1fr); }
+    .main-content { padding: 30px; }
 }
 
 @media (max-width: 768px) {
     .layout-container { flex-direction: column; }
-    .sidebar { width: auto; border-right: none; border-bottom: 1px solid var(--border-color); }
+    .sidebar { width: auto; height: auto; position: relative; border-right: none; border-bottom: 1px solid var(--border-color); }
+    .nav-list { display: flex; overflow-x: auto; gap: 10px; padding-bottom: 10px; }
+    .nav-link { white-space: nowrap; border-left: none; border-bottom: 3px solid transparent; }
+    .nav-link:hover { border-left-color: transparent; border-bottom-color: var(--accent-color); }
+    
     .bento-grid { grid-template-columns: 1fr; }
     .card.feature, .card.standard, .card.compact { grid-column: auto; grid-row: auto; }
 }
-
     </style>
 </head>
 <body>
@@ -244,8 +340,13 @@ body.debug-active .debug-overlay { display: block; }
 <div class="layout-container">
     <aside class="sidebar">
         <div class="brand-logo-container">
-            <img src="static/images/fishwrap_logo.svg" alt="Fishwrap Logo" class="brand-logo-svg">
+            <!-- Link to the "Flagship" production instance branding -->
+            <a href="https://dailyclamour.com" target="_blank" title="Visit The Daily Clamour">
+                <img src="https://dailyclamour.com/static/images/daily-clamour.png" alt="The Daily Clamour" class="brand-logo-img">
+            </a>
+            <span class="demo-label">Powered by Fishwrap</span>
         </div>
+        
         <div class="meta-info">
             <div>Thursday, December 11, 2025</div>
             <div>Vol. 1, Issue 5</div>
@@ -253,16 +354,16 @@ body.debug-active .debug-overlay { display: block; }
         
         <ul class="nav-list">
             <li class="nav-item">
-    <a href="#news" class="nav-link">News</a>
+    <a href="#news" class="nav-link">🌍 News</a>
 </li>
 <li class="nav-item">
-    <a href="#tech" class="nav-link">Technology</a>
+    <a href="#tech" class="nav-link">💾 Technology</a>
 </li>
 <li class="nav-item">
-    <a href="#sports" class="nav-link">Sports</a>
+    <a href="#sports" class="nav-link">🏈 Sports</a>
 </li>
 <li class="nav-item">
-    <a href="#culture" class="nav-link">Culture</a>
+    <a href="#culture" class="nav-link">🎭 Culture</a>
 </li>
 
         </ul>
@@ -272,18 +373,18 @@ body.debug-active .debug-overlay { display: block; }
                 <svg class="github-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"></path></svg>
                 <span>View Source</span>
              </a>
-             <button class="btn-debug" onclick="document.body.classList.toggle('debug-active')">Toggle Debug</button>
+             <button class="btn-debug" onclick="document.body.classList.toggle('debug-active')">Debug Overlay</button>
         </div>
     </aside>
 
     <main class="main-content">
         <section id="news" class="section-block">
     <div class="section-header">
-        <h2 class="section-title">News</h2>
+        <h2 class="section-title">🌍 News</h2>
         <span class="section-desc">World Events & Politics</span>
     </div>
     <div class="bento-grid">
-        <a href="https://www.bbc.com/news/articles/clykk2yrl9ko?at_medium=RSS&at_campaign=rss" target="_blank" class="card compact" style="border-top: 4px solid #2980b9;">
+        <a href="https://www.bbc.com/news/articles/clykk2yrl9ko?at_medium=RSS&at_campaign=rss" target="_blank" class="card compact" style="border-top: 4px solid #8e44ad;">
     <div class="card-meta">
         <span class="domain">bbc.com</span>
     </div>
@@ -308,7 +409,7 @@ body.debug-active .debug-overlay { display: block; }
 </div>
 
 </a>
-<a href="https://www.bbc.com/news/articles/c78vz2v85mpo?at_medium=RSS&at_campaign=rss" target="_blank" class="card compact" style="border-top: 4px solid #2980b9;">
+<a href="https://www.bbc.com/news/articles/c78vz2v85mpo?at_medium=RSS&at_campaign=rss" target="_blank" class="card compact" style="border-top: 4px solid #c0392b;">
     <div class="card-meta">
         <span class="domain">bbc.com</span>
     </div>
@@ -333,7 +434,7 @@ body.debug-active .debug-overlay { display: block; }
 </div>
 
 </a>
-<a href="https://www.nytimes.com/2025/12/11/us/indiana-senate-redistricting-republicans.html" target="_blank" class="card compact" style="border-top: 4px solid #c0392b;">
+<a href="https://www.nytimes.com/2025/12/11/us/indiana-senate-redistricting-republicans.html" target="_blank" class="card compact" style="border-top: 4px solid #d35400;">
     <div class="card-meta">
         <span class="domain">nytimes.com</span>
     </div>
@@ -383,7 +484,7 @@ body.debug-active .debug-overlay { display: block; }
 </div>
 
 </a>
-<a href="https://www.nytimes.com/2025/12/11/us/politics/indiana-trump-redistricting-takeaways.html" target="_blank" class="card compact" style="border-top: 4px solid #8e44ad;">
+<a href="https://www.nytimes.com/2025/12/11/us/politics/indiana-trump-redistricting-takeaways.html" target="_blank" class="card compact" style="border-top: 4px solid #d35400;">
     <div class="card-meta">
         <span class="domain">nytimes.com</span>
     </div>
@@ -408,7 +509,7 @@ body.debug-active .debug-overlay { display: block; }
 </div>
 
 </a>
-<a href="https://www.nytimes.com/2025/12/11/us/politics/grand-jury-letitia-james.html" target="_blank" class="card compact" style="border-top: 4px solid #2980b9;">
+<a href="https://www.nytimes.com/2025/12/11/us/politics/grand-jury-letitia-james.html" target="_blank" class="card compact" style="border-top: 4px solid #27ae60;">
     <div class="card-meta">
         <span class="domain">nytimes.com</span>
     </div>
@@ -433,7 +534,7 @@ body.debug-active .debug-overlay { display: block; }
 </div>
 
 </a>
-<a href="https://www.nytimes.com/2025/12/11/us/politics/noem-house-hearing-immigration-crackdown.html" target="_blank" class="card compact" style="border-top: 4px solid #27ae60;">
+<a href="https://www.nytimes.com/2025/12/11/us/politics/noem-house-hearing-immigration-crackdown.html" target="_blank" class="card compact" style="border-top: 4px solid #8e44ad;">
     <div class="card-meta">
         <span class="domain">nytimes.com</span>
     </div>
@@ -508,7 +609,7 @@ body.debug-active .debug-overlay { display: block; }
 </div>
 
 </a>
-<a href="https://www.nytimes.com/2025/12/11/technology/openai-google-ai-technology-gap.html" target="_blank" class="card compact" style="border-top: 4px solid #8e44ad;">
+<a href="https://www.nytimes.com/2025/12/11/technology/openai-google-ai-technology-gap.html" target="_blank" class="card compact" style="border-top: 4px solid #c0392b;">
     <div class="card-meta">
         <span class="domain">nytimes.com</span>
     </div>
@@ -538,11 +639,11 @@ body.debug-active .debug-overlay { display: block; }
 </section>
 <section id="tech" class="section-block">
     <div class="section-header">
-        <h2 class="section-title">Technology</h2>
+        <h2 class="section-title">💾 Technology</h2>
         <span class="section-desc">The Future, Distributed.</span>
     </div>
     <div class="bento-grid">
-        <a href="https://www.reddit.com/r/technology/comments/1pk0aps/disney_inks_blockbuster_1b_deal_with_openai/" target="_blank" class="card feature" style="border-top: 4px solid #d35400;">
+        <a href="https://www.reddit.com/r/technology/comments/1pk0aps/disney_inks_blockbuster_1b_deal_with_openai/" target="_blank" class="card feature" style="border-top: 4px solid #c0392b;">
     <div class="card-meta">
         <span class="domain">reddit.com</span>
     </div>
@@ -558,16 +659,16 @@ body.debug-active .debug-overlay { display: block; }
     </div>
     <div class="debug-section">
         <strong>Score Breakdown:</strong>
-        <div class='debug-row'><span class='label'>Stats</span><span class='val'>+15076</span></div>
+        <div class='debug-row'><span class='label'>Stats</span><span class='val'>+15138</span></div>
         <div style="border-top: 1px solid #ccc; margin-top: 5px; font-weight: bold; display: flex; justify-content: space-between;">
             <span>TOTAL</span>
-            <span>15076</span>
+            <span>15138</span>
         </div>
     </div>
 </div>
 
 </a>
-<a href="https://www.reddit.com/r/technology/comments/1pkcu10/voting_machines_said_stephentown_rejected_the/" target="_blank" class="card standard" style="border-top: 4px solid #c0392b;">
+<a href="https://www.reddit.com/r/technology/comments/1pkcu10/voting_machines_said_stephentown_rejected_the/" target="_blank" class="card standard" style="border-top: 4px solid #2980b9;">
     <div class="card-meta">
         <span class="domain">reddit.com</span>
     </div>
@@ -583,16 +684,16 @@ body.debug-active .debug-overlay { display: block; }
     </div>
     <div class="debug-section">
         <strong>Score Breakdown:</strong>
-        <div class='debug-row'><span class='label'>Stats</span><span class='val'>+7454</span></div>
+        <div class='debug-row'><span class='label'>Stats</span><span class='val'>+7845</span></div>
         <div style="border-top: 1px solid #ccc; margin-top: 5px; font-weight: bold; display: flex; justify-content: space-between;">
             <span>TOTAL</span>
-            <span>7454</span>
+            <span>7845</span>
         </div>
     </div>
 </div>
 
 </a>
-<a href="https://www.reddit.com/r/technology/comments/1pk17gx/disney_fires_off_ceaseanddesist_letter_to_google/" target="_blank" class="card compact" style="border-top: 4px solid #c0392b;">
+<a href="https://www.reddit.com/r/technology/comments/1pk17gx/disney_fires_off_ceaseanddesist_letter_to_google/" target="_blank" class="card standard" style="border-top: 4px solid #d35400;">
     <div class="card-meta">
         <span class="domain">reddit.com</span>
     </div>
@@ -608,16 +709,16 @@ body.debug-active .debug-overlay { display: block; }
     </div>
     <div class="debug-section">
         <strong>Score Breakdown:</strong>
-        <div class='debug-row'><span class='label'>Stats</span><span class='val'>+4990</span></div>
+        <div class='debug-row'><span class='label'>Stats</span><span class='val'>+5034</span></div>
         <div style="border-top: 1px solid #ccc; margin-top: 5px; font-weight: bold; display: flex; justify-content: space-between;">
             <span>TOTAL</span>
-            <span>4990</span>
+            <span>5034</span>
         </div>
     </div>
 </div>
 
 </a>
-<a href="https://www.reddit.com/r/technology/comments/1pk6xu1/google_illegally_scraped_the_web_to_fix_its_ai/" target="_blank" class="card compact" style="border-top: 4px solid #27ae60;">
+<a href="https://www.reddit.com/r/technology/comments/1pk6xu1/google_illegally_scraped_the_web_to_fix_its_ai/" target="_blank" class="card compact" style="border-top: 4px solid #c0392b;">
     <div class="card-meta">
         <span class="domain">reddit.com</span>
     </div>
@@ -633,16 +734,16 @@ body.debug-active .debug-overlay { display: block; }
     </div>
     <div class="debug-section">
         <strong>Score Breakdown:</strong>
-        <div class='debug-row'><span class='label'>Stats</span><span class='val'>+4130</span></div>
+        <div class='debug-row'><span class='label'>Stats</span><span class='val'>+4258</span></div>
         <div style="border-top: 1px solid #ccc; margin-top: 5px; font-weight: bold; display: flex; justify-content: space-between;">
             <span>TOTAL</span>
-            <span>4130</span>
+            <span>4258</span>
         </div>
     </div>
 </div>
 
 </a>
-<a href="https://www.reddit.com/r/technology/comments/1pk4zzh/rivian_will_add_lidar_in_2026_says_teslas_cameras/" target="_blank" class="card compact" style="border-top: 4px solid #8e44ad;">
+<a href="https://www.reddit.com/r/technology/comments/1pk4zzh/rivian_will_add_lidar_in_2026_says_teslas_cameras/" target="_blank" class="card compact" style="border-top: 4px solid #27ae60;">
     <div class="card-meta">
         <span class="domain">reddit.com</span>
     </div>
@@ -658,16 +759,16 @@ body.debug-active .debug-overlay { display: block; }
     </div>
     <div class="debug-section">
         <strong>Score Breakdown:</strong>
-        <div class='debug-row'><span class='label'>Stats</span><span class='val'>+3888</span></div>
+        <div class='debug-row'><span class='label'>Stats</span><span class='val'>+3953</span></div>
         <div style="border-top: 1px solid #ccc; margin-top: 5px; font-weight: bold; display: flex; justify-content: space-between;">
             <span>TOTAL</span>
-            <span>3888</span>
+            <span>3953</span>
         </div>
     </div>
 </div>
 
 </a>
-<a href="https://www.reddit.com/r/technology/comments/1pjz01q/our_corrupt_congress_just_quietly_killed_military/" target="_blank" class="card compact" style="border-top: 4px solid #2980b9;">
+<a href="https://www.reddit.com/r/technology/comments/1pjz01q/our_corrupt_congress_just_quietly_killed_military/" target="_blank" class="card compact" style="border-top: 4px solid #d35400;">
     <div class="card-meta">
         <span class="domain">reddit.com</span>
     </div>
@@ -683,16 +784,16 @@ body.debug-active .debug-overlay { display: block; }
     </div>
     <div class="debug-section">
         <strong>Score Breakdown:</strong>
-        <div class='debug-row'><span class='label'>Stats</span><span class='val'>+2377</span></div>
+        <div class='debug-row'><span class='label'>Stats</span><span class='val'>+2403</span></div>
         <div style="border-top: 1px solid #ccc; margin-top: 5px; font-weight: bold; display: flex; justify-content: space-between;">
             <span>TOTAL</span>
-            <span>2377</span>
+            <span>2403</span>
         </div>
     </div>
 </div>
 
 </a>
-<a href="https://www.reddit.com/r/technology/comments/1pk0cyr/microsoft_finally_realizes_the_threat_steamos/" target="_blank" class="card compact" style="border-top: 4px solid #8e44ad;">
+<a href="https://www.reddit.com/r/technology/comments/1pk0cyr/microsoft_finally_realizes_the_threat_steamos/" target="_blank" class="card compact" style="border-top: 4px solid #c0392b;">
     <div class="card-meta">
         <span class="domain">reddit.com</span>
     </div>
@@ -708,16 +809,16 @@ body.debug-active .debug-overlay { display: block; }
     </div>
     <div class="debug-section">
         <strong>Score Breakdown:</strong>
-        <div class='debug-row'><span class='label'>Stats</span><span class='val'>+2174</span></div>
+        <div class='debug-row'><span class='label'>Stats</span><span class='val'>+2192</span></div>
         <div style="border-top: 1px solid #ccc; margin-top: 5px; font-weight: bold; display: flex; justify-content: space-between;">
             <span>TOTAL</span>
-            <span>2174</span>
+            <span>2192</span>
         </div>
     </div>
 </div>
 
 </a>
-<a href="https://www.reddit.com/r/technology/comments/1pk32a5/everyone_hates_microsoft_copilot_does_it_even/" target="_blank" class="card compact" style="border-top: 4px solid #8e44ad;">
+<a href="https://www.reddit.com/r/technology/comments/1pk32a5/everyone_hates_microsoft_copilot_does_it_even/" target="_blank" class="card compact" style="border-top: 4px solid #27ae60;">
     <div class="card-meta">
         <span class="domain">reddit.com</span>
     </div>
@@ -733,16 +834,16 @@ body.debug-active .debug-overlay { display: block; }
     </div>
     <div class="debug-section">
         <strong>Score Breakdown:</strong>
-        <div class='debug-row'><span class='label'>Stats</span><span class='val'>+1722</span></div>
+        <div class='debug-row'><span class='label'>Stats</span><span class='val'>+1731</span></div>
         <div style="border-top: 1px solid #ccc; margin-top: 5px; font-weight: bold; display: flex; justify-content: space-between;">
             <span>TOTAL</span>
-            <span>1722</span>
+            <span>1731</span>
         </div>
     </div>
 </div>
 
 </a>
-<a href="https://news.ycombinator.com/item?id=46234788" target="_blank" class="card compact" style="border-top: 4px solid #c0392b;">
+<a href="https://news.ycombinator.com/item?id=46234788" target="_blank" class="card compact" style="border-top: 4px solid #2980b9;">
     <div class="card-meta">
         <span class="domain">openai.com</span>
     </div>
@@ -758,16 +859,16 @@ body.debug-active .debug-overlay { display: block; }
     </div>
     <div class="debug-section">
         <strong>Score Breakdown:</strong>
-        <div class='debug-row'><span class='label'>Stats</span><span class='val'>+1611</span></div>
+        <div class='debug-row'><span class='label'>Stats</span><span class='val'>+1633</span></div>
         <div style="border-top: 1px solid #ccc; margin-top: 5px; font-weight: bold; display: flex; justify-content: space-between;">
             <span>TOTAL</span>
-            <span>1611</span>
+            <span>1633</span>
         </div>
     </div>
 </div>
 
 </a>
-<a href="https://www.reddit.com/r/technology/comments/1pjybi3/disney_making_1_billion_investment_in_openai_will/" target="_blank" class="card compact" style="border-top: 4px solid #27ae60;">
+<a href="https://www.reddit.com/r/technology/comments/1pjybi3/disney_making_1_billion_investment_in_openai_will/" target="_blank" class="card compact" style="border-top: 4px solid #2980b9;">
     <div class="card-meta">
         <span class="domain">reddit.com</span>
     </div>
@@ -783,10 +884,10 @@ body.debug-active .debug-overlay { display: block; }
     </div>
     <div class="debug-section">
         <strong>Score Breakdown:</strong>
-        <div class='debug-row'><span class='label'>Stats</span><span class='val'>+1566</span></div>
+        <div class='debug-row'><span class='label'>Stats</span><span class='val'>+1573</span></div>
         <div style="border-top: 1px solid #ccc; margin-top: 5px; font-weight: bold; display: flex; justify-content: space-between;">
             <span>TOTAL</span>
-            <span>1566</span>
+            <span>1573</span>
         </div>
     </div>
 </div>
@@ -797,11 +898,11 @@ body.debug-active .debug-overlay { display: block; }
 </section>
 <section id="sports" class="section-block">
     <div class="section-header">
-        <h2 class="section-title">Sports</h2>
+        <h2 class="section-title">🏈 Sports</h2>
         <span class="section-desc">Games & Scores</span>
     </div>
     <div class="bento-grid">
-        <a href="https://www.reddit.com/r/nfl/comments/1pjtqe8/highlight_texans_owner_cal_mcnair_gets_a_high/" target="_blank" class="card feature" style="border-top: 4px solid #8e44ad;">
+        <a href="https://www.reddit.com/r/nfl/comments/1pjtqe8/highlight_texans_owner_cal_mcnair_gets_a_high/" target="_blank" class="card feature" style="border-top: 4px solid #d35400;">
     <div class="card-meta">
         <span class="domain">reddit.com</span>
     </div>
@@ -817,16 +918,16 @@ body.debug-active .debug-overlay { display: block; }
     </div>
     <div class="debug-section">
         <strong>Score Breakdown:</strong>
-        <div class='debug-row'><span class='label'>Stats</span><span class='val'>+20671</span></div>
+        <div class='debug-row'><span class='label'>Stats</span><span class='val'>+20720</span></div>
         <div style="border-top: 1px solid #ccc; margin-top: 5px; font-weight: bold; display: flex; justify-content: space-between;">
             <span>TOTAL</span>
-            <span>20671</span>
+            <span>20720</span>
         </div>
     </div>
 </div>
 
 </a>
-<a href="https://www.reddit.com/r/nba/comments/1pk2b54/jason_collins_a_few_months_ago_my_family_released/" target="_blank" class="card feature" style="border-top: 4px solid #8e44ad;">
+<a href="https://www.reddit.com/r/nba/comments/1pk2b54/jason_collins_a_few_months_ago_my_family_released/" target="_blank" class="card feature" style="border-top: 4px solid #c0392b;">
     <div class="card-meta">
         <span class="domain">reddit.com</span>
     </div>
@@ -842,41 +943,16 @@ body.debug-active .debug-overlay { display: block; }
     </div>
     <div class="debug-section">
         <strong>Score Breakdown:</strong>
-        <div class='debug-row'><span class='label'>Stats</span><span class='val'>+14080</span></div>
+        <div class='debug-row'><span class='label'>Stats</span><span class='val'>+14207</span></div>
         <div style="border-top: 1px solid #ccc; margin-top: 5px; font-weight: bold; display: flex; justify-content: space-between;">
             <span>TOTAL</span>
-            <span>14080</span>
+            <span>14207</span>
         </div>
     </div>
 </div>
 
 </a>
-<a href="https://www.reddit.com/r/soccer/comments/1pjqasv/haaland_is_asked_rüdiger_or_jamie_carragher/" target="_blank" class="card standard" style="border-top: 4px solid #2980b9;">
-    <div class="card-meta">
-        <span class="domain">reddit.com</span>
-    </div>
-    <h3>Haaland is asked: &quot;Rüdiger or Jamie Carragher?&quot; Haaland: I think I need to say Rüdiger, because Carragher is a bit of a loose cannon now so I need to be careful</h3>
-    <div class="debug-overlay">
-    <div class="debug-section">
-        <strong>Classification:</strong> 
-                    <div class="debug-section">
-                        <div class="debug-header">CLASSIFICATION</div>
-                        <div class="debug-row"><span class="label">Reason</span><span class="val">source_default</span></div>
-                    </div>
-                    
-    </div>
-    <div class="debug-section">
-        <strong>Score Breakdown:</strong>
-        <div class='debug-row'><span class='label'>Stats</span><span class='val'>+9032</span></div>
-        <div style="border-top: 1px solid #ccc; margin-top: 5px; font-weight: bold; display: flex; justify-content: space-between;">
-            <span>TOTAL</span>
-            <span>9032</span>
-        </div>
-    </div>
-</div>
-
-</a>
-<a href="https://www.reddit.com/r/nfl/comments/1pkc1yy/tom_brady_on_philip_rivers_comeback_i_certainly/" target="_blank" class="card standard" style="border-top: 4px solid #c0392b;">
+<a href="https://www.reddit.com/r/nfl/comments/1pkc1yy/tom_brady_on_philip_rivers_comeback_i_certainly/" target="_blank" class="card standard" style="border-top: 4px solid #27ae60;">
     <div class="card-meta">
         <span class="domain">reddit.com</span>
     </div>
@@ -892,16 +968,16 @@ body.debug-active .debug-overlay { display: block; }
     </div>
     <div class="debug-section">
         <strong>Score Breakdown:</strong>
-        <div class='debug-row'><span class='label'>Stats</span><span class='val'>+7361</span></div>
+        <div class='debug-row'><span class='label'>Stats</span><span class='val'>+7508</span></div>
         <div style="border-top: 1px solid #ccc; margin-top: 5px; font-weight: bold; display: flex; justify-content: space-between;">
             <span>TOTAL</span>
-            <span>7361</span>
+            <span>7508</span>
         </div>
     </div>
 </div>
 
 </a>
-<a href="https://www.reddit.com/r/nfl/comments/1pk8ueb/highlight_aaron_rodgers_on_philip_rivers_coming/" target="_blank" class="card standard" style="border-top: 4px solid #d35400;">
+<a href="https://www.reddit.com/r/nfl/comments/1pk8ueb/highlight_aaron_rodgers_on_philip_rivers_coming/" target="_blank" class="card standard" style="border-top: 4px solid #2980b9;">
     <div class="card-meta">
         <span class="domain">reddit.com</span>
     </div>
@@ -917,16 +993,16 @@ body.debug-active .debug-overlay { display: block; }
     </div>
     <div class="debug-section">
         <strong>Score Breakdown:</strong>
-        <div class='debug-row'><span class='label'>Stats</span><span class='val'>+7040</span></div>
+        <div class='debug-row'><span class='label'>Stats</span><span class='val'>+7107</span></div>
         <div style="border-top: 1px solid #ccc; margin-top: 5px; font-weight: bold; display: flex; justify-content: space-between;">
             <span>TOTAL</span>
-            <span>7040</span>
+            <span>7107</span>
         </div>
     </div>
 </div>
 
 </a>
-<a href="https://www.reddit.com/r/nfl/comments/1pk3jh9/cam_newton_angry_at_colts_for_signing_philip/" target="_blank" class="card standard" style="border-top: 4px solid #c0392b;">
+<a href="https://www.reddit.com/r/nfl/comments/1pk3jh9/cam_newton_angry_at_colts_for_signing_philip/" target="_blank" class="card standard" style="border-top: 4px solid #8e44ad;">
     <div class="card-meta">
         <span class="domain">reddit.com</span>
     </div>
@@ -942,16 +1018,16 @@ body.debug-active .debug-overlay { display: block; }
     </div>
     <div class="debug-section">
         <strong>Score Breakdown:</strong>
-        <div class='debug-row'><span class='label'>Stats</span><span class='val'>+6302</span></div>
+        <div class='debug-row'><span class='label'>Stats</span><span class='val'>+6322</span></div>
         <div style="border-top: 1px solid #ccc; margin-top: 5px; font-weight: bold; display: flex; justify-content: space-between;">
             <span>TOTAL</span>
-            <span>6302</span>
+            <span>6322</span>
         </div>
     </div>
 </div>
 
 </a>
-<a href="https://www.reddit.com/r/nfl/comments/1pk6oj5/highlight_bo_nix_on_what_he_thinks_about_being/" target="_blank" class="card compact" style="border-top: 4px solid #8e44ad;">
+<a href="https://www.reddit.com/r/nfl/comments/1pk6oj5/highlight_bo_nix_on_what_he_thinks_about_being/" target="_blank" class="card standard" style="border-top: 4px solid #27ae60;">
     <div class="card-meta">
         <span class="domain">reddit.com</span>
     </div>
@@ -967,16 +1043,16 @@ body.debug-active .debug-overlay { display: block; }
     </div>
     <div class="debug-section">
         <strong>Score Breakdown:</strong>
-        <div class='debug-row'><span class='label'>Stats</span><span class='val'>+5757</span></div>
+        <div class='debug-row'><span class='label'>Stats</span><span class='val'>+5786</span></div>
         <div style="border-top: 1px solid #ccc; margin-top: 5px; font-weight: bold; display: flex; justify-content: space-between;">
             <span>TOTAL</span>
-            <span>5757</span>
+            <span>5786</span>
         </div>
     </div>
 </div>
 
 </a>
-<a href="https://www.reddit.com/r/soccer/comments/1pk13cy/monumental_betrayal_cheapest_world_cup_final/" target="_blank" class="card compact" style="border-top: 4px solid #c0392b;">
+<a href="https://www.reddit.com/r/soccer/comments/1pk13cy/monumental_betrayal_cheapest_world_cup_final/" target="_blank" class="card compact" style="border-top: 4px solid #2980b9;">
     <div class="card-meta">
         <span class="domain">reddit.com</span>
     </div>
@@ -992,10 +1068,35 @@ body.debug-active .debug-overlay { display: block; }
     </div>
     <div class="debug-section">
         <strong>Score Breakdown:</strong>
-        <div class='debug-row'><span class='label'>Stats</span><span class='val'>+5240</span></div>
+        <div class='debug-row'><span class='label'>Stats</span><span class='val'>+5309</span></div>
         <div style="border-top: 1px solid #ccc; margin-top: 5px; font-weight: bold; display: flex; justify-content: space-between;">
             <span>TOTAL</span>
-            <span>5240</span>
+            <span>5309</span>
+        </div>
+    </div>
+</div>
+
+</a>
+<a href="https://www.reddit.com/r/nba/comments/1pk0jrs/highlight_the_lakers_attempt_to_play_transition/" target="_blank" class="card compact" style="border-top: 4px solid #c0392b;">
+    <div class="card-meta">
+        <span class="domain">reddit.com</span>
+    </div>
+    <h3>[Highlight] The Lakers attempt to play transition defense</h3>
+    <div class="debug-overlay">
+    <div class="debug-section">
+        <strong>Classification:</strong> 
+                    <div class="debug-section">
+                        <div class="debug-header">CLASSIFICATION</div>
+                        <div class="debug-row"><span class="label">Reason</span><span class="val">source_default</span></div>
+                    </div>
+                    
+    </div>
+    <div class="debug-section">
+        <strong>Score Breakdown:</strong>
+        <div class='debug-row'><span class='label'>Stats</span><span class='val'>+5165</span></div>
+        <div style="border-top: 1px solid #ccc; margin-top: 5px; font-weight: bold; display: flex; justify-content: space-between;">
+            <span>TOTAL</span>
+            <span>5165</span>
         </div>
     </div>
 </div>
@@ -1006,7 +1107,7 @@ body.debug-active .debug-overlay { display: block; }
 </section>
 <section id="culture" class="section-block">
     <div class="section-header">
-        <h2 class="section-title">Culture</h2>
+        <h2 class="section-title">🎭 Culture</h2>
         <span class="section-desc">Arts & Entertainment</span>
     </div>
     <div class="bento-grid">
@@ -1026,16 +1127,16 @@ body.debug-active .debug-overlay { display: block; }
     </div>
     <div class="debug-section">
         <strong>Score Breakdown:</strong>
-        <div class='debug-row'><span class='label'>Stats</span><span class='val'>+12874</span></div>
+        <div class='debug-row'><span class='label'>Stats</span><span class='val'>+12962</span></div>
         <div style="border-top: 1px solid #ccc; margin-top: 5px; font-weight: bold; display: flex; justify-content: space-between;">
             <span>TOTAL</span>
-            <span>12874</span>
+            <span>12962</span>
         </div>
     </div>
 </div>
 
 </a>
-<a href="https://www.reddit.com/r/movies/comments/1pjz12z/the_iconic_home_alone_house_is_being_renovated_by/" target="_blank" class="card feature" style="border-top: 4px solid #2980b9;">
+<a href="https://www.reddit.com/r/movies/comments/1pjz12z/the_iconic_home_alone_house_is_being_renovated_by/" target="_blank" class="card feature" style="border-top: 4px solid #8e44ad;">
     <div class="card-meta">
         <span class="domain">reddit.com</span>
     </div>
@@ -1051,16 +1152,16 @@ body.debug-active .debug-overlay { display: block; }
     </div>
     <div class="debug-section">
         <strong>Score Breakdown:</strong>
-        <div class='debug-row'><span class='label'>Stats</span><span class='val'>+10343</span></div>
+        <div class='debug-row'><span class='label'>Stats</span><span class='val'>+10426</span></div>
         <div style="border-top: 1px solid #ccc; margin-top: 5px; font-weight: bold; display: flex; justify-content: space-between;">
             <span>TOTAL</span>
-            <span>10343</span>
+            <span>10426</span>
         </div>
     </div>
 </div>
 
 </a>
-<a href="https://www.reddit.com/r/movies/comments/1pkcrdl/markipliers_iron_lung_picked_up_by_amc_cinemark/" target="_blank" class="card standard" style="border-top: 4px solid #2980b9;">
+<a href="https://www.reddit.com/r/movies/comments/1pkcrdl/markipliers_iron_lung_picked_up_by_amc_cinemark/" target="_blank" class="card standard" style="border-top: 4px solid #8e44ad;">
     <div class="card-meta">
         <span class="domain">reddit.com</span>
     </div>
@@ -1076,10 +1177,10 @@ body.debug-active .debug-overlay { display: block; }
     </div>
     <div class="debug-section">
         <strong>Score Breakdown:</strong>
-        <div class='debug-row'><span class='label'>Stats</span><span class='val'>+7612</span></div>
+        <div class='debug-row'><span class='label'>Stats</span><span class='val'>+8089</span></div>
         <div style="border-top: 1px solid #ccc; margin-top: 5px; font-weight: bold; display: flex; justify-content: space-between;">
             <span>TOTAL</span>
-            <span>7612</span>
+            <span>8089</span>
         </div>
     </div>
 </div>
@@ -1101,16 +1202,16 @@ body.debug-active .debug-overlay { display: block; }
     </div>
     <div class="debug-section">
         <strong>Score Breakdown:</strong>
-        <div class='debug-row'><span class='label'>Stats</span><span class='val'>+3531</span></div>
+        <div class='debug-row'><span class='label'>Stats</span><span class='val'>+3871</span></div>
         <div style="border-top: 1px solid #ccc; margin-top: 5px; font-weight: bold; display: flex; justify-content: space-between;">
             <span>TOTAL</span>
-            <span>3531</span>
+            <span>3871</span>
         </div>
     </div>
 </div>
 
 </a>
-<a href="https://www.reddit.com/r/movies/comments/1pk2jgq/in_batman_1989_when_michael_keaton_is_doing_the/" target="_blank" class="card compact" style="border-top: 4px solid #8e44ad;">
+<a href="https://www.reddit.com/r/movies/comments/1pk2jgq/in_batman_1989_when_michael_keaton_is_doing_the/" target="_blank" class="card compact" style="border-top: 4px solid #27ae60;">
     <div class="card-meta">
         <span class="domain">reddit.com</span>
     </div>
@@ -1126,16 +1227,16 @@ body.debug-active .debug-overlay { display: block; }
     </div>
     <div class="debug-section">
         <strong>Score Breakdown:</strong>
-        <div class='debug-row'><span class='label'>Stats</span><span class='val'>+2332</span></div>
+        <div class='debug-row'><span class='label'>Stats</span><span class='val'>+2364</span></div>
         <div style="border-top: 1px solid #ccc; margin-top: 5px; font-weight: bold; display: flex; justify-content: space-between;">
             <span>TOTAL</span>
-            <span>2332</span>
+            <span>2364</span>
         </div>
     </div>
 </div>
 
 </a>
-<a href="https://mashable.com/article/hurdle-hints-answers-december-12-2025" target="_blank" class="card compact" style="border-top: 4px solid #c0392b;">
+<a href="https://mashable.com/article/hurdle-hints-answers-december-12-2025" target="_blank" class="card compact" style="border-top: 4px solid #2980b9;">
     <div class="card-meta">
         <span class="domain">mashable.com</span>
     </div>
@@ -1160,7 +1261,7 @@ body.debug-active .debug-overlay { display: block; }
 </div>
 
 </a>
-<a href="https://www.reddit.com/r/books/comments/1pkgupb/librarians_are_tired_of_being_accused_of_hiding/" target="_blank" class="card compact" style="border-top: 4px solid #2980b9;">
+<a href="https://www.reddit.com/r/books/comments/1pkgupb/librarians_are_tired_of_being_accused_of_hiding/" target="_blank" class="card compact" style="border-top: 4px solid #c0392b;">
     <div class="card-meta">
         <span class="domain">reddit.com</span>
     </div>
@@ -1176,16 +1277,16 @@ body.debug-active .debug-overlay { display: block; }
     </div>
     <div class="debug-section">
         <strong>Score Breakdown:</strong>
-        <div class='debug-row'><span class='label'>Stats</span><span class='val'>+1393</span></div>
+        <div class='debug-row'><span class='label'>Stats</span><span class='val'>+1527</span></div>
         <div style="border-top: 1px solid #ccc; margin-top: 5px; font-weight: bold; display: flex; justify-content: space-between;">
             <span>TOTAL</span>
-            <span>1393</span>
+            <span>1527</span>
         </div>
     </div>
 </div>
 
 </a>
-<a href="https://www.reddit.com/r/movies/comments/1pjztxc/jim_ward_the_voice_of_captain_qwark_in_ratchet/" target="_blank" class="card compact" style="border-top: 4px solid #27ae60;">
+<a href="https://www.reddit.com/r/movies/comments/1pjztxc/jim_ward_the_voice_of_captain_qwark_in_ratchet/" target="_blank" class="card compact" style="border-top: 4px solid #d35400;">
     <div class="card-meta">
         <span class="domain">reddit.com</span>
     </div>
@@ -1201,10 +1302,10 @@ body.debug-active .debug-overlay { display: block; }
     </div>
     <div class="debug-section">
         <strong>Score Breakdown:</strong>
-        <div class='debug-row'><span class='label'>Stats</span><span class='val'>+1282</span></div>
+        <div class='debug-row'><span class='label'>Stats</span><span class='val'>+1295</span></div>
         <div style="border-top: 1px solid #ccc; margin-top: 5px; font-weight: bold; display: flex; justify-content: space-between;">
             <span>TOTAL</span>
-            <span>1282</span>
+            <span>1295</span>
         </div>
     </div>
 </div>
