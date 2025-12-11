@@ -24,7 +24,7 @@ It is a "Glass-Box" briefing engine designed for the **Diamond Age** of informat
 
 ### 1. Finiteness is a Status Symbol
 In a world of cheap, infinite content, the ultimate luxury is **an ending**.
-Like the bespoke *Times* delivered to the elite in Stephenson's Neo-Victorian future, a newspaper should be an **Artifact**—a discrete object with a beginning, a middle, and a last page. Fishwrap transforms the chaos of the web into a finite HTML or PDF edition that you can read, finish, and put away. The poor scroll; the elite read.
+Like the bespoke *Times* delivered to the elite in Stephenson's Neo-Victorian future, a newspaper should be an **Artifact**—a discrete object with a beginning, a middle, and a last page. Fishwrap transforms the chaos of the web into a finite HTML or PDF edition that you can read, finish, and put away. The peasants scroll; the elite read.
 
 ### 2. The Glass Box (Transparency)
 Most feeds are black boxes. Fishwrap is a **Glass Box**.
@@ -32,7 +32,7 @@ The value of transparency isn't that you *will* tune the algorithm every day, bu
 
 ### 3. The Aperture of Time
 We don't just aggregate; we condense.
-In *Anathem*, the intellectuals (Avout) filtered information through time to separate signal from noise.
+In *Anathem*, the intellectuals filtered information through time to separate signal from noise.
 *   **The Feed (0-Year):** The raw noise of the Saecular world. We ignore this.
 *   **The Paper (1-Day Aperture):** A 24-hour summary. Only what matters *today*.
 *   **The Chronicle (1-Year Aperture):** (Coming Soon) A re-aggregation of the year's best stories. If it's not interesting a year later, it was never news.
@@ -49,7 +49,7 @@ Fishwrap is your bankruptcy lawyer. We read the 2,000 items for you. We apply *y
 
 ### Who is this for?
 *   **The Analyst:** Who needs an **auditable**, high-signal briefing on **Cybersecurity** or **Geopolitics** without the marketing fluff.
-*   **The Hacker:** Who wants to `git clone` their news consumption and write Python rules to banish "Elon Musk" from their reality.
+*   **The Hacker:** Who wants to `git clone` their news consumption and write Python rules to banish "Individual-1" from their reality.
 *   **The Curator:** Who wants to publish a "Daily Digest" for their team or community.
 
 ---
