@@ -71,5 +71,11 @@ Everything is driven by a simple Python configuration file. You are the Editor-i
 
 ---
 
+## 🔮 Development Notes & Roadmap
+
+*   **Config Refactoring:** The `config.py` files currently contain both user-facing settings (FEEDS, SECTIONS, KEYWORDS) and internal/sensitive settings (SECRETS_FILE path, etc.). This needs to be refactored to separate these concerns, making it easier for users to customize without exposing internals. This change will need to propagate to all demo configs and the `daily_clamour` instance.
+
+---
+
 ## 📜 License
 BSD 3-Clause.
