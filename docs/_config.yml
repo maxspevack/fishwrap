@@ -1,4 +1,12 @@
 title: Fishwrap
-description: The personalized newspaper engine.
-remote_theme: just-the-docs/just-the-docs@v0.3.3
+description: The glass-box daily briefing engine.
+remote_theme: just-the-docs/just-the-docs@v0.10.0
+
+# Theme Settings
 color_scheme: dark
+
+# Navigation
+nav_sort: case_insensitive
+
+# Footer
+footer_content: "Fishwrap is open source software licensed under the BSD 3-Clause License."
