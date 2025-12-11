@@ -1,7 +1,5 @@
 # 🐟 Scaling the School: How We Gutted O(N²) Logic to Print the News Faster
 
-**To:** The Engineering Team
-**From:** Max
 **Subject:** Brown Bag Lunch (BYO Fish & Chips)
 
 ---
