@@ -4,39 +4,21 @@ title: Demos
 nav_order: 2
 ---
 
-# Fishwrap Demos
+# The Fleet 🔱
 
-See the Fishwrap engine in action across different verticals. Each demo is a live, automated edition generated from specific feed configurations.
+See the Fishwrap engine in action.
 
----
-
-## 🗞️ The Vanilla Edition
-**Vertical:** General News (Tech, Sports, Culture)  
-**Configuration:** Default (`demo/config.py`)  
-**Theme:** Basic
-
-A general-purpose newspaper showing how Fishwrap handles a standard mix of RSS feeds from major publishers (NYT, BBC, The Verge).
-
-[**Read The Vanilla Edition**](vanilla/)
+## 🌟 Live Production
+**[The Daily Clamour](https://dailyclamour.com)**  
+*The Flagship Edition.* A general-purpose tech and culture newspaper running on the `vintage` theme. It demonstrates the full power of the "Glass-Box" engine with custom branding, Scoop the mascot, and automated daily publishing.
 
 ---
 
-## 🛡️ The Zero Day
-**Vertical:** Cybersecurity & Threat Intelligence  
-**Configuration:** Cyber Pilot (`demo/cyber_config.py`)  
-**Theme:** Basic
+## 🧪 Reference Demos
+These three "Reference Verticals" demonstrate how the same engine can be tuned for completely different audiences just by changing `config.py`.
 
-A specialized briefing for security analysts. It prioritizes CVEs, active exploits, and high-signal threat intelligence, filtering out vendor marketing.
-
-[**Read The Zero Day**](cyber/)
-
----
-
-## 🤖 The Hallucination
-**Vertical:** AI & LLM Research  
-**Configuration:** AI Pilot (`demo/ai_config.py`)  
-**Theme:** Basic
-
-A filter for the AI hype cycle. It separates **Research** (Arxiv papers) and **Working Code** (Github/Models) from the noise of opinion pieces and "AGI is coming" clickbait.
-
-[**Read The Hallucination**](ai/)
+| Edition | Vertical | Description | Link |
+| :--- | :--- | :--- | :--- |
+| **The Vanilla** | General News | A standard mix of RSS feeds (NYT, BBC, The Verge). Shows the baseline capability. | [**Read Vanilla**](vanilla/) |
+| **The Zero Day** | Cybersecurity | Prioritizes CVEs and exploits. Filters out vendor marketing fluff. | [**Read Zero Day**](cyber/) |
+| **The Hallucination** | AI Research | Separates Arxiv papers and Github repos from the "AGI is coming" opinion pieces. | [**Read AI**](ai/) |
