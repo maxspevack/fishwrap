@@ -20,7 +20,7 @@ We were drowning in our own net. Here is the story of how we fixed it.
 
 ## 📉 The Smell: "Groundhog Day" & The Cluster Bomb
 
-We identified two rotting carcasses in our codebase.
+We identified rotting carcasses in our codebase.
 
 ### 1. The "Groundhog Day" Scoring (O(N*K))
 Every time the Editor ran, it pulled *every* article from the database history and re-scored it. It scanned every title against hundreds of keywords (`K`) to determine if it was "News," "Tech," or "Garbage."
@@ -47,7 +47,7 @@ With 1,000 items, that’s potentially **1,000,000** complex string comparisons.
 
 ## 🛠️ The Fix: The Industrial Revolution
 
-We realized we couldn't just tune the engine; we had to rebuild the factory. We implemented two major strategies: **The Golden Record** and **The Hatchet**.
+We realized we couldn't just tune the engine; we had to rebuild the factory. We implemented three major strategies.
 
 ### Strategy A: The Golden Record (Architecture)
 *aka "Score Once, Read Many"*
@@ -99,6 +99,19 @@ run_expensive_difflib()
 
 **Result:** We eliminated ~95% of the expensive comparisons.
 
+### Strategy C: The Memory Buffer (Logic)
+*aka "Zombie Defense"*
+
+We discovered a flaw in our freshness logic. We wanted to print only 24-hour-old news, so we deleted everything older than 24 hours from the database.
+
+**The Bug:** If an article was 25 hours old, we deleted it. But if the RSS feed *still contained* that article, the Fetcher would see it, say "Hey, I don't know this ID!", and import it as a **New Item**. We called these "Zombie Articles." They would rise from the dead, bypassing our "Old News" filters because they looked brand new.
+
+**The Fix:** We decoupled **Retention** from **Publication**.
+1.  **Retention (Memory):** The Database now keeps items for **48 hours**. This acts as a memory buffer. If the RSS feed re-submits a 25-hour-old item, we recognize the ID and ignore it.
+2.  **Publication (Freshness):** The Editor now strictly filters for items `< 24 hours` old when building the page.
+
+We store the past to understand the present, but we only print the present.
+
 ---
 
 ## 🚀 The Results: Holy Mackerel!
@@ -109,6 +122,7 @@ We deployed the new pipeline to `dailyclamour.com`.
 | :--- | :--- | :--- | :--- |
 | **Editor Runtime** | ~45 seconds | < 0.5 seconds | **~90x Faster** |
 | **Complexity** | O(N²) | O(N) (Effective) | **Logarithmic** |
+| **Zombie Outbreaks**| Frequent | 0 | **Safe** |
 | **Engineer Mood** | 🤬 | 🍺 | **Significant** |
 
 We went from a system that choked on 1,000 items to one that can easily handle 10,000+ without breaking a sweat.
@@ -117,7 +131,8 @@ We went from a system that choked on 1,000 items to one that can easily handle 1
 
 1.  **Don't compute at read-time what you can compute at write-time.**
 2.  **Cheap checks first.** Always filter your data with a "hatchet" (sets/integers) before you go in with a "scalpel" (fuzzy logic/AI).
-3.  **There's always a bigger fish.** (But now our code is fast enough to catch it).
+3.  **Memory != Display.** Just because you don't show it to the user doesn't mean you shouldn't remember it. State is necessary for deduplication.
+4.  **There's always a bigger fish.** (But now our code is fast enough to catch it).
 
 Thanks for listening. Get back to work.
 
