@@ -3,6 +3,9 @@ import ssl
 import re
 import html
 import email.utils
+import time
+import threading
+import urllib.parse
 from datetime import datetime
 from fishwrap import _config
 
@@ -11,19 +14,69 @@ _ssl_context = ssl.create_default_context()
 _ssl_context.check_hostname = False
 _ssl_context.verify_mode = ssl.CERT_NONE
 
+# Rate Limiting State
+_rate_limit_lock = threading.Lock()
+_last_request_time = {}
+_domain_locks = {}
+
+# Config: Minimum seconds between requests to specific domains
+RATE_LIMITS = {
+    'reddit.com': 2.0,
+    'www.reddit.com': 2.0,
+    'old.reddit.com': 2.0,
+    'hacker-news.firebaseio.com': 0.5, # HN is usually faster/permissive
+}
+
 def get_ssl_context():
     """Returns the shared permissive SSL context."""
     return _ssl_context
 
+def _get_domain_lock(domain):
+    """Returns a threading.Lock for a specific domain."""
+    with _rate_limit_lock:
+        if domain not in _domain_locks:
+            _domain_locks[domain] = threading.Lock()
+        return _domain_locks[domain]
+
 def fetch_url(url, headers=None, timeout=15):
     """
-    Robust URL fetcher with default headers and timeout.
+    Robust URL fetcher with default headers, timeout, and DOMAIN RATE LIMITING.
     Returns decoded UTF-8 string or None on failure.
-    Properly encodes URLs to handle non-ASCII characters.
     """
     if not headers:
         headers = {'User-Agent': _config.USER_AGENT}
     
+    # 1. Rate Limiting Logic
+    parsed = urllib.parse.urlparse(url)
+    domain = parsed.netloc
+    
+    # Check parent domain for reddit (e.g. old.reddit.com -> reddit.com) matches
+    # Simple check for now: exact match or contains
+    limit_delay = 0
+    target_domain = None
+    
+    for d, delay in RATE_LIMITS.items():
+        if d in domain:
+            limit_delay = delay
+            target_domain = d
+            break
+            
+    if limit_delay > 0:
+        # Acquire lock for this domain to serialize requests
+        lock = _get_domain_lock(target_domain)
+        with lock:
+            last_time = _last_request_time.get(target_domain, 0)
+            now = time.time()
+            elapsed = now - last_time
+            
+            if elapsed < limit_delay:
+                sleep_time = limit_delay - elapsed
+                # print(f"[RATE LIMIT] Sleeping {sleep_time:.2f}s for {domain}")
+                time.sleep(sleep_time)
+            
+            _last_request_time[target_domain] = time.time()
+
+    # 2. Fetch Logic
     try:
         # Parse the URL to encode its path and query components correctly
         parsed_url = urllib.parse.urlparse(url)
@@ -46,7 +99,7 @@ def fetch_url(url, headers=None, timeout=15):
         with urllib.request.urlopen(req, context=_ssl_context, timeout=timeout) as response:
             return response.read().decode('utf-8')
     except Exception as e:
-        print(f"Error fetching {url}: {e}")
+        # print(f"Error fetching {url}: {e}")
         return None
 
 def clean_html(raw_html):

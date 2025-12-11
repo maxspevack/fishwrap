@@ -1,5 +1,7 @@
 # 🐟 Scaling the School: How We Gutted O(N²) Logic to Print the News Faster
 
+**To:** The Engineering Team
+**From:** Max
 **Subject:** Brown Bag Lunch (BYO Fish & Chips)
 
 ---
@@ -33,7 +35,7 @@ Our Fetcher and Enhancer were running sequentially. We downloaded one RSS feed, 
 
 ## 🛠️ The Fix: The Industrial Revolution
 
-We realized we couldn't just tune the engine; we had to rebuild the factory. We implemented four major strategies.
+We realized we couldn't just tune the engine; we had to rebuild the factory. We implemented five major strategies.
 
 ### Strategy A: The Golden Record (Architecture)
 *aka "Score Once, Read Many"*
@@ -98,13 +100,24 @@ We fixed the CPU bottlenecks (Editor), but our I/O was stuck in the 90s.
 **The Fix:** `concurrent.futures.ThreadPoolExecutor`.
 We refactored the I/O-heavy loops to spawn **10 worker threads**. Now, we fetch 10 feeds at once. We scrape 10 articles at once. The network latency overlaps, and we crush the wait time.
 
-**The measurements speak for themselves:**
+**The Initial Result:** Total I/O time dropped from ~51s to ~7s. **7.5x Faster.**
 
-| Component | Sequential (Before) | Parallel (After) | Improvement |
-| :--- | :--- | :--- | :--- |
-| **Fetcher** (26 feeds) | ~17.0s | ~2.5s | **6.8x Faster** |
-| **Enhancer** (36 articles) | ~34.0s | ~4.3s | **7.9x Faster** |
-| **Total I/O Time** | ~51.0s | ~6.8s | **7.5x Faster** |
+But then we hit a new problem...
+
+### Strategy E: Traffic Control (Rate Limiting)
+*aka "Don't DDoS Reddit"*
+
+Our new parallel fetcher was *too* fast. We unleashed 10 concurrent threads against Reddit's API, and Reddit immediately slapped us with **HTTP 429: Too Many Requests**.
+
+We had effectively DDoS'd our own data sources.
+
+**The Fix:** Domain-Based Locks (`threading.Lock`).
+We implemented a polite "Token Bucket" style rate limiter.
+*   **Global Lock:** We track the last request time for each domain.
+*   **The Wait:** If a thread wants to hit `reddit.com`, it grabs the "Reddit Lock." If the last request was < 2 seconds ago, it sleeps.
+*   **Concurrency Preserved:** This only serializes requests to *the same domain*. We can still fetch from `nytimes.com`, `bbc.co.uk`, and `reddit.com` simultaneously. We just won't hit Reddit 10 times in 10ms.
+
+**Result:** 0 Errors. The pipeline is slightly slower than the "unsafe" version, but it is **stable** and polite.
 
 ---
 
@@ -115,7 +128,7 @@ We deployed the new pipeline to `dailyclamour.com`. The total transformation is 
 | Metric | Before Optimization | After Optimization | Improvement |
 | :--- | :--- | :--- | :--- |
 | **Editor Runtime** | ~45 seconds | < 0.5 seconds | **~90x Faster** |
-| **Pipeline I/O** | ~51 seconds | ~7 seconds | **~7x Faster** |
+| **Pipeline I/O** | ~51 seconds | ~15 seconds | **~3.5x Faster** |
 | **Complexity** | O(N²) | O(N) (Effective) | **Logarithmic** |
 | **Zombie Outbreaks**| Frequent | 0 | **Safe** |
 | **Engineer Mood** | 🤬 | 🍺 | **Significant** |
@@ -128,6 +141,7 @@ We went from a system that choked on 1,000 items to one that can easily handle 1
 2.  **Cheap checks first.** Always filter your data with a "hatchet" (sets/integers) before you go in with a "scalpel" (fuzzy logic/AI).
 3.  **Memory != Display.** Just because you don't show it to the user doesn't mean you shouldn't remember it. State is necessary for deduplication.
 4.  **Network I/O is for the birds.** Never block the main thread on the internet. Parallelize it.
-5.  **There's always a bigger fish.**
+5.  **With great power comes great responsibility.** If you parallelize, you must rate-limit. Be a good citizen.
+6.  **There's always a bigger fish.**
 
 <img src="https://i.redd.it/iriscb26whx01.jpg" style="width: 100%; border-radius: 8px; margin-top: 20px;" alt="There's always a bigger fish">
