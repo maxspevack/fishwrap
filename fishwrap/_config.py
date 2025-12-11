@@ -57,8 +57,17 @@ if config_path:
     if os.path.exists(config_path):
         # print(f"[CONFIG] Loading external config from: {config_path}")
         try:
+            # Create a namespace for execution and inject __file__
+            config_globals = {'__file__': config_path}
+            
             with open(config_path, 'r') as f:
-                exec(f.read())
+                exec(f.read(), config_globals)
+            
+            # Update local globals with values from the config
+            for k, v in config_globals.items():
+                if not k.startswith('__'):
+                    globals()[k] = v
+                    
         except Exception as e:
             print(f"[CONFIG] Error loading {config_path}: {e}")
             sys.exit(1)
