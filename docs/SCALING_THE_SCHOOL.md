@@ -132,7 +132,9 @@ We went from a system that choked on 1,000 items to one that can easily handle 1
 1.  **Don't compute at read-time what you can compute at write-time.**
 2.  **Cheap checks first.** Always filter your data with a "hatchet" (sets/integers) before you go in with a "scalpel" (fuzzy logic/AI).
 3.  **Memory != Display.** Just because you don't show it to the user doesn't mean you shouldn't remember it. State is necessary for deduplication.
-4.  **There's always a bigger fish.** (But now our code is fast enough to catch it).
+4.  **There's always a bigger fish.**
+    ![There's always a bigger fish](https://i.redd.it/iriscb26whx01.jpg)
+    (But now our code is fast enough to catch it).
 
 Thanks for listening. Get back to work.
 
