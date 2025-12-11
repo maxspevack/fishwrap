@@ -1,7 +1,7 @@
 .PHONY: setup update run-fishwrap generate-pdf publish-resume clean
 
 VENV_PATH := $(CURDIR)/venv
-PYTHON := $(VENV_PATH)/bin/python3
+PYTHON := $(VENV_PATH)/bin/python3 -W ignore::SyntaxWarning
 PIP := $(VENV_PATH)/bin/pip
 
 # --- Setup & Environment ---
