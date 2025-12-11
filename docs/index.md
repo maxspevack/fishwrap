@@ -1,6 +1,6 @@
 ---
 layout: default
-title: The Manifesto
+title: The Anti-Feed
 nav_order: 1
 ---
 
