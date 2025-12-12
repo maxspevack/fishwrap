@@ -78,4 +78,4 @@ Fishwrap is a Python application you run on your own machine.
 3.  **Read:**
     Open `demo/output/index.html` in your browser.
 
-[View Source on GitHub](https://github.com/maxspevack/fishwrap){: .btn .btn-primary .fs-5 .mb-4 .mb-md-0 .mr-2 } [Visit Daily Clamour](https://dailyclamour.com){: .btn .fs-5 .mb-4 .mb-md-0 }
+[View Source on GitHub](https://github.com/maxspevack/fishwrap){: .btn .btn-primary .fs-5 .mb-4 .mb-md-0 .mr-2 }
