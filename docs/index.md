@@ -22,7 +22,7 @@ We are drowning in infinite streams. Social media, news aggregators, and "For Yo
 
 **Fishwrap is the "Anti-Feed."**
 
-It is a "Glass-Box" briefing engine designed for the **Diamond Age** of information. It is built on three radical ideas:
+It is a "Glass-Box" briefing engine designed for the **Diamond Age** of information. It is built on radical ideas:
 
 ### 1. Finiteness is a Status Symbol
 In a world of cheap, infinite content, the ultimate luxury is **an ending**.
@@ -39,11 +39,11 @@ In *Anathem*, the intellectuals filtered information through time to separate si
 *   **The Paper (12-Hour Aperture):** A bi-diurnal summary. Only what matters *now*.
 *   **The Chronicle (1-Year Aperture):** (Coming Soon) A re-aggregation of the year's best stories. If it's not interesting a year later, it was never news.
 
-### 4. The Bi-Diurnal Schedule
-Scarcity creates value. If we publish every hour, we are a slow RSS reader. By publishing **Twice Daily** (06:00 and 17:00), we create an event.
-*   **The Morning Edition:** Read with coffee. Sets the stage for the day.
-*   **The Evening Edition:** Read with a drink. Summarizes what actually mattered.
-This schedule grants you permission to *ignore* the news for the 11 hours between editions. That "permission to ignore" is our actual product.
+### 4. The Anxiety of the "Thumbs Down"
+In the Black Box Era (Google News, TikTok), feedback is a trap.
+*   **The Dilemma:** You see a fluff piece about a politician playing golf. If you click "Dislike," the algorithm might hide *all* news about that politician—even the important policy updates. If you do nothing, you get more golf.
+*   **The Result:** Users live in fear of their own feeds. They "doomscroll" passively because active curation feels dangerous and unpredictable.
+*   **The Solution:** **Granular Consent.** We don't ask for a "Thumbs Down." We ask for an Editor's Note: "Penalty: 'Golf' (-20). Boost: 'Executive Order' (+20)." You see the rule. You can delete it. You have agency.
 
 ---
 
