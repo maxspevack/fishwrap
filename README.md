@@ -83,17 +83,13 @@ We document our journey in building a high-performance news engine.
 
 ---
 
-## 🔮 Development Notes & Roadmap
+## 🤝 Join the Newsroom
 
-### Completed (v1.0)
-*   ✅ **O(N) Complexity:** Optimized the Editor's scoring and deduplication logic.
-*   ✅ **Concurrency:** Parallelized Fetcher and Enhancer (I/O) for ~7x speedup.
-*   ✅ **Resilience:** Implemented Rate Limiting (Token Bucket) and Robust State Preservation (fixing re-scrape bugs).
+We are actively developing Fishwrap to be the engine of the "Anti-Feed" movement.
 
-### Future (v2.0)
-*   **Config Refactoring:** The `config.py` files currently rely on dynamic `exec()` loading. We plan to migrate to a structured `Config` class or Pydantic models for better validation and type safety.
-*   **Database Migration:** Move from `articles_db.json` (memory-bound) to `SQLite` (disk-bound, atomic) to support 10,000+ article archives.
-*   **Plugin System:** Decouple specific scrapers (like `defector` or `reddit`) into a plugin architecture.
+*   [**Roadmap (2026):**](ROADMAP.md) See our plan for Observability, The Chronicle, and the PDF Engine.
+*   [**Contributing:**](CONTRIBUTING.md) How to add feeds, fix bugs, and tune the algorithm.
+*   [**Release Notes:**](docs/RELEASE_NOTES.md) History of changes.
 
 ---
 
