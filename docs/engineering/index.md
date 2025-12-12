@@ -7,9 +7,7 @@ nav_order: 3
 
 # 🐟 Scaling the School: Case Studies in High-Performance News
 
-**To:** The Engineering Team
-**From:** Max
-**Subject:** Brown Bag Lunch (BYO Fish & Chips)
+Subject: Brown Bag Lunch (BYO Fish & Chips) 🐟🍟
 
 ---
 
