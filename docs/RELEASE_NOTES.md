@@ -35,7 +35,7 @@ The initial major release. We took a script and turned it into an engine. This r
 
 ---
 
-## v0.9.0: "The Demo Fleet" (2025-12-11)
+## v0.9.0: "The Demo Fleet" (2025-12-10)
 
 **The Narrative:**
 The "Release Candidate" phase. We proved the engine's versatility by launching three distinct verticals. This phase exposed the need for vertical-specific configuration and better editorial controls.
@@ -47,10 +47,10 @@ The "Release Candidate" phase. We proved the engine's versatility by launching t
 
 ---
 
-## v0.3.0: "The Great Schism" (2025-12-11)
+## v0.3.0: "The Great Schism" (2025-12-09)
 
 **The Narrative:**
-The moment Fishwrap became a platform. We realized "The Daily Clamour" was just *one* implementation of the engine. We aggressively refactored to decouple the "Product" from the "Press."
+The moment Fishwrap became a platform. We realized [The Daily Clamour](https://dailyclamour.com) was just *one* implementation of the engine. We aggressively refactored to decouple the "Product" from the "Press."
 
 ### 💔 Decoupling
 *   **Repo Split:** Moved `daily_clamour` into its own directory (eventually its own repo strategy).
@@ -59,19 +59,19 @@ The moment Fishwrap became a platform. We realized "The Daily Clamour" was just 
 
 ---
 
-## v0.2.0: "The Daily Clamour" (2025-12-10)
+## v0.2.0: "The Daily Clamour" (2025-12-08)
 
 **The Narrative:**
 The first coherent product. We moved from a script to a brand. This release focused on visual identity and the initial automated publishing pipeline.
 
 ### 📰 Productization
-*   **Visual Identity:** Implementation of the "Vintage" CSS theme, evocative of 19th-century broadsheets.
+*   **Visual Identity:** Implementation of the "Vintage" CSS theme, evocative of 19th-century broadsheets for [The Daily Clamour](https://dailyclamour.com).
 *   **Assets:** Added paper textures, Gothic fonts, and the layout engine.
 *   **Automation:** Created the initial `auto_publish.sh` (precursor to the modern `deploy.sh`).
 
 ---
 
-## v0.1.0: "The Genesis" (2025-12-10)
+## v0.1.0: "The Genesis" (2025-12-07)
 
 **The Narrative:**
 In the beginning, there was `press.py`. A simple, monolithic script to fetch RSS feeds and dump them into an HTML file.
