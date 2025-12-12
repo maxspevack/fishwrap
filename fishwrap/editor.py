@@ -278,14 +278,23 @@ def run_editor():
     
     # Print Diversity Report
     print("\n [RUN SHEET DIVERSITY] Top Sources per Section:")
+    print("-" * 60)
     for section_def in _config.SECTIONS:
         cat = section_def['id']
         sources = section_diversity.get(cat, [])
         if sources:
             total_sec = sum(c for d, c in sources)
-            top_3 = sources[:3]
-            source_strs = [f"{d} ({c}/{total_sec})" for d, c in top_3]
-            print(f" [{section_def['title']}] : {', '.join(source_strs)}")
+            if total_sec > 0:
+                print(f" [{section_def['title']}] (Total: {total_sec})")
+                top_5 = sources[:5]
+                for domain, count in top_5:
+                    percentage = (count / total_sec) * 100
+                    print(f"   {count:<4} ({percentage:5.1f}%) : {domain}")
+            else:
+                print(f" [{section_def['title']}] : (No articles selected)")
+        else:
+            print(f" [{section_def['title']}] : (No articles selected)")
+    print("-" * 60)
             
     # Print Detailed Cut-Line Report
     print("\n [CUT-LINE REPORT] Top 3 Rejected Stories per Section:")
