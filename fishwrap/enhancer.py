@@ -10,6 +10,7 @@ from tqdm import tqdm
 from newspaper import Article 
 from fishwrap import _config
 from fishwrap import utils
+from fishwrap.db import repository
 import xml.etree.ElementTree as ET
 
 # Load Cookie
@@ -106,14 +107,14 @@ def parse_reddit_comments_json(json_data, limit=10):
         pass
     return comments
 
-def process_article(article, db_cache):
+def process_article(article):
     """
     Enhances a single article.
     Returns (enhanced_article, was_cache_hit, has_error)
     """
     link = article.get('link', '')
     source_url = article.get('source_url', '')
-    aid = str(article.get('id'))
+    aid = article.get('id') # UUID
     
     # Initialize defaults
     article['full_content'] = article.get('content') or ''
@@ -122,15 +123,12 @@ def process_article(article, db_cache):
     was_cache_hit = False
     has_error = False
 
-    if not link:
+    if not link or not aid:
         return article, False, False 
 
-    # Check DB Cache
-    cached_art = db_cache.get(aid)
+    # Check DB Cache via Repository
+    cached_art = repository.get_article_by_id(aid)
     
-    # Improved Cache Logic:
-    # If explicitly marked as 'enhanced', trust it.
-    # Otherwise fallback to checking content length (legacy support).
     is_enhanced = cached_art and cached_art.get('is_enhanced', False)
     
     if is_enhanced:
@@ -206,15 +204,6 @@ def enhance_articles():
     with open(_config.RUN_SHEET_FILE, 'r') as f:
         run_sheet_raw = json.load(f)
 
-    # Load master DB
-    db = {}
-    if os.path.exists(_config.ARTICLES_DB_FILE):
-        try:
-            with open(_config.ARTICLES_DB_FILE, 'r') as f:
-                db = json.load(f)
-        except Exception:
-            pass
-
     all_articles = []
     for sid, arts in run_sheet_raw.items():
         for a in arts:
@@ -225,12 +214,11 @@ def enhance_articles():
     
     stats = {'hits': 0, 'misses': 0, 'errors': 0}
     enhanced_results = {sid: [] for sid in run_sheet_raw.keys()}
-    db_updated = False
     
     MAX_WORKERS = 10
     
     with ThreadPoolExecutor(max_workers=MAX_WORKERS) as executor:
-        future_to_article = {executor.submit(process_article, article, db): article for article in all_articles}
+        future_to_article = {executor.submit(process_article, article): article for article in all_articles}
         
         with tqdm(total=len(all_articles), desc="Enhancing", unit="article") as pbar:
             for future in as_completed(future_to_article):
@@ -244,16 +232,13 @@ def enhance_articles():
                     sid = enhanced_art['section']
                     enhanced_results[sid].append(enhanced_art)
                     
-                    # Update Master DB
-                    # We update if NOT HIT (meaning we tried to fetch).
-                    # Even if error=True, we save the 'is_enhanced' flag to avoid retrying.
+                    # Update Master DB via Repository if NOT hit
                     if not hit:
-                        aid = str(enhanced_art.get('id'))
-                        if aid in db:
-                            db[aid]['full_content'] = enhanced_art.get('full_content')
-                            db[aid]['comments_full'] = enhanced_art.get('comments_full')
-                            db[aid]['is_enhanced'] = True 
-                            db_updated = True
+                        repository.update_enhancement(
+                            enhanced_art.get('id'),
+                            enhanced_art.get('full_content'),
+                            enhanced_art.get('comments_full')
+                        )
                             
                 except Exception as e:
                     stats['errors'] += 1
@@ -261,10 +246,6 @@ def enhance_articles():
                 
                 pbar.update(1)
         
-    if db_updated:
-        with open(_config.ARTICLES_DB_FILE, 'w') as f:
-            json.dump(db, f, indent=2)
-
     with open(_config.ENHANCED_ISSUE_FILE, 'w') as f:
         json.dump(enhanced_results, f, indent=2)
         

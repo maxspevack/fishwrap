@@ -4,6 +4,7 @@ import difflib
 from datetime import datetime
 from fishwrap import _config
 from fishwrap import scoring
+from fishwrap.db import repository
 
 def classify_article(article):
     """
@@ -12,7 +13,7 @@ def classify_article(article):
     """
     title = article.get('title', '').lower()
     content = (article.get('content') or '').lower()[:500]
-    cats = [c.lower() for c in article.get('categories', [])]
+    cats = [c.lower() for c in article.get('categories', []) if c]
     source_url = article.get('source_url', '')
     
     # 1. Establish Default Section from Source
@@ -35,9 +36,6 @@ def classify_article(article):
     final_cat = _config.SECTIONS[-1]['id'] 
     
     # 3. Override Logic (Content beats Source if signal is strong)
-    # We iterate through sections in order of definition (Priority is implicit in order)
-    # Or we can stick to a simple threshold.
-    
     match_found = False
     
     # Check for Strong Matches (>= 3)
@@ -86,11 +84,8 @@ def organize_and_cluster(articles):
     WINDOW_SECONDS = 48 * 3600
     
     # Pre-tokenize all titles once to avoid re-splitting in loop
-    # Store as a dict for fast lookup: { id(obj): set(['word1', 'word2']) }
-    # We use id(obj) because articles are mutable dicts
     token_cache = {}
     for a in articles:
-        # Simple tokenizer: lowercase, split by space, keep items len > 3 (skip 'the', 'and', etc)
         words = set(w for w in a.get('title', '').lower().split() if len(w) > 3)
         token_cache[id(a)] = words
 
@@ -103,14 +98,11 @@ def organize_and_cluster(articles):
         
         for leader in clusters:
             # OPTIMIZATION 1: Time Window Check
-            # If the candidate is too far apart from the leader in time, skip expensive diff
             leader_ts = leader.get('timestamp', 0)
             if abs(candidate_ts - leader_ts) > WINDOW_SECONDS:
                 continue
             
             # OPTIMIZATION 2: Jaccard Pre-Filter
-            # If they don't share ANY meaningful words (len > 3), they can't be fuzzy duplicates.
-            # set.isdisjoint() is implemented in C and is extremely fast.
             leader_words = token_cache[id(leader)]
             if candidate_words.isdisjoint(leader_words):
                 continue
@@ -139,16 +131,13 @@ def organize_and_cluster(articles):
                     leader['score_breakdown']['fuzzy_matches'] = []
                 leader['score_breakdown']['fuzzy_matches'].append(candidate_title)
                 
-                break # Stop checking other clusters, we found a home
+                break 
         
         if not is_duplicate:
             clusters.append(candidate)
             
     # 3. Bucketize the Leaders (Dynamic)
-    # Initialize buckets for ALL configured sections
     final_buckets = {section['id']: [] for section in _config.SECTIONS}
-    
-    # Fallback bucket key (first one)
     default_bucket_key = _config.SECTIONS[0]['id']
     
     for article in clusters:
@@ -159,18 +148,18 @@ def organize_and_cluster(articles):
         if cat in final_buckets:
             final_buckets[cat].append(article)
         else:
-            # If category invalid, dump in default
             final_buckets[default_bucket_key].append(article)
             
     return final_buckets
 
 def run_editor():
-    with open(_config.ARTICLES_DB_FILE, 'r') as f:
-        raw_db = json.load(f)
-        
-    print(f"\n[EDITOR] Starting... (Candidates: {len(raw_db)})")
-    
     # --- Phase 1: Load Scored Articles (Lightweight) ---
+    print(f"\n[EDITOR] Starting... (Fetching recent articles from DB)")
+    
+    # DB Load
+    raw_candidates = repository.get_recent_articles(hours=_config.EXPIRATION_HOURS)
+    print(f"[EDITOR] Loaded {len(raw_candidates)} candidates.")
+
     scored_articles = []
     
     # Dynamic Candidate Counter
@@ -178,20 +167,23 @@ def run_editor():
     drift_count = 0
     drift_examples = []
     
-    for aid, article in raw_db.items():
-        # Fallback for articles not yet migrated (safety check)
-        if '_computed_category' not in article:
+    for article in raw_candidates:
+        # DB articles already have computed_score etc.
+        # We need to map DB fields to the format Editor logic expects if naming differs.
+        # Models: computed_score -> Editor: impact_score
+        
+        cat = article.get('computed_category')
+        score = article.get('computed_score')
+        breakdown = article.get('computed_breakdown')
+        cls_debug = article.get('computed_debug')
+
+        # Fallback if DB data is missing (shouldn't happen with new logic, but safe)
+        if not cat:
             cat, cls_debug = classify_article(article)
-            score, bd = scoring.compute_score(article, section=cat)
-            article['_computed_category'] = cat
-            article['_computed_score'] = score
-            article['_computed_breakdown'] = bd
-            article['_computed_debug'] = cls_debug
-            
-        cat = article['_computed_category']
+            score, breakdown = scoring.compute_score(article, section=cat)
         
         # Drift Tracking
-        debug_info = article.get('_computed_debug', {})
+        debug_info = cls_debug or {}
         default_sec = debug_info.get('default_section')
         if default_sec and cat != default_sec:
             drift_count += 1
@@ -200,11 +192,11 @@ def run_editor():
         
         # Populate fields expected by template/logic
         article['temp_section'] = cat
-        article['impact_score'] = article['_computed_score']
-        article['score_breakdown'] = article['_computed_breakdown']
-        article['classification_debug'] = article.get('_computed_debug', {})
+        article['impact_score'] = score
+        article['score_breakdown'] = breakdown
+        article['classification_debug'] = debug_info
         
-        if cat.startswith('skip'):
+        if cat and cat.startswith('skip'):
             continue
             
         if cat in section_candidates:
@@ -216,7 +208,7 @@ def run_editor():
     buckets = organize_and_cluster(scored_articles)
 
     # --- Phase 3: Select & Save ---
-    run_sheet = {} 
+    run_sheet = {}
     total_selected = 0
     cut_line_report = {} # Store top 3 misses per section
     section_diversity = {} # Store source breakdown per section
@@ -273,7 +265,7 @@ def run_editor():
         print(f" {section_def['title'][:20]:<20} | {section_candidates.get(cat, 0):<8} | {len(selected):<6} | {min_score:<5} | Score: {top_miss_str}")
 
     print("-" * 60)
-    print(f" {'TOTAL':<20} | {len(raw_db):<8} | {total_selected:<6} |")
+    print(f" {'TOTAL':<20} | {len(raw_candidates):<8} | {total_selected:<6} |")
     print("=" * 60)
     
     # Print Diversity Report

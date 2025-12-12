@@ -10,6 +10,7 @@ from fishwrap import _config
 from fishwrap import utils
 from fishwrap import editor
 from fishwrap import scoring
+from fishwrap.db import repository
 
 NAMESPACES = {
     'atom': 'http://www.w3.org/2005/Atom',
@@ -42,25 +43,20 @@ def fetch_reddit_json(url):
             link = f"https://www.reddit.com{permalink}"
             
             article = {
-                'id': post['id'],
                 'title': post['title'],
                 'link': link,
                 'source_url': url,
+                'external_id': post['id'], # Map 'id' to 'external_id'
                 'timestamp': post['created_utc'],
                 'content': post.get('selftext', ''),
                 'categories': [post.get('subreddit', 'reddit'), post.get('link_flair_text') or ''],
                 'stats_comments': post['num_comments'],
                 'stats_score': post['score'],
-                'thumbnail': post.get('thumbnail', ''),
-                'base_boosts': _config.SCORING_PROFILES['dynamic']['base_boosts'],
-                'boosts_count': 0
+                # 'base_boosts': ... logic handled in process_feed loop
             }
             article['categories'] = [c for c in article['categories'] if c]
             articles.append(article)
     except Exception as e:
-        # Return empty list on failure, let caller handle logging if needed
-        # but for concurrent execution, maybe return exception? 
-        # For now, just print to stderr or tqdm.write
         pass 
         
     return articles
@@ -104,18 +100,20 @@ def process_feed(url, cutoff):
                     if is_atom:
                         id_elem = item.find(f"{{{NAMESPACES['atom']}}}id")
                         link_elem = item.find(f"{{{NAMESPACES['atom']}}}link")
-                        article['id'] = id_elem.text if (id_elem is not None and id_elem.text) else (link_elem.attrib.get('href') if link_elem is not None else article['title'])
-                        article['link'] = link_elem.attrib.get('href') if link_elem is not None else ""
+                        ext_id = id_elem.text if (id_elem is not None and id_elem.text) else (link_elem.attrib.get('href') if link_elem is not None else article['title'])
+                        link = link_elem.attrib.get('href') if link_elem is not None else ""
                     else:
                         guid = item.find("guid")
-                        link = item.find("link")
-                        article['id'] = guid.text if (guid is not None and guid.text) else (link.text if (link is not None and link.text) else article['title'])
-                        article['link'] = link.text if link is not None else ""
+                        link_elem = item.find("link")
+                        ext_id = guid.text if (guid is not None and guid.text) else (link_elem.text if (link_elem is not None and link_elem.text) else article['title'])
+                        link = link_elem.text if link_elem is not None else ""
 
                         comments_elem = item.find("comments")
                         if comments_elem is not None:
                             article['comments_url'] = comments_elem.text
                     
+                    article['external_id'] = ext_id
+                    article['link'] = link
                     article['source_url'] = url
                     
                     # Date
@@ -151,7 +149,6 @@ def process_feed(url, cutoff):
                     article['base_boosts'] = profile['base_boosts']
                     article['stats_score'] = 0
                     article['stats_comments'] = 0
-                    article['boosts_count'] = 0
 
                     if 'hnrss.org' in url:
                         points_match = re.search(r'Points: (\d+)', (article.get('content') or ''))
@@ -161,72 +158,18 @@ def process_feed(url, cutoff):
                     
                     items.append(article)
     except Exception as e:
-        # We catch here to ensure one bad feed doesn't crash the thread
-        # In a real app we might log this better
         return [] 
         
     return items
 
-def upsert_article(db, new_article):
-    """
-    Upsert Logic with Pre-Computed Scoring.
-    """
-    aid = new_article['id']
-    res = "new"
-    
-    if aid in db:
-        existing = db[aid]
-        res = "updated"
-        
-        # Merge Persistent Data
-        new_article['stats_score'] = max(existing.get('stats_score', 0), new_article.get('stats_score', 0))
-        new_article['stats_comments'] = max(existing.get('stats_comments', 0), new_article.get('stats_comments', 0))
-        
-        if existing['timestamp'] > new_article['timestamp']:
-             new_article['timestamp'] = existing['timestamp']
-             
-        if 'comments_url' in existing and 'comments_url' not in new_article:
-             new_article['comments_url'] = existing['comments_url']
-
-        # Preserver Enhancer Artifacts
-        if 'full_content' in existing: new_article['full_content'] = existing['full_content']
-        if 'comments_full' in existing: new_article['comments_full'] = existing['comments_full']
-        if 'is_enhanced' in existing: new_article['is_enhanced'] = existing['is_enhanced']
-             
-    # --- PRE-COMPUTE SCORING ---
-    cat, cls_debug = editor.classify_article(new_article)
-    score, breakdown = scoring.compute_score(new_article, section=cat)
-    
-    new_article['_computed_category'] = cat
-    new_article['_computed_score'] = score
-    new_article['_computed_breakdown'] = breakdown
-    new_article['_computed_debug'] = cls_debug
-    # ---------------------------
-
-    db[aid] = new_article
-    return res
-
 def update_database():
-    # 1. Load existing DB
-    if os.path.exists(_config.ARTICLES_DB_FILE):
-        try:
-            with open(_config.ARTICLES_DB_FILE, 'r') as f:
-                db = json.load(f)
-        except json.JSONDecodeError:
-            db = {}
-    else:
-        db = {}
-    
-    initial_db_count = len(db)
+    initial_db_count = repository.get_total_count()
     
     # 2. Prune Old Articles (Retention Memory)
-    current_time = datetime.now().timestamp()
-    cutoff = current_time - (_config.EXPIRATION_HOURS * 3600 * 2)
+    # Using hardcoded 72h default or config driven
+    cutoff_hours = _config.EXPIRATION_HOURS * 2 
+    deleted_count = repository.prune_old_articles(hours=cutoff_hours)
     
-    keys_to_delete = [aid for aid, article in db.items() if article['timestamp'] < cutoff]
-    for k in keys_to_delete:
-        del db[k]
-        
     # 3. Fetch Feeds Concurrently
     urls = _config.FEEDS
     
@@ -237,14 +180,17 @@ def update_database():
         'updated_items': 0
     }
 
-    print(f"\n[FETCHER] Starting Parallel Fetch... (DB: {initial_db_count} -> {len(db)} after pruning)")
+    print(f"\n[FETCHER] Starting Parallel Fetch... (DB: {initial_db_count} -> Pruned: {deleted_count})")
     
+    current_ts = datetime.utcnow().timestamp()
+    cutoff_ts = current_ts - (cutoff_hours * 3600)
+
     # Use ThreadPoolExecutor for I/O bound tasks
     MAX_WORKERS = 10 
     
     with ThreadPoolExecutor(max_workers=MAX_WORKERS) as executor:
         # Submit all tasks
-        future_to_url = {executor.submit(process_feed, url, cutoff): url for url in urls}
+        future_to_url = {executor.submit(process_feed, url, cutoff_ts): url for url in urls}
         
         # Process as they complete
         with tqdm(total=len(urls), desc="Fetching Feeds", unit="feed") as pbar:
@@ -256,11 +202,32 @@ def update_database():
                     stats['items_fetched'] += len(items)
                     stats['feeds_processed'] += 1
                     
-                    # Upsert must happen in main thread or be locked (main thread is easiest here)
                     for article in items:
-                        if article['timestamp'] < cutoff: continue
+                        if article['timestamp'] < cutoff_ts: continue
                         
-                        res = upsert_article(db, article)
+                        # --- PRE-COMPUTE SCORING ---
+                        # We must inject 'base_boosts' if they were added in process_feed
+                        # Actually process_feed handles it? Yes.
+                        # Wait, fetch_reddit_json doesn't set base_boosts dynamically.
+                        # Fix: Check logic.
+                        if 'base_boosts' not in article:
+                            # Default fallback
+                             article['base_boosts'] = 0
+
+                        cat, cls_debug = editor.classify_article(article)
+                        score, breakdown = scoring.compute_score(article, section=cat)
+                        
+                        article['computed_category'] = cat
+                        article['computed_score'] = score
+                        article['computed_breakdown'] = breakdown
+                        article['computed_debug'] = cls_debug
+                        
+                        # Remove helper keys not in Model
+                        if 'base_boosts' in article: del article['base_boosts']
+                        # ---------------------------
+
+                        res = repository.upsert_article(article)
+                        
                         if res == "new":
                             stats['new_items'] += 1
                         else:
@@ -271,9 +238,7 @@ def update_database():
                 
                 pbar.update(1)
 
-    # 4. Save
-    with open(_config.ARTICLES_DB_FILE, 'w') as f:
-        json.dump(db, f, indent=2)
+    final_count = repository.get_total_count()
 
     # 5. Summary Report
     print("\n" + "="*40)
@@ -283,28 +248,15 @@ def update_database():
     print(f" Total Items Seen:  {stats['items_fetched']}")
     print(f" New Items Added:   {stats['new_items']}")
     print(f" Existing Updated:  {stats['updated_items']}")
-    print(f" Database Size:     {len(db)}")
+    print(f" Database Size:     {final_count}")
     
     # 6. Source Dominance Report
-    # Calculate simple histogram from the current DB or just the new items?
-    # The user request implies "Source Dominance" which usually means "Who is flooding the DB?"
-    # So we should look at the *entire* DB to see the current state of the pool.
-    
-    source_counts = {}
-    for article in db.values():
-        # simple parse of domain from source_url
-        try:
-            domain = article.get('source_url', '').split('/')[2]
-        except:
-            domain = 'unknown'
-        source_counts[domain] = source_counts.get(domain, 0) + 1
-        
-    sorted_sources = sorted(source_counts.items(), key=lambda x: x[1], reverse=True)[:5]
+    dominance = repository.get_source_dominance()
     
     print("-" * 40)
     print(" Source Dominance (Top 5 in DB)")
     print("-" * 40)
-    for domain, count in sorted_sources:
+    for domain, count in dominance:
         print(f" {count:<4} : {domain}")
     print("="*40 + "\n")
 
