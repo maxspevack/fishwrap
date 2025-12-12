@@ -1,6 +1,6 @@
 # Fishwrap Release History
 
-## v1.1.0: "Speed & Stability" (2025-12-11)
+## v1.1.0: "Speed & Stability" (2025-12-12)
 
 **The Narrative:**
 After establishing the core architecture in v1.0, we hit a wall. Our I/O was sequential, meaning the engine was only as fast as the slowest RSS feed. We also discovered "Zombie Articles" rising from the dead due to naive retention logic. This release focuses entirely on crushing latency and ensuring data consistency.
@@ -34,3 +34,49 @@ The initial major release. We took a script and turned it into an engine. This r
 *   **The Demos:** Three reference implementations (Vanilla, Cyber, AI) to showcase versatility.
 
 ---
+
+## v0.9.0: "The Demo Fleet" (2025-12-11)
+
+**The Narrative:**
+The "Release Candidate" phase. We proved the engine's versatility by launching three distinct verticals. This phase exposed the need for vertical-specific configuration and better editorial controls.
+
+### 🧪 Experiments
+*   **Vertical Expansion:** Launched "The Zero Day" (Cybersecurity) and "The Hallucination" (AI) alongside the "Vanilla" general news demo.
+*   **Editorial Controls:** Introduced per-vertical `editorial_config` to handle different content densities and update frequencies.
+*   **Documentation:** Initial draft of the "Glass Box" manifesto and technical architecture specs.
+
+---
+
+## v0.3.0: "The Great Schism" (2025-12-11)
+
+**The Narrative:**
+The moment Fishwrap became a platform. We realized "The Daily Clamour" was just *one* implementation of the engine. We aggressively refactored to decouple the "Product" from the "Press."
+
+### 💔 Decoupling
+*   **Repo Split:** Moved `daily_clamour` into its own directory (eventually its own repo strategy).
+*   **Theme Abstraction:** Created the "Basic" system theme as a neutral default, separating it from the "Vintage" brand identity of the Clamour.
+*   **Makefile logic:** Split build targets into `run-core` vs `run-clamour`.
+
+---
+
+## v0.2.0: "The Daily Clamour" (2025-12-10)
+
+**The Narrative:**
+The first coherent product. We moved from a script to a brand. This release focused on visual identity and the initial automated publishing pipeline.
+
+### 📰 Productization
+*   **Visual Identity:** Implementation of the "Vintage" CSS theme, evocative of 19th-century broadsheets.
+*   **Assets:** Added paper textures, Gothic fonts, and the layout engine.
+*   **Automation:** Created the initial `auto_publish.sh` (precursor to the modern `deploy.sh`).
+
+---
+
+## v0.1.0: "The Genesis" (2025-12-10)
+
+**The Narrative:**
+In the beginning, there was `press.py`. A simple, monolithic script to fetch RSS feeds and dump them into an HTML file.
+
+### 🥚 Origins
+*   **Project Name:** "Press" (renamed to "Fishwrap").
+*   **Core Logic:** Basic sequential fetching and Jinja2 templating.
+*   **License:** BSD 3-Clause established.
