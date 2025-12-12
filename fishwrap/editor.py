@@ -175,6 +175,8 @@ def run_editor():
     
     # Dynamic Candidate Counter
     section_candidates = {section['id']: 0 for section in _config.SECTIONS}
+    drift_count = 0
+    drift_examples = []
     
     for aid, article in raw_db.items():
         # Fallback for articles not yet migrated (safety check)
@@ -187,6 +189,14 @@ def run_editor():
             article['_computed_debug'] = cls_debug
             
         cat = article['_computed_category']
+        
+        # Drift Tracking
+        debug_info = article.get('_computed_debug', {})
+        default_sec = debug_info.get('default_section')
+        if default_sec and cat != default_sec:
+            drift_count += 1
+            if len(drift_examples) < 3:
+                drift_examples.append(f"'{article.get('title')[:30]}...' ({default_sec} -> {cat})")
         
         # Populate fields expected by template/logic
         article['temp_section'] = cat
@@ -208,11 +218,12 @@ def run_editor():
     # --- Phase 3: Select & Save ---
     run_sheet = {} 
     total_selected = 0
+    cut_line_report = {} # Store top 3 misses per section
     
     print("\n" + "="*60)
-    print(f" EDITOR SUMMARY")
+    print(f" EDITOR SUMMARY (Drift: {drift_count} reclassified)")
     print("="*60)
-    print(f" {'Section':<20} | {'Candidates':<10} | {'Selected':<8} | {'Min Score':<10}")
+    print(f" {'Section':<20} | {'Pool':<8} | {'Pick':<6} | {'Min':<5} | {'Cut-Line (Top Miss)':<20}")
     print("-" * 60)
     
     # Iterate through Configured Sections to maintain order
@@ -232,17 +243,37 @@ def run_editor():
         
         # Filter 2: Minimum Score
         min_score = _config.MIN_SECTION_SCORES.get(cat, 0)
-        items = [i for i in items if i.get('impact_score', 0) >= min_score]
+        qualified_items = [i for i in items if i.get('impact_score', 0) >= min_score]
         
-        selected = items[:capacity]
+        selected = qualified_items[:capacity]
         run_sheet[cat] = selected
         total_selected += len(selected)
         
-        print(f" {section_def['title'][:20]:<20} | {section_candidates.get(cat, 0):<10} | {len(selected):<8} | {min_score:<10}")
+        # Capture Cut-Line (The best of the rest)
+        # We look at 'items' (all candidates) to see what missed, 
+        # specifically those that didn't make 'selected'
+        missed = items[len(selected):]
+        cut_line_report[cat] = missed[:3]
+        
+        top_miss_str = f"{missed[0]['impact_score']:.1f}" if missed else "-"
+        
+        print(f" {section_def['title'][:20]:<20} | {section_candidates.get(cat, 0):<8} | {len(selected):<6} | {min_score:<5} | Score: {top_miss_str}")
 
     print("-" * 60)
-    print(f" {'TOTAL':<20} | {len(raw_db):<10} | {total_selected:<8} |")
-    print("=" * 60 + "\n")
+    print(f" {'TOTAL':<20} | {len(raw_db):<8} | {total_selected:<6} |")
+    print("=" * 60)
+    
+    # Print Detailed Cut-Line Report
+    print("\n [CUT-LINE REPORT] Top 3 Rejected Stories per Section:")
+    for section_def in _config.SECTIONS:
+        cat = section_def['id']
+        misses = cut_line_report.get(cat, [])
+        if misses:
+            print(f" [{section_def['title']}]")
+            for m in misses:
+                print(f"   x ({m.get('impact_score', 0):.1f}) {m.get('title')[:60]}...")
+        
+    print("\n")
         
     with open(_config.RUN_SHEET_FILE, 'w') as f:
         json.dump(run_sheet, f, indent=2)

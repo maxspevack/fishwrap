@@ -7,8 +7,8 @@ Fishwrap is evolving from a personal script into a robust News Engine platform.
 
 *   **Observability Suite:**
     *   [ ] Implement `scoring_breakdown.csv` generation for audit trails.
-    *   [ ] Add console reporting for "Cut-Line" stories (what *almost* made it).
-    *   [ ] Add source volume histograms.
+    *   [x] Add console reporting for "Cut-Line" stories (what *almost* made it).
+    *   [x] Add source volume histograms.
 *   **Data Foundation:**
     *   [ ] Migrate from `articles_db.json` to SQLite (`fishwrap.db`).
     *   [ ] Build CLI tools for database management (`fw-db stats`, `fw-db clean`).

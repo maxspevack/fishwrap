@@ -276,6 +276,28 @@ def update_database():
     print(f" New Items Added:   {stats['new_items']}")
     print(f" Existing Updated:  {stats['updated_items']}")
     print(f" Database Size:     {len(db)}")
+    
+    # 6. Source Dominance Report
+    # Calculate simple histogram from the current DB or just the new items?
+    # The user request implies "Source Dominance" which usually means "Who is flooding the DB?"
+    # So we should look at the *entire* DB to see the current state of the pool.
+    
+    source_counts = {}
+    for article in db.values():
+        # simple parse of domain from source_url
+        try:
+            domain = article.get('source_url', '').split('/')[2]
+        except:
+            domain = 'unknown'
+        source_counts[domain] = source_counts.get(domain, 0) + 1
+        
+    sorted_sources = sorted(source_counts.items(), key=lambda x: x[1], reverse=True)[:5]
+    
+    print("-" * 40)
+    print(" Source Dominance (Top 5 in DB)")
+    print("-" * 40)
+    for domain, count in sorted_sources:
+        print(f" {count:<4} : {domain}")
     print("="*40 + "\n")
 
 if __name__ == "__main__":

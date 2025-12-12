@@ -41,6 +41,8 @@ def copy_static_assets():
         # Create empty static dir if theme has none, to prevent 404s if referenced
         os.makedirs(dest_static, exist_ok=True)
         # print(f"[PRINTER] No static assets found in {theme_path}")
+        
+    return dest_static
 
 def generate_issues():
     if not os.path.exists(_config.ENHANCED_ISSUE_FILE):
@@ -102,7 +104,7 @@ def generate_issues():
         f.write(html_content)
     
     # --- 2. Copy Static Assets ---
-    copy_static_assets()
+    static_path = copy_static_assets()
     
     # --- 3. Generate PDF ---
     # print("[PRINTER] Generating PDF Edition...")
@@ -111,9 +113,12 @@ def generate_issues():
     print("\n" + "="*40)
     print(f" PRINTER SUMMARY")
     print("="*40)
-    print(f" Issue:     {vol_issue_str}")
-    print(f" HTML:      {_config.LATEST_HTML_FILE}")
-    # print(f" PDF:       {_config.LATEST_PDF_FILE}")
+    print(f" Edition:       {vol_issue_str}")
+    print(f" Date:          {date_str}")
+    print("-" * 40)
+    print(f" [HTML]         {_config.LATEST_HTML_FILE}")
+    print(f" [Assets]       {static_path}")
+    # print(f" [PDF]          {_config.LATEST_PDF_FILE}") 
     print("="*40 + "\n")
 
 if __name__ == "__main__":

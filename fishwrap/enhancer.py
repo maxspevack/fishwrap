@@ -271,10 +271,17 @@ def enhance_articles():
     print("\n" + "="*40)
     print(f" ENHANCER SUMMARY")
     print("="*40)
-    print(f" Total Articles: {len(all_articles)}")
-    print(f" Cache Hits:     {stats['hits']}")
-    print(f" Network Fetches:{stats['misses']}")
-    print(f" Errors/Partial: {stats['errors']}")
+    
+    total = len(all_articles)
+    success = stats['hits'] + stats['misses'] # Misses are successful fetches
+    yield_rate = (success / total * 100) if total > 0 else 0
+    
+    print(f" Total Articles:  {total}")
+    print(f" Content Yield:   {yield_rate:.1f}%")
+    print("-" * 40)
+    print(f" Cache Hits:      {stats['hits']}")
+    print(f" Fresh Fetches:   {stats['misses']}")
+    print(f" Failed/Partial:  {stats['errors']}")
     print("="*40 + "\n")
 
 if __name__ == "__main__":
