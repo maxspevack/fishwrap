@@ -110,16 +110,8 @@ def generate_issues():
     # print("[PRINTER] Generating PDF Edition...")
     # pdf_renderer.render(data, stats, vol_issue_str, date_str, _config.LATEST_PDF_FILE)
     
-    print("\n" + "="*40)
-    print(f" PRINTER SUMMARY")
-    print("="*40)
-    print(f" Edition:       {vol_issue_str}")
-    print(f" Date:          {date_str}")
-    print("-" * 40)
-    print(f" [HTML]         {_config.LATEST_HTML_FILE}")
-    print(f" [Assets]       {static_path}")
-    # print(f" [PDF]          {_config.LATEST_PDF_FILE}") 
-    print("="*40 + "\n")
+    print(f"\n[PRINTER] Generated {vol_issue_str}: {total_articles_to_print} articles. HTML: {_config.LATEST_HTML_FILE}")
+
 
 if __name__ == "__main__":
     generate_issues()

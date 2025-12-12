@@ -240,25 +240,9 @@ def update_database():
 
     final_count = repository.get_total_count()
 
-    # 5. Summary Report
-    print("\n" + "="*40)
-    print(f" FETCHER SUMMARY")
-    print("="*40)
-    print(f" Feeds Processed:   {stats['feeds_processed']}/{len(urls)}")
-    print(f" Total Items Seen:  {stats['items_fetched']}")
-    print(f" New Items Added:   {stats['new_items']}")
-    print(f" Existing Updated:  {stats['updated_items']}")
-    print(f" Database Size:     {final_count}")
-    
-    # 6. Source Dominance Report
-    dominance = repository.get_source_dominance()
-    
-    print("-" * 40)
-    print(" Source Dominance (Top 5 in DB)")
-    print("-" * 40)
-    for domain, count in dominance:
-        print(f" {count:<4} : {domain}")
-    print("="*40 + "\n")
+    # Summary Report (High-level only, details in Auditor report)
+    print(f"\n[FETCHER] Processed {stats['feeds_processed']}/{len(urls)} feeds. {stats['new_items']} new, {stats['updated_items']} updated. DB Size: {final_count}.")
+
 
 if __name__ == "__main__":
     update_database()

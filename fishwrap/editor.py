@@ -214,99 +214,15 @@ def run_editor():
     cut_line_report = {} # Store top 3 misses per section
     section_diversity = {} # Store source breakdown per section
     
-    print("\n" + "="*60)
-    print(f" EDITOR SUMMARY (Drift: {drift_count} reclassified)")
-    print("="*60)
-    print(f" {'Section':<20} | {'Pool':<8} | {'Pick':<6} | {'Min':<5} | {'Cut-Line (Top Miss)':<20}")
-    print("-" * 60)
+    # Summary Report (High-level only, details in Auditor report)
+    print(f"\n[EDITOR] Selected {total_selected} articles ({drift_count} reclassified).")
     
-    # Iterate through Configured Sections to maintain order
-    current_time_ts = datetime.now().timestamp()
-    print_cutoff = current_time_ts - (_config.EXPIRATION_HOURS * 3600)
-
-    for section_def in _config.SECTIONS:
-        cat = section_def['id']
-        capacity = _config.EDITION_SIZE.get(cat, 5) # Default capacity if missing
-        
-        items = buckets.get(cat, [])
-        
-        # Filter 1: Freshness (Strict Print Window)
-        items = [i for i in items if i.get('timestamp', 0) >= print_cutoff]
-
-        items.sort(key=lambda x: x.get('impact_score', 0), reverse=True)
-        
-        # Filter 2: Minimum Score
-        min_score = _config.MIN_SECTION_SCORES.get(cat, 0)
-        qualified_items = [i for i in items if i.get('impact_score', 0) >= min_score]
-        
-        selected = qualified_items[:capacity]
-        run_sheet[cat] = selected
-        total_selected += len(selected)
-        
-        # Calculate Diversity for this section
-        source_counts = {}
-        for item in selected:
-            try:
-                # simple domain parse
-                domain = item.get('source_url', '').split('/')[2]
-            except:
-                domain = 'unknown'
-            source_counts[domain] = source_counts.get(domain, 0) + 1
-        
-        # Convert to list of (domain, count) sorted by count
-        sorted_sources = sorted(source_counts.items(), key=lambda x: x[1], reverse=True)
-        section_diversity[cat] = sorted_sources
-        
-        # Capture Cut-Line (The best of the rest)
-        missed = items[len(selected):]
-        cut_line_report[cat] = missed[:3]
-        
-        top_miss_str = f"{missed[0]['impact_score']:.1f}" if missed else "-"
-        
-        print(f" {section_def['title'][:20]:<20} | {section_candidates.get(cat, 0):<8} | {len(selected):<6} | {min_score:<5} | Score: {top_miss_str}")
-
-    print("-" * 60)
-    print(f" {'TOTAL':<20} | {len(raw_candidates):<8} | {total_selected:<6} |")
-    print("=" * 60)
-    
-    # Print Diversity Report
-    print("\n [RUN SHEET DIVERSITY] Top Sources per Section:")
-    print("-" * 60)
-    for section_def in _config.SECTIONS:
-        cat = section_def['id']
-        sources = section_diversity.get(cat, [])
-        if sources:
-            total_sec = sum(c for d, c in sources)
-            if total_sec > 0:
-                print(f" [{section_def['title']}] (Total: {total_sec})")
-                top_5 = sources[:5]
-                for domain, count in top_5:
-                    percentage = (count / total_sec) * 100
-                    print(f"   {count:<4} ({percentage:5.1f}%) : {domain}")
-            else:
-                print(f" [{section_def['title']}] : (No articles selected)")
-        else:
-            print(f" [{section_def['title']}] : (No articles selected)")
-    print("-" * 60)
-            
-    # Print Detailed Cut-Line Report
-    print("\n [CUT-LINE REPORT] Top 3 Rejected Stories per Section:")
-    for section_def in _config.SECTIONS:
-        cat = section_def['id']
-        misses = cut_line_report.get(cat, [])
-        if misses:
-            print(f" [{section_def['title']}]")
-            for m in misses:
-                print(f"   x ({m.get('impact_score', 0):.1f}) {m.get('title')[:60]}...")
-        
-    print("\n")
-        
-    with open(_config.RUN_SHEET_FILE, 'w') as f:
-        json.dump(run_sheet, f, indent=2)
-
-    # --- Phase 4: The Auditor ---
+    # The Auditor will now persist and generate the detailed report
     total_db_count = repository.get_total_count()
-    auditor.audit_run(run_sheet, raw_candidates, {'input_count': total_db_count})
+    auditor.audit_run(run_sheet, raw_candidates, {
+        'input_count': total_db_count,
+        'cut_line': cut_line_report
+    })
 
 if __name__ == "__main__":
     run_editor()

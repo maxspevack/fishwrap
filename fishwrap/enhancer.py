@@ -249,21 +249,11 @@ def enhance_articles():
     with open(_config.ENHANCED_ISSUE_FILE, 'w') as f:
         json.dump(enhanced_results, f, indent=2)
         
-    print("\n" + "="*40)
-    print(f" ENHANCER SUMMARY")
-    print("="*40)
-    
     total = len(all_articles)
-    success = stats['hits'] + stats['misses'] # Misses are successful fetches
+    success = stats['hits'] + stats['misses'] # Define success here
     yield_rate = (success / total * 100) if total > 0 else 0
-    
-    print(f" Total Articles:  {total}")
-    print(f" Content Yield:   {yield_rate:.1f}%")
-    print("-" * 40)
-    print(f" Cache Hits:      {stats['hits']}")
-    print(f" Fresh Fetches:   {stats['misses']}")
-    print(f" Failed/Partial:  {stats['errors']}")
-    print("="*40 + "\n")
+    print(f"\n[ENHANCER] Processed {total} articles ({stats['hits']} hits, {stats['misses']} fetches, {stats['errors']} errors). Yield: {yield_rate:.1f}%.")
+
 
 if __name__ == "__main__":
     enhance_articles()
