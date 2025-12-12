@@ -1,3 +1,10 @@
+---
+layout: default
+title: Vol 2. Concurrency
+parent: Scaling the School
+nav_order: 2
+---
+
 # Vol 2. Breaking the Speed of Light
 ## Concurrency & Network I/O
 

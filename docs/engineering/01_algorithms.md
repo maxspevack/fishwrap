@@ -1,3 +1,10 @@
+---
+layout: default
+title: Vol 1. Algorithms
+parent: Scaling the School
+nav_order: 1
+---
+
 # Vol 1. The Hatchet & The Scalpel
 ## Optimizing Algorithmic Complexity
 

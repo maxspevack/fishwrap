@@ -1,3 +1,10 @@
+---
+layout: default
+title: Scaling the School
+has_children: true
+nav_order: 3
+---
+
 # 🐟 Scaling the School: Case Studies in High-Performance News
 
 **To:** The Engineering Team

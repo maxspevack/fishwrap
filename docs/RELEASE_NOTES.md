@@ -1,56 +1,36 @@
-# Fishwrap Release Notes
+# Fishwrap Release History
 
-This document chronicles the notable changes across versions of the Fishwrap engine.
+## v1.1.0: "Speed & Stability" (2025-12-11)
 
-## v1.1.0 (2025-12-11)
+**The Narrative:**
+After establishing the core architecture in v1.0, we hit a wall. Our I/O was sequential, meaning the engine was only as fast as the slowest RSS feed. We also discovered "Zombie Articles" rising from the dead due to naive retention logic. This release focuses entirely on crushing latency and ensuring data consistency.
 
-### Summary
-The "Speed & Stability" release. This version introduces massive performance improvements through parallelization while ensuring robust behavior via rate limiting and improved state management. It solves critical issues with data persistence ("Zombie Articles") and significantly reduces pipeline execution time.
+### ⚡ Performance & Infrastructure
+*   **Parallel I/O:** Refactored `fetcher.py` and `enhancer.py` to use `ThreadPoolExecutor`. Network operations are now concurrent, yielding a **~7.5x speedup** (Total I/O reduced from ~51s to ~7s).
+*   **Rate Limiting:** Implemented a polite "Token Bucket" rate limiter in `utils.py` to prevent DDoS-ing sources like Reddit (HTTP 429).
+*   **State Preservation:** Fixed a critical regression where the Fetcher would overwrite expensive scraped data. Updates are now merged, ensuring a **100% cache hit rate** on subsequent runs.
+*   **Zombie Defense:** Decoupled database retention (48h) from publication (24h). We now remember history to deduplicate, but only print fresh news.
 
-### Features & Performance
-*   **Parallel Execution:** Refactored `fetcher.py` and `enhancer.py` to use `ThreadPoolExecutor`. Network I/O is now concurrent, resulting in a **~7.5x speedup** (Total I/O reduced from ~51s to ~7s in tests).
-*   **Rate Limiting:** Implemented a domain-based "Token Bucket" rate limiter in `utils.py` to prevent HTTP 429 errors. Requests to sensitive domains (e.g., `reddit.com`) are serialized and throttled while others remain parallel.
-*   **Professional Dark Theme:** The "Basic" theme (`demo/themes/basic`) has been upgraded to a polished "Professional Dark" mode with improved typography, layout, and a custom SVG logo.
-
-### Bug Fixes & Logic
-*   **State Preservation (The "Memento" Fix):** Fixed a critical regression where the Fetcher would overwrite expensive enhanced data (full text, comments) with raw RSS data on subsequent runs. Updates are now merged, ensuring a **100% cache hit rate** for previously processed items.
-*   **Zombie Defense:** Decoupled database retention from publication logic. We now retain data for 48 hours (to detect and deduplicate updates) but strictly filter for 24-hour freshness during publication. This prevents old articles from "rising from the dead" as new items.
-
-### Documentation
-*   **Engineering Series:** Refactored the monolithic "Scaling" paper into a 3-part Engineering Case Study series (`docs/engineering/`) covering Algorithms, Concurrency, and Consistency.
-*   **Branding:** Updated all documentation and demos to use consistent Fishwrap branding.
-*   **Deployment:** Introduced the `/ship` "Golden Rule" workflow for automated testing and deployment.
+### 🎨 UX & Documentation
+*   **Professional Dark Theme:** The "Basic" theme has been upgraded to a polished dark mode with a custom Fishwrap SVG logo.
+*   **Engineering Series:** Published [Scaling the School](engineering/index.html), a 3-part deep dive into our optimization journey.
 
 ---
 
-## v1.0.0 (2025-12-11)
+## v1.0.0: "The Foundation" (2025-12-11)
 
-### Summary
-Initial major release of the refactored Fishwrap engine. This version introduces a clear architectural separation between the core engine, a standalone demo implementation, and product-specific instances (like The Daily Clamour). It includes a robust theming system, configurable pipelines, and improved documentation for developers and users.
+**The Narrative:**
+The initial major release. We took a script and turned it into an engine. This release established the "Glass Box" philosophy, separated the core logic from specific implementations, and introduced the "Newsroom" metaphor.
 
-### Features
-*   **Architectural Separation:** Implemented a clean separation between the `fishwrap/fishwrap` engine, `demo/` (reference implementation), and `daily_clamour/` (product instance).
-*   **Configurable Engine:** Introduced dynamic configuration loading via `FISHWRAP_CONFIG` environment variable, allowing external Python files to customize pipeline settings.
-*   **Modular Theming System:** Themes (`basic`, `vintage`) are now externalized from the core rendering logic and loaded dynamically.
-*   **Static Asset Pipeline:** Static assets (images, textures) are automatically copied from the active theme's directory to the output directory during printing.
-*   **Enhanced Demo (`demo/`):** A fully functional, unbranded demo newspaper, complete with diverse feeds, debug functionality, and a dedicated `README.md`.
-*   **Granular Cleanup:** Added `make clean-demo` and `make clean-clamour` targets for specific artifact removal.
+### 🏗️ Core Architecture
+*   **Modular Engine:** Separated `fishwrap` (core) from `demo/` (reference) and `daily_clamour/` (product).
+*   **Config Injection:** Dynamic configuration loading via `FISHWRAP_CONFIG`, allowing the engine to be stateless and reusable.
+*   **Theming System:** Externalized templates (`basic`, `vintage`) and static asset pipelines.
 
-### Enhancements
-*   **Improved Documentation:** Revamped Root, Engine, and Demo READMEs for clarity, user-friendliness, and architectural overview.
-*   **Newsroom Metaphor:** Root README architecture explanation now uses a more engaging newsroom metaphor.
-*   **Responsive Styling:** Refined mobile responsiveness for the "Vintage" theme (2-column layout on tablets).
-*   **Polished Basic Theme:** Added sticky sidebar, debug toggle, and a generic SVG logo to the "Basic" theme.
-*   **Makefile Streamlining:** Cleaned up Makefile with explicit `run-clamour` and `run-vanilla` targets.
-
-### Bug Fixes
-*   Corrected `Makefile` syntax error (`run-fishwrap` duplication).
-*   Restored `MIN_SECTION_SCORES` to `_config.py` in the default config.
-*   Fixed recursive config loading issue in `demo/config.py`.
-
-### Architecture
-*   **Clean Engine:** `fishwrap/fishwrap/_config.py` now serves as an empty schema/loader, with all specific settings moved to instance configurations.
-*   **Isolated Data/Output:** `demo/` and `daily_clamour/` now manage their own data (`.json`) and output (`.html`, `.pdf`) files.
-*   **Git Hygiene:** Untracked generated files, added `.gitkeep`, and cleaned up extraneous artifacts.
+### 🚀 Features
+*   **The Editor:** An O(N) scoring and deduplication engine using Jaccard Indices.
+*   **The Fetcher:** A robust RSS/JSON ingestion module.
+*   **The Printer:** A Jinja2-based renderer for HTML and PDF artifacts.
+*   **The Demos:** Three reference implementations (Vanilla, Cyber, AI) to showcase versatility.
 
 ---

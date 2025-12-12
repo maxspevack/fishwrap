@@ -1,3 +1,10 @@
+---
+layout: default
+title: Vol 3. Consistency
+parent: Scaling the School
+nav_order: 3
+---
+
 # Vol 3. The Zombie Defense
 ## State Management & Consistency
 
