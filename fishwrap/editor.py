@@ -4,6 +4,7 @@ import difflib
 from datetime import datetime
 from fishwrap import _config
 from fishwrap import scoring
+from fishwrap import auditor
 from fishwrap.db import repository
 
 def classify_article(article):
@@ -302,6 +303,10 @@ def run_editor():
         
     with open(_config.RUN_SHEET_FILE, 'w') as f:
         json.dump(run_sheet, f, indent=2)
+
+    # --- Phase 4: The Auditor ---
+    total_db_count = repository.get_total_count()
+    auditor.audit_run(run_sheet, raw_candidates, {'input_count': total_db_count})
 
 if __name__ == "__main__":
     run_editor()

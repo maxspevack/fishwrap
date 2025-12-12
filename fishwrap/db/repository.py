@@ -1,7 +1,7 @@
 from datetime import datetime, timedelta
 from sqlalchemy import create_engine, select, delete, func
 from sqlalchemy.orm import sessionmaker
-from fishwrap.db.models import Article
+from fishwrap.db.models import Article, Run, RunArticle
 import os
 
 # --- Database Setup ---
@@ -22,6 +22,32 @@ class SessionContext:
         self.db.close()
 
 # --- Repository Functions ---
+
+def save_run(run_data, articles_list):
+    """
+    Saves a Run and its associated RunArticles.
+    run_data: dict of Run fields.
+    articles_list: list of dicts {'article_id': ..., 'rank': ..., 'score': ..., 'section': ...}
+    """
+    with SessionContext() as db:
+        # Create Run
+        new_run = Run(**run_data)
+        db.add(new_run)
+        db.flush() # Flush to get the ID (though UUID is pre-generated, good practice)
+        
+        # Create RunArticles
+        for item in articles_list:
+            ra = RunArticle(
+                run_id=new_run.id,
+                article_id=item['article_id'],
+                final_score=item.get('score'),
+                rank=item.get('rank'),
+                section=item.get('section')
+            )
+            db.add(ra)
+            
+        db.commit()
+        return new_run.id
 
 def upsert_article(article_data):
     """
