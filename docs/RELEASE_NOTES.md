@@ -2,6 +2,27 @@
 
 This document chronicles the notable changes across versions of the Fishwrap engine.
 
+## v1.1.0 (2025-12-11)
+
+### Summary
+The "Speed & Stability" release. This version introduces massive performance improvements through parallelization while ensuring robust behavior via rate limiting and improved state management. It solves critical issues with data persistence ("Zombie Articles") and significantly reduces pipeline execution time.
+
+### Features & Performance
+*   **Parallel Execution:** Refactored `fetcher.py` and `enhancer.py` to use `ThreadPoolExecutor`. Network I/O is now concurrent, resulting in a **~7.5x speedup** (Total I/O reduced from ~51s to ~7s in tests).
+*   **Rate Limiting:** Implemented a domain-based "Token Bucket" rate limiter in `utils.py` to prevent HTTP 429 errors. Requests to sensitive domains (e.g., `reddit.com`) are serialized and throttled while others remain parallel.
+*   **Professional Dark Theme:** The "Basic" theme (`demo/themes/basic`) has been upgraded to a polished "Professional Dark" mode with improved typography, layout, and a custom SVG logo.
+
+### Bug Fixes & Logic
+*   **State Preservation (The "Memento" Fix):** Fixed a critical regression where the Fetcher would overwrite expensive enhanced data (full text, comments) with raw RSS data on subsequent runs. Updates are now merged, ensuring a **100% cache hit rate** for previously processed items.
+*   **Zombie Defense:** Decoupled database retention from publication logic. We now retain data for 48 hours (to detect and deduplicate updates) but strictly filter for 24-hour freshness during publication. This prevents old articles from "rising from the dead" as new items.
+
+### Documentation
+*   **Engineering Series:** Refactored the monolithic "Scaling" paper into a 3-part Engineering Case Study series (`docs/engineering/`) covering Algorithms, Concurrency, and Consistency.
+*   **Branding:** Updated all documentation and demos to use consistent Fishwrap branding.
+*   **Deployment:** Introduced the `/ship` "Golden Rule" workflow for automated testing and deployment.
+
+---
+
 ## v1.0.0 (2025-12-11)
 
 ### Summary
