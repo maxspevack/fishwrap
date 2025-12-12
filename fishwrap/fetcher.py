@@ -97,7 +97,8 @@ def process_feed(url, cutoff):
                         title_elem = item.find(f"{{{NAMESPACES['atom']}}}title")
                     else:
                         title_elem = item.find("title")
-                    article['title'] = title_elem.text if title_elem is not None else "No Title"
+                    
+                    article['title'] = title_elem.text if (title_elem is not None and title_elem.text) else "No Title"
 
                     # ID/Link
                     if is_atom:
@@ -134,11 +135,18 @@ def process_feed(url, cutoff):
                     # Content
                     if is_atom:
                         content_elem = item.find(f"{{{NAMESPACES['atom']}}}content")
-                        article['content'] = content_elem.text if content_elem is not None else ""
+                        article['content'] = content_elem.text if (content_elem is not None and content_elem.text) else ""
                     else:
                         content_enc = item.find(f"{{{NAMESPACES['content']}}}encoded")
                         desc = item.find("description")
-                        article['content'] = content_enc.text if content_enc is not None else (desc.text if desc is not None else "")
+                        
+                        content_val = ""
+                        if content_enc is not None and content_enc.text:
+                            content_val = content_enc.text
+                        elif desc is not None and desc.text:
+                            content_val = desc.text
+                            
+                        article['content'] = content_val
                     
                     article['base_boosts'] = profile['base_boosts']
                     article['stats_score'] = 0

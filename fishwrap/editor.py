@@ -219,6 +219,7 @@ def run_editor():
     run_sheet = {} 
     total_selected = 0
     cut_line_report = {} # Store top 3 misses per section
+    section_diversity = {} # Store source breakdown per section
     
     print("\n" + "="*60)
     print(f" EDITOR SUMMARY (Drift: {drift_count} reclassified)")
@@ -249,9 +250,21 @@ def run_editor():
         run_sheet[cat] = selected
         total_selected += len(selected)
         
+        # Calculate Diversity for this section
+        source_counts = {}
+        for item in selected:
+            try:
+                # simple domain parse
+                domain = item.get('source_url', '').split('/')[2]
+            except:
+                domain = 'unknown'
+            source_counts[domain] = source_counts.get(domain, 0) + 1
+        
+        # Convert to list of (domain, count) sorted by count
+        sorted_sources = sorted(source_counts.items(), key=lambda x: x[1], reverse=True)
+        section_diversity[cat] = sorted_sources
+        
         # Capture Cut-Line (The best of the rest)
-        # We look at 'items' (all candidates) to see what missed, 
-        # specifically those that didn't make 'selected'
         missed = items[len(selected):]
         cut_line_report[cat] = missed[:3]
         
@@ -263,6 +276,17 @@ def run_editor():
     print(f" {'TOTAL':<20} | {len(raw_db):<8} | {total_selected:<6} |")
     print("=" * 60)
     
+    # Print Diversity Report
+    print("\n [RUN SHEET DIVERSITY] Top Sources per Section:")
+    for section_def in _config.SECTIONS:
+        cat = section_def['id']
+        sources = section_diversity.get(cat, [])
+        if sources:
+            total_sec = sum(c for d, c in sources)
+            top_3 = sources[:3]
+            source_strs = [f"{d} ({c}/{total_sec})" for d, c in top_3]
+            print(f" [{section_def['title']}] : {', '.join(source_strs)}")
+            
     # Print Detailed Cut-Line Report
     print("\n [CUT-LINE REPORT] Top 3 Rejected Stories per Section:")
     for section_def in _config.SECTIONS:
