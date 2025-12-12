@@ -6,12 +6,21 @@ Fishwrap is evolving from a personal script into a robust News Engine platform.
 *Focus: "The Glass Box" - Making the engine's decisions transparent.*
 
 *   **Observability Suite:**
-    *   [ ] Implement `scoring_breakdown.csv` generation for audit trails.
     *   [x] Add console reporting for "Cut-Line" stories (what *almost* made it).
-    *   [x] Add source volume histograms.
+    *   [x] Add source volume histograms (Fetcher Dominance).
+    *   [x] Add "Run Sheet Diversity" report (Output Dominance).
+    *   [x] Drift Tracking (Classification overrides).
 *   **Data Foundation:**
     *   [ ] Migrate from `articles_db.json` to SQLite (`fishwrap.db`).
     *   [ ] Build CLI tools for database management (`fw-db stats`, `fw-db clean`).
+
+## 🔵 Phase 1.5: The Auditor & Persistence
+*Focus: Structuralizing the Insights for the User.*
+
+*   **The Auditor Module (`fishwrap.auditor`):**
+    *   [ ] Implement "Funnel Analysis" (Input -> Pool -> Qualified -> Selected).
+    *   [ ] Persist run statistics (`run_stats.json` or SQLite) for trend analysis.
+    *   [ ] Generate user-facing `transparency.html` artifact.
 *   **Architecture:**
     *   [ ] Refactor `config.py` to use Pydantic models for validation.
     *   [ ] Modularize `Scorer` and `Classifier` logic into a plugin system.
