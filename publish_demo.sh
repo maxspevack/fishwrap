@@ -48,6 +48,13 @@ mkdir -p "$DOCS_DIR"
 cp "$OUTPUT_FILE" "$DOCS_DIR/index.html"
 echo "  -> Copied index.html"
 
+# 3.5 Copy Transparency Report (if exists)
+TRANSPARENCY_FILE="$(dirname "$OUTPUT_FILE")/transparency.html"
+if [ -f "$TRANSPARENCY_FILE" ]; then
+    cp "$TRANSPARENCY_FILE" "$DOCS_DIR/transparency.html"
+    echo "  -> Copied transparency.html"
+fi
+
 # 4. Copy Static Assets (if they exist)
 if [ -d "$THEME_STATIC" ]; then
     # We copy the CONTENTS of static into docs/demo/vanilla/static
