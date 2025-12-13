@@ -59,7 +59,8 @@ def audit_run(run_sheet, candidates, stats_context):
         'stats_input': input_count,
         'stats_pool': pool_count,
         'stats_selected': selected_count,
-        'source_dominance': dominance_snapshot
+        'source_dominance': dominance_snapshot,
+        'perf_metrics': stats_context.get('perf_metrics', {})
     }
     
     run_id = repository.save_run(run_data, selected_articles_flat)

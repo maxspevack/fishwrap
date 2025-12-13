@@ -164,6 +164,7 @@ def process_feed(url, cutoff):
     return items
 
 def update_database():
+    timer = utils.Stopwatch().start()
     initial_db_count = repository.get_total_count()
     
     # 2. Prune Old Articles (Retention Memory)
@@ -234,9 +235,10 @@ def update_database():
                 pbar.update(1)
 
     final_count = repository.get_total_count()
+    duration = timer.stop()
 
     # Summary Report
-    print(f"\n[FETCHER] Processed {stats['feeds_processed']}/{len(urls)} feeds. {stats['new_items']} new, {stats['updated_items']} updated. DB Size: {final_count}.")
+    print(f"\n[FETCHER] Processed {stats['feeds_processed']}/{len(urls)} feeds in {duration:.2f}s. {stats['new_items']} new, {stats['updated_items']} updated. DB Size: {final_count}.")
 
 if __name__ == "__main__":
     update_database()

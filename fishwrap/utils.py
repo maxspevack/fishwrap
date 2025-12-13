@@ -167,3 +167,22 @@ def smart_truncate(text, max_length):
     if last_period > max_length * 0.8:
         return truncated[:last_period + 1] + " [...]"
     return truncated + " [...]"
+
+class Stopwatch:
+    def __init__(self):
+        self.start_time = None
+        self.end_time = None
+    
+    def start(self):
+        self.start_time = time.time()
+        return self
+        
+    def stop(self):
+        self.end_time = time.time()
+        return self.duration
+        
+    @property
+    def duration(self):
+        if self.start_time and self.end_time:
+            return self.end_time - self.start_time
+        return 0.0

@@ -50,7 +50,7 @@ class SessionContext:
 def save_run(run_data, articles_list):
     """
     Saves a Run and its associated RunArticles.
-    run_data: dict of Run fields.
+    run_data: dict of Run fields (including stats_*, source_dominance, perf_metrics).
     articles_list: list of dicts {'article_id': ..., 'rank': ..., 'score': ..., 'section': ...}
     """
     with SessionContext() as db:

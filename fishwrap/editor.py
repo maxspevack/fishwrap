@@ -7,6 +7,7 @@ from fishwrap import _config
 from fishwrap import scoring
 from fishwrap import auditor
 from fishwrap.db import repository
+from fishwrap import utils
 
 def classify_article(article):
     """
@@ -155,6 +156,8 @@ def organize_and_cluster(articles):
     return final_buckets
 
 def run_editor():
+    timer = utils.Stopwatch().start()
+    
     # --- Phase 1: Load Scored Articles (Lightweight) ---
     print(f"\n[EDITOR] Starting... (Fetching recent articles from DB)")
     
@@ -262,7 +265,8 @@ def run_editor():
         bubble_report[cat] = {'in': last_in, 'out': first_out}
 
     # Summary Report (High-level only, details in Auditor report)
-    print(f"\n[EDITOR] Published {total_selected} articles ({drift_count} reclassified).")
+    duration = timer.stop()
+    print(f"\n[EDITOR] Published {total_selected} articles ({drift_count} reclassified) in {duration:.2f}s.")
     
     with open(_config.RUN_SHEET_FILE, 'w') as f:
         json.dump(run_sheet, f, indent=2)
@@ -271,7 +275,8 @@ def run_editor():
     total_db_count = repository.get_total_count()
     run_id, transparency_html = auditor.audit_run(run_sheet, raw_candidates, {
         'input_count': total_db_count,
-        'bubble': bubble_report
+        'bubble': bubble_report,
+        'perf_metrics': {'editor_duration': duration}
     })
     
     # Save Transparency Fragment for Printer

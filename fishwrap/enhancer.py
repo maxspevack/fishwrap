@@ -217,6 +217,8 @@ def enhance_articles():
     
     MAX_WORKERS = 10
     
+    timer = utils.Stopwatch().start()
+    
     with ThreadPoolExecutor(max_workers=MAX_WORKERS) as executor:
         future_to_article = {executor.submit(process_article, article): article for article in all_articles}
         
@@ -246,13 +248,15 @@ def enhance_articles():
                 
                 pbar.update(1)
         
+    duration = timer.stop()
+    
     with open(_config.ENHANCED_ISSUE_FILE, 'w') as f:
         json.dump(enhanced_results, f, indent=2)
         
     total = len(all_articles)
     success = stats['hits'] + stats['misses']
     success_rate = (success / total * 100) if total > 0 else 0
-    print(f"\n[ENHANCER] Processed {total} articles ({stats['hits']} hits, {stats['misses']} fetches, {stats['errors']} errors). Content Success: {success_rate:.1f}%.")
+    print(f"\n[ENHANCER] Processed {total} articles ({stats['hits']} hits, {stats['misses']} fetches, {stats['errors']} errors) in {duration:.2f}s. Content Success: {success_rate:.1f}%.")
 
 
 if __name__ == "__main__":
