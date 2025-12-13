@@ -74,7 +74,29 @@ def status_command(args):
     if last_run:
         print(f"Last Run: {last_run.timestamp.strftime('%Y-%m-%d %H:%M:%S')} ({last_run.id[:8]})")
     
-    print("Database Integrity: OK (basic connection test)")
+def prune_command(args):
+    """Clean old articles from the database."""
+    configure_repository(args.config)
+    
+    hours = args.days * 24
+    print(f"Pruning articles older than {args.days} days ({hours} hours)...")
+    
+    # In a real scenario, we might want to count how many WOULD be deleted first.
+    # But repository.prune_old_articles does the delete.
+    # To support dry-run properly, we should add count logic to repository or here.
+    # For now, let's just implement the execution.
+    
+    if args.dry_run:
+        print("[DRY RUN] Operation skipped. No data deleted.")
+        print(f"[DRY RUN] Would execute: repository.prune_old_articles(hours={hours})")
+        return
+
+    if not args.yes:
+        print("Error: Destructive operation requires --yes confirmation (or use --dry-run).")
+        return
+
+    deleted_count = repository.prune_old_articles(hours=hours)
+    print(f"Deleted {deleted_count} old articles.")
 
 
 def runs_command(args):
@@ -151,7 +173,7 @@ def main():
         action='store_true',
         help='Execute prune operation without confirmation.'
     )
-    prune_parser.set_defaults(func=lambda args: print("Prune not yet implemented. Use --dry-run for now."))
+    prune_parser.set_defaults(func=prune_command)
 
     # Runs command
     runs_parser = subparsers.add_parser('runs', help='List recent runs (editions).')
