@@ -70,7 +70,13 @@ run-core-pipeline:
 	$(PYTHON) -m fishwrap.enhancer && \
 	$(PYTHON) -m fishwrap.printer
 
-
+# --- Shipping ---
+ship: run-vanilla run-cyber run-ai
+	@echo "Publishing demos..."
+	./publish_demo.sh vanilla
+	./publish_demo.sh cyber
+	./publish_demo.sh ai
+	@echo "All demos regenerated and published to docs/. Ready for git commit."
 
 # --- Cleanup ---
 clean-demo:

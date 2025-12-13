@@ -19,6 +19,13 @@
     --font-family: 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
     --card-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
     --card-hover-shadow: 0 8px 12px rgba(0, 0, 0, 0.5);
+    
+    /* Terminal / Glass Box Colors */
+    --term-bg: #0d0d0d; /* Slightly darker than main bg */
+    --term-text: #e0e0e0; /* Readable Off-White */
+    --term-accent: #0f0; /* Matrix Green for Data */
+    --term-border: #005500;
+    --term-dim: #333;
 }
 
 body {
@@ -36,8 +43,8 @@ a:hover { color: #82ccdd; text-decoration: none; }
 
 .layout-container {
     display: flex;
-    max-width: 1600px; /* Slightly wider for modern screens */
-    margin: 0 auto;
+    width: 100%;
+    margin: 0;
     min-height: 100vh;
 }
 
@@ -57,6 +64,7 @@ a:hover { color: #82ccdd; text-decoration: none; }
     height: 100vh;
     overflow-y: auto;
     box-sizing: border-box;
+    z-index: 10;
 }
 
 .brand-logo-container {
@@ -71,7 +79,6 @@ a:hover { color: #82ccdd; text-decoration: none; }
     height: auto;
     display: block;
     margin: 0 auto;
-    /* Invert logo for dark mode if needed, or rely on it being robust */
     filter: drop-shadow(0 2px 4px rgba(0,0,0,0.5));
 }
 
@@ -132,6 +139,38 @@ a:hover { color: #82ccdd; text-decoration: none; }
     border-top: 1px solid var(--border-color);
 }
 
+/* Glass Box Menu Group */
+.glass-box-menu {
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    overflow: hidden;
+}
+
+.glass-box-header {
+    background: rgba(255,255,255,0.05);
+    padding: 8px 12px;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    color: var(--muted-color);
+    font-weight: 700;
+    letter-spacing: 1px;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.glass-link {
+    display: block;
+    padding: 10px 12px;
+    color: var(--text-color);
+    font-size: 0.9rem;
+    transition: all 0.2s;
+    border-bottom: 1px solid var(--border-color);
+}
+.glass-link:last-child { border-bottom: none; }
+.glass-link:hover {
+    background: rgba(255,255,255,0.08);
+    color: var(--accent-color);
+}
+
 .github-link {
     display: inline-flex;
     align-items: center;
@@ -154,31 +193,11 @@ a:hover { color: #82ccdd; text-decoration: none; }
     fill: currentColor;
 }
 
-.btn-debug {
-    display: block;
-    width: 100%;
-    padding: 10px;
-    background: transparent;
-    border: 1px solid var(--border-color);
-    color: var(--muted-color);
-    cursor: pointer;
-    font-size: 0.8rem;
-    font-weight: 600;
-    border-radius: 6px;
-    transition: all 0.2s;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-}
-.btn-debug:hover { 
-    background: rgba(255,255,255,0.05);
-    color: var(--accent-color);
-    border-color: var(--accent-color);
-}
-
 /* Main Content */
 .main-content {
     flex-grow: 1;
     padding: 40px 60px;
+    overflow-x: hidden;
 }
 
 .section-block {
@@ -197,7 +216,7 @@ a:hover { color: #82ccdd; text-decoration: none; }
 
 .section-title {
     font-size: 2.2rem;
-    font-weight: 300; /* Lighter font weight for modern look */
+    font-weight: 300;
     margin: 0;
     color: #fff;
     letter-spacing: -0.5px;
@@ -215,7 +234,6 @@ a:hover { color: #82ccdd; text-decoration: none; }
     grid-template-columns: repeat(4, 1fr);
     gap: 24px;
     grid-auto-flow: dense;
-    /* grid-auto-rows: minmax(180px, auto); Removed fixed height constraint */ 
 }
 
 .card {
@@ -289,17 +307,17 @@ a:hover { color: #82ccdd; text-decoration: none; }
 .card.compact p { -webkit-line-clamp: 3; }
 
 
-/* Debug Overlay */
+/* Debug Overlay (Scoring Transparency) */
 .debug-overlay {
     display: none;
     position: absolute;
     top: 0; left: 0; right: 0; bottom: 0;
-    background: rgba(0, 0, 0, 0.92);
+    background: rgba(0, 0, 0, 0.96);
     padding: 20px;
     font-size: 0.85rem;
-    color: #0f0; /* Matrix green */
+    color: var(--term-text);
     font-family: 'Courier New', monospace;
-    border: 1px solid #0f0;
+    border: 1px solid var(--term-border);
     overflow-y: auto;
     z-index: 100;
     border-radius: 8px;
@@ -307,10 +325,97 @@ a:hover { color: #82ccdd; text-decoration: none; }
 
 body.debug-active .debug-overlay { display: block; }
 
-.debug-section { margin-bottom: 15px; border-bottom: 1px dashed #005500; padding-bottom: 10px; }
+.debug-section { margin-bottom: 15px; border-bottom: 1px dashed var(--term-dim); padding-bottom: 10px; }
 .debug-header { font-weight: bold; color: #fff; margin-bottom: 5px; text-transform: uppercase; }
 .debug-row { display: flex; justify-content: space-between; margin-bottom: 3px; }
-.debug-row span:first-child { color: #888; }
+.debug-row span:first-child { color: var(--muted-color); }
+
+
+/* --- Glass Box Modal (Source Transparency) --- */
+.modal-overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.8);
+    backdrop-filter: blur(5px);
+    z-index: 1000;
+    justify-content: center;
+    align-items: center;
+    padding: 2rem;
+    box-sizing: border-box;
+}
+
+.modal-content {
+    background: var(--term-bg);
+    color: var(--term-text);
+    font-family: 'Courier New', monospace;
+    width: 100%;
+    max-width: 1000px;
+    height: 90vh;
+    overflow-y: auto;
+    position: relative;
+    border: 1px solid var(--term-border);
+    box-shadow: 0 0 30px rgba(0, 0, 0, 0.8);
+    padding: 40px;
+    box-sizing: border-box;
+}
+
+.modal-close {
+    position: absolute;
+    top: 15px;
+    right: 20px;
+    font-size: 2rem;
+    background: none;
+    border: none;
+    cursor: pointer;
+    z-index: 1001;
+    color: var(--term-text);
+    transition: transform 0.2s;
+}
+
+.modal-close:hover {
+    transform: scale(1.2);
+    color: #fff;
+}
+
+/* Glass Box Styles */
+.glass-box-container h1 { border-bottom: 2px solid var(--term-border); padding-bottom: 1rem; margin-bottom: 2rem; color: #fff; font-family: var(--font-family); letter-spacing: -1px; }
+.glass-box-container h2 { color: #fff; margin-top: 2rem; border-bottom: 1px dashed var(--term-dim); font-family: var(--font-family); font-weight: 300; }
+.glass-box-container p { color: var(--muted-color); line-height: 1.5; }
+
+.funnel-container {
+    display: flex;
+    justify-content: space-between;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid var(--term-dim);
+    padding: 1.5rem;
+    margin-bottom: 2rem;
+    align-items: flex-start;
+}
+.funnel-step { flex: 1; text-align: center; }
+.funnel-num { font-size: 2rem; font-weight: bold; color: var(--term-accent); display: block; margin-bottom: 0.25rem; font-family: var(--font-family); }
+.funnel-step small { font-size: 0.9rem; color: #fff; text-transform: uppercase; letter-spacing: 1px; }
+.funnel-sub { font-size: 0.75rem; color: var(--muted-color); display: block; margin-top: 4px; }
+
+table.audit-table { width: 100%; border-collapse: collapse; margin-bottom: 2rem; font-size: 0.9rem; }
+th { text-align: left; border-bottom: 1px solid var(--term-border); padding: 0.75rem; color: #fff; text-transform: uppercase; font-size: 0.8rem; }
+td { border-bottom: 1px solid var(--term-dim); padding: 0.75rem; color: var(--term-text); }
+
+/* Bias Colors adapted for Dark Mode */
+.bias-pos { color: #00ff00; font-weight: bold; } /* Bright Green */
+.bias-neg { color: #ff4444; font-weight: bold; } /* Bright Red */
+
+/* Bubble Grid */
+.bubble-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; }
+.bubble-col { padding: 1rem; border: 1px solid var(--term-dim); background: rgba(255,255,255,0.02); }
+.bubble-in { border-left: 4px solid #00ff00; }
+.bubble-out { border-left: 4px solid #ff4444; }
+.bubble-header { color: #fff; margin-bottom: 1rem; font-weight: bold; font-family: var(--font-family); }
+.bubble-item { margin-bottom: 0.5rem; display: flex; align-items: baseline; }
+.score-badge { color: var(--term-accent); width: 60px; text-align: right; margin-right: 15px; }
 
 /* Responsive */
 @media (max-width: 1200px) {
@@ -332,7 +437,12 @@ body.debug-active .debug-overlay { display: block; }
     
     .bento-grid { grid-template-columns: 1fr; }
     .card.feature, .card.standard, .card.compact { grid-column: auto; grid-row: auto; }
+    
+    /* Mobile Modal */
+    .modal-content { height: 100%; width: 100%; border-radius: 0; padding: 20px; }
+    .bubble-grid { grid-template-columns: 1fr; }
 }
+
     </style>
 </head>
 <body>
@@ -368,14 +478,20 @@ body.debug-active .debug-overlay { display: block; }
         </ul>
         
         <div class="sidebar-footer">
-             <a href="transparency.html" class="github-link" title="View Transparency Report">
-                <span>Transparency Report</span>
-             </a>
+            <div class="glass-box-menu">
+                <div class="glass-box-header">Glass Box</div>
+                <a href="#" onclick="openTransparency(); return false;" class="glass-link" title="Where did it come from?">
+                    Source Transparency
+                </a>
+                <a href="#" onclick="document.body.classList.toggle('debug-active'); return false;" class="glass-link" title="Why was it chosen?">
+                    Scoring Transparency
+                </a>
+            </div>
+            
              <a href="https://github.com/maxspevack/fishwrap" target="_blank" class="github-link" title="View Source on GitHub">
                 <svg class="github-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"></path></svg>
                 <span>View Source</span>
              </a>
-             <button class="btn-debug" onclick="document.body.classList.toggle('debug-active')">Debug Overlay</button>
         </div>
     </aside>
 
@@ -386,7 +502,7 @@ body.debug-active .debug-overlay { display: block; }
         <span class="section-desc">Immediate threats and active exploitation.</span>
     </div>
     <div class="bento-grid">
-        <a href="https://securityaffairs.com/185593/hacking/critical-gogs-zero-day-under-attack-700-servers-hacked.html" target="_blank" class="card standard" style="border-top: 4px solid #c0392b;">
+        <a href="https://securityaffairs.com/185593/hacking/critical-gogs-zero-day-under-attack-700-servers-hacked.html" target="_blank" class="card standard" style="border-top: 4px solid #27ae60;">
     <div class="card-meta">
         <span class="domain">securityaffairs.com</span>
     </div>
@@ -411,7 +527,7 @@ body.debug-active .debug-overlay { display: block; }
 </div>
 
 </a>
-<a href="https://securelist.com/cve-2025-55182-exploitation/118331/" target="_blank" class="card compact" style="border-top: 4px solid #c0392b;">
+<a href="https://securelist.com/cve-2025-55182-exploitation/118331/" target="_blank" class="card compact" style="border-top: 4px solid #d35400;">
     <div class="card-meta">
         <span class="domain">securelist.com</span>
     </div>
@@ -436,7 +552,7 @@ body.debug-active .debug-overlay { display: block; }
 </div>
 
 </a>
-<a href="https://thehackernews.com/2025/12/chrome-targeted-by-active-in-wild.html" target="_blank" class="card compact" style="border-top: 4px solid #2980b9;">
+<a href="https://thehackernews.com/2025/12/chrome-targeted-by-active-in-wild.html" target="_blank" class="card compact" style="border-top: 4px solid #d35400;">
     <div class="card-meta">
         <span class="domain">thehackernews.com</span>
     </div>
@@ -461,11 +577,36 @@ body.debug-active .debug-overlay { display: block; }
 </div>
 
 </a>
-<a href="https://thehackernews.com/2025/12/microsoft-issues-security-fixes-for-56.html" target="_blank" class="card compact" style="border-top: 4px solid #27ae60;">
+<a href="https://googleprojectzero.blogspot.com/feeds/2770876848965159326/comments/default" target="_blank" class="card compact" style="border-top: 4px solid #27ae60;">
+    <div class="card-meta">
+        <span class="domain">googleprojectzero.blogspot.com</span>
+    </div>
+    <h3>A look at an Android ITW DNG exploit</h3>
+    <div class="debug-overlay">
+    <div class="debug-section">
+        <strong>Classification:</strong> 
+                    <div class="debug-section">
+                        <div class="debug-header">CLASSIFICATION</div>
+                        <div class="debug-row"><span class="label">Reason</span><span class="val">source_default</span></div>
+                    </div>
+                    
+    </div>
+    <div class="debug-section">
+        <strong>Score Breakdown:</strong>
+        <div class='debug-row'><span class='label'>Base</span><span class='val'>+5000</span></div><div class='debug-row'><span class='label'>source_boost: g</span><span class='val'>+2500</span></div>
+        <div style="border-top: 1px solid #ccc; margin-top: 5px; font-weight: bold; display: flex; justify-content: space-between;">
+            <span>TOTAL</span>
+            <span>7500</span>
+        </div>
+    </div>
+</div>
+
+</a>
+<a href="https://thehackernews.com/2025/12/new-react-rsc-vulnerabilities-enable.html" target="_blank" class="card compact" style="border-top: 4px solid #c0392b;">
     <div class="card-meta">
         <span class="domain">thehackernews.com</span>
     </div>
-    <h3>Microsoft Issues Security Fixes for 56 Flaws, Including Active Exploit and Two Zero-Days</h3>
+    <h3>New React RSC Vulnerabilities Enable DoS and Source Code Exposure</h3>
     <div class="debug-overlay">
     <div class="debug-section">
         <strong>Classification:</strong> 
@@ -477,35 +618,10 @@ body.debug-active .debug-overlay { display: block; }
     </div>
     <div class="debug-section">
         <strong>Score Breakdown:</strong>
-        <div class='debug-row'><span class='label'>Base</span><span class='val'>+5000</span></div><div class='debug-row'><span class='label'>keyword_boost: </span><span class='val'>+5000</span></div>
+        <div class='debug-row'><span class='label'>Base</span><span class='val'>+5000</span></div>
         <div style="border-top: 1px solid #ccc; margin-top: 5px; font-weight: bold; display: flex; justify-content: space-between;">
             <span>TOTAL</span>
-            <span>10000</span>
-        </div>
-    </div>
-</div>
-
-</a>
-<a href="https://www.bleepingcomputer.com/news/security/unpatched-gogs-zero-day-rce-flaw-actively-exploited-in-attacks/" target="_blank" class="card compact" style="border-top: 4px solid #d35400;">
-    <div class="card-meta">
-        <span class="domain">bleepingcomputer.com</span>
-    </div>
-    <h3>Hackers exploit unpatched Gogs zero-day to breach 700 servers</h3>
-    <div class="debug-overlay">
-    <div class="debug-section">
-        <strong>Classification:</strong> 
-                    <div class="debug-section">
-                        <div class="debug-header">CLASSIFICATION</div>
-                        <div class="debug-row"><span class="label">Reason</span><span class="val">keyword_strong_match</span></div>
-                    </div>
-                    
-    </div>
-    <div class="debug-section">
-        <strong>Score Breakdown:</strong>
-        <div class='debug-row'><span class='label'>Base</span><span class='val'>+5000</span></div><div class='debug-row'><span class='label'>keyword_boost: </span><span class='val'>+5000</span></div>
-        <div style="border-top: 1px solid #ccc; margin-top: 5px; font-weight: bold; display: flex; justify-content: space-between;">
-            <span>TOTAL</span>
-            <span>10000</span>
+            <span>5000</span>
         </div>
     </div>
 </div>
@@ -524,7 +640,7 @@ body.debug-active .debug-overlay { display: block; }
     <div class="card-meta">
         <span class="domain">unit42.paloaltonetworks.com</span>
     </div>
-    <h3>Exploitation of Critical Vulnerability in React Server Components (Updated December 11)</h3>
+    <h3>Exploitation of Critical Vulnerability in React Server Components (Updated December 12)</h3>
     <div class="debug-overlay">
     <div class="debug-section">
         <strong>Classification:</strong> 
@@ -545,32 +661,7 @@ body.debug-active .debug-overlay { display: block; }
 </div>
 
 </a>
-<a href="https://www.crowdstrike.com/en-us/blog/data-leakage-ai-plumbing-problem/" target="_blank" class="card compact" style="border-top: 4px solid #c0392b;">
-    <div class="card-meta">
-        <span class="domain">crowdstrike.com</span>
-    </div>
-    <h3>Data Leakage: AI’s Plumbing Problem</h3>
-    <div class="debug-overlay">
-    <div class="debug-section">
-        <strong>Classification:</strong> 
-                    <div class="debug-section">
-                        <div class="debug-header">CLASSIFICATION</div>
-                        <div class="debug-row"><span class="label">Reason</span><span class="val">source_default</span></div>
-                    </div>
-                    
-    </div>
-    <div class="debug-section">
-        <strong>Score Breakdown:</strong>
-        <div class='debug-row'><span class='label'>Base</span><span class='val'>+5000</span></div><div class='debug-row'><span class='label'>Cluster</span><span class='val'>+3000</span></div>
-        <div style="border-top: 1px solid #ccc; margin-top: 5px; font-weight: bold; display: flex; justify-content: space-between;">
-            <span>TOTAL</span>
-            <span>8000</span>
-        </div>
-    </div>
-</div>
-
-</a>
-<a href="https://www.helpnetsecurity.com/2025/12/12/global-ransomware-trends-2025/" target="_blank" class="card compact" style="border-top: 4px solid #8e44ad;">
+<a href="https://www.helpnetsecurity.com/2025/12/12/global-ransomware-trends-2025/" target="_blank" class="card compact" style="border-top: 4px solid #d35400;">
     <div class="card-meta">
         <span class="domain">helpnetsecurity.com</span>
     </div>
@@ -595,36 +686,36 @@ body.debug-active .debug-overlay { display: block; }
 </div>
 
 </a>
-<a href="https://unit42.paloaltonetworks.com/new-ransomware-01flip-written-in-rust/" target="_blank" class="card compact" style="border-top: 4px solid #27ae60;">
+<a href="https://thehackernews.com/2025/12/new-advanced-phishing-kits-use-ai-and.html" target="_blank" class="card compact" style="border-top: 4px solid #c0392b;">
     <div class="card-meta">
-        <span class="domain">unit42.paloaltonetworks.com</span>
+        <span class="domain">thehackernews.com</span>
     </div>
-    <h3>01flip: Multi-Platform Ransomware Written in Rust</h3>
+    <h3>New Advanced Phishing Kits Use AI and MFA Bypass Tactics to Steal Credentials at Scale</h3>
     <div class="debug-overlay">
     <div class="debug-section">
         <strong>Classification:</strong> 
                     <div class="debug-section">
                         <div class="debug-header">CLASSIFICATION</div>
-                        <div class="debug-row"><span class="label">Reason</span><span class="val">source_default</span></div>
+                        <div class="debug-row"><span class="label">Reason</span><span class="val">keyword_weak_match</span></div>
                     </div>
                     
     </div>
     <div class="debug-section">
         <strong>Score Breakdown:</strong>
-        <div class='debug-row'><span class='label'>Base</span><span class='val'>+5000</span></div><div class='debug-row'><span class='label'>keyword_boost: </span><span class='val'>+2500</span></div>
+        <div class='debug-row'><span class='label'>Base</span><span class='val'>+5000</span></div><div class='debug-row'><span class='label'>Cluster</span><span class='val'>+1000</span></div>
         <div style="border-top: 1px solid #ccc; margin-top: 5px; font-weight: bold; display: flex; justify-content: space-between;">
             <span>TOTAL</span>
-            <span>7500</span>
+            <span>6000</span>
         </div>
     </div>
 </div>
 
 </a>
-<a href="https://thehackernews.com/2025/12/threatsday-bulletin-spyware-alerts.html" target="_blank" class="card compact" style="border-top: 4px solid #2980b9;">
+<a href="https://therecord.media/hamas-apt-targeting-government-agencies" target="_blank" class="card compact" style="border-top: 4px solid #d35400;">
     <div class="card-meta">
-        <span class="domain">thehackernews.com</span>
+        <span class="domain">therecord.media</span>
     </div>
-    <h3>ThreatsDay Bulletin: Spyware Alerts, Mirai Strikes, Docker Leaks, ValleyRAT Rootkit — and 20 More Stories</h3>
+    <h3>Hamas-affiliated APT targeting government agencies in the Middle East, Morocco</h3>
     <div class="debug-overlay">
     <div class="debug-section">
         <strong>Classification:</strong> 
@@ -645,7 +736,57 @@ body.debug-active .debug-overlay { display: block; }
 </div>
 
 </a>
-<a href="https://thehackernews.com/2025/12/nanoremote-malware-uses-google-drive.html" target="_blank" class="card compact" style="border-top: 4px solid #8e44ad;">
+<a href="https://thehackernews.com/2025/12/fake-osint-and-gpt-utility-github-repos.html" target="_blank" class="card compact" style="border-top: 4px solid #27ae60;">
+    <div class="card-meta">
+        <span class="domain">thehackernews.com</span>
+    </div>
+    <h3>Fake OSINT and GPT Utility GitHub Repos Spread PyStoreRAT Malware Payloads</h3>
+    <div class="debug-overlay">
+    <div class="debug-section">
+        <strong>Classification:</strong> 
+                    <div class="debug-section">
+                        <div class="debug-header">CLASSIFICATION</div>
+                        <div class="debug-row"><span class="label">Reason</span><span class="val">keyword_weak_match</span></div>
+                    </div>
+                    
+    </div>
+    <div class="debug-section">
+        <strong>Score Breakdown:</strong>
+        <div class='debug-row'><span class='label'>Base</span><span class='val'>+5000</span></div>
+        <div style="border-top: 1px solid #ccc; margin-top: 5px; font-weight: bold; display: flex; justify-content: space-between;">
+            <span>TOTAL</span>
+            <span>5000</span>
+        </div>
+    </div>
+</div>
+
+</a>
+<a href="https://unit42.paloaltonetworks.com/hamas-affiliate-ashen-lepus-uses-new-malware-suite-ashtag/" target="_blank" class="card compact" style="border-top: 4px solid #c0392b;">
+    <div class="card-meta">
+        <span class="domain">unit42.paloaltonetworks.com</span>
+    </div>
+    <h3>Hamas-Affiliated Ashen Lepus Targets Middle Eastern Diplomatic Entities With New AshTag Malware Suite</h3>
+    <div class="debug-overlay">
+    <div class="debug-section">
+        <strong>Classification:</strong> 
+                    <div class="debug-section">
+                        <div class="debug-header">CLASSIFICATION</div>
+                        <div class="debug-row"><span class="label">Reason</span><span class="val">keyword_strong_match</span></div>
+                    </div>
+                    
+    </div>
+    <div class="debug-section">
+        <strong>Score Breakdown:</strong>
+        <div class='debug-row'><span class='label'>Base</span><span class='val'>+5000</span></div>
+        <div style="border-top: 1px solid #ccc; margin-top: 5px; font-weight: bold; display: flex; justify-content: space-between;">
+            <span>TOTAL</span>
+            <span>5000</span>
+        </div>
+    </div>
+</div>
+
+</a>
+<a href="https://thehackernews.com/2025/12/nanoremote-malware-uses-google-drive.html" target="_blank" class="card compact" style="border-top: 4px solid #27ae60;">
     <div class="card-meta">
         <span class="domain">thehackernews.com</span>
     </div>
@@ -670,36 +811,11 @@ body.debug-active .debug-overlay { display: block; }
 </div>
 
 </a>
-<a href="https://thehackernews.com/2025/12/wirte-leverages-ashenloader-sideloading.html" target="_blank" class="card compact" style="border-top: 4px solid #8e44ad;">
+<a href="https://thehackernews.com/2025/12/threatsday-bulletin-spyware-alerts.html" target="_blank" class="card compact" style="border-top: 4px solid #2980b9;">
     <div class="card-meta">
         <span class="domain">thehackernews.com</span>
     </div>
-    <h3>WIRTE Leverages AshenLoader Sideloading to Install the AshTag Espionage Backdoor</h3>
-    <div class="debug-overlay">
-    <div class="debug-section">
-        <strong>Classification:</strong> 
-                    <div class="debug-section">
-                        <div class="debug-header">CLASSIFICATION</div>
-                        <div class="debug-row"><span class="label">Reason</span><span class="val">keyword_strong_match</span></div>
-                    </div>
-                    
-    </div>
-    <div class="debug-section">
-        <strong>Score Breakdown:</strong>
-        <div class='debug-row'><span class='label'>Base</span><span class='val'>+5000</span></div>
-        <div style="border-top: 1px solid #ccc; margin-top: 5px; font-weight: bold; display: flex; justify-content: space-between;">
-            <span>TOTAL</span>
-            <span>5000</span>
-        </div>
-    </div>
-</div>
-
-</a>
-<a href="https://thehackernews.com/2025/12/react2shell-exploitation-delivers.html" target="_blank" class="card compact" style="border-top: 4px solid #27ae60;">
-    <div class="card-meta">
-        <span class="domain">thehackernews.com</span>
-    </div>
-    <h3>React2Shell Exploitation Delivers Crypto Miners and New Malware Across Multiple Sectors</h3>
+    <h3>ThreatsDay Bulletin: Spyware Alerts, Mirai Strikes, Docker Leaks, ValleyRAT Rootkit — and 20 More Stories</h3>
     <div class="debug-overlay">
     <div class="debug-section">
         <strong>Classification:</strong> 
@@ -754,7 +870,7 @@ body.debug-active .debug-overlay { display: block; }
 </div>
 
 </a>
-<a href="https://www.darkreading.com/vulnerabilities-threats/attackers-exploited-gogs-zero-day-months" target="_blank" class="card feature" style="border-top: 4px solid #27ae60;">
+<a href="https://www.darkreading.com/vulnerabilities-threats/attackers-exploited-gogs-zero-day-months" target="_blank" class="card feature" style="border-top: 4px solid #2980b9;">
     <div class="card-meta">
         <span class="domain">darkreading.com</span>
     </div>
@@ -779,11 +895,11 @@ body.debug-active .debug-overlay { display: block; }
 </div>
 
 </a>
-<a href="https://www.darkreading.com/threat-intelligence/hactivists-target-critical-infrastructure" target="_blank" class="card standard" style="border-top: 4px solid #8e44ad;">
+<a href="https://www.bleepingcomputer.com/news/security/apple-fixes-two-zero-day-flaws-exploited-in-sophisticated-attacks/" target="_blank" class="card standard" style="border-top: 4px solid #27ae60;">
     <div class="card-meta">
-        <span class="domain">darkreading.com</span>
+        <span class="domain">bleepingcomputer.com</span>
     </div>
-    <h3>Feds: Pro-Russia Hacktivists Target US Critical Infrastructure</h3>
+    <h3>Apple fixes two zero-day flaws exploited in 'sophisticated' attacks</h3>
     <div class="debug-overlay">
     <div class="debug-section">
         <strong>Classification:</strong> 
@@ -804,7 +920,7 @@ body.debug-active .debug-overlay { display: block; }
 </div>
 
 </a>
-<a href="https://securityaffairs.com/185566/hacking/google-fixed-a-new-actively-exploited-chrome-zero-day.html" target="_blank" class="card standard" style="border-top: 4px solid #2980b9;">
+<a href="https://securityaffairs.com/185566/hacking/google-fixed-a-new-actively-exploited-chrome-zero-day.html" target="_blank" class="card standard" style="border-top: 4px solid #c0392b;">
     <div class="card-meta">
         <span class="domain">securityaffairs.com</span>
     </div>
@@ -829,17 +945,17 @@ body.debug-active .debug-overlay { display: block; }
 </div>
 
 </a>
-<a href="https://www.bleepingcomputer.com/news/security/google-fixes-eighth-chrome-zero-day-exploited-in-attacks-in-2025/" target="_blank" class="card standard" style="border-top: 4px solid #8e44ad;">
+<a href="https://www.bleepingcomputer.com/news/microsoft/new-windows-rasman-zero-day-flaw-gets-free-unofficial-patches/" target="_blank" class="card standard" style="border-top: 4px solid #d35400;">
     <div class="card-meta">
         <span class="domain">bleepingcomputer.com</span>
     </div>
-    <h3>Google fixes eighth Chrome zero-day exploited in attacks in 2025</h3>
+    <h3>New Windows RasMan zero-day flaw gets free, unofficial patches</h3>
     <div class="debug-overlay">
     <div class="debug-section">
         <strong>Classification:</strong> 
                     <div class="debug-section">
                         <div class="debug-header">CLASSIFICATION</div>
-                        <div class="debug-row"><span class="label">Reason</span><span class="val">keyword_strong_match</span></div>
+                        <div class="debug-row"><span class="label">Reason</span><span class="val">source_default</span></div>
                     </div>
                     
     </div>
@@ -854,11 +970,11 @@ body.debug-active .debug-overlay { display: block; }
 </div>
 
 </a>
-<a href="https://www.bleepingcomputer.com/news/security/uk-fines-lastpass-over-2022-data-breach-impacting-16-million-users/" target="_blank" class="card standard" style="border-top: 4px solid #27ae60;">
+<a href="https://www.darkreading.com/application-security/supply-chain-attacks-targeting-github-actions-increased-in-2025" target="_blank" class="card standard" style="border-top: 4px solid #27ae60;">
     <div class="card-meta">
-        <span class="domain">bleepingcomputer.com</span>
+        <span class="domain">darkreading.com</span>
     </div>
-    <h3>UK fines LastPass over 2022 data breach impacting 1.6 million users</h3>
+    <h3>Supply Chain Attacks Targeting GitHub Actions Increased in 2025</h3>
     <div class="debug-overlay">
     <div class="debug-section">
         <strong>Classification:</strong> 
@@ -870,20 +986,20 @@ body.debug-active .debug-overlay { display: block; }
     </div>
     <div class="debug-section">
         <strong>Score Breakdown:</strong>
-        <div class='debug-row'><span class='label'>Base</span><span class='val'>+5000</span></div><div class='debug-row'><span class='label'>keyword_boost: </span><span class='val'>+2500</span></div><div class='debug-row'><span class='label'>Cluster</span><span class='val'>+1000</span></div>
+        <div class='debug-row'><span class='label'>Base</span><span class='val'>+5000</span></div><div class='debug-row'><span class='label'>keyword_boost: </span><span class='val'>+2500</span></div>
         <div style="border-top: 1px solid #ccc; margin-top: 5px; font-weight: bold; display: flex; justify-content: space-between;">
             <span>TOTAL</span>
-            <span>8500</span>
+            <span>7500</span>
         </div>
     </div>
 </div>
 
 </a>
-<a href="https://www.bleepingcomputer.com/news/security/new-consentfix-attack-hijacks-microsoft-accounts-via-azure-cli/" target="_blank" class="card compact" style="border-top: 4px solid #8e44ad;">
+<a href="https://www.bleepingcomputer.com/news/security/coupang-data-breach-traced-to-ex-employee-who-retained-system-access/" target="_blank" class="card compact" style="border-top: 4px solid #27ae60;">
     <div class="card-meta">
         <span class="domain">bleepingcomputer.com</span>
     </div>
-    <h3>New ConsentFix attack hijacks Microsoft accounts via Azure CLI</h3>
+    <h3>Coupang data breach traced to ex-employee who retained system access</h3>
     <div class="debug-overlay">
     <div class="debug-section">
         <strong>Classification:</strong> 
@@ -895,45 +1011,20 @@ body.debug-active .debug-overlay { display: block; }
     </div>
     <div class="debug-section">
         <strong>Score Breakdown:</strong>
-        <div class='debug-row'><span class='label'>Base</span><span class='val'>+5000</span></div><div class='debug-row'><span class='label'>Cluster</span><span class='val'>+2000</span></div>
+        <div class='debug-row'><span class='label'>Base</span><span class='val'>+5000</span></div><div class='debug-row'><span class='label'>keyword_boost: </span><span class='val'>+2500</span></div>
         <div style="border-top: 1px solid #ccc; margin-top: 5px; font-weight: bold; display: flex; justify-content: space-between;">
             <span>TOTAL</span>
-            <span>7000</span>
+            <span>7500</span>
         </div>
     </div>
 </div>
 
 </a>
-<a href="https://thehackernews.com/2025/12/warning-winrar-vulnerability-cve-2025.html" target="_blank" class="card compact" style="border-top: 4px solid #c0392b;">
-    <div class="card-meta">
-        <span class="domain">thehackernews.com</span>
-    </div>
-    <h3>Warning: WinRAR Vulnerability CVE-2025-6218 Under Active Attack by Multiple Threat Groups</h3>
-    <div class="debug-overlay">
-    <div class="debug-section">
-        <strong>Classification:</strong> 
-                    <div class="debug-section">
-                        <div class="debug-header">CLASSIFICATION</div>
-                        <div class="debug-row"><span class="label">Reason</span><span class="val">keyword_strong_match</span></div>
-                    </div>
-                    
-    </div>
-    <div class="debug-section">
-        <strong>Score Breakdown:</strong>
-        <div class='debug-row'><span class='label'>Base</span><span class='val'>+5000</span></div><div class='debug-row'><span class='label'>keyword_boost: </span><span class='val'>+1500</span></div>
-        <div style="border-top: 1px solid #ccc; margin-top: 5px; font-weight: bold; display: flex; justify-content: space-between;">
-            <span>TOTAL</span>
-            <span>6500</span>
-        </div>
-    </div>
-</div>
-
-</a>
-<a href="https://www.bleepingcomputer.com/news/security/malicious-vscode-marketplace-extensions-hid-trojan-in-fake-png-file/" target="_blank" class="card compact" style="border-top: 4px solid #27ae60;">
+<a href="https://www.bleepingcomputer.com/news/security/mitre-shares-2025s-top-25-most-dangerous-software-weaknesses/" target="_blank" class="card compact" style="border-top: 4px solid #d35400;">
     <div class="card-meta">
         <span class="domain">bleepingcomputer.com</span>
     </div>
-    <h3>Malicious VSCode Marketplace extensions hid trojan in fake PNG file</h3>
+    <h3>MITRE shares 2025's top 25 most dangerous software weaknesses</h3>
     <div class="debug-overlay">
     <div class="debug-section">
         <strong>Classification:</strong> 
@@ -954,11 +1045,36 @@ body.debug-active .debug-overlay { display: block; }
 </div>
 
 </a>
-<a href="https://www.bleepingcomputer.com/news/artificial-intelligence/brave-browser-starts-testing-agentic-ai-mode-for-automated-tasks/" target="_blank" class="card compact" style="border-top: 4px solid #d35400;">
+<a href="https://www.bleepingcomputer.com/news/security/notepad-plus-plus-fixes-flaw-that-let-attackers-push-malicious-update-files/" target="_blank" class="card compact" style="border-top: 4px solid #2980b9;">
     <div class="card-meta">
         <span class="domain">bleepingcomputer.com</span>
     </div>
-    <h3>Brave browser starts testing agentic AI mode for automated tasks</h3>
+    <h3>Notepad++ fixes flaw that let attackers push malicious update files</h3>
+    <div class="debug-overlay">
+    <div class="debug-section">
+        <strong>Classification:</strong> 
+                    <div class="debug-section">
+                        <div class="debug-header">CLASSIFICATION</div>
+                        <div class="debug-row"><span class="label">Reason</span><span class="val">keyword_strong_match</span></div>
+                    </div>
+                    
+    </div>
+    <div class="debug-section">
+        <strong>Score Breakdown:</strong>
+        <div class='debug-row'><span class='label'>Base</span><span class='val'>+5000</span></div><div class='debug-row'><span class='label'>Cluster</span><span class='val'>+1000</span></div>
+        <div style="border-top: 1px solid #ccc; margin-top: 5px; font-weight: bold; display: flex; justify-content: space-between;">
+            <span>TOTAL</span>
+            <span>6000</span>
+        </div>
+    </div>
+</div>
+
+</a>
+<a href="https://www.bleepingcomputer.com/news/security/fake-one-battle-after-another-torrent-hides-malware-in-subtitles/" target="_blank" class="card compact" style="border-top: 4px solid #c0392b;">
+    <div class="card-meta">
+        <span class="domain">bleepingcomputer.com</span>
+    </div>
+    <h3>Fake ‘One Battle After Another’ torrent hides malware in subtitles</h3>
     <div class="debug-overlay">
     <div class="debug-section">
         <strong>Classification:</strong> 
@@ -988,57 +1104,7 @@ body.debug-active .debug-overlay { display: block; }
         <span class="section-desc">Discussions, tools, and deeper analysis.</span>
     </div>
     <div class="bento-grid">
-        <a href="https://securityaffairs.com/185546/security/fortinet-fixed-two-critical-authentication-bypass-vulnerabilities.html" target="_blank" class="card feature" style="border-top: 4px solid #d35400;">
-    <div class="card-meta">
-        <span class="domain">securityaffairs.com</span>
-    </div>
-    <h3>Fortinet fixed two critical authentication-bypass vulnerabilities</h3>
-    <div class="debug-overlay">
-    <div class="debug-section">
-        <strong>Classification:</strong> 
-                    <div class="debug-section">
-                        <div class="debug-header">CLASSIFICATION</div>
-                        <div class="debug-row"><span class="label">Reason</span><span class="val">fallback</span></div>
-                    </div>
-                    
-    </div>
-    <div class="debug-section">
-        <strong>Score Breakdown:</strong>
-        <div class='debug-row'><span class='label'>Base</span><span class='val'>+5000</span></div><div class='debug-row'><span class='label'>keyword_boost: </span><span class='val'>+5000</span></div>
-        <div style="border-top: 1px solid #ccc; margin-top: 5px; font-weight: bold; display: flex; justify-content: space-between;">
-            <span>TOTAL</span>
-            <span>10000</span>
-        </div>
-    </div>
-</div>
-
-</a>
-<a href="https://www.helpnetsecurity.com/2025/12/11/black-duck-signal/" target="_blank" class="card standard" style="border-top: 4px solid #8e44ad;">
-    <div class="card-meta">
-        <span class="domain">helpnetsecurity.com</span>
-    </div>
-    <h3>Black Duck Signal applies LLM intelligence to code and supply chain risk</h3>
-    <div class="debug-overlay">
-    <div class="debug-section">
-        <strong>Classification:</strong> 
-                    <div class="debug-section">
-                        <div class="debug-header">CLASSIFICATION</div>
-                        <div class="debug-row"><span class="label">Reason</span><span class="val">keyword_weak_match</span></div>
-                    </div>
-                    
-    </div>
-    <div class="debug-section">
-        <strong>Score Breakdown:</strong>
-        <div class='debug-row'><span class='label'>Base</span><span class='val'>+5000</span></div><div class='debug-row'><span class='label'>keyword_boost: </span><span class='val'>+2500</span></div>
-        <div style="border-top: 1px solid #ccc; margin-top: 5px; font-weight: bold; display: flex; justify-content: space-between;">
-            <span>TOTAL</span>
-            <span>7500</span>
-        </div>
-    </div>
-</div>
-
-</a>
-<a href="https://www.reddit.com/r/netsec/comments/1pjmnlx/how_widespread_is_the_impact_of_critical_security/" target="_blank" class="card standard" style="border-top: 4px solid #2980b9;">
+        <a href="https://www.reddit.com/r/netsec/comments/1pjmnlx/how_widespread_is_the_impact_of_critical_security/" target="_blank" class="card standard" style="border-top: 4px solid #8e44ad;">
     <div class="card-meta">
         <span class="domain">reddit.com</span>
     </div>
@@ -1063,11 +1129,11 @@ body.debug-active .debug-overlay { display: block; }
 </div>
 
 </a>
-<a href="https://www.reddit.com/r/cybersecurity/comments/1pk6zum/35b_accounts_1_critical_flaw_meta_closes_whatsapp/" target="_blank" class="card standard" style="border-top: 4px solid #2980b9;">
+<a href="https://therecord.media/canada-privacy-regulator-to-probe-face-scanning-billboards" target="_blank" class="card standard" style="border-top: 4px solid #2980b9;">
     <div class="card-meta">
-        <span class="domain">reddit.com</span>
+        <span class="domain">therecord.media</span>
     </div>
-    <h3>3.5B Accounts, 1 Critical Flaw: Meta Closes WhatsApp Data-Harvesting</h3>
+    <h3>Canada’s privacy regulator to probe billboards equipped with facial scanning tech</h3>
     <div class="debug-overlay">
     <div class="debug-section">
         <strong>Classification:</strong> 
@@ -1079,16 +1145,41 @@ body.debug-active .debug-overlay { display: block; }
     </div>
     <div class="debug-section">
         <strong>Score Breakdown:</strong>
-        <div class='debug-row'><span class='label'>Stats</span><span class='val'>+5</span></div><div class='debug-row'><span class='label'>keyword_boost: </span><span class='val'>+5000</span></div>
+        <div class='debug-row'><span class='label'>Base</span><span class='val'>+5000</span></div>
         <div style="border-top: 1px solid #ccc; margin-top: 5px; font-weight: bold; display: flex; justify-content: space-between;">
             <span>TOTAL</span>
-            <span>5005</span>
+            <span>5000</span>
         </div>
     </div>
 </div>
 
 </a>
-<a href="https://thehackernews.com/2025/12/the-impact-of-robotic-process.html" target="_blank" class="card standard" style="border-top: 4px solid #d35400;">
+<a href="https://thehackernews.com/2025/12/securing-genai-in-browser-policy.html" target="_blank" class="card standard" style="border-top: 4px solid #27ae60;">
+    <div class="card-meta">
+        <span class="domain">thehackernews.com</span>
+    </div>
+    <h3>Securing GenAI in the Browser: Policy, Isolation, and Data Controls That Actually Work</h3>
+    <div class="debug-overlay">
+    <div class="debug-section">
+        <strong>Classification:</strong> 
+                    <div class="debug-section">
+                        <div class="debug-header">CLASSIFICATION</div>
+                        <div class="debug-row"><span class="label">Reason</span><span class="val">fallback</span></div>
+                    </div>
+                    
+    </div>
+    <div class="debug-section">
+        <strong>Score Breakdown:</strong>
+        <div class='debug-row'><span class='label'>Base</span><span class='val'>+5000</span></div>
+        <div style="border-top: 1px solid #ccc; margin-top: 5px; font-weight: bold; display: flex; justify-content: space-between;">
+            <span>TOTAL</span>
+            <span>5000</span>
+        </div>
+    </div>
+</div>
+
+</a>
+<a href="https://thehackernews.com/2025/12/the-impact-of-robotic-process.html" target="_blank" class="card standard" style="border-top: 4px solid #c0392b;">
     <div class="card-meta">
         <span class="domain">thehackernews.com</span>
     </div>
@@ -1113,11 +1204,11 @@ body.debug-active .debug-overlay { display: block; }
 </div>
 
 </a>
-<a href="https://thehackernews.com/2025/12/three-pcie-encryption-weaknesses-expose.html" target="_blank" class="card compact" style="border-top: 4px solid #27ae60;">
+<a href="https://therecord.media/trump-executive-order-ai-national-framework" target="_blank" class="card compact" style="border-top: 4px solid #27ae60;">
     <div class="card-meta">
-        <span class="domain">thehackernews.com</span>
+        <span class="domain">therecord.media</span>
     </div>
-    <h3>Three PCIe Encryption Weaknesses Expose PCIe 5.0+ Systems to Faulty Data Handling</h3>
+    <h3>Trump signs executive order on 'national framework' for AI regulation</h3>
     <div class="debug-overlay">
     <div class="debug-section">
         <strong>Classification:</strong> 
@@ -1138,11 +1229,36 @@ body.debug-active .debug-overlay { display: block; }
 </div>
 
 </a>
-<a href="https://securityaffairs.com/185552/hacktivism/pro-russia-hacktivist-support-ukrainian-faces-us-charges.html" target="_blank" class="card compact" style="border-top: 4px solid #c0392b;">
+<a href="https://therecord.media/over-340000-impacted-washington-state-library-hack" target="_blank" class="card compact" style="border-top: 4px solid #8e44ad;">
     <div class="card-meta">
-        <span class="domain">securityaffairs.com</span>
+        <span class="domain">therecord.media</span>
     </div>
-    <h3>Pro-Russia Hacktivist Support: Ukrainian Faces US Charges</h3>
+    <h3>More than 340,000 impacted by cyberattack on library in large Washington county</h3>
+    <div class="debug-overlay">
+    <div class="debug-section">
+        <strong>Classification:</strong> 
+                    <div class="debug-section">
+                        <div class="debug-header">CLASSIFICATION</div>
+                        <div class="debug-row"><span class="label">Reason</span><span class="val">fallback</span></div>
+                    </div>
+                    
+    </div>
+    <div class="debug-section">
+        <strong>Score Breakdown:</strong>
+        <div class='debug-row'><span class='label'>Base</span><span class='val'>+5000</span></div>
+        <div style="border-top: 1px solid #ccc; margin-top: 5px; font-weight: bold; display: flex; justify-content: space-between;">
+            <span>TOTAL</span>
+            <span>5000</span>
+        </div>
+    </div>
+</div>
+
+</a>
+<a href="https://therecord.media/germany-summons-russian-ambassador-cyberattack-disinformation" target="_blank" class="card compact" style="border-top: 4px solid #8e44ad;">
+    <div class="card-meta">
+        <span class="domain">therecord.media</span>
+    </div>
+    <h3>Germany summons Russian ambassador over cyberattack, election disinformation</h3>
     <div class="debug-overlay">
     <div class="debug-section">
         <strong>Classification:</strong> 
@@ -1169,6 +1285,515 @@ body.debug-active .debug-overlay { display: block; }
 
     </main>
 </div>
+
+<!-- Glass Box Modal -->
+<div id="transparency-modal" class="modal-overlay">
+    <div class="modal-content">
+        <button class="modal-close" onclick="closeTransparency()">&times;</button>
+        <!-- Injected Fragment -->
+        <div class="glass-box-container">
+    <div class="audit-header">
+        <h1>Source Transparency</h1>
+        <p>Audit Log for Edition: <strong>57d215c8-6a2e-4d31-b8e6-fab4d4378677</strong></p>
+        <p>Generated: 2025-12-12 18:29:10</p>
+    </div>
+
+    <!-- The Funnel -->
+    <div class="funnel-container">
+        <div class="funnel-step">
+            <span class="funnel-num">145</span>
+            <small>Total Items</small>
+        </div>
+        <div class="funnel-step">
+            <span class="funnel-num">101</span>
+            <small>Candidate Pool</small>
+        </div>
+        <div class="funnel-step">
+            <span class="funnel-num">30</span>
+            <small>Published</small>
+        </div>
+        <div class="funnel-step">
+            <span class="funnel-num">79.3%</span>
+            <small>Anti-Feed Protection</small>
+            <span class="funnel-sub">(Total Items - Published) / Total Items</span>
+            <span class="funnel-sub">Blocked: 115</span>
+        </div>
+    </div>
+
+    <!-- Source Efficiency -->
+    <h2>Source Efficiency</h2>
+    <p>
+        <em>
+            A <span class="bias-pos">positive Delta (+)</span> means <strong>High Signal</strong>: We publish this source more often than we find it.<br>
+            A <span class="bias-neg">negative Delta (-)</span> means <strong>High Noise</strong>: We filter (but do not silence) this source aggressively.
+        </em>
+    </p>
+    
+    <table class="audit-table">
+        <thead>
+            <tr>
+                <th>Source</th>
+                <th>Output Share (Count)</th>
+                <th>Input Share (Count)</th>
+                <th>Delta</th>
+            </tr>
+        </thead>
+        <tbody>
+            
+            <tr>
+                <td>feeds.feedburner.com</td>
+                <td>
+                    30.0%
+                    <span class="count-sub">(9)</span>
+                </td>
+                <td>
+                    12.9%
+                    <span class="count-sub">(13)</span>
+                </td>
+                <td>
+                    
+                    <span class="bias-pos">+17.1%</span>
+                    
+                </td>
+            </tr>
+            
+            <tr>
+                <td>therecord.media</td>
+                <td>
+                    16.7%
+                    <span class="count-sub">(5)</span>
+                </td>
+                <td>
+                    5.0%
+                    <span class="count-sub">(5)</span>
+                </td>
+                <td>
+                    
+                    <span class="bias-pos">+11.7%</span>
+                    
+                </td>
+            </tr>
+            
+            <tr>
+                <td>www.bleepingcomputer.com</td>
+                <td>
+                    20.0%
+                    <span class="count-sub">(6)</span>
+                </td>
+                <td>
+                    12.9%
+                    <span class="count-sub">(13)</span>
+                </td>
+                <td>
+                    
+                    <span class="bias-pos">+7.1%</span>
+                    
+                </td>
+            </tr>
+            
+            <tr>
+                <td>unit42.paloaltonetworks.com</td>
+                <td>
+                    6.7%
+                    <span class="count-sub">(2)</span>
+                </td>
+                <td>
+                    2.0%
+                    <span class="count-sub">(2)</span>
+                </td>
+                <td>
+                    
+                    <span class="bias-pos">+4.7%</span>
+                    
+                </td>
+            </tr>
+            
+            <tr>
+                <td>googleprojectzero.blogspot.com</td>
+                <td>
+                    3.3%
+                    <span class="count-sub">(1)</span>
+                </td>
+                <td>
+                    1.0%
+                    <span class="count-sub">(1)</span>
+                </td>
+                <td>
+                    
+                    <span class="bias-pos">+2.3%</span>
+                    
+                </td>
+            </tr>
+            
+            <tr>
+                <td>securelist.com</td>
+                <td>
+                    3.3%
+                    <span class="count-sub">(1)</span>
+                </td>
+                <td>
+                    4.0%
+                    <span class="count-sub">(4)</span>
+                </td>
+                <td>
+                    
+                    <span class="bias-neg">-0.6%</span>
+                    
+                </td>
+            </tr>
+            
+            <tr>
+                <td>www.microsoft.com</td>
+                <td>
+                    0.0%
+                    <span class="count-sub">(0)</span>
+                </td>
+                <td>
+                    1.0%
+                    <span class="count-sub">(1)</span>
+                </td>
+                <td>
+                    
+                    <span class="bias-neg">-1.0%</span>
+                    
+                </td>
+            </tr>
+            
+            <tr>
+                <td>www.crowdstrike.com</td>
+                <td>
+                    0.0%
+                    <span class="count-sub">(0)</span>
+                </td>
+                <td>
+                    1.0%
+                    <span class="count-sub">(1)</span>
+                </td>
+                <td>
+                    
+                    <span class="bias-neg">-1.0%</span>
+                    
+                </td>
+            </tr>
+            
+            <tr>
+                <td>www.troyhunt.com</td>
+                <td>
+                    0.0%
+                    <span class="count-sub">(0)</span>
+                </td>
+                <td>
+                    1.0%
+                    <span class="count-sub">(1)</span>
+                </td>
+                <td>
+                    
+                    <span class="bias-neg">-1.0%</span>
+                    
+                </td>
+            </tr>
+            
+            <tr>
+                <td>securityaffairs.co</td>
+                <td>
+                    6.7%
+                    <span class="count-sub">(2)</span>
+                </td>
+                <td>
+                    7.9%
+                    <span class="count-sub">(8)</span>
+                </td>
+                <td>
+                    
+                    <span class="bias-neg">-1.3%</span>
+                    
+                </td>
+            </tr>
+            
+            <tr>
+                <td>www.schneier.com</td>
+                <td>
+                    0.0%
+                    <span class="count-sub">(0)</span>
+                </td>
+                <td>
+                    2.0%
+                    <span class="count-sub">(2)</span>
+                </td>
+                <td>
+                    
+                    <span class="bias-neg">-2.0%</span>
+                    
+                </td>
+            </tr>
+            
+            <tr>
+                <td>www.darkreading.com</td>
+                <td>
+                    6.7%
+                    <span class="count-sub">(2)</span>
+                </td>
+                <td>
+                    11.9%
+                    <span class="count-sub">(12)</span>
+                </td>
+                <td>
+                    
+                    <span class="bias-neg">-5.2%</span>
+                    
+                </td>
+            </tr>
+            
+            <tr>
+                <td>www.helpnetsecurity.com</td>
+                <td>
+                    3.3%
+                    <span class="count-sub">(1)</span>
+                </td>
+                <td>
+                    9.9%
+                    <span class="count-sub">(10)</span>
+                </td>
+                <td>
+                    
+                    <span class="bias-neg">-6.6%</span>
+                    
+                </td>
+            </tr>
+            
+            <tr>
+                <td>www.reddit.com</td>
+                <td>
+                    3.3%
+                    <span class="count-sub">(1)</span>
+                </td>
+                <td>
+                    27.7%
+                    <span class="count-sub">(28)</span>
+                </td>
+                <td>
+                    
+                    <span class="bias-neg">-24.4%</span>
+                    
+                </td>
+            </tr>
+            
+        </tbody>
+    </table>
+
+    <!-- The Bubble -->
+    <h2>The Bubble</h2>
+    <p><em>Comparing the last stories to make the cut vs. the first to miss it.</em></p>
+    
+    
+    <div class="bubble-section">
+        <h3>zero-days</h3>
+        <div class="bubble-grid">
+            <!-- Last 3 In -->
+            <div class="bubble-col bubble-in">
+                <div class="bubble-header">Last 3 In (Lowest Scores)</div>
+                
+                <div class="bubble-item">
+                    <span class="score-badge">10000</span>
+                    <span>Chrome Targeted by Active In-the-Wild Exploit Tied to Undisclosed High-Severity Flaw</span>
+                </div>
+                
+                <div class="bubble-item">
+                    <span class="score-badge">7500</span>
+                    <span>A look at an Android ITW DNG exploit</span>
+                </div>
+                
+                <div class="bubble-item">
+                    <span class="score-badge">5000</span>
+                    <span>New React RSC Vulnerabilities Enable DoS and Source Code Exposure</span>
+                </div>
+                
+            </div>
+            
+            <!-- First 3 Out -->
+            <div class="bubble-col bubble-out">
+                <div class="bubble-header">First 3 Out (Highest Scores)</div>
+                
+                <div class="bubble-item">
+                    <span class="score-badge">5000</span>
+                    <span>CISA Flags Actively Exploited GeoServer XXE Flaw in Updated KEV Catalog</span>
+                </div>
+                
+                <div class="bubble-item">
+                    <span class="score-badge">5000</span>
+                    <span>Active Attacks Exploit Gladinet's Hard-Coded Keys for Unauthorized Access and Code Execution</span>
+                </div>
+                
+                <div class="bubble-item">
+                    <span class="score-badge">5000</span>
+                    <span>Imposter for hire: How fake people can gain very real access</span>
+                </div>
+                
+            </div>
+        </div>
+    </div>
+    
+    <div class="bubble-section">
+        <h3>threat-intel</h3>
+        <div class="bubble-grid">
+            <!-- Last 3 In -->
+            <div class="bubble-col bubble-in">
+                <div class="bubble-header">Last 3 In (Lowest Scores)</div>
+                
+                <div class="bubble-item">
+                    <span class="score-badge">5000</span>
+                    <span>Fake OSINT and GPT Utility GitHub Repos Spread PyStoreRAT Malware Payloads</span>
+                </div>
+                
+                <div class="bubble-item">
+                    <span class="score-badge">5000</span>
+                    <span>ThreatsDay Bulletin: Spyware Alerts, Mirai Strikes, Docker Leaks, ValleyRAT Rootkit — and 20 More Stories</span>
+                </div>
+                
+                <div class="bubble-item">
+                    <span class="score-badge">5000</span>
+                    <span>NANOREMOTE Malware Uses Google Drive API for Hidden Control on Windows Systems</span>
+                </div>
+                
+            </div>
+            
+            <!-- First 3 Out -->
+            <div class="bubble-col bubble-out">
+                <div class="bubble-header">First 3 Out (Highest Scores)</div>
+                
+                <div class="bubble-item">
+                    <span class="score-badge">5000</span>
+                    <span>WIRTE Leverages AshenLoader Sideloading to Install the AshTag Espionage Backdoor</span>
+                </div>
+                
+                <div class="bubble-item">
+                    <span class="score-badge">5000</span>
+                    <span>Data Leakage: AI&rsquo;s Plumbing Problem</span>
+                </div>
+                
+                <div class="bubble-item">
+                    <span class="score-badge">5000</span>
+                    <span>Elastic detects stealthy NANOREMOTE malware using Google Drive as C2</span>
+                </div>
+                
+            </div>
+        </div>
+    </div>
+    
+    <div class="bubble-section">
+        <h3>vulnerability-news</h3>
+        <div class="bubble-grid">
+            <!-- Last 3 In -->
+            <div class="bubble-col bubble-in">
+                <div class="bubble-header">Last 3 In (Lowest Scores)</div>
+                
+                <div class="bubble-item">
+                    <span class="score-badge">6000</span>
+                    <span>MITRE shares 2025's top 25 most dangerous software weaknesses</span>
+                </div>
+                
+                <div class="bubble-item">
+                    <span class="score-badge">6000</span>
+                    <span>Notepad++ fixes flaw that let attackers push malicious update files</span>
+                </div>
+                
+                <div class="bubble-item">
+                    <span class="score-badge">5000</span>
+                    <span>Fake ‘One Battle After Another’ torrent hides malware in subtitles</span>
+                </div>
+                
+            </div>
+            
+            <!-- First 3 Out -->
+            <div class="bubble-col bubble-out">
+                <div class="bubble-header">First 3 Out (Highest Scores)</div>
+                
+                <div class="bubble-item">
+                    <span class="score-badge">5000</span>
+                    <span>Kali Linux 2025.4 released with 3 new tools, desktop updates</span>
+                </div>
+                
+                <div class="bubble-item">
+                    <span class="score-badge">5000</span>
+                    <span>Shadow spreadsheets: The security gap your tools can’t see</span>
+                </div>
+                
+                <div class="bubble-item">
+                    <span class="score-badge">5000</span>
+                    <span>CISA orders feds to patch actively exploited Geoserver flaw</span>
+                </div>
+                
+            </div>
+        </div>
+    </div>
+    
+    <div class="bubble-section">
+        <h3>community-watch</h3>
+        <div class="bubble-grid">
+            <!-- Last 3 In -->
+            <div class="bubble-col bubble-in">
+                <div class="bubble-header">Last 3 In (Lowest Scores)</div>
+                
+                <div class="bubble-item">
+                    <span class="score-badge">5000</span>
+                    <span>Germany summons Russian ambassador over cyberattack, election disinformation</span>
+                </div>
+                
+                <div class="bubble-item">
+                    <span class="score-badge">5000</span>
+                    <span>Securing GenAI in the Browser: Policy, Isolation, and Data Controls That Actually Work</span>
+                </div>
+                
+                <div class="bubble-item">
+                    <span class="score-badge">5000</span>
+                    <span>The Impact of Robotic Process Automation (RPA) on Identity and Access Management</span>
+                </div>
+                
+            </div>
+            
+            <!-- First 3 Out -->
+            <div class="bubble-col bubble-out">
+                <div class="bubble-header">First 3 Out (Highest Scores)</div>
+                
+                <div class="bubble-item">
+                    <span class="score-badge">5000</span>
+                    <span>Swissbit adds HID Seos to iShield Key 2</span>
+                </div>
+                
+                <div class="bubble-item">
+                    <span class="score-badge">5000</span>
+                    <span>Firewalla Orange brings zero trust anywhere</span>
+                </div>
+                
+                <div class="bubble-item">
+                    <span class="score-badge">5000</span>
+                    <span>LLM privacy policies keep getting longer, denser, and nearly impossible to decode</span>
+                </div>
+                
+            </div>
+        </div>
+    </div>
+    
+</div>
+    </div>
+</div>
+
+<script>
+    function openTransparency() {
+        document.getElementById('transparency-modal').style.display = 'flex';
+        document.body.style.overflow = 'hidden';
+    }
+    function closeTransparency() {
+        document.getElementById('transparency-modal').style.display = 'none';
+        document.body.style.overflow = 'auto';
+    }
+    document.getElementById('transparency-modal').addEventListener('click', function(e) {
+        if (e.target === this) closeTransparency();
+    });
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') closeTransparency();
+    });
+</script>
 
 </body>
 </html>
