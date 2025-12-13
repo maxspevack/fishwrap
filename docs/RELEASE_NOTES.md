@@ -73,3 +73,9 @@ Before v1.0, we were figuring out what we were actually building.
 *   Established the "Vintage" aesthetic.
 *   Introduced "Scoop the Pearl" as the mascot.
 *   Moved from a generic HTML list to the "Bento Grid" layout.
+
+### v0.1.0 (The Seed) - Dec 07, 2025
+**Commit:** `e0c55b0`
+**Theme:** "The Genesis."
+*   The very first commit of the Fishwrap project. A simple script to fetch, process, and print basic news headlines.
+*   This was the day the "Anti-Feed" began.
