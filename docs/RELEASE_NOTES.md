@@ -47,3 +47,29 @@ The initial release. A proof-of-concept that a Python script could replace a doo
 *   **Core Engine:** The four-stage pipeline (Fetcher -> Editor -> Enhancer -> Printer).
 *   **JSON Storage:** Simple file-based persistence (`articles_db.json`).
 *   **Basic Output:** Generation of a static HTML edition and a rudimentary PDF.
+
+---
+
+## Pre-History (The Prototype Era)
+
+Before v1.0, we were figuring out what we were actually building.
+
+### v0.9.0 (The Fleet) - Dec 10, 2025
+**Commit:** `65b49aa`
+**Theme:** "Verticalization." We proved the platform thesis by launching specific verticals.
+*   **The Zero Day:** A cybersecurity-focused briefing.
+*   **The Hallucination:** An AI research briefing.
+*   This proved Fishwrap wasn't just a news reader; it was a generic engine for *any* stream of information.
+
+### v0.3.0 (The Schism) - Dec 9, 2025
+**Commit:** `5e9a5cb`
+**Theme:** "Separation of Concerns."
+*   We extracted the "Engine" (`fishwrap`) from the "Product" (`dailyclamour.com`).
+*   This architecture allowed us to treat the Daily Clamour as just one *instance* of the Fishwrap technology.
+
+### v0.2.0 (The Identity) - Dec 8, 2025
+**Commit:** `3f26894`
+**Theme:** "Ink & Grit."
+*   Established the "Vintage" aesthetic.
+*   Introduced "Scoop the Pearl" as the mascot.
+*   Moved from a generic HTML list to the "Bento Grid" layout.
