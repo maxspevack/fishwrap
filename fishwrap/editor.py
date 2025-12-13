@@ -269,10 +269,15 @@ def run_editor():
 
     # --- Phase 4: The Auditor ---
     total_db_count = repository.get_total_count()
-    auditor.audit_run(run_sheet, raw_candidates, {
+    run_id, transparency_html = auditor.audit_run(run_sheet, raw_candidates, {
         'input_count': total_db_count,
         'bubble': bubble_report
     })
+    
+    # Save Transparency Fragment for Printer
+    frag_path = _config.RUN_SHEET_FILE.replace('run_sheet.json', 'transparency_fragment.html')
+    with open(frag_path, 'w') as f:
+        f.write(transparency_html)
 
 if __name__ == "__main__":
     run_editor()

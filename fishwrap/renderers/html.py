@@ -115,7 +115,7 @@ def render(data, stats, vol_issue_str, date_str):
             rand_col = random.choice(accent_colors)
             inline_style = f'style="border-top: 4px solid {rand_col};"'
 
-            title = html.escape(article.get('title', 'No Title'))
+            title = html.unescape(article.get('title', 'No Title'))
             link = article.get('link', '#')
             domain = get_domain(link)
             
@@ -176,12 +176,20 @@ def render(data, stats, vol_issue_str, date_str):
             articles_html=articles_html
         )
 
+    # Load Transparency Fragment
+    frag_path = _config.RUN_SHEET_FILE.replace('run_sheet.json', 'transparency_fragment.html')
+    transparency_html = ""
+    if os.path.exists(frag_path):
+        with open(frag_path, 'r') as f:
+            transparency_html = f.read()
+
     full_html = tpl_layout.format(
         date_str=date_str,
         css_block=css_block,
         vol_issue_str=vol_issue_str,
         nav_html=nav_html,
-        content_html=content_html
+        content_html=content_html,
+        transparency_html=transparency_html
     )
     return full_html
     return full_html

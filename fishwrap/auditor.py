@@ -105,11 +105,14 @@ def audit_run(run_sheet, candidates, stats_context):
         'bubble': bubble_data
     }
     
-    generate_report(render_context)
+    # 3. Generate Artifact (Transparency Report HTML)
+    transparency_html = generate_report(render_context)
+    
+    return run_id, transparency_html
 
 def generate_report(context):
     """
-    Renders the Jinja2 template.
+    Renders the Jinja2 template and returns HTML string.
     """
     # Locate Template
     # We look in the configured theme directory
@@ -119,8 +122,6 @@ def generate_report(context):
     # Fallback to internal if not found (e.g. for default themes)
     if not os.path.exists(template_dir):
         # Try finding relative to repo root if _config.THEME is "basic"
-        # This logic is brittle. Better to trust _config.THEME is absolute or correct relative.
-        # But for 'demo/themes/basic', we need to be careful.
         pass
 
     env = Environment(loader=FileSystemLoader(template_dir))
@@ -128,10 +129,4 @@ def generate_report(context):
     
     output = template.render(**context)
     
-    output_dir = os.path.dirname(_config.LATEST_HTML_FILE)
-    report_path = os.path.join(output_dir, 'transparency.html')
-    
-    with open(report_path, 'w') as f:
-        f.write(output)
-        
-    print(f"[AUDITOR] Transparency Report generated: {report_path}\n")
+    return output
