@@ -67,6 +67,22 @@ Everything is driven by a simple Python configuration file. You are the Editor-i
 
 ---
 
+## 🧰 Database Management (`fw-db`)
+
+Fishwrap uses a local SQLite database ("The Newsroom") to track articles and runs. You can manage this using the `fw-db` utility.
+
+**Note:** You must provide the configuration file *before* the command so the tool knows which database to target.
+
+```bash
+# Check status (Article count, DB size)
+python3 scripts/fw-db.py --config demo/config.py status
+
+# List recent editions (Runs)
+python3 scripts/fw-db.py --config demo/config.py runs
+```
+
+---
+
 ## 📚 Engineering Blog
 
 We document our journey in building a high-performance news engine.

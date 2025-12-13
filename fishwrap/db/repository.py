@@ -7,16 +7,40 @@ from fishwrap import _config
 import os
 
 # --- Database Setup ---
-# Use configured URL or fallback to local default
-DATABASE_URL = getattr(_config, 'DATABASE_URL', 'sqlite:///newsroom.db')
+_current_engine = None
+_SessionLocal = None
 
-engine = create_engine(DATABASE_URL)
-SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
+def _get_database_url():
+    """Determines the database URL from _config or falls back to default.
+    Resolves relative SQLite paths to absolute based on CWD.
+    """
+    db_url = getattr(_config, 'DATABASE_URL', 'sqlite:///newsroom.db')
+    
+    # Resolve relative paths for sqlite dbs to make them absolute
+    if db_url.startswith('sqlite:///'):
+        db_file = db_url.replace('sqlite:///', '')
+        if not os.path.isabs(db_file):
+            # This makes sqlite dbs relative to the current working directory
+            # of the process that loads _config.
+            return f"sqlite:///{os.path.abspath(db_file)}"
+    return db_url
+
+def _initialize_engine():
+    """Initializes or re-initializes the SQLAlchemy engine and session factory."""
+    global _current_engine, _SessionLocal
+    current_config_url = _get_database_url()
+
+    # Only re-initialize if the URL has changed or not yet initialized
+    if _current_engine is None or str(_current_engine.url) != current_config_url:
+        _current_engine = create_engine(current_config_url)
+        _SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=_current_engine)
+        # print(f"[DB] Initialized engine for: {_current_engine.url}") # Debugging
 
 # --- Context Manager ---
 class SessionContext:
     def __enter__(self):
-        self.db = SessionLocal()
+        _initialize_engine() # Ensure engine is initialized/re-initialized based on current _config
+        self.db = _SessionLocal()
         return self.db
     def __exit__(self, exc_type, exc_val, exc_tb):
         self.db.close()
@@ -151,6 +175,23 @@ def get_source_dominance():
                 pass
                 
         return sorted(counts.items(), key=lambda x: x[1], reverse=True)[:5]
+
+def get_total_runs():
+    """Returns the total number of recorded runs."""
+    with SessionContext() as db:
+        return db.query(Run).count()
+
+def get_last_run():
+    """Returns the last recorded run object."""
+    with SessionContext() as db:
+        return db.query(Run).order_by(Run.timestamp.desc()).first()
+
+def get_recent_runs(limit=10):
+    """Returns a list of recent Run objects."""
+    with SessionContext() as db:
+        runs = db.query(Run).order_by(Run.timestamp.desc()).limit(limit).all()
+        # Detach/convert to dicts to persist after session close
+        return [to_dict(r) for r in runs]
 
 def get_article_by_id(article_id):
     """Fetches a single article by ID (UUID)."""
