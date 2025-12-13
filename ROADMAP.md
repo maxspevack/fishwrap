@@ -26,6 +26,15 @@ Fishwrap is evolving from a personal script into a robust News Engine platform.
     *   [x] Refactor `config.py` to use Pydantic models for validation. (Actually, we implemented dynamic loading, not Pydantic yet. I'll leave this unchecked).
     *   [ ] Modularize `Scorer` and `Classifier` logic into a plugin system.
 
+## 🔬 Performance Field Notes (Feedback from Daily Clamour v1.2)
+*Real-world data from the 159-feed production instance.*
+
+1.  **Fetcher (CPU Bound):** Fetching 160 feeds takes ~90s. The bottleneck is likely XML/Date parsing in Python threads, not network I/O.
+    *   *Target:* Explore `lxml` or multiprocessing for parsing.
+2.  **Editor (Scaling Risk):** Scoring 3,000 candidates takes ~27s. This is slower than expected (super-linear scaling). The regex-heavy scoring loop in Python is the culprit.
+    *   *Target:* Move keyword matching to SQLite FTS5 or cache computed scores more aggressively.
+3.  **Enhancer (Solved):** 100% Cache Hit rate means re-publishing is near-instant (0.07s). The "Chronicle" architecture is validated.
+
 ## 🟡 Phase 2: The Chronicle & Products
 *Focus: Enduring value, history, and new editions.*
 
