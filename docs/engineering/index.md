@@ -49,6 +49,10 @@ How we stopped standing in line. We moved from sequential processing to **Parall
 **Topic:** State Management & Consistency
 How we stopped "Zombie Articles" from rising from the dead by decoupling **Retention** (Memory) from **Publication** (Freshness), and how we solved the "Memento" bug where we kept forgetting what we learned.
 
+### [Vol 4. Glass Box Engineering](./04_glass_box.html)
+**Topic:** Observability & Trust
+How we moved beyond "Black Box" algorithms by building **The Auditor**, a forensic module that generates a user-facing receipt (`transparency.html`) for every editorial decision.
+
 ---
 
 ## 🎓 The Golden Rules
