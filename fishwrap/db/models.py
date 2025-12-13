@@ -67,6 +67,7 @@ class Run(Base):
     # Snapshots
     source_dominance = Column(JSON) # Snapshot of input sources
     cut_line_report = Column(JSON)  # Snapshot of near-misses
+    perf_metrics = Column(JSON)     # Performance telemetry (timings)
     
     # Relationships
     articles = relationship("RunArticle", back_populates="run", cascade="all, delete-orphan")

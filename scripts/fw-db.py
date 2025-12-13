@@ -109,13 +109,13 @@ def runs_command(args):
         print("No runs recorded.")
         return
 
-    print(f"{'ID':<10} | {'Date':<20} | {'Total':<8} | {'Pub':<5} | {'Signal %'}")
+    print(f"{'ID':<10} | {'Date':<20} | {'Total':<8} | {'Pub':<5} | {'Anti-Feed'}")
     print("-" * 65)
     
     for r in runs:
         total = r.get('stats_input', 0)
         selected = r.get('stats_selected', 0)
-        signal_pct = (selected / total * 100) if total > 0 else 0.0
+        anti_feed_pct = ((total - selected) / total * 100) if total > 0 else 0.0
         
         run_id = r.get('id', '')[:8]
         ts = r.get('timestamp')
@@ -127,7 +127,7 @@ def runs_command(args):
             except:
                 date_str = "Unknown"
 
-        print(f"{run_id:<10} | {date_str:<20} | {total:<8} | {selected:<5} | {signal_pct:.1f}%")
+        print(f"{run_id:<10} | {date_str:<20} | {total:<8} | {selected:<5} | {anti_feed_pct:.1f}%")
     print("-" * 65)
 
 
