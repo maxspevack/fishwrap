@@ -1,4 +1,4 @@
-# Fishwrap: Semantic Versioning Taxonomy
+# Semantic Versioning Taxonomy
 
 Fishwrap adheres to **Semantic Versioning 2.0.0**, using a `MAJOR.MINOR.PATCH` format (e.g., `v1.2.3`). This document defines what criteria trigger an increment in each part of the version number.
 
