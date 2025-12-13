@@ -12,6 +12,12 @@
     --font-family: 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
     --card-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
     --card-hover-shadow: 0 8px 12px rgba(0, 0, 0, 0.5);
+    
+    /* Terminal / Glass Box Colors */
+    --term-bg: rgba(0, 0, 0, 0.95);
+    --term-text: #0f0; /* Matrix Green */
+    --term-border: #0f0;
+    --term-dim: #005500;
 }
 
 body {
@@ -29,8 +35,8 @@ a:hover { color: #82ccdd; text-decoration: none; }
 
 .layout-container {
     display: flex;
-    max-width: 1600px; /* Slightly wider for modern screens */
-    margin: 0 auto;
+    width: 100%;
+    margin: 0;
     min-height: 100vh;
 }
 
@@ -50,6 +56,7 @@ a:hover { color: #82ccdd; text-decoration: none; }
     height: 100vh;
     overflow-y: auto;
     box-sizing: border-box;
+    z-index: 10;
 }
 
 .brand-logo-container {
@@ -64,7 +71,6 @@ a:hover { color: #82ccdd; text-decoration: none; }
     height: auto;
     display: block;
     margin: 0 auto;
-    /* Invert logo for dark mode if needed, or rely on it being robust */
     filter: drop-shadow(0 2px 4px rgba(0,0,0,0.5));
 }
 
@@ -125,6 +131,38 @@ a:hover { color: #82ccdd; text-decoration: none; }
     border-top: 1px solid var(--border-color);
 }
 
+/* Glass Box Menu Group */
+.glass-box-menu {
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    overflow: hidden;
+}
+
+.glass-box-header {
+    background: rgba(255,255,255,0.05);
+    padding: 8px 12px;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    color: var(--muted-color);
+    font-weight: 700;
+    letter-spacing: 1px;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.glass-link {
+    display: block;
+    padding: 10px 12px;
+    color: var(--text-color);
+    font-size: 0.9rem;
+    transition: all 0.2s;
+    border-bottom: 1px solid var(--border-color);
+}
+.glass-link:last-child { border-bottom: none; }
+.glass-link:hover {
+    background: rgba(255,255,255,0.08);
+    color: var(--accent-color);
+}
+
 .github-link {
     display: inline-flex;
     align-items: center;
@@ -147,31 +185,11 @@ a:hover { color: #82ccdd; text-decoration: none; }
     fill: currentColor;
 }
 
-.btn-debug {
-    display: block;
-    width: 100%;
-    padding: 10px;
-    background: transparent;
-    border: 1px solid var(--border-color);
-    color: var(--muted-color);
-    cursor: pointer;
-    font-size: 0.8rem;
-    font-weight: 600;
-    border-radius: 6px;
-    transition: all 0.2s;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-}
-.btn-debug:hover { 
-    background: rgba(255,255,255,0.05);
-    color: var(--accent-color);
-    border-color: var(--accent-color);
-}
-
 /* Main Content */
 .main-content {
     flex-grow: 1;
     padding: 40px 60px;
+    overflow-x: hidden; /* Prevent horizontal scroll */
 }
 
 .section-block {
@@ -190,7 +208,7 @@ a:hover { color: #82ccdd; text-decoration: none; }
 
 .section-title {
     font-size: 2.2rem;
-    font-weight: 300; /* Lighter font weight for modern look */
+    font-weight: 300;
     margin: 0;
     color: #fff;
     letter-spacing: -0.5px;
@@ -208,7 +226,6 @@ a:hover { color: #82ccdd; text-decoration: none; }
     grid-template-columns: repeat(4, 1fr);
     gap: 24px;
     grid-auto-flow: dense;
-    /* grid-auto-rows: minmax(180px, auto); Removed fixed height constraint */ 
 }
 
 .card {
@@ -282,17 +299,17 @@ a:hover { color: #82ccdd; text-decoration: none; }
 .card.compact p { -webkit-line-clamp: 3; }
 
 
-/* Debug Overlay */
+/* Debug Overlay (Scoring Overlay) */
 .debug-overlay {
     display: none;
     position: absolute;
     top: 0; left: 0; right: 0; bottom: 0;
-    background: rgba(0, 0, 0, 0.92);
+    background: rgba(0, 0, 0, 0.96);
     padding: 20px;
     font-size: 0.85rem;
-    color: #0f0; /* Matrix green */
+    color: var(--term-text);
     font-family: 'Courier New', monospace;
-    border: 1px solid #0f0;
+    border: 1px solid var(--term-border);
     overflow-y: auto;
     z-index: 100;
     border-radius: 8px;
@@ -300,10 +317,94 @@ a:hover { color: #82ccdd; text-decoration: none; }
 
 body.debug-active .debug-overlay { display: block; }
 
-.debug-section { margin-bottom: 15px; border-bottom: 1px dashed #005500; padding-bottom: 10px; }
+.debug-section { margin-bottom: 15px; border-bottom: 1px dashed var(--term-dim); padding-bottom: 10px; }
 .debug-header { font-weight: bold; color: #fff; margin-bottom: 5px; text-transform: uppercase; }
 .debug-row { display: flex; justify-content: space-between; margin-bottom: 3px; }
-.debug-row span:first-child { color: #888; }
+.debug-row span:first-child { color: var(--muted-color); }
+
+
+/* --- Glass Box Modal (Transparency Report) --- */
+.modal-overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.8);
+    backdrop-filter: blur(5px);
+    z-index: 1000;
+    justify-content: center;
+    align-items: center;
+    padding: 2rem;
+    box-sizing: border-box;
+}
+
+.modal-content {
+    background: var(--term-bg);
+    color: var(--term-text);
+    font-family: 'Courier New', monospace;
+    width: 100%;
+    max-width: 1000px;
+    height: 90vh;
+    overflow-y: auto;
+    position: relative;
+    border: 1px solid var(--term-border);
+    box-shadow: 0 0 20px rgba(0, 255, 0, 0.2);
+    padding: 40px;
+    box-sizing: border-box;
+}
+
+.modal-close {
+    position: absolute;
+    top: 15px;
+    right: 20px;
+    font-size: 2rem;
+    background: none;
+    border: none;
+    cursor: pointer;
+    z-index: 1001;
+    color: var(--term-text);
+    transition: transform 0.2s;
+}
+
+.modal-close:hover {
+    transform: scale(1.2);
+    color: #fff;
+}
+
+/* Glass Box Styles */
+.glass-box-container h1 { border-bottom: 2px solid var(--term-border); padding-bottom: 1rem; margin-bottom: 2rem; color: #fff; }
+.glass-box-container h2 { color: #fff; margin-top: 2rem; border-bottom: 1px dashed var(--term-dim); }
+.glass-box-container p { color: var(--muted-color); }
+
+.funnel-container {
+    display: flex;
+    justify-content: space-between;
+    background: rgba(0, 255, 0, 0.05);
+    border: 1px solid var(--term-dim);
+    padding: 1.5rem;
+    margin-bottom: 2rem;
+}
+.funnel-num { font-size: 1.8rem; font-weight: bold; color: #fff; }
+.funnel-sub { font-size: 0.75rem; color: var(--muted-color); }
+
+table.audit-table { width: 100%; border-collapse: collapse; margin-bottom: 2rem; font-size: 0.9rem; }
+th { text-align: left; border-bottom: 1px solid var(--term-border); padding: 0.5rem; color: #fff; }
+td { border-bottom: 1px solid var(--term-dim); padding: 0.5rem; color: var(--muted-color); }
+
+/* Bias Colors adapted for Dark Mode */
+.bias-pos { color: #00ff00; font-weight: bold; } /* Bright Green */
+.bias-neg { color: #ff4444; font-weight: bold; } /* Bright Red */
+
+/* Bubble Grid */
+.bubble-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; }
+.bubble-col { padding: 1rem; border: 1px solid var(--term-dim); background: rgba(255,255,255,0.02); }
+.bubble-in { border-left: 4px solid #00ff00; }
+.bubble-out { border-left: 4px solid #ff4444; }
+.bubble-header { color: #fff; margin-bottom: 1rem; }
+.bubble-item { margin-bottom: 0.5rem; display: flex; align-items: baseline; }
+.score-badge { color: #fff; width: 60px; text-align: right; margin-right: 15px; }
 
 /* Responsive */
 @media (max-width: 1200px) {
@@ -325,53 +426,8 @@ body.debug-active .debug-overlay { display: block; }
     
     .bento-grid { grid-template-columns: 1fr; }
     .card.feature, .card.standard, .card.compact { grid-column: auto; grid-row: auto; }
-}
-
-/* --- Transparency Modal --- */
-.modal-overlay {
-    display: none;
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.7);
-    z-index: 1000;
-    justify-content: center;
-    align-items: center;
-    padding: 2rem;
-    box-sizing: border-box;
-}
-
-.modal-content {
-    background: #fdfbf7; /* Paper Color (matches transparency.html) */
-    width: 100%;
-    max-width: 900px;
-    height: 90vh; /* Max height */
-    overflow-y: auto; /* Scrollable */
-    position: relative;
-    border: 1px solid #333;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-    padding: 0; /* Let inner content handle padding */
-}
-
-.modal-close {
-    position: absolute;
-    top: 10px;
-    right: 20px;
-    font-size: 2rem;
-    background: none;
-    border: none;
-    cursor: pointer;
-    z-index: 1001;
-    color: #333;
-}
-
-.modal-close:hover {
-    color: #c0392b;
-}
-
-/* Ensure Transparency Content looks good inside Modal */
-.glass-box-content {
-    /* Inherit padding from the transparency template logic or override here */
+    
+    /* Mobile Modal */
+    .modal-content { height: 100%; width: 100%; border-radius: 0; }
+    .bubble-grid { grid-template-columns: 1fr; }
 }
