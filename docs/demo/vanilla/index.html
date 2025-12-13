@@ -3,9 +3,90 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Fishwrap Edition - Saturday, December 13, 2025</title>
+    <title>Fishwrap Demo - Saturday, December 13, 2025</title>
+    <!-- Basic Theme Fonts: System Stack -->
     <style>
-:root {
+        :root {
+            --bg-color: #ffffff;
+            --text-color: #333333;
+            --accent-color: #0066cc;
+            --border-color: #eeeeee;
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            color: var(--text-color);
+            background: var(--bg-color);
+            line-height: 1.6;
+            margin: 0;
+            padding: 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        h1, h2, h3 { margin-top: 0; }
+        a { color: var(--accent-color); text-decoration: none; }
+        a:hover { text-decoration: underline; }
+        
+        .header { border-bottom: 2px solid var(--text-color); padding-bottom: 20px; margin-bottom: 40px; }
+        .header h1 { font-size: 2.5em; margin-bottom: 5px; }
+        .meta { color: #666; font-size: 0.9em; }
+        
+        .section-block { margin-bottom: 50px; }
+        .section-title { font-size: 1.8em; border-bottom: 1px solid var(--border-color); margin-bottom: 20px; padding-bottom: 10px; }
+        
+        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 20px; }
+        
+        .card { 
+            border: 1px solid var(--border-color); 
+            padding: 20px; 
+            border-radius: 4px; 
+            transition: box-shadow 0.2s;
+            position: relative;
+        }
+        .card:hover { box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
+        .card-meta { font-size: 0.8em; color: #888; margin-bottom: 10px; display: block; }
+        .card h3 { font-size: 1.2em; margin-bottom: 10px; }
+        
+        /* Debug Overlay (Hidden by default) */
+        .debug-card {
+            display: none;
+            position: absolute; top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(255,255,255,0.95);
+            padding: 15px;
+            font-family: monospace;
+            font-size: 0.75rem;
+            color: #333;
+            border: 2px solid red;
+            overflow-y: auto;
+        }
+        body.debug-active .debug-card { display: block; }
+        
+        /* Glass Box Footer */
+        .footer { margin-top: 60px; border-top: 1px solid var(--border-color); padding-top: 20px; text-align: center; color: #666; font-size: 0.9em; }
+        
+        /* Modal */
+        .modal-overlay {
+            display: none;
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 1000;
+            justify-content: center; align-items: center;
+        }
+        .modal-content {
+            background: #fff;
+            width: 90%; max-width: 800px; height: 80vh;
+            overflow-y: auto;
+            padding: 40px;
+            position: relative;
+            border-radius: 8px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+        }
+        .modal-close {
+            position: absolute; top: 15px; right: 20px;
+            font-size: 2rem; border: none; background: none; cursor: pointer;
+        }
+        
+        /* Injected CSS */
+        :root {
     /* Dark Theme Palette */
     --bg-color: #121212;
     --sidebar-bg: #1a1a1a;
@@ -449,1015 +530,468 @@ td { border-bottom: 1px solid var(--term-dim); padding: 1rem; color: var(--term-
 </head>
 <body>
 
-<div class="layout-container">
-    <aside class="sidebar">
-        <div class="brand-logo-container">
-            <a href="https://github.com/maxspevack/fishwrap" target="_blank" title="Fishwrap Engine">
-                <img src="static/images/fishwrap_logo.svg" alt="Fishwrap" class="brand-logo-img">
-            </a>
-            <span class="demo-label">Briefing Engine</span>
-        </div>
-        
-        <div class="meta-info">
-            <div>Saturday, December 13, 2025</div>
-            <div>Vol. 1, Issue 7</div>
-        </div>
-        
-        <ul class="nav-list">
-            <li class="nav-item">
-    <a href="#news" class="nav-link">🌍 News</a>
-</li>
-<li class="nav-item">
-    <a href="#tech" class="nav-link">💾 Technology</a>
-</li>
-<li class="nav-item">
-    <a href="#sports" class="nav-link">🏈 Sports</a>
-</li>
-<li class="nav-item">
-    <a href="#culture" class="nav-link">🎭 Culture</a>
-</li>
+<div class="header">
+    <h1>Fishwrap Demo</h1>
+    <div class="meta">
+        Saturday, December 13, 2025 | Vol. 1, No. 7
+    </div>
+</div>
 
-        </ul>
-        
-        <div class="sidebar-footer">
-            <div class="glass-box-menu">
-                <div class="glass-box-header">Glass Box</div>
-                <a href="#" onclick="openTransparency(); return false;" class="glass-link" title="Where did it come from?">
-                    Source Transparency
-                </a>
-                <a href="#" onclick="document.body.classList.toggle('debug-active'); return false;" class="glass-link" title="Why was it chosen?">
-                    Scoring Transparency
-                </a>
-            </div>
+<main>
+    
+    <div class="section-block">
+        <h2 class="section-title">🌍 News <small style="font-weight: normal; color: #777; font-size: 0.6em;">World Events & Politics</small></h2>
+        <div class="grid">
             
-             <a href="https://github.com/maxspevack/fishwrap" target="_blank" class="github-link" title="View Source on GitHub">
-                <svg class="github-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"></path></svg>
-                <span>View Source</span>
-             </a>
-        </div>
-    </aside>
-
-    <main class="main-content">
-        <section id="news" class="section-block">
-    <div class="section-header">
-        <h2 class="section-title">🌍 News</h2>
-        <span class="section-desc">World Events & Politics</span>
-    </div>
-    <div class="bento-grid">
-        <a href="https://www.aljazeera.com/news/2025/12/12/nobel-peace-laureate-narges-mohammadi-arrested-in-iran-supporters-say?traffic_source=rss" target="_blank" class="card compact" style="border-top: 4px solid #27ae60;">
-    <div class="card-meta">
-        <span class="domain">aljazeera.com</span>
-    </div>
-    <h3>Nobel peace laureate Narges Mohammadi arrested in Iran, supporters say</h3>
-    <div class="debug-overlay">
-    <div class="debug-section">
-        <strong>Classification:</strong> 
-                    <div class="debug-section">
-                        <div class="debug-header">CLASSIFICATION</div>
-                        <div class="debug-row"><span class="label">Reason</span><span class="val">source_default</span></div>
-                    </div>
+            <article class="card">
+                <span class="card-meta">aljazeera.com</span>
+                <h3><a href="https://www.aljazeera.com/news/2025/12/13/cambodia-claims-thailand-still-bombing-hours-after-trump-ceasefire-call?traffic_source=rss" target="_blank">Thailand says attacks on Cambodia to continue despite Trump ceasefire claim</a></h3>
+                
+                <div class="debug-card">
+                    <div><strong>Score:</strong> 1150.0</div>
+                    <hr>
                     
-    </div>
-    <div class="debug-section">
-        <strong>Score Breakdown:</strong>
-        <div class='debug-row'><span class='label'>Base</span><span class='val'>+1000</span></div><div class='debug-row'><span class='label'>Cluster</span><span class='val'>+150.0</span></div>
-        <div style="border-top: 1px solid #ccc; margin-top: 5px; font-weight: bold; display: flex; justify-content: space-between;">
-            <span>TOTAL</span>
-            <span>1150.0</span>
-        </div>
-    </div>
-</div>
-
-</a>
-<a href="https://www.npr.org/2025/12/12/nx-s1-5604684/if-the-holidays-are-stressing-you-out-remember-everything-is-optional" target="_blank" class="card compact" style="border-top: 4px solid #c0392b;">
-    <div class="card-meta">
-        <span class="domain">npr.org</span>
-    </div>
-    <h3>If the holidays are stressing you out, remember: everything is optional</h3>
-    <div class="debug-overlay">
-    <div class="debug-section">
-        <strong>Classification:</strong> 
-                    <div class="debug-section">
-                        <div class="debug-header">CLASSIFICATION</div>
-                        <div class="debug-row"><span class="label">Reason</span><span class="val">source_default</span></div>
-                    </div>
+                </div>
+            </article>
+            
+            <article class="card">
+                <span class="card-meta">aljazeera.com</span>
+                <h3><a href="https://www.aljazeera.com/news/2025/12/13/belarus-frees-123-prisoners-including-ales-bialiatski-as-us-lifts-sanctions?traffic_source=rss" target="_blank">Belarus frees 123 prisoners including Ales Bialiatski as US lifts sanctions</a></h3>
+                
+                <div class="debug-card">
+                    <div><strong>Score:</strong> 1150.0</div>
+                    <hr>
                     
-    </div>
-    <div class="debug-section">
-        <strong>Score Breakdown:</strong>
-        <div class='debug-row'><span class='label'>Base</span><span class='val'>+1000</span></div>
-        <div style="border-top: 1px solid #ccc; margin-top: 5px; font-weight: bold; display: flex; justify-content: space-between;">
-            <span>TOTAL</span>
-            <span>1000</span>
-        </div>
-    </div>
-</div>
-
-</a>
-<a href="https://www.npr.org/2025/12/12/g-s1-100794/germany-train-rail-deutsche-bahn" target="_blank" class="card compact" style="border-top: 4px solid #d35400;">
-    <div class="card-meta">
-        <span class="domain">npr.org</span>
-    </div>
-    <h3>Germany's train service is one of Europe's worst. How did it get so bad?</h3>
-    <div class="debug-overlay">
-    <div class="debug-section">
-        <strong>Classification:</strong> 
-                    <div class="debug-section">
-                        <div class="debug-header">CLASSIFICATION</div>
-                        <div class="debug-row"><span class="label">Reason</span><span class="val">source_default</span></div>
-                    </div>
+                </div>
+            </article>
+            
+            <article class="card">
+                <span class="card-meta">rss.nytimes.com</span>
+                <h3><a href="https://www.nytimes.com/2025/12/12/us/troops-involved-in-boat-strikes-face-a-moral-injury-risk-experts-say.html" target="_blank">Troops Involved in Boat Strikes Face a ‘Moral Injury’ Risk, Experts Say</a></h3>
+                
+                <div class="debug-card">
+                    <div><strong>Score:</strong> 1000.0</div>
+                    <hr>
                     
-    </div>
-    <div class="debug-section">
-        <strong>Score Breakdown:</strong>
-        <div class='debug-row'><span class='label'>Base</span><span class='val'>+1000</span></div>
-        <div style="border-top: 1px solid #ccc; margin-top: 5px; font-weight: bold; display: flex; justify-content: space-between;">
-            <span>TOTAL</span>
-            <span>1000</span>
-        </div>
-    </div>
-</div>
-
-</a>
-<a href="https://www.nytimes.com/2025/12/12/us/high-school-english-teachers-assigning-books.html" target="_blank" class="card compact" style="border-top: 4px solid #8e44ad;">
-    <div class="card-meta">
-        <span class="domain">nytimes.com</span>
-    </div>
-    <h3>Kids Rarely Read Whole Books Anymore. Even in English Class.</h3>
-    <div class="debug-overlay">
-    <div class="debug-section">
-        <strong>Classification:</strong> 
-                    <div class="debug-section">
-                        <div class="debug-header">CLASSIFICATION</div>
-                        <div class="debug-row"><span class="label">Reason</span><span class="val">source_default</span></div>
-                    </div>
+                </div>
+            </article>
+            
+            <article class="card">
+                <span class="card-meta">aljazeera.com</span>
+                <h3><a href="https://www.aljazeera.com/video/newsfeed/2025/12/12/bird-flu-kills-hundreds-of-storks-in-spain?traffic_source=rss" target="_blank">Bird flu kills hundreds of storks in Spain</a></h3>
+                
+                <div class="debug-card">
+                    <div><strong>Score:</strong> 1000.0</div>
+                    <hr>
                     
-    </div>
-    <div class="debug-section">
-        <strong>Score Breakdown:</strong>
-        <div class='debug-row'><span class='label'>Base</span><span class='val'>+1000</span></div>
-        <div style="border-top: 1px solid #ccc; margin-top: 5px; font-weight: bold; display: flex; justify-content: space-between;">
-            <span>TOTAL</span>
-            <span>1000</span>
-        </div>
-    </div>
-</div>
-
-</a>
-<a href="https://www.npr.org/2025/12/12/nx-s1-5641969/trial-starts-for-a-wisconsin-judge-accused-of-obstructing-ice" target="_blank" class="card compact" style="border-top: 4px solid #8e44ad;">
-    <div class="card-meta">
-        <span class="domain">npr.org</span>
-    </div>
-    <h3>Trial starts for a Wisconsin judge accused of obstructing ICE</h3>
-    <div class="debug-overlay">
-    <div class="debug-section">
-        <strong>Classification:</strong> 
-                    <div class="debug-section">
-                        <div class="debug-header">CLASSIFICATION</div>
-                        <div class="debug-row"><span class="label">Reason</span><span class="val">source_default</span></div>
-                    </div>
+                </div>
+            </article>
+            
+            <article class="card">
+                <span class="card-meta">aljazeera.com</span>
+                <h3><a href="https://www.aljazeera.com/news/2025/12/12/israel-approves-19-new-west-bank-settlements-in-major-annexation-push?traffic_source=rss" target="_blank">Israel approves 19 new West Bank settlements in major annexation push</a></h3>
+                
+                <div class="debug-card">
+                    <div><strong>Score:</strong> 1000.0</div>
+                    <hr>
                     
-    </div>
-    <div class="debug-section">
-        <strong>Score Breakdown:</strong>
-        <div class='debug-row'><span class='label'>Base</span><span class='val'>+1000</span></div>
-        <div style="border-top: 1px solid #ccc; margin-top: 5px; font-weight: bold; display: flex; justify-content: space-between;">
-            <span>TOTAL</span>
-            <span>1000</span>
-        </div>
-    </div>
-</div>
-
-</a>
-<a href="https://www.nytimes.com/2025/12/12/opinion/tom-friedman-david-brooks-polycene.html" target="_blank" class="card compact" style="border-top: 4px solid #27ae60;">
-    <div class="card-meta">
-        <span class="domain">nytimes.com</span>
-    </div>
-    <h3>Thomas L. Friedman Says We’re in a New Epoch. David Brooks Has Questions.</h3>
-    <div class="debug-overlay">
-    <div class="debug-section">
-        <strong>Classification:</strong> 
-                    <div class="debug-section">
-                        <div class="debug-header">CLASSIFICATION</div>
-                        <div class="debug-row"><span class="label">Reason</span><span class="val">source_default</span></div>
-                    </div>
+                </div>
+            </article>
+            
+            <article class="card">
+                <span class="card-meta">rss.nytimes.com</span>
+                <h3><a href="https://www.nytimes.com/2025/12/12/us/politics/trump-justice-dept.html" target="_blank">In Trump’s Justice Dept., Failing in Court Might Be Better Than Bucking the Boss</a></h3>
+                
+                <div class="debug-card">
+                    <div><strong>Score:</strong> 1000.0</div>
+                    <hr>
                     
-    </div>
-    <div class="debug-section">
-        <strong>Score Breakdown:</strong>
-        <div class='debug-row'><span class='label'>Base</span><span class='val'>+1000</span></div>
-        <div style="border-top: 1px solid #ccc; margin-top: 5px; font-weight: bold; display: flex; justify-content: space-between;">
-            <span>TOTAL</span>
-            <span>1000</span>
-        </div>
-    </div>
-</div>
-
-</a>
-<a href="https://www.nytimes.com/2025/12/12/world/middleeast/palestine-soccer-saudi-arabia-arab-cup.html" target="_blank" class="card compact" style="border-top: 4px solid #c0392b;">
-    <div class="card-meta">
-        <span class="domain">nytimes.com</span>
-    </div>
-    <h3>For 2 Hours, a Soccer Match Offers Palestinians a Rarity: Joy</h3>
-    <div class="debug-overlay">
-    <div class="debug-section">
-        <strong>Classification:</strong> 
-                    <div class="debug-section">
-                        <div class="debug-header">CLASSIFICATION</div>
-                        <div class="debug-row"><span class="label">Reason</span><span class="val">source_default</span></div>
-                    </div>
+                </div>
+            </article>
+            
+            <article class="card">
+                <span class="card-meta">aljazeera.com</span>
+                <h3><a href="https://www.aljazeera.com/economy/2025/12/12/mexicos-aerospace-sector-is-growing-will-it-be-undercut-in-usmca-review?traffic_source=rss" target="_blank">Mexico’s aerospace sector is growing. Will it be undercut in USMCA review?</a></h3>
+                
+                <div class="debug-card">
+                    <div><strong>Score:</strong> 1000.0</div>
+                    <hr>
                     
-    </div>
-    <div class="debug-section">
-        <strong>Score Breakdown:</strong>
-        <div class='debug-row'><span class='label'>Base</span><span class='val'>+1000</span></div>
-        <div style="border-top: 1px solid #ccc; margin-top: 5px; font-weight: bold; display: flex; justify-content: space-between;">
-            <span>TOTAL</span>
-            <span>1000</span>
-        </div>
-    </div>
-</div>
-
-</a>
-<a href="https://www.npr.org/2025/12/12/nx-s1-5640900/cnn-trump-warner-bros-netflix-paramount" target="_blank" class="card compact" style="border-top: 4px solid #d35400;">
-    <div class="card-meta">
-        <span class="domain">npr.org</span>
-    </div>
-    <h3>CNN has endured turmoil for years. Now Trump wants role in its fate</h3>
-    <div class="debug-overlay">
-    <div class="debug-section">
-        <strong>Classification:</strong> 
-                    <div class="debug-section">
-                        <div class="debug-header">CLASSIFICATION</div>
-                        <div class="debug-row"><span class="label">Reason</span><span class="val">source_default</span></div>
-                    </div>
+                </div>
+            </article>
+            
+            <article class="card">
+                <span class="card-meta">rss.nytimes.com</span>
+                <h3><a href="https://www.nytimes.com/2025/12/12/us/politics/immigration-tsa-passenger-data.html" target="_blank">T.S.A. Is Providing Air Passenger Data to Immigration Agents for Deportation Effort</a></h3>
+                
+                <div class="debug-card">
+                    <div><strong>Score:</strong> 1000.0</div>
+                    <hr>
                     
-    </div>
-    <div class="debug-section">
-        <strong>Score Breakdown:</strong>
-        <div class='debug-row'><span class='label'>Base</span><span class='val'>+1000</span></div>
-        <div style="border-top: 1px solid #ccc; margin-top: 5px; font-weight: bold; display: flex; justify-content: space-between;">
-            <span>TOTAL</span>
-            <span>1000</span>
-        </div>
-    </div>
-</div>
-
-</a>
-<a href="https://www.npr.org/2025/12/12/g-s1-101843/up-first-newsletter-ukraine-russia-peace-promises-kilmar-abrego-garcia-indiana-redistricting" target="_blank" class="card compact" style="border-top: 4px solid #2980b9;">
-    <div class="card-meta">
-        <span class="domain">npr.org</span>
-    </div>
-    <h3>Kilmar Abrego Garcia released from ICE custody. And, Indiana rejects redistricting</h3>
-    <div class="debug-overlay">
-    <div class="debug-section">
-        <strong>Classification:</strong> 
-                    <div class="debug-section">
-                        <div class="debug-header">CLASSIFICATION</div>
-                        <div class="debug-row"><span class="label">Reason</span><span class="val">source_default</span></div>
-                    </div>
+                </div>
+            </article>
+            
+            <article class="card">
+                <span class="card-meta">rss.nytimes.com</span>
+                <h3><a href="https://www.nytimes.com/2025/12/12/world/canada/canada-american-liquor-ban-tariffs-charity.html" target="_blank">Canadians Rush to Buy Stockpiles of Boycotted U.S. Liquor</a></h3>
+                
+                <div class="debug-card">
+                    <div><strong>Score:</strong> 1000.0</div>
+                    <hr>
                     
-    </div>
-    <div class="debug-section">
-        <strong>Score Breakdown:</strong>
-        <div class='debug-row'><span class='label'>Base</span><span class='val'>+1000</span></div>
-        <div style="border-top: 1px solid #ccc; margin-top: 5px; font-weight: bold; display: flex; justify-content: space-between;">
-            <span>TOTAL</span>
-            <span>1000</span>
-        </div>
-    </div>
-</div>
-
-</a>
-<a href="https://www.aljazeera.com/video/newsfeed/2025/12/12/flooding-destroys-few-remaining-possessions-of-palestinians-in-gaza?traffic_source=rss" target="_blank" class="card compact" style="border-top: 4px solid #8e44ad;">
-    <div class="card-meta">
-        <span class="domain">aljazeera.com</span>
-    </div>
-    <h3>Flooding destroys few remaining possessions of Palestinians in Gaza</h3>
-    <div class="debug-overlay">
-    <div class="debug-section">
-        <strong>Classification:</strong> 
-                    <div class="debug-section">
-                        <div class="debug-header">CLASSIFICATION</div>
-                        <div class="debug-row"><span class="label">Reason</span><span class="val">source_default</span></div>
-                    </div>
+                </div>
+            </article>
+            
+            <article class="card">
+                <span class="card-meta">rss.nytimes.com</span>
+                <h3><a href="https://www.nytimes.com/2025/12/12/us/washington-flooding-rain-evacuations.html" target="_blank">Scenes From Washington After a Week of Torrential Rain and Flooding</a></h3>
+                
+                <div class="debug-card">
+                    <div><strong>Score:</strong> 1000.0</div>
+                    <hr>
                     
-    </div>
-    <div class="debug-section">
-        <strong>Score Breakdown:</strong>
-        <div class='debug-row'><span class='label'>Base</span><span class='val'>+1000</span></div>
-        <div style="border-top: 1px solid #ccc; margin-top: 5px; font-weight: bold; display: flex; justify-content: space-between;">
-            <span>TOTAL</span>
-            <span>1000</span>
+                </div>
+            </article>
+            
         </div>
     </div>
-</div>
-
-</a>
-
-    </div>
-</section>
-<section id="tech" class="section-block">
-    <div class="section-header">
-        <h2 class="section-title">💾 Technology</h2>
-        <span class="section-desc">The Future, Distributed.</span>
-    </div>
-    <div class="bento-grid">
-        <a href="https://www.reddit.com/r/technology/comments/1pkvjg0/arizona_city_rejects_data_center_after_ai/" target="_blank" class="card feature" style="border-top: 4px solid #c0392b;">
-    <div class="card-meta">
-        <span class="domain">reddit.com</span>
-    </div>
-    <h3>Arizona city rejects data center after AI lobbying push</h3>
-    <div class="debug-overlay">
-    <div class="debug-section">
-        <strong>Classification:</strong> 
-                    <div class="debug-section">
-                        <div class="debug-header">CLASSIFICATION</div>
-                        <div class="debug-row"><span class="label">Reason</span><span class="val">source_default</span></div>
-                    </div>
+    
+    <div class="section-block">
+        <h2 class="section-title">💾 Technology <small style="font-weight: normal; color: #777; font-size: 0.6em;">The Future, Distributed.</small></h2>
+        <div class="grid">
+            
+            <article class="card">
+                <span class="card-meta">old.reddit.com</span>
+                <h3><a href="https://www.reddit.com/r/technology/comments/1pllxs6/us_will_require_eu_citizens_to_give_all_biometric/" target="_blank">US will require EU citizens to give all biometric data including DNA in new ESTA requirements</a></h3>
+                
+                <div class="debug-card">
+                    <div><strong>Score:</strong> 10783.0</div>
+                    <hr>
                     
-    </div>
-    <div class="debug-section">
-        <strong>Score Breakdown:</strong>
-        <div class='debug-row'><span class='label'>Stats</span><span class='val'>+8746</span></div>
-        <div style="border-top: 1px solid #ccc; margin-top: 5px; font-weight: bold; display: flex; justify-content: space-between;">
-            <span>TOTAL</span>
-            <span>8746</span>
-        </div>
-    </div>
-</div>
-
-</a>
-<a href="https://www.reddit.com/r/technology/comments/1pkumyx/everyone_disliked_that_amazon_pulls_aipowered/" target="_blank" class="card compact" style="border-top: 4px solid #d35400;">
-    <div class="card-meta">
-        <span class="domain">reddit.com</span>
-    </div>
-    <h3>'Everyone Disliked That' — Amazon Pulls AI-Powered Fallout Recap After Getting Key Story Details Wrong</h3>
-    <div class="debug-overlay">
-    <div class="debug-section">
-        <strong>Classification:</strong> 
-                    <div class="debug-section">
-                        <div class="debug-header">CLASSIFICATION</div>
-                        <div class="debug-row"><span class="label">Reason</span><span class="val">source_default</span></div>
-                    </div>
+                </div>
+            </article>
+            
+            <article class="card">
+                <span class="card-meta">old.reddit.com</span>
+                <h3><a href="https://www.reddit.com/r/technology/comments/1plm170/dead_internet_is_coming_for_audio_one_startup_is/" target="_blank">Dead Internet is coming for audio: one startup is flooding Spotify with 3000 AI-generated podcast episodes every week</a></h3>
+                
+                <div class="debug-card">
+                    <div><strong>Score:</strong> 8978.0</div>
+                    <hr>
                     
-    </div>
-    <div class="debug-section">
-        <strong>Score Breakdown:</strong>
-        <div class='debug-row'><span class='label'>Stats</span><span class='val'>+3799</span></div>
-        <div style="border-top: 1px solid #ccc; margin-top: 5px; font-weight: bold; display: flex; justify-content: space-between;">
-            <span>TOTAL</span>
-            <span>3799</span>
-        </div>
-    </div>
-</div>
-
-</a>
-<a href="https://www.reddit.com/r/technology/comments/1pkz80s/florida_school_locked_down_after_ai_weapon/" target="_blank" class="card compact" style="border-top: 4px solid #27ae60;">
-    <div class="card-meta">
-        <span class="domain">reddit.com</span>
-    </div>
-    <h3>Florida school locked down after AI weapon detector mistakes clarinet for gun</h3>
-    <div class="debug-overlay">
-    <div class="debug-section">
-        <strong>Classification:</strong> 
-                    <div class="debug-section">
-                        <div class="debug-header">CLASSIFICATION</div>
-                        <div class="debug-row"><span class="label">Reason</span><span class="val">source_default</span></div>
-                    </div>
+                </div>
+            </article>
+            
+            <article class="card">
+                <span class="card-meta">old.reddit.com</span>
+                <h3><a href="https://www.reddit.com/r/technology/comments/1plgkc8/spacex_quietly_removes_its_40_starlink_plan_in/" target="_blank">SpaceX quietly removes its $40 Starlink plan in the US - NotebookCheck.net News</a></h3>
+                
+                <div class="debug-card">
+                    <div><strong>Score:</strong> 4556.0</div>
+                    <hr>
                     
-    </div>
-    <div class="debug-section">
-        <strong>Score Breakdown:</strong>
-        <div class='debug-row'><span class='label'>Stats</span><span class='val'>+3555</span></div>
-        <div style="border-top: 1px solid #ccc; margin-top: 5px; font-weight: bold; display: flex; justify-content: space-between;">
-            <span>TOTAL</span>
-            <span>3555</span>
-        </div>
-    </div>
-</div>
-
-</a>
-<a href="https://www.reddit.com/r/technology/comments/1pkutaj/librarians_are_tired_of_being_accused_of_hiding/" target="_blank" class="card compact" style="border-top: 4px solid #8e44ad;">
-    <div class="card-meta">
-        <span class="domain">reddit.com</span>
-    </div>
-    <h3>Librarians Are Tired of Being Accused of Hiding Secret Books That Were Made Up by AI: AI chatbots are generating fake titles that people insist are real.</h3>
-    <div class="debug-overlay">
-    <div class="debug-section">
-        <strong>Classification:</strong> 
-                    <div class="debug-section">
-                        <div class="debug-header">CLASSIFICATION</div>
-                        <div class="debug-row"><span class="label">Reason</span><span class="val">source_default</span></div>
-                    </div>
+                </div>
+            </article>
+            
+            <article class="card">
+                <span class="card-meta">old.reddit.com</span>
+                <h3><a href="https://www.reddit.com/r/technology/comments/1pl9eeo/google_removes_ai_videos_of_disney_characters/" target="_blank">Google Removes AI Videos of Disney Characters After Cease and Desist Letter</a></h3>
+                
+                <div class="debug-card">
+                    <div><strong>Score:</strong> 2961.0</div>
+                    <hr>
                     
-    </div>
-    <div class="debug-section">
-        <strong>Score Breakdown:</strong>
-        <div class='debug-row'><span class='label'>Stats</span><span class='val'>+3149</span></div>
-        <div style="border-top: 1px solid #ccc; margin-top: 5px; font-weight: bold; display: flex; justify-content: space-between;">
-            <span>TOTAL</span>
-            <span>3149</span>
-        </div>
-    </div>
-</div>
-
-</a>
-<a href="https://www.reddit.com/r/technology/comments/1pkxien/tech_support_scammers_stole_85000_from_him_his/" target="_blank" class="card compact" style="border-top: 4px solid #d35400;">
-    <div class="card-meta">
-        <span class="domain">reddit.com</span>
-    </div>
-    <h3>Tech Support Scammers Stole $85,000 From Him. His Bank Refused a Refund.</h3>
-    <div class="debug-overlay">
-    <div class="debug-section">
-        <strong>Classification:</strong> 
-                    <div class="debug-section">
-                        <div class="debug-header">CLASSIFICATION</div>
-                        <div class="debug-row"><span class="label">Reason</span><span class="val">source_default</span></div>
-                    </div>
+                </div>
+            </article>
+            
+            <article class="card">
+                <span class="card-meta">old.reddit.com</span>
+                <h3><a href="https://www.reddit.com/r/technology/comments/1pl4l3x/ukrainians_sue_us_chip_firms_for_powering_russian/" target="_blank">Ukrainians sue U.S chip firms for powering Russian drones, missiles | Lawsuits may force Intel, AMD, and Texas Instruments to do more to control chip supply chains.</a></h3>
+                
+                <div class="debug-card">
+                    <div><strong>Score:</strong> 2151.0</div>
+                    <hr>
                     
-    </div>
-    <div class="debug-section">
-        <strong>Score Breakdown:</strong>
-        <div class='debug-row'><span class='label'>Stats</span><span class='val'>+1938</span></div><div class='debug-row'><span class='label'>Cluster</span><span class='val'>+150.0</span></div>
-        <div style="border-top: 1px solid #ccc; margin-top: 5px; font-weight: bold; display: flex; justify-content: space-between;">
-            <span>TOTAL</span>
-            <span>2088.0</span>
-        </div>
-    </div>
-</div>
-
-</a>
-<a href="https://www.reddit.com/r/technology/comments/1pl9eeo/google_removes_ai_videos_of_disney_characters/" target="_blank" class="card compact" style="border-top: 4px solid #2980b9;">
-    <div class="card-meta">
-        <span class="domain">reddit.com</span>
-    </div>
-    <h3>Google Removes AI Videos of Disney Characters After Cease and Desist Letter</h3>
-    <div class="debug-overlay">
-    <div class="debug-section">
-        <strong>Classification:</strong> 
-                    <div class="debug-section">
-                        <div class="debug-header">CLASSIFICATION</div>
-                        <div class="debug-row"><span class="label">Reason</span><span class="val">source_default</span></div>
-                    </div>
+                </div>
+            </article>
+            
+            <article class="card">
+                <span class="card-meta">old.reddit.com</span>
+                <h3><a href="https://www.reddit.com/r/technology/comments/1pl6e46/analysis_finds_anytime_electricity_from_solar/" target="_blank">Analysis finds “anytime electricity” from solar available as battery costs plummet</a></h3>
+                
+                <div class="debug-card">
+                    <div><strong>Score:</strong> 1205.0</div>
+                    <hr>
                     
-    </div>
-    <div class="debug-section">
-        <strong>Score Breakdown:</strong>
-        <div class='debug-row'><span class='label'>Stats</span><span class='val'>+1559</span></div><div class='debug-row'><span class='label'>Cluster</span><span class='val'>+150.0</span></div>
-        <div style="border-top: 1px solid #ccc; margin-top: 5px; font-weight: bold; display: flex; justify-content: space-between;">
-            <span>TOTAL</span>
-            <span>1709.0</span>
-        </div>
-    </div>
-</div>
-
-</a>
-<a href="https://www.reddit.com/r/technology/comments/1pl19uv/uk_lords_propose_ban_on_vpns_for_children/" target="_blank" class="card compact" style="border-top: 4px solid #2980b9;">
-    <div class="card-meta">
-        <span class="domain">reddit.com</span>
-    </div>
-    <h3>UK Lords propose ban on VPNs for children</h3>
-    <div class="debug-overlay">
-    <div class="debug-section">
-        <strong>Classification:</strong> 
-                    <div class="debug-section">
-                        <div class="debug-header">CLASSIFICATION</div>
-                        <div class="debug-row"><span class="label">Reason</span><span class="val">source_default</span></div>
-                    </div>
+                </div>
+            </article>
+            
+            <article class="card">
+                <span class="card-meta">theverge.com</span>
+                <h3><a href="https://www.theverge.com/tech/800440/best-gifts-under-100-2025" target="_blank">The Verge’s favorite holiday gifts under $100</a></h3>
+                
+                <div class="debug-card">
+                    <div><strong>Score:</strong> 1150.0</div>
+                    <hr>
                     
-    </div>
-    <div class="debug-section">
-        <strong>Score Breakdown:</strong>
-        <div class='debug-row'><span class='label'>Stats</span><span class='val'>+1667</span></div>
-        <div style="border-top: 1px solid #ccc; margin-top: 5px; font-weight: bold; display: flex; justify-content: space-between;">
-            <span>TOTAL</span>
-            <span>1667</span>
-        </div>
-    </div>
-</div>
-
-</a>
-<a href="https://www.reddit.com/r/technology/comments/1pl4l3x/ukrainians_sue_us_chip_firms_for_powering_russian/" target="_blank" class="card compact" style="border-top: 4px solid #8e44ad;">
-    <div class="card-meta">
-        <span class="domain">reddit.com</span>
-    </div>
-    <h3>Ukrainians sue U.S chip firms for powering Russian drones, missiles | Lawsuits may force Intel, AMD, and Texas Instruments to do more to control chip supply chains.</h3>
-    <div class="debug-overlay">
-    <div class="debug-section">
-        <strong>Classification:</strong> 
-                    <div class="debug-section">
-                        <div class="debug-header">CLASSIFICATION</div>
-                        <div class="debug-row"><span class="label">Reason</span><span class="val">source_default</span></div>
-                    </div>
+                </div>
+            </article>
+            
+            <article class="card">
+                <span class="card-meta">old.reddit.com</span>
+                <h3><a href="https://www.reddit.com/r/technology/comments/1plnoaq/humanoid_robot_fires_bb_gun_at_youtuber_raising/" target="_blank">Humanoid robot fires BB gun at YouTuber, raising AI safety fears | InsideAI had a ChatGPT-powered robot refuse a gunshot, but it fired after a role-play prompt tricked its safety rules.</a></h3>
+                
+                <div class="debug-card">
+                    <div><strong>Score:</strong> 1019.0</div>
+                    <hr>
                     
-    </div>
-    <div class="debug-section">
-        <strong>Score Breakdown:</strong>
-        <div class='debug-row'><span class='label'>Stats</span><span class='val'>+1603</span></div>
-        <div style="border-top: 1px solid #ccc; margin-top: 5px; font-weight: bold; display: flex; justify-content: space-between;">
-            <span>TOTAL</span>
-            <span>1603</span>
-        </div>
-    </div>
-</div>
-
-</a>
-<a href="https://www.reddit.com/r/technology/comments/1pkrfh6/scientists_just_uncovered_a_major_limitation_in/" target="_blank" class="card compact" style="border-top: 4px solid #2980b9;">
-    <div class="card-meta">
-        <span class="domain">reddit.com</span>
-    </div>
-    <h3>Scientists just uncovered a major limitation in how AI models understand truth and belief</h3>
-    <div class="debug-overlay">
-    <div class="debug-section">
-        <strong>Classification:</strong> 
-                    <div class="debug-section">
-                        <div class="debug-header">CLASSIFICATION</div>
-                        <div class="debug-row"><span class="label">Reason</span><span class="val">source_default</span></div>
-                    </div>
+                </div>
+            </article>
+            
+            <article class="card">
+                <span class="card-meta">feeds.arstechnica.com</span>
+                <h3><a href="https://arstechnica.com/google/2025/12/google-translate-learns-slang-and-idioms-expands-live-translation-beyond-pixel-buds/" target="_blank">Google Translate expands live translation to all earbuds on Android</a></h3>
+                
+                <div class="debug-card">
+                    <div><strong>Score:</strong> 1000.0</div>
+                    <hr>
                     
-    </div>
-    <div class="debug-section">
-        <strong>Score Breakdown:</strong>
-        <div class='debug-row'><span class='label'>Stats</span><span class='val'>+1485</span></div>
-        <div style="border-top: 1px solid #ccc; margin-top: 5px; font-weight: bold; display: flex; justify-content: space-between;">
-            <span>TOTAL</span>
-            <span>1485</span>
-        </div>
-    </div>
-</div>
-
-</a>
-<a href="https://www.reddit.com/r/technology/comments/1pkqywi/a_chinese_whistleblower_now_living_in_the_us_is/" target="_blank" class="card compact" style="border-top: 4px solid #8e44ad;">
-    <div class="card-meta">
-        <span class="domain">reddit.com</span>
-    </div>
-    <h3>A Chinese whistleblower now living in the US is being hunted by Beijing with help from US tech</h3>
-    <div class="debug-overlay">
-    <div class="debug-section">
-        <strong>Classification:</strong> 
-                    <div class="debug-section">
-                        <div class="debug-header">CLASSIFICATION</div>
-                        <div class="debug-row"><span class="label">Reason</span><span class="val">source_default</span></div>
-                    </div>
+                </div>
+            </article>
+            
+            <article class="card">
+                <span class="card-meta">techcrunch.com</span>
+                <h3><a href="https://techcrunch.com/2025/12/12/with-ios-26-2-apple-lets-you-roll-back-liquid-glass-again-this-time-on-the-lock-screen/" target="_blank">With iOS 26.2, Apple lets you roll back Liquid Glass again — this time on the Lock Screen</a></h3>
+                
+                <div class="debug-card">
+                    <div><strong>Score:</strong> 1000.0</div>
+                    <hr>
                     
-    </div>
-    <div class="debug-section">
-        <strong>Score Breakdown:</strong>
-        <div class='debug-row'><span class='label'>Stats</span><span class='val'>+1012</span></div><div class='debug-row'><span class='label'>Cluster</span><span class='val'>+150.0</span></div>
-        <div style="border-top: 1px solid #ccc; margin-top: 5px; font-weight: bold; display: flex; justify-content: space-between;">
-            <span>TOTAL</span>
-            <span>1162.0</span>
+                </div>
+            </article>
+            
         </div>
     </div>
-</div>
-
-</a>
-
-    </div>
-</section>
-<section id="sports" class="section-block">
-    <div class="section-header">
-        <h2 class="section-title">🏈 Sports</h2>
-        <span class="section-desc">Games & Scores</span>
-    </div>
-    <div class="bento-grid">
-        <a href="https://www.reddit.com/r/nfl/comments/1pktt6r/the_athletic_falcons_rb_bijan_robinson_apologized/" target="_blank" class="card feature" style="border-top: 4px solid #8e44ad;">
-    <div class="card-meta">
-        <span class="domain">reddit.com</span>
-    </div>
-    <h3>[The Athletic] Falcons RB Bijan Robinson apologized for using a homophobic phrase on the “Thursday Night Football Nightcap” show following Atlanta’s win over the Tampa Bay Buccaneers. "I recognize the mistake and make sure to do better in the future."</h3>
-    <div class="debug-overlay">
-    <div class="debug-section">
-        <strong>Classification:</strong> 
-                    <div class="debug-section">
-                        <div class="debug-header">CLASSIFICATION</div>
-                        <div class="debug-row"><span class="label">Reason</span><span class="val">source_default</span></div>
-                    </div>
+    
+    <div class="section-block">
+        <h2 class="section-title">🏈 Sports <small style="font-weight: normal; color: #777; font-size: 0.6em;">Games & Scores</small></h2>
+        <div class="grid">
+            
+            <article class="card">
+                <span class="card-meta">old.reddit.com</span>
+                <h3><a href="https://www.reddit.com/r/nba/comments/1pladqx/steph_hits_insane_full_court_shot_in_warmups/" target="_blank">Steph hits insane full court shot in warmups</a></h3>
+                
+                <div class="debug-card">
+                    <div><strong>Score:</strong> 13153.0</div>
+                    <hr>
                     
-    </div>
-    <div class="debug-section">
-        <strong>Score Breakdown:</strong>
-        <div class='debug-row'><span class='label'>Stats</span><span class='val'>+8739</span></div>
-        <div style="border-top: 1px solid #ccc; margin-top: 5px; font-weight: bold; display: flex; justify-content: space-between;">
-            <span>TOTAL</span>
-            <span>8739</span>
-        </div>
-    </div>
-</div>
-
-</a>
-<a href="https://www.reddit.com/r/nba/comments/1pladqx/steph_hits_insane_full_court_shot_in_warmups/" target="_blank" class="card feature" style="border-top: 4px solid #d35400;">
-    <div class="card-meta">
-        <span class="domain">reddit.com</span>
-    </div>
-    <h3>Steph hits insane full court shot in warmups</h3>
-    <div class="debug-overlay">
-    <div class="debug-section">
-        <strong>Classification:</strong> 
-                    <div class="debug-section">
-                        <div class="debug-header">CLASSIFICATION</div>
-                        <div class="debug-row"><span class="label">Reason</span><span class="val">source_default</span></div>
-                    </div>
+                </div>
+            </article>
+            
+            <article class="card">
+                <span class="card-meta">old.reddit.com</span>
+                <h3><a href="https://www.reddit.com/r/nfl/comments/1plp99t/schefter_colts_are_activating_philip_rivers_to/" target="_blank">[Schefter] Colts are activating Philip Rivers to their active roster from their practice squad, paving the way for him to make his first NFL start in five years Sunday at Seattle. By signing to the active roster today, Rivers also now will go from being a semi-finalist for this year’s Pro Football</a></h3>
+                
+                <div class="debug-card">
+                    <div><strong>Score:</strong> 8665.0</div>
+                    <hr>
                     
-    </div>
-    <div class="debug-section">
-        <strong>Score Breakdown:</strong>
-        <div class='debug-row'><span class='label'>Stats</span><span class='val'>+8128</span></div>
-        <div style="border-top: 1px solid #ccc; margin-top: 5px; font-weight: bold; display: flex; justify-content: space-between;">
-            <span>TOTAL</span>
-            <span>8128</span>
-        </div>
-    </div>
-</div>
-
-</a>
-<a href="https://www.reddit.com/r/nba/comments/1pl8egh/sga_on_if_breaking_the_73win_record_would_mean/" target="_blank" class="card standard" style="border-top: 4px solid #2980b9;">
-    <div class="card-meta">
-        <span class="domain">reddit.com</span>
-    </div>
-    <h3>[SGA] on if breaking the 73-win record would mean anything to him: "Absolutely. Winning matters."</h3>
-    <div class="debug-overlay">
-    <div class="debug-section">
-        <strong>Classification:</strong> 
-                    <div class="debug-section">
-                        <div class="debug-header">CLASSIFICATION</div>
-                        <div class="debug-row"><span class="label">Reason</span><span class="val">source_default</span></div>
-                    </div>
+                </div>
+            </article>
+            
+            <article class="card">
+                <span class="card-meta">old.reddit.com</span>
+                <h3><a href="https://www.reddit.com/r/nba/comments/1pl8egh/sga_on_if_breaking_the_73win_record_would_mean/" target="_blank">[SGA] on if breaking the 73-win record would mean anything to him: "Absolutely. Winning matters."</a></h3>
+                
+                <div class="debug-card">
+                    <div><strong>Score:</strong> 8243.0</div>
+                    <hr>
                     
-    </div>
-    <div class="debug-section">
-        <strong>Score Breakdown:</strong>
-        <div class='debug-row'><span class='label'>Stats</span><span class='val'>+6467</span></div>
-        <div style="border-top: 1px solid #ccc; margin-top: 5px; font-weight: bold; display: flex; justify-content: space-between;">
-            <span>TOTAL</span>
-            <span>6467</span>
-        </div>
-    </div>
-</div>
-
-</a>
-<a href="https://www.reddit.com/r/soccer/comments/1pkyyjq/var_display_for_potential_offside_during_hertha/" target="_blank" class="card standard" style="border-top: 4px solid #8e44ad;">
-    <div class="card-meta">
-        <span class="domain">reddit.com</span>
-    </div>
-    <h3>VAR display for potential offside during Hertha BSC v. Fürth</h3>
-    <div class="debug-overlay">
-    <div class="debug-section">
-        <strong>Classification:</strong> 
-                    <div class="debug-section">
-                        <div class="debug-header">CLASSIFICATION</div>
-                        <div class="debug-row"><span class="label">Reason</span><span class="val">source_default</span></div>
-                    </div>
+                </div>
+            </article>
+            
+            <article class="card">
+                <span class="card-meta">old.reddit.com</span>
+                <h3><a href="https://www.reddit.com/r/nba/comments/1plczq4/highlight_the_timberwolves_announcers_are_in/" target="_blank">[Highlight] The Timberwolves announcers are in shock, after Steph Curry was called for the foul, as Jaden McDaniels pulled Steph and threw him to the ground (with replays)</a></h3>
+                
+                <div class="debug-card">
+                    <div><strong>Score:</strong> 7484.0</div>
+                    <hr>
                     
-    </div>
-    <div class="debug-section">
-        <strong>Score Breakdown:</strong>
-        <div class='debug-row'><span class='label'>Stats</span><span class='val'>+5940</span></div>
-        <div style="border-top: 1px solid #ccc; margin-top: 5px; font-weight: bold; display: flex; justify-content: space-between;">
-            <span>TOTAL</span>
-            <span>5940</span>
-        </div>
-    </div>
-</div>
-
-</a>
-<a href="https://www.reddit.com/r/nba/comments/1pl99xh/speaking_with_espn_victor_wembanyama_was_asked/" target="_blank" class="card standard" style="border-top: 4px solid #27ae60;">
-    <div class="card-meta">
-        <span class="domain">reddit.com</span>
-    </div>
-    <h3>Speaking with ESPN, Victor Wembanyama was asked who the NBA’s best player is: “Jokic is the best offensive player… I don’t think he’s the best player. It’s between Giannis & Shai. When I come back to the court, it will be me.”</h3>
-    <div class="debug-overlay">
-    <div class="debug-section">
-        <strong>Classification:</strong> 
-                    <div class="debug-section">
-                        <div class="debug-header">CLASSIFICATION</div>
-                        <div class="debug-row"><span class="label">Reason</span><span class="val">source_default</span></div>
-                    </div>
+                </div>
+            </article>
+            
+            <article class="card">
+                <span class="card-meta">old.reddit.com</span>
+                <h3><a href="https://www.reddit.com/r/nba/comments/1pl99xh/speaking_with_espn_victor_wembanyama_was_asked/" target="_blank">Speaking with ESPN, Victor Wembanyama was asked who the NBA’s best player is: “Jokic is the best offensive player… I don’t think he’s the best player. It’s between Giannis &amp; Shai. When I come back to the court, it will be me.”</a></h3>
+                
+                <div class="debug-card">
+                    <div><strong>Score:</strong> 7188.0</div>
+                    <hr>
                     
-    </div>
-    <div class="debug-section">
-        <strong>Score Breakdown:</strong>
-        <div class='debug-row'><span class='label'>Stats</span><span class='val'>+5428</span></div>
-        <div style="border-top: 1px solid #ccc; margin-top: 5px; font-weight: bold; display: flex; justify-content: space-between;">
-            <span>TOTAL</span>
-            <span>5428</span>
-        </div>
-    </div>
-</div>
-
-</a>
-<a href="https://www.reddit.com/r/soccer/comments/1pkp2nc/erling_haaland_in_severe_pain_after_getting_hit/" target="_blank" class="card compact" style="border-top: 4px solid #2980b9;">
-    <div class="card-meta">
-        <span class="domain">reddit.com</span>
-    </div>
-    <h3>Erling Haaland in severe pain after getting hit in the balls vs Real Madrid</h3>
-    <div class="debug-overlay">
-    <div class="debug-section">
-        <strong>Classification:</strong> 
-                    <div class="debug-section">
-                        <div class="debug-header">CLASSIFICATION</div>
-                        <div class="debug-row"><span class="label">Reason</span><span class="val">source_default</span></div>
-                    </div>
+                </div>
+            </article>
+            
+            <article class="card">
+                <span class="card-meta">old.reddit.com</span>
+                <h3><a href="https://www.reddit.com/r/soccer/comments/1plfmgo/ani_fans_at_salt_lake_stadium_got_angry_with_the/" target="_blank">[ANI] Fans at Salt Lake Stadium got angry with the management and threw chairs and bottles after Messi left Kolkata. He stayed at the stadium for only 15 minutes, meeting politicians and VIPs.</a></h3>
+                
+                <div class="debug-card">
+                    <div><strong>Score:</strong> 6831.0</div>
+                    <hr>
                     
-    </div>
-    <div class="debug-section">
-        <strong>Score Breakdown:</strong>
-        <div class='debug-row'><span class='label'>Stats</span><span class='val'>+4958</span></div>
-        <div style="border-top: 1px solid #ccc; margin-top: 5px; font-weight: bold; display: flex; justify-content: space-between;">
-            <span>TOTAL</span>
-            <span>4958</span>
-        </div>
-    </div>
-</div>
-
-</a>
-<a href="https://www.reddit.com/r/soccer/comments/1pkril9/mourinho_i_go_to_bed_late_i_dont_sleep_without/" target="_blank" class="card compact" style="border-top: 4px solid #c0392b;">
-    <div class="card-meta">
-        <span class="domain">reddit.com</span>
-    </div>
-    <h3>Mourinho: “I go to bed late, I don’t sleep without checking on the family, without a movie or an episode of a show. In the morning, when the alarm goes off, I suffer. I really set it right there on the limit, where I can’t stay for just a little bit longer. It’s really right there on the limit.”</h3>
-    <div class="debug-overlay">
-    <div class="debug-section">
-        <strong>Classification:</strong> 
-                    <div class="debug-section">
-                        <div class="debug-header">CLASSIFICATION</div>
-                        <div class="debug-row"><span class="label">Reason</span><span class="val">source_default</span></div>
-                    </div>
+                </div>
+            </article>
+            
+            <article class="card">
+                <span class="card-meta">old.reddit.com</span>
+                <h3><a href="https://www.reddit.com/r/nfl/comments/1pl3kod/matthew_stafford_is_currently_277_yards_behind/" target="_blank">Matthew Stafford is currently 277 yards behind Philip Rivers for #7 on the all-time passing yards leaderboard. Can Rivers hold him off for another year?</a></h3>
+                
+                <div class="debug-card">
+                    <div><strong>Score:</strong> 5342.0</div>
+                    <hr>
                     
-    </div>
-    <div class="debug-section">
-        <strong>Score Breakdown:</strong>
-        <div class='debug-row'><span class='label'>Stats</span><span class='val'>+4385</span></div>
-        <div style="border-top: 1px solid #ccc; margin-top: 5px; font-weight: bold; display: flex; justify-content: space-between;">
-            <span>TOTAL</span>
-            <span>4385</span>
-        </div>
-    </div>
-</div>
-
-</a>
-<a href="https://www.reddit.com/r/nfl/comments/1pl3kod/matthew_stafford_is_currently_277_yards_behind/" target="_blank" class="card compact" style="border-top: 4px solid #d35400;">
-    <div class="card-meta">
-        <span class="domain">reddit.com</span>
-    </div>
-    <h3>Matthew Stafford is currently 277 yards behind Philip Rivers for #7 on the all-time passing yards leaderboard. Can Rivers hold him off for another year?</h3>
-    <div class="debug-overlay">
-    <div class="debug-section">
-        <strong>Classification:</strong> 
-                    <div class="debug-section">
-                        <div class="debug-header">CLASSIFICATION</div>
-                        <div class="debug-row"><span class="label">Reason</span><span class="val">source_default</span></div>
-                    </div>
+                </div>
+            </article>
+            
+            <article class="card">
+                <span class="card-meta">old.reddit.com</span>
+                <h3><a href="https://www.reddit.com/r/soccer/comments/1plgyvc/pti_everyone_was_excited_today_as_messi_was/" target="_blank">[PTI] “Everyone was excited today as Messi was coming. It’s my wedding day, but I left all the ceremonies to be here. Still, the management was so pathetic that I couldn’t even see him,” says a fan as Argentine footballer Lionel Messi’s event draws ire.</a></h3>
+                
+                <div class="debug-card">
+                    <div><strong>Score:</strong> 4429.0</div>
+                    <hr>
                     
-    </div>
-    <div class="debug-section">
-        <strong>Score Breakdown:</strong>
-        <div class='debug-row'><span class='label'>Stats</span><span class='val'>+4363</span></div>
-        <div style="border-top: 1px solid #ccc; margin-top: 5px; font-weight: bold; display: flex; justify-content: space-between;">
-            <span>TOTAL</span>
-            <span>4363</span>
+                </div>
+            </article>
+            
         </div>
     </div>
-</div>
-
-</a>
-
-    </div>
-</section>
-<section id="culture" class="section-block">
-    <div class="section-header">
-        <h2 class="section-title">🎭 Culture</h2>
-        <span class="section-desc">Arts & Entertainment</span>
-    </div>
-    <div class="bento-grid">
-        <a href="https://www.reddit.com/r/movies/comments/1pl5blh/jim_carrey_offered_to_return_20_million_grinch/" target="_blank" class="card feature" style="border-top: 4px solid #2980b9;">
-    <div class="card-meta">
-        <span class="domain">reddit.com</span>
-    </div>
-    <h3>Jim Carrey Offered to Return $20 Million ‘Grinch’ Payday and Quit the Movie Amid Panic Attacks Over Makeup; A Man Who Trained the Military on Enduring Torture Was Hired to Help</h3>
-    <div class="debug-overlay">
-    <div class="debug-section">
-        <strong>Classification:</strong> 
-                    <div class="debug-section">
-                        <div class="debug-header">CLASSIFICATION</div>
-                        <div class="debug-row"><span class="label">Reason</span><span class="val">source_default</span></div>
-                    </div>
+    
+    <div class="section-block">
+        <h2 class="section-title">🎭 Culture <small style="font-weight: normal; color: #777; font-size: 0.6em;">Arts & Entertainment</small></h2>
+        <div class="grid">
+            
+            <article class="card">
+                <span class="card-meta">old.reddit.com</span>
+                <h3><a href="https://www.reddit.com/r/movies/comments/1pl5blh/jim_carrey_offered_to_return_20_million_grinch/" target="_blank">Jim Carrey Offered to Return $20 Million ‘Grinch’ Payday and Quit the Movie Amid Panic Attacks Over Makeup; A Man Who Trained the Military on Enduring Torture Was Hired to Help</a></h3>
+                
+                <div class="debug-card">
+                    <div><strong>Score:</strong> 29152.0</div>
+                    <hr>
                     
-    </div>
-    <div class="debug-section">
-        <strong>Score Breakdown:</strong>
-        <div class='debug-row'><span class='label'>Stats</span><span class='val'>+23335</span></div><div class='debug-row'><span class='label'>Cluster</span><span class='val'>+150.0</span></div>
-        <div style="border-top: 1px solid #ccc; margin-top: 5px; font-weight: bold; display: flex; justify-content: space-between;">
-            <span>TOTAL</span>
-            <span>23485.0</span>
-        </div>
-    </div>
-</div>
-
-</a>
-<a href="https://www.reddit.com/r/movies/comments/1pkx3h1/first_image_of_rebecca_ferguson_in_peaky_blinders/" target="_blank" class="card standard" style="border-top: 4px solid #c0392b;">
-    <div class="card-meta">
-        <span class="domain">reddit.com</span>
-    </div>
-    <h3>First Image of Rebecca Ferguson in 'Peaky Blinders: The Immortal Man'</h3>
-    <div class="debug-overlay">
-    <div class="debug-section">
-        <strong>Classification:</strong> 
-                    <div class="debug-section">
-                        <div class="debug-header">CLASSIFICATION</div>
-                        <div class="debug-row"><span class="label">Reason</span><span class="val">source_default</span></div>
-                    </div>
+                </div>
+            </article>
+            
+            <article class="card">
+                <span class="card-meta">old.reddit.com</span>
+                <h3><a href="https://www.reddit.com/r/movies/comments/1plefu7/actor_peter_greene_zed_from_pulp_fiction_and/" target="_blank">Actor Peter Greene — Zed from 'Pulp Fiction' and Dorian in 'The Mask' — found dead at 60</a></h3>
+                
+                <div class="debug-card">
+                    <div><strong>Score:</strong> 6828.0</div>
+                    <hr>
                     
-    </div>
-    <div class="debug-section">
-        <strong>Score Breakdown:</strong>
-        <div class='debug-row'><span class='label'>Stats</span><span class='val'>+7825</span></div>
-        <div style="border-top: 1px solid #ccc; margin-top: 5px; font-weight: bold; display: flex; justify-content: space-between;">
-            <span>TOTAL</span>
-            <span>7825</span>
-        </div>
-    </div>
-</div>
-
-</a>
-<a href="https://www.reddit.com/r/movies/comments/1pku1hz/animal_farm_official_trailer_in_theaters_may_1/" target="_blank" class="card standard" style="border-top: 4px solid #c0392b;">
-    <div class="card-meta">
-        <span class="domain">reddit.com</span>
-    </div>
-    <h3>Animal Farm | Official Trailer | In Theaters May 1</h3>
-    <div class="debug-overlay">
-    <div class="debug-section">
-        <strong>Classification:</strong> 
-                    <div class="debug-section">
-                        <div class="debug-header">CLASSIFICATION</div>
-                        <div class="debug-row"><span class="label">Reason</span><span class="val">source_default</span></div>
-                    </div>
+                </div>
+            </article>
+            
+            <article class="card">
+                <span class="card-meta">old.reddit.com</span>
+                <h3><a href="https://www.reddit.com/r/movies/comments/1pl928s/timothée_chalamet_confirms_dune_part_three_time/" target="_blank">Timothée Chalamet Confirms ‘Dune: Part Three’ Time Jump</a></h3>
+                
+                <div class="debug-card">
+                    <div><strong>Score:</strong> 6440.0</div>
+                    <hr>
                     
-    </div>
-    <div class="debug-section">
-        <strong>Score Breakdown:</strong>
-        <div class='debug-row'><span class='label'>Stats</span><span class='val'>+5261</span></div>
-        <div style="border-top: 1px solid #ccc; margin-top: 5px; font-weight: bold; display: flex; justify-content: space-between;">
-            <span>TOTAL</span>
-            <span>5261</span>
-        </div>
-    </div>
-</div>
-
-</a>
-<a href="https://www.reddit.com/r/movies/comments/1pkx22z/zootopia_2_crosses_1_billion_globally_fastest_pg/" target="_blank" class="card compact" style="border-top: 4px solid #8e44ad;">
-    <div class="card-meta">
-        <span class="domain">reddit.com</span>
-    </div>
-    <h3>‘Zootopia 2’ Crosses $1 Billion Globally, Fastest PG Film to Ever Reach Box Office Milestone</h3>
-    <div class="debug-overlay">
-    <div class="debug-section">
-        <strong>Classification:</strong> 
-                    <div class="debug-section">
-                        <div class="debug-header">CLASSIFICATION</div>
-                        <div class="debug-row"><span class="label">Reason</span><span class="val">source_default</span></div>
-                    </div>
+                </div>
+            </article>
+            
+            <article class="card">
+                <span class="card-meta">old.reddit.com</span>
+                <h3><a href="https://www.reddit.com/r/movies/comments/1plaqqp/what_is_that_one_movie_you_watched_countless/" target="_blank">What is that one movie you watched countless times as a kid, but nobody has ever heard of?</a></h3>
+                
+                <div class="debug-card">
+                    <div><strong>Score:</strong> 4349.0</div>
+                    <hr>
                     
-    </div>
-    <div class="debug-section">
-        <strong>Score Breakdown:</strong>
-        <div class='debug-row'><span class='label'>Stats</span><span class='val'>+4259</span></div>
-        <div style="border-top: 1px solid #ccc; margin-top: 5px; font-weight: bold; display: flex; justify-content: space-between;">
-            <span>TOTAL</span>
-            <span>4259</span>
-        </div>
-    </div>
-</div>
-
-</a>
-<a href="https://www.reddit.com/r/movies/comments/1pl928s/timothée_chalamet_confirms_dune_part_three_time/" target="_blank" class="card compact" style="border-top: 4px solid #d35400;">
-    <div class="card-meta">
-        <span class="domain">reddit.com</span>
-    </div>
-    <h3>Timothée Chalamet Confirms ‘Dune: Part Three’ Time Jump</h3>
-    <div class="debug-overlay">
-    <div class="debug-section">
-        <strong>Classification:</strong> 
-                    <div class="debug-section">
-                        <div class="debug-header">CLASSIFICATION</div>
-                        <div class="debug-row"><span class="label">Reason</span><span class="val">source_default</span></div>
-                    </div>
+                </div>
+            </article>
+            
+            <article class="card">
+                <span class="card-meta">old.reddit.com</span>
+                <h3><a href="https://www.reddit.com/r/movies/comments/1pll78c/original_neon_genesis_evangelion_studio_gainax/" target="_blank">Original ‘Neon Genesis Evangelion’ Studio Gainax Officially Shutters After 42 Years</a></h3>
+                
+                <div class="debug-card">
+                    <div><strong>Score:</strong> 3666.0</div>
+                    <hr>
                     
-    </div>
-    <div class="debug-section">
-        <strong>Score Breakdown:</strong>
-        <div class='debug-row'><span class='label'>Stats</span><span class='val'>+4046</span></div>
-        <div style="border-top: 1px solid #ccc; margin-top: 5px; font-weight: bold; display: flex; justify-content: space-between;">
-            <span>TOTAL</span>
-            <span>4046</span>
-        </div>
-    </div>
-</div>
-
-</a>
-<a href="https://www.reddit.com/r/movies/comments/1plaqqp/what_is_that_one_movie_you_watched_countless/" target="_blank" class="card compact" style="border-top: 4px solid #27ae60;">
-    <div class="card-meta">
-        <span class="domain">reddit.com</span>
-    </div>
-    <h3>What is that one movie you watched countless times as a kid, but nobody has ever heard of?</h3>
-    <div class="debug-overlay">
-    <div class="debug-section">
-        <strong>Classification:</strong> 
-                    <div class="debug-section">
-                        <div class="debug-header">CLASSIFICATION</div>
-                        <div class="debug-row"><span class="label">Reason</span><span class="val">source_default</span></div>
-                    </div>
+                </div>
+            </article>
+            
+            <article class="card">
+                <span class="card-meta">old.reddit.com</span>
+                <h3><a href="https://www.reddit.com/r/movies/comments/1plb82b/official_discussion_wake_up_dead_man_a_knives_out/" target="_blank">Official Discussion - Wake Up, Dead Man: A Knives Out Mystery [SPOILERS]</a></h3>
+                
+                <div class="debug-card">
+                    <div><strong>Score:</strong> 3289.0</div>
+                    <hr>
                     
-    </div>
-    <div class="debug-section">
-        <strong>Score Breakdown:</strong>
-        <div class='debug-row'><span class='label'>Stats</span><span class='val'>+2380</span></div>
-        <div style="border-top: 1px solid #ccc; margin-top: 5px; font-weight: bold; display: flex; justify-content: space-between;">
-            <span>TOTAL</span>
-            <span>2380</span>
-        </div>
-    </div>
-</div>
-
-</a>
-<a href="https://www.reddit.com/r/movies/comments/1plb82b/official_discussion_wake_up_dead_man_a_knives_out/" target="_blank" class="card compact" style="border-top: 4px solid #27ae60;">
-    <div class="card-meta">
-        <span class="domain">reddit.com</span>
-    </div>
-    <h3>Official Discussion - Wake Up, Dead Man: A Knives Out Mystery [SPOILERS]</h3>
-    <div class="debug-overlay">
-    <div class="debug-section">
-        <strong>Classification:</strong> 
-                    <div class="debug-section">
-                        <div class="debug-header">CLASSIFICATION</div>
-                        <div class="debug-row"><span class="label">Reason</span><span class="val">source_default</span></div>
-                    </div>
+                </div>
+            </article>
+            
+            <article class="card">
+                <span class="card-meta">old.reddit.com</span>
+                <h3><a href="https://www.reddit.com/r/books/comments/1plkjfz/kids_rarely_read_whole_books_anymore_even_in/" target="_blank">Kids Rarely Read Whole Books Anymore. Even in English Class.</a></h3>
+                
+                <div class="debug-card">
+                    <div><strong>Score:</strong> 2747.0</div>
+                    <hr>
                     
-    </div>
-    <div class="debug-section">
-        <strong>Score Breakdown:</strong>
-        <div class='debug-row'><span class='label'>Stats</span><span class='val'>+2118</span></div><div class='debug-row'><span class='label'>Cluster</span><span class='val'>+150.0</span></div>
-        <div style="border-top: 1px solid #ccc; margin-top: 5px; font-weight: bold; display: flex; justify-content: space-between;">
-            <span>TOTAL</span>
-            <span>2268.0</span>
-        </div>
-    </div>
-</div>
-
-</a>
-<a href="https://www.reddit.com/r/movies/comments/1pkuk32/new_poster_for_rian_johnsons_wake_up_dead_man_a/" target="_blank" class="card compact" style="border-top: 4px solid #c0392b;">
-    <div class="card-meta">
-        <span class="domain">reddit.com</span>
-    </div>
-    <h3>New Poster for Rian Johnson's 'Wake Up Dead Man: A Knives Out Mystery' - Starring Daniel Craig, Josh O'Connor, Glenn Close, Josh Brolin, Andrew Scott, Cailee Spaeny, Jeremy Renner, Thomas Haden Church, Kerry Washington, Jeffrey Wright, Mila Kunis, and Darryl McCormack</h3>
-    <div class="debug-overlay">
-    <div class="debug-section">
-        <strong>Classification:</strong> 
-                    <div class="debug-section">
-                        <div class="debug-header">CLASSIFICATION</div>
-                        <div class="debug-row"><span class="label">Reason</span><span class="val">source_default</span></div>
-                    </div>
+                </div>
+            </article>
+            
+            <article class="card">
+                <span class="card-meta">old.reddit.com</span>
+                <h3><a href="https://www.reddit.com/r/movies/comments/1plerd6/hosting_a_nye_party_i_want_to_put_a_film_on_the/" target="_blank">Hosting a NYE party. I want to put a film on the TV on mute. What to play?</a></h3>
+                
+                <div class="debug-card">
+                    <div><strong>Score:</strong> 2314.0</div>
+                    <hr>
                     
-    </div>
-    <div class="debug-section">
-        <strong>Score Breakdown:</strong>
-        <div class='debug-row'><span class='label'>Stats</span><span class='val'>+1986</span></div>
-        <div style="border-top: 1px solid #ccc; margin-top: 5px; font-weight: bold; display: flex; justify-content: space-between;">
-            <span>TOTAL</span>
-            <span>1986</span>
+                </div>
+            </article>
+            
         </div>
     </div>
-</div>
+    
+</main>
 
-</a>
-
-    </div>
-</section>
-
-    </main>
-</div>
+<footer class="footer">
+    <p>Generated by <a href="https://github.com/maxspevack/fishwrap">Fishwrap</a>.</p>
+    <p>
+        <a href="#" onclick="document.body.classList.toggle('debug-active'); return false;">Toggle Debug Mode</a> | 
+        <a href="#" onclick="openTransparency(); return false;">Source Transparency</a>
+    </p>
+</footer>
 
 <!-- Glass Box Modal -->
 <div id="transparency-modal" class="modal-overlay">
     <div class="modal-content">
         <button class="modal-close" onclick="closeTransparency()">&times;</button>
-        <!-- Injected Fragment -->
         <div class="glass-box-container">
     <div class="audit-header">
         <h1>Source Transparency</h1>
-        <p>Audit Log for Edition: <strong>425e2f33-7387-43df-a741-e92c5e488b35</strong></p>
-        <p>Generated: 2025-12-13 01:27:28 PST</p>
+        <p>Audit Log for Edition: <strong>35be6cac-894e-4e8f-8fb7-bb9f1b03adc3</strong></p>
+        <p>Generated: 2025-12-13 12:42:33 PST</p>
     </div>
 
     <!-- The Funnel -->
     <div class="funnel-container">
         <div class="funnel-step">
-            <span class="funnel-num">1209</span>
+            <span class="funnel-num">1485</span>
             <small>Total Items</small>
         </div>
         <div class="funnel-step">
-            <span class="funnel-num">1023</span>
+            <span class="funnel-num">1067</span>
             <small>Candidate Pool</small>
         </div>
         <div class="funnel-step">
@@ -1465,10 +999,10 @@ td { border-bottom: 1px solid var(--term-dim); padding: 1rem; color: var(--term-
             <small>Published</small>
         </div>
         <div class="funnel-step">
-            <span class="funnel-num">97.0%</span>
+            <span class="funnel-num">97.6%</span>
             <small>Anti-Feed Protection</small>
             <span class="funnel-sub">(Total Items - Published) / Total Items</span>
-            <span class="funnel-sub">Blocked: 1173</span>
+            <span class="funnel-sub">Blocked: 1449</span>
         </div>
     </div>
 
@@ -1495,50 +1029,16 @@ td { border-bottom: 1px solid var(--term-dim); padding: 1rem; color: var(--term-
             <tr>
                 <td>old.reddit.com</td>
                 <td>
-                    72.2%
-                    <span class="count-sub">(26)</span>
+                    63.9%
+                    <span class="count-sub">(23)</span>
                 </td>
                 <td>
-                    16.0%
-                    <span class="count-sub">(164)</span>
-                </td>
-                <td>
-                    
-                    <span class="bias-pos">+56.2%</span>
-                    
-                </td>
-            </tr>
-            
-            <tr>
-                <td>feeds.npr.org</td>
-                <td>
-                    13.9%
-                    <span class="count-sub">(5)</span>
-                </td>
-                <td>
-                    1.0%
-                    <span class="count-sub">(10)</span>
+                    16.3%
+                    <span class="count-sub">(174)</span>
                 </td>
                 <td>
                     
-                    <span class="bias-pos">+12.9%</span>
-                    
-                </td>
-            </tr>
-            
-            <tr>
-                <td>rss.nytimes.com</td>
-                <td>
-                    8.3%
-                    <span class="count-sub">(3)</span>
-                </td>
-                <td>
-                    3.7%
-                    <span class="count-sub">(38)</span>
-                </td>
-                <td>
-                    
-                    <span class="bias-pos">+4.6%</span>
+                    <span class="bias-pos">+47.6%</span>
                     
                 </td>
             </tr>
@@ -1546,101 +1046,33 @@ td { border-bottom: 1px solid var(--term-dim); padding: 1rem; color: var(--term-
             <tr>
                 <td>www.aljazeera.com</td>
                 <td>
-                    5.6%
-                    <span class="count-sub">(2)</span>
+                    13.9%
+                    <span class="count-sub">(5)</span>
                 </td>
                 <td>
-                    3.9%
-                    <span class="count-sub">(40)</span>
-                </td>
-                <td>
-                    
-                    <span class="bias-pos">+1.6%</span>
-                    
-                </td>
-            </tr>
-            
-            <tr>
-                <td>pitchfork.com</td>
-                <td>
-                    0.0%
-                    <span class="count-sub">(0)</span>
-                </td>
-                <td>
-                    0.4%
-                    <span class="count-sub">(4)</span>
+                    4.0%
+                    <span class="count-sub">(43)</span>
                 </td>
                 <td>
                     
-                    <span class="bias-neg">-0.4%</span>
+                    <span class="bias-pos">+9.9%</span>
                     
                 </td>
             </tr>
             
             <tr>
-                <td>www.theverge.com</td>
+                <td>rss.nytimes.com</td>
                 <td>
-                    0.0%
-                    <span class="count-sub">(0)</span>
+                    13.9%
+                    <span class="count-sub">(5)</span>
                 </td>
                 <td>
-                    1.1%
-                    <span class="count-sub">(11)</span>
-                </td>
-                <td>
-                    
-                    <span class="bias-neg">-1.1%</span>
-                    
-                </td>
-            </tr>
-            
-            <tr>
-                <td>www.wired.com</td>
-                <td>
-                    0.0%
-                    <span class="count-sub">(0)</span>
-                </td>
-                <td>
-                    1.1%
-                    <span class="count-sub">(11)</span>
+                    4.4%
+                    <span class="count-sub">(47)</span>
                 </td>
                 <td>
                     
-                    <span class="bias-neg">-1.1%</span>
-                    
-                </td>
-            </tr>
-            
-            <tr>
-                <td>www.polygon.com</td>
-                <td>
-                    0.0%
-                    <span class="count-sub">(0)</span>
-                </td>
-                <td>
-                    1.1%
-                    <span class="count-sub">(11)</span>
-                </td>
-                <td>
-                    
-                    <span class="bias-neg">-1.1%</span>
-                    
-                </td>
-            </tr>
-            
-            <tr>
-                <td>www.rollingstone.com</td>
-                <td>
-                    0.0%
-                    <span class="count-sub">(0)</span>
-                </td>
-                <td>
-                    1.2%
-                    <span class="count-sub">(12)</span>
-                </td>
-                <td>
-                    
-                    <span class="bias-neg">-1.2%</span>
+                    <span class="bias-pos">+9.5%</span>
                     
                 </td>
             </tr>
@@ -1648,33 +1080,16 @@ td { border-bottom: 1px solid var(--term-dim); padding: 1rem; color: var(--term-
             <tr>
                 <td>feeds.arstechnica.com</td>
                 <td>
-                    0.0%
-                    <span class="count-sub">(0)</span>
+                    2.8%
+                    <span class="count-sub">(1)</span>
                 </td>
                 <td>
-                    1.3%
-                    <span class="count-sub">(13)</span>
-                </td>
-                <td>
-                    
-                    <span class="bias-neg">-1.3%</span>
-                    
-                </td>
-            </tr>
-            
-            <tr>
-                <td>variety.com</td>
-                <td>
-                    0.0%
-                    <span class="count-sub">(0)</span>
-                </td>
-                <td>
-                    1.5%
-                    <span class="count-sub">(15)</span>
+                    0.4%
+                    <span class="count-sub">(4)</span>
                 </td>
                 <td>
                     
-                    <span class="bias-neg">-1.5%</span>
+                    <span class="bias-pos">+2.4%</span>
                     
                 </td>
             </tr>
@@ -1682,16 +1097,33 @@ td { border-bottom: 1px solid var(--term-dim); padding: 1rem; color: var(--term-
             <tr>
                 <td>techcrunch.com</td>
                 <td>
-                    0.0%
-                    <span class="count-sub">(0)</span>
+                    2.8%
+                    <span class="count-sub">(1)</span>
                 </td>
                 <td>
-                    1.6%
-                    <span class="count-sub">(16)</span>
+                    0.5%
+                    <span class="count-sub">(5)</span>
                 </td>
                 <td>
                     
-                    <span class="bias-neg">-1.6%</span>
+                    <span class="bias-pos">+2.3%</span>
+                    
+                </td>
+            </tr>
+            
+            <tr>
+                <td>www.theverge.com</td>
+                <td>
+                    2.8%
+                    <span class="count-sub">(1)</span>
+                </td>
+                <td>
+                    1.3%
+                    <span class="count-sub">(14)</span>
+                </td>
+                <td>
+                    
+                    <span class="bias-pos">+1.5%</span>
                     
                 </td>
             </tr>
@@ -1703,46 +1135,12 @@ td { border-bottom: 1px solid var(--term-dim); padding: 1rem; color: var(--term-
                     <span class="count-sub">(0)</span>
                 </td>
                 <td>
-                    1.8%
-                    <span class="count-sub">(18)</span>
+                    0.6%
+                    <span class="count-sub">(6)</span>
                 </td>
                 <td>
                     
-                    <span class="bias-neg">-1.8%</span>
-                    
-                </td>
-            </tr>
-            
-            <tr>
-                <td>gizmodo.com</td>
-                <td>
-                    0.0%
-                    <span class="count-sub">(0)</span>
-                </td>
-                <td>
-                    2.0%
-                    <span class="count-sub">(20)</span>
-                </td>
-                <td>
-                    
-                    <span class="bias-neg">-2.0%</span>
-                    
-                </td>
-            </tr>
-            
-            <tr>
-                <td>feeds.bbci.co.uk</td>
-                <td>
-                    0.0%
-                    <span class="count-sub">(0)</span>
-                </td>
-                <td>
-                    2.3%
-                    <span class="count-sub">(24)</span>
-                </td>
-                <td>
-                    
-                    <span class="bias-neg">-2.3%</span>
+                    <span class="bias-neg">-0.6%</span>
                     
                 </td>
             </tr>
@@ -1754,12 +1152,131 @@ td { border-bottom: 1px solid var(--term-dim); padding: 1rem; color: var(--term-
                     <span class="count-sub">(0)</span>
                 </td>
                 <td>
-                    2.4%
+                    0.7%
+                    <span class="count-sub">(8)</span>
+                </td>
+                <td>
+                    
+                    <span class="bias-neg">-0.7%</span>
+                    
+                </td>
+            </tr>
+            
+            <tr>
+                <td>www.polygon.com</td>
+                <td>
+                    0.0%
+                    <span class="count-sub">(0)</span>
+                </td>
+                <td>
+                    0.8%
+                    <span class="count-sub">(9)</span>
+                </td>
+                <td>
+                    
+                    <span class="bias-neg">-0.8%</span>
+                    
+                </td>
+            </tr>
+            
+            <tr>
+                <td>www.wired.com</td>
+                <td>
+                    0.0%
+                    <span class="count-sub">(0)</span>
+                </td>
+                <td>
+                    0.9%
+                    <span class="count-sub">(10)</span>
+                </td>
+                <td>
+                    
+                    <span class="bias-neg">-0.9%</span>
+                    
+                </td>
+            </tr>
+            
+            <tr>
+                <td>feeds.npr.org</td>
+                <td>
+                    0.0%
+                    <span class="count-sub">(0)</span>
+                </td>
+                <td>
+                    1.0%
+                    <span class="count-sub">(11)</span>
+                </td>
+                <td>
+                    
+                    <span class="bias-neg">-1.0%</span>
+                    
+                </td>
+            </tr>
+            
+            <tr>
+                <td>www.rollingstone.com</td>
+                <td>
+                    0.0%
+                    <span class="count-sub">(0)</span>
+                </td>
+                <td>
+                    1.3%
+                    <span class="count-sub">(14)</span>
+                </td>
+                <td>
+                    
+                    <span class="bias-neg">-1.3%</span>
+                    
+                </td>
+            </tr>
+            
+            <tr>
+                <td>gizmodo.com</td>
+                <td>
+                    0.0%
+                    <span class="count-sub">(0)</span>
+                </td>
+                <td>
+                    1.7%
+                    <span class="count-sub">(18)</span>
+                </td>
+                <td>
+                    
+                    <span class="bias-neg">-1.7%</span>
+                    
+                </td>
+            </tr>
+            
+            <tr>
+                <td>feeds.bbci.co.uk</td>
+                <td>
+                    0.0%
+                    <span class="count-sub">(0)</span>
+                </td>
+                <td>
+                    1.9%
+                    <span class="count-sub">(20)</span>
+                </td>
+                <td>
+                    
+                    <span class="bias-neg">-1.9%</span>
+                    
+                </td>
+            </tr>
+            
+            <tr>
+                <td>variety.com</td>
+                <td>
+                    0.0%
+                    <span class="count-sub">(0)</span>
+                </td>
+                <td>
+                    2.3%
                     <span class="count-sub">(25)</span>
                 </td>
                 <td>
                     
-                    <span class="bias-neg">-2.4%</span>
+                    <span class="bias-neg">-2.3%</span>
                     
                 </td>
             </tr>
@@ -1772,45 +1289,11 @@ td { border-bottom: 1px solid var(--term-dim); padding: 1rem; color: var(--term-
                 </td>
                 <td>
                     2.7%
-                    <span class="count-sub">(28)</span>
+                    <span class="count-sub">(29)</span>
                 </td>
                 <td>
                     
                     <span class="bias-neg">-2.7%</span>
-                    
-                </td>
-            </tr>
-            
-            <tr>
-                <td>www.cbssports.com</td>
-                <td>
-                    0.0%
-                    <span class="count-sub">(0)</span>
-                </td>
-                <td>
-                    4.3%
-                    <span class="count-sub">(44)</span>
-                </td>
-                <td>
-                    
-                    <span class="bias-neg">-4.3%</span>
-                    
-                </td>
-            </tr>
-            
-            <tr>
-                <td>www.espn.com</td>
-                <td>
-                    0.0%
-                    <span class="count-sub">(0)</span>
-                </td>
-                <td>
-                    4.5%
-                    <span class="count-sub">(46)</span>
-                </td>
-                <td>
-                    
-                    <span class="bias-neg">-4.5%</span>
                     
                 </td>
             </tr>
@@ -1822,12 +1305,46 @@ td { border-bottom: 1px solid var(--term-dim); padding: 1rem; color: var(--term-
                     <span class="count-sub">(0)</span>
                 </td>
                 <td>
-                    6.7%
-                    <span class="count-sub">(69)</span>
+                    3.8%
+                    <span class="count-sub">(41)</span>
                 </td>
                 <td>
                     
-                    <span class="bias-neg">-6.7%</span>
+                    <span class="bias-neg">-3.8%</span>
+                    
+                </td>
+            </tr>
+            
+            <tr>
+                <td>www.espn.com</td>
+                <td>
+                    0.0%
+                    <span class="count-sub">(0)</span>
+                </td>
+                <td>
+                    5.7%
+                    <span class="count-sub">(61)</span>
+                </td>
+                <td>
+                    
+                    <span class="bias-neg">-5.7%</span>
+                    
+                </td>
+            </tr>
+            
+            <tr>
+                <td>www.cbssports.com</td>
+                <td>
+                    0.0%
+                    <span class="count-sub">(0)</span>
+                </td>
+                <td>
+                    5.9%
+                    <span class="count-sub">(63)</span>
+                </td>
+                <td>
+                    
+                    <span class="bias-neg">-5.9%</span>
                     
                 </td>
             </tr>
@@ -1839,12 +1356,12 @@ td { border-bottom: 1px solid var(--term-dim); padding: 1rem; color: var(--term-
                     <span class="count-sub">(0)</span>
                 </td>
                 <td>
-                    39.5%
-                    <span class="count-sub">(404)</span>
+                    43.6%
+                    <span class="count-sub">(465)</span>
                 </td>
                 <td>
                     
-                    <span class="bias-neg">-39.5%</span>
+                    <span class="bias-neg">-43.6%</span>
                     
                 </td>
             </tr>
@@ -1866,17 +1383,17 @@ td { border-bottom: 1px solid var(--term-dim); padding: 1rem; color: var(--term-
                 
                 <div class="bubble-item">
                     <span class="score-badge">1000</span>
-                    <span>For 2 Hours, a Soccer Match Offers Palestinians a Rarity: Joy</span>
+                    <span>T.S.A. Is Providing Air Passenger Data to Immigration Agents for Deportation Effort</span>
                 </div>
                 
                 <div class="bubble-item">
                     <span class="score-badge">1000</span>
-                    <span>If the holidays are stressing you out, remember: everything is optional</span>
+                    <span>Canadians Rush to Buy Stockpiles of Boycotted U.S. Liquor</span>
                 </div>
                 
                 <div class="bubble-item">
                     <span class="score-badge">1000</span>
-                    <span>Flooding destroys few remaining possessions of Palestinians in Gaza</span>
+                    <span>Scenes From Washington After a Week of Torrential Rain and Flooding</span>
                 </div>
                 
             </div>
@@ -1887,17 +1404,17 @@ td { border-bottom: 1px solid var(--term-dim); padding: 1rem; color: var(--term-
                 
                 <div class="bubble-item">
                     <span class="score-badge">1000</span>
-                    <span>Liverpool vs Brighton: Premier League – teams, start time, lineups, Salah</span>
+                    <span>Phil Upchurch, Jazz Guitarist and Sideman to Stars, Dies at 84</span>
                 </div>
                 
                 <div class="bubble-item">
                     <span class="score-badge">1000</span>
-                    <span>Aerial video shows the devastation from Indonesia floods, landslides</span>
+                    <span>Turkish car ferry damaged in strike at Ukrainian port</span>
                 </div>
                 
                 <div class="bubble-item">
                     <span class="score-badge">1000</span>
-                    <span>Germany accuses Russia of air traffic control cyber-attack</span>
+                    <span>Tech Support Scammers Stole $85,000 From Him. His Bank Refused a Refund.</span>
                 </div>
                 
             </div>
@@ -1912,18 +1429,18 @@ td { border-bottom: 1px solid var(--term-dim); padding: 1rem; color: var(--term-
                 <div class="bubble-header">Last 3 In (Lowest Scores)</div>
                 
                 <div class="bubble-item">
-                    <span class="score-badge">1603</span>
-                    <span>Ukrainians sue U.S chip firms for powering Russian drones, missiles | Lawsuits may force Intel, AMD, and Texas Instruments to do more to control chip supply chains.</span>
+                    <span class="score-badge">1019</span>
+                    <span>Humanoid robot fires BB gun at YouTuber, raising AI safety fears | InsideAI had a ChatGPT-powered robot refuse a gunshot, but it fired after a role-play prompt tricked its safety rules.</span>
                 </div>
                 
                 <div class="bubble-item">
-                    <span class="score-badge">1485</span>
-                    <span>Scientists just uncovered a major limitation in how AI models understand truth and belief</span>
+                    <span class="score-badge">1000</span>
+                    <span>Google Translate expands live translation to all earbuds on Android</span>
                 </div>
                 
                 <div class="bubble-item">
-                    <span class="score-badge">1162</span>
-                    <span>A Chinese whistleblower now living in the US is being hunted by Beijing with help from US tech</span>
+                    <span class="score-badge">1000</span>
+                    <span>With iOS 26.2, Apple lets you roll back Liquid Glass again — this time on the Lock Screen</span>
                 </div>
                 
             </div>
@@ -1933,18 +1450,18 @@ td { border-bottom: 1px solid var(--term-dim); padding: 1rem; color: var(--term-
                 <div class="bubble-header">First 3 Out (Highest Scores)</div>
                 
                 <div class="bubble-item">
-                    <span class="score-badge">1150</span>
-                    <span>The best E Ink tablets for 2025</span>
+                    <span class="score-badge">1000</span>
+                    <span>Mmm, Qi donuts</span>
                 </div>
                 
                 <div class="bubble-item">
-                    <span class="score-badge">1150</span>
-                    <span>Reddit sues Australia over underage social media ban</span>
+                    <span class="score-badge">1000</span>
+                    <span>How to Easily Find FSA Eligible Items on Amazon</span>
                 </div>
                 
                 <div class="bubble-item">
-                    <span class="score-badge">1150</span>
-                    <span>The Verge’s favorite holiday gifts under $100</span>
+                    <span class="score-badge">1000</span>
+                    <span>Some of our favorite gifts will cost you less than $25</span>
                 </div>
                 
             </div>
@@ -1959,18 +1476,18 @@ td { border-bottom: 1px solid var(--term-dim); padding: 1rem; color: var(--term-
                 <div class="bubble-header">Last 3 In (Lowest Scores)</div>
                 
                 <div class="bubble-item">
-                    <span class="score-badge">4958</span>
-                    <span>Erling Haaland in severe pain after getting hit in the balls vs Real Madrid</span>
+                    <span class="score-badge">6831</span>
+                    <span>[ANI] Fans at Salt Lake Stadium got angry with the management and threw chairs and bottles after Messi left Kolkata. He stayed at the stadium for only 15 minutes, meeting politicians and VIPs.</span>
                 </div>
                 
                 <div class="bubble-item">
-                    <span class="score-badge">4385</span>
-                    <span>Mourinho: “I go to bed late, I don’t sleep without checking on the family, without a movie or an episode of a show. In the morning, when the alarm goes off, I suffer. I really set it right there on the limit, where I can’t stay for just a little bit longer. It’s really right there on the limit.”</span>
-                </div>
-                
-                <div class="bubble-item">
-                    <span class="score-badge">4363</span>
+                    <span class="score-badge">5342</span>
                     <span>Matthew Stafford is currently 277 yards behind Philip Rivers for #7 on the all-time passing yards leaderboard. Can Rivers hold him off for another year?</span>
+                </div>
+                
+                <div class="bubble-item">
+                    <span class="score-badge">4429</span>
+                    <span>[PTI] “Everyone was excited today as Messi was coming. It’s my wedding day, but I left all the ceremonies to be here. Still, the management was so pathetic that I couldn’t even see him,” says a fan as Argentine footballer Lionel Messi’s event draws ire.</span>
                 </div>
                 
             </div>
@@ -1980,18 +1497,18 @@ td { border-bottom: 1px solid var(--term-dim); padding: 1rem; color: var(--term-
                 <div class="bubble-header">First 3 Out (Highest Scores)</div>
                 
                 <div class="bubble-item">
-                    <span class="score-badge">4149</span>
-                    <span>[Schefter] Steelers standout TJ Watt underwent surgery Thursday to repair a partially collapsed lung suffered Wednesday, as @JJWatt reported. TJ Watt is expected to be discharged from the hospital today but he is unlikely to play Monday night versus the Dolphins.</span>
+                    <span class="score-badge">3239</span>
+                    <span>Liverpool counter-attack vs Brighton 90+7'</span>
                 </div>
                 
                 <div class="bubble-item">
-                    <span class="score-badge">4091</span>
-                    <span>[Charania] San Antonio Spurs' Victor Wembanyama is likely to return for Saturday's NBA Cup semifinals against the Oklahoma City Thunder in Las Vegas, sources tell ESPN. Final clearance will come after today's practice for Wembanyama, who's been sidelined since Nov. 14 due to a calf strain.</span>
+                    <span class="score-badge">3148</span>
+                    <span>[Adam Friedland] “If David Stern were commissioner, Pablo Torre would be dead”</span>
                 </div>
                 
                 <div class="bubble-item">
-                    <span class="score-badge">4014</span>
-                    <span>Oscar has decided to retire from football at the age of 34.</span>
+                    <span class="score-badge">2938</span>
+                    <span>Bernardo Silva: “What Manchester City has done in my first 7 years there is not normal. We have achieved 6 Premier League trophies, a treble, a domestic quadruple, doing 100 points, setting the goals record. I’m biased, but I could argue Pep’s Manchester City was the best ever in English football.”</span>
                 </div>
                 
             </div>
@@ -2006,18 +1523,18 @@ td { border-bottom: 1px solid var(--term-dim); padding: 1rem; color: var(--term-
                 <div class="bubble-header">Last 3 In (Lowest Scores)</div>
                 
                 <div class="bubble-item">
-                    <span class="score-badge">2380</span>
-                    <span>What is that one movie you watched countless times as a kid, but nobody has ever heard of?</span>
-                </div>
-                
-                <div class="bubble-item">
-                    <span class="score-badge">2268</span>
+                    <span class="score-badge">3289</span>
                     <span>Official Discussion - Wake Up, Dead Man: A Knives Out Mystery [SPOILERS]</span>
                 </div>
                 
                 <div class="bubble-item">
-                    <span class="score-badge">1986</span>
-                    <span>New Poster for Rian Johnson's 'Wake Up Dead Man: A Knives Out Mystery' - Starring Daniel Craig, Josh O'Connor, Glenn Close, Josh Brolin, Andrew Scott, Cailee Spaeny, Jeremy Renner, Thomas Haden Church, Kerry Washington, Jeffrey Wright, Mila Kunis, and Darryl McCormack</span>
+                    <span class="score-badge">2747</span>
+                    <span>Kids Rarely Read Whole Books Anymore. Even in English Class.</span>
+                </div>
+                
+                <div class="bubble-item">
+                    <span class="score-badge">2314</span>
+                    <span>Hosting a NYE party. I want to put a film on the TV on mute. What to play?</span>
                 </div>
                 
             </div>
@@ -2027,18 +1544,18 @@ td { border-bottom: 1px solid var(--term-dim); padding: 1rem; color: var(--term-
                 <div class="bubble-header">First 3 Out (Highest Scores)</div>
                 
                 <div class="bubble-item">
-                    <span class="score-badge">1953</span>
-                    <span>First image of Barry Keoghan who plays the leader of a new generation of Peaky Blinders in the ‘PEAKY BLINDERS’ movie.</span>
+                    <span class="score-badge">2047</span>
+                    <span>Best Literary Fiction of 2025 - Voting Thread</span>
                 </div>
                 
                 <div class="bubble-item">
-                    <span class="score-badge">1903</span>
-                    <span>Actor Peter Greene — Zed from 'Pulp Fiction' and Dorian in 'The Mask' — found dead at 60</span>
+                    <span class="score-badge">1824</span>
+                    <span>LaKeith Stanfield Cast As Dennis Rodman In Lionsgate’s Revived ’48 Hours in Vegas’ After Jonathan Majors Exit</span>
                 </div>
                 
                 <div class="bubble-item">
-                    <span class="score-badge">1739</span>
-                    <span>How Matt Dinniman’s ‘Dungeon Crawler Carl’ Became a Blockbuster</span>
+                    <span class="score-badge">1750</span>
+                    <span>How to watch the 2026 Australian Open online for free</span>
                 </div>
                 
             </div>

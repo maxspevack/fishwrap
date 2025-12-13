@@ -3,9 +3,90 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Fishwrap Edition - Saturday, December 13, 2025</title>
+    <title>Fishwrap Demo - Saturday, December 13, 2025</title>
+    <!-- Basic Theme Fonts: System Stack -->
     <style>
-:root {
+        :root {
+            --bg-color: #ffffff;
+            --text-color: #333333;
+            --accent-color: #0066cc;
+            --border-color: #eeeeee;
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            color: var(--text-color);
+            background: var(--bg-color);
+            line-height: 1.6;
+            margin: 0;
+            padding: 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        h1, h2, h3 { margin-top: 0; }
+        a { color: var(--accent-color); text-decoration: none; }
+        a:hover { text-decoration: underline; }
+        
+        .header { border-bottom: 2px solid var(--text-color); padding-bottom: 20px; margin-bottom: 40px; }
+        .header h1 { font-size: 2.5em; margin-bottom: 5px; }
+        .meta { color: #666; font-size: 0.9em; }
+        
+        .section-block { margin-bottom: 50px; }
+        .section-title { font-size: 1.8em; border-bottom: 1px solid var(--border-color); margin-bottom: 20px; padding-bottom: 10px; }
+        
+        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 20px; }
+        
+        .card { 
+            border: 1px solid var(--border-color); 
+            padding: 20px; 
+            border-radius: 4px; 
+            transition: box-shadow 0.2s;
+            position: relative;
+        }
+        .card:hover { box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
+        .card-meta { font-size: 0.8em; color: #888; margin-bottom: 10px; display: block; }
+        .card h3 { font-size: 1.2em; margin-bottom: 10px; }
+        
+        /* Debug Overlay (Hidden by default) */
+        .debug-card {
+            display: none;
+            position: absolute; top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(255,255,255,0.95);
+            padding: 15px;
+            font-family: monospace;
+            font-size: 0.75rem;
+            color: #333;
+            border: 2px solid red;
+            overflow-y: auto;
+        }
+        body.debug-active .debug-card { display: block; }
+        
+        /* Glass Box Footer */
+        .footer { margin-top: 60px; border-top: 1px solid var(--border-color); padding-top: 20px; text-align: center; color: #666; font-size: 0.9em; }
+        
+        /* Modal */
+        .modal-overlay {
+            display: none;
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 1000;
+            justify-content: center; align-items: center;
+        }
+        .modal-content {
+            background: #fff;
+            width: 90%; max-width: 800px; height: 80vh;
+            overflow-y: auto;
+            padding: 40px;
+            position: relative;
+            border-radius: 8px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+        }
+        .modal-close {
+            position: absolute; top: 15px; right: 20px;
+            font-size: 2rem; border: none; background: none; cursor: pointer;
+        }
+        
+        /* Injected CSS */
+        :root {
     /* Dark Theme Palette */
     --bg-color: #121212;
     --sidebar-bg: #1a1a1a;
@@ -449,551 +530,273 @@ td { border-bottom: 1px solid var(--term-dim); padding: 1rem; color: var(--term-
 </head>
 <body>
 
-<div class="layout-container">
-    <aside class="sidebar">
-        <div class="brand-logo-container">
-            <a href="https://github.com/maxspevack/fishwrap" target="_blank" title="Fishwrap Engine">
-                <img src="static/images/fishwrap_logo.svg" alt="Fishwrap" class="brand-logo-img">
-            </a>
-            <span class="demo-label">Briefing Engine</span>
-        </div>
-        
-        <div class="meta-info">
-            <div>Saturday, December 13, 2025</div>
-            <div>Vol. 1, Issue 7</div>
-        </div>
-        
-        <ul class="nav-list">
-            <li class="nav-item">
-    <a href="#models" class="nav-link">✨ New Models & Weights</a>
-</li>
-<li class="nav-item">
-    <a href="#research" class="nav-link">🔬 Research Papers</a>
-</li>
-<li class="nav-item">
-    <a href="#engineering" class="nav-link">🛠️ Engineering & Code</a>
-</li>
-<li class="nav-item">
-    <a href="#discussion" class="nav-link">💬 The Discourse</a>
-</li>
+<div class="header">
+    <h1>Fishwrap Demo</h1>
+    <div class="meta">
+        Saturday, December 13, 2025 | Vol. 1, No. 7
+    </div>
+</div>
 
-        </ul>
-        
-        <div class="sidebar-footer">
-            <div class="glass-box-menu">
-                <div class="glass-box-header">Glass Box</div>
-                <a href="#" onclick="openTransparency(); return false;" class="glass-link" title="Where did it come from?">
-                    Source Transparency
-                </a>
-                <a href="#" onclick="document.body.classList.toggle('debug-active'); return false;" class="glass-link" title="Why was it chosen?">
-                    Scoring Transparency
-                </a>
-            </div>
+<main>
+    
+    <div class="section-block">
+        <h2 class="section-title">✨ New Models & Weights <small style="font-weight: normal; color: #777; font-size: 0.6em;">Fresh releases you can run locally.</small></h2>
+        <div class="grid">
             
-             <a href="https://github.com/maxspevack/fishwrap" target="_blank" class="github-link" title="View Source on GitHub">
-                <svg class="github-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"></path></svg>
-                <span>View Source</span>
-             </a>
-        </div>
-    </aside>
-
-    <main class="main-content">
-        <section id="models" class="section-block">
-    <div class="section-header">
-        <h2 class="section-title">✨ New Models & Weights</h2>
-        <span class="section-desc">Fresh releases you can run locally.</span>
-    </div>
-    <div class="bento-grid">
-        <a href="https://www.reddit.com/r/LocalLLaMA/comments/1pkxj0i/dolphinv2_universal_document_parsing_model_from/" target="_blank" class="card compact" style="border-top: 4px solid #d35400;">
-    <div class="card-meta">
-        <span class="domain">reddit.com</span>
-    </div>
-    <h3>Dolphin-v2, Universal Document Parsing Model from ByteDance Open Source</h3>
-    <div class="debug-overlay">
-    <div class="debug-section">
-        <strong>Classification:</strong> 
-                    <div class="debug-section">
-                        <div class="debug-header">CLASSIFICATION</div>
-                        <div class="debug-row"><span class="label">Reason</span><span class="val">source_default</span></div>
-                    </div>
+            <article class="card">
+                <span class="card-meta">reddit.com</span>
+                <h3><a href="https://www.reddit.com/r/LocalLLaMA/comments/1plqr3q/day_6_21_days_of_building_a_small_language_model/" target="_blank">Day 6: 21 Days of Building a Small Language Model: Tokenizer</a></h3>
+                
+                <div class="debug-card">
+                    <div><strong>Score:</strong> 2615.0</div>
+                    <hr>
                     
-    </div>
-    <div class="debug-section">
-        <strong>Score Breakdown:</strong>
-        <div class='debug-row'><span class='label'>Stats</span><span class='val'>+109</span></div><div class='debug-row'><span class='label'>keyword_boost: </span><span class='val'>+1000</span></div><div class='debug-row'><span class='label'>content_boost: </span><span class='val'>+600</span></div>
-        <div style="border-top: 1px solid #ccc; margin-top: 5px; font-weight: bold; display: flex; justify-content: space-between;">
-            <span>TOTAL</span>
-            <span>1709</span>
-        </div>
-    </div>
-</div>
-
-</a>
-<a href="https://www.reddit.com/r/LocalLLaMA/comments/1pkpxss/someone_from_nvidia_made_a_big_mistake_and/" target="_blank" class="card compact" style="border-top: 4px solid #c0392b;">
-    <div class="card-meta">
-        <span class="domain">reddit.com</span>
-    </div>
-    <h3>Someone from NVIDIA made a big mistake and uploaded the parent folder of their upcoming model on Hugging Face</h3>
-    <div class="debug-overlay">
-    <div class="debug-section">
-        <strong>Classification:</strong> 
-                    <div class="debug-section">
-                        <div class="debug-header">CLASSIFICATION</div>
-                        <div class="debug-row"><span class="label">Reason</span><span class="val">source_default</span></div>
-                    </div>
+                    <div>keyword_boost: 2000</div>
                     
-    </div>
-    <div class="debug-section">
-        <strong>Score Breakdown:</strong>
-        <div class='debug-row'><span class='label'>Stats</span><span class='val'>+1338</span></div>
-        <div style="border-top: 1px solid #ccc; margin-top: 5px; font-weight: bold; display: flex; justify-content: space-between;">
-            <span>TOTAL</span>
-            <span>1338</span>
-        </div>
-    </div>
-</div>
-
-</a>
-<a href="https://www.reddit.com/r/LocalLLaMA/comments/1pl0ojb/the_new_monsterserver/" target="_blank" class="card compact" style="border-top: 4px solid #8e44ad;">
-    <div class="card-meta">
-        <span class="domain">reddit.com</span>
-    </div>
-    <h3>The new monster-server</h3>
-    <div class="debug-overlay">
-    <div class="debug-section">
-        <strong>Classification:</strong> 
-                    <div class="debug-section">
-                        <div class="debug-header">CLASSIFICATION</div>
-                        <div class="debug-row"><span class="label">Reason</span><span class="val">source_default</span></div>
-                    </div>
+                    <div>content_boost: 600</div>
                     
-    </div>
-    <div class="debug-section">
-        <strong>Score Breakdown:</strong>
-        <div class='debug-row'><span class='label'>Stats</span><span class='val'>+536</span></div><div class='debug-row'><span class='label'>content_boost: </span><span class='val'>+600</span></div>
-        <div style="border-top: 1px solid #ccc; margin-top: 5px; font-weight: bold; display: flex; justify-content: space-between;">
-            <span>TOTAL</span>
-            <span>1136</span>
-        </div>
-    </div>
-</div>
-
-</a>
-<a href="https://www.reddit.com/r/LocalLLaMA/comments/1pkpsee/training_an_llm_only_on_1800s_london_texts_90gb/" target="_blank" class="card compact" style="border-top: 4px solid #c0392b;">
-    <div class="card-meta">
-        <span class="domain">reddit.com</span>
-    </div>
-    <h3>Training an LLM only on 1800s London texts - 90GB dataset</h3>
-    <div class="debug-overlay">
-    <div class="debug-section">
-        <strong>Classification:</strong> 
-                    <div class="debug-section">
-                        <div class="debug-header">CLASSIFICATION</div>
-                        <div class="debug-row"><span class="label">Reason</span><span class="val">source_default</span></div>
-                    </div>
+                </div>
+            </article>
+            
+            <article class="card">
+                <span class="card-meta">reddit.com</span>
+                <h3><a href="https://www.reddit.com/r/LocalLLaMA/comments/1plkv9n/maxun_free_opensource_web_data_for_ai_agents_data/" target="_blank">Maxun: Free, Open-Source Web Data for AI Agents &amp; Data Pipelines</a></h3>
+                
+                <div class="debug-card">
+                    <div><strong>Score:</strong> 1612.0</div>
+                    <hr>
                     
-    </div>
-    <div class="debug-section">
-        <strong>Score Breakdown:</strong>
-        <div class='debug-row'><span class='label'>Stats</span><span class='val'>+475</span></div><div class='debug-row'><span class='label'>content_boost: </span><span class='val'>+600</span></div>
-        <div style="border-top: 1px solid #ccc; margin-top: 5px; font-weight: bold; display: flex; justify-content: space-between;">
-            <span>TOTAL</span>
-            <span>1075</span>
-        </div>
-    </div>
-</div>
-
-</a>
-<a href="https://www.reddit.com/r/LocalLLaMA/comments/1plg9g1/i_was_terrified_to_let_llama_3_query_my_db_so_i/" target="_blank" class="card compact" style="border-top: 4px solid #c0392b;">
-    <div class="card-meta">
-        <span class="domain">reddit.com</span>
-    </div>
-    <h3>I was terrified to let Llama 3 query my DB, so I built a WASM-powered "Airgap" Middleware. Here's the code.</h3>
-    <div class="debug-overlay">
-    <div class="debug-section">
-        <strong>Classification:</strong> 
-                    <div class="debug-section">
-                        <div class="debug-header">CLASSIFICATION</div>
-                        <div class="debug-row"><span class="label">Reason</span><span class="val">source_default</span></div>
-                    </div>
+                    <div>keyword_boost: 1000</div>
                     
-    </div>
-    <div class="debug-section">
-        <strong>Score Breakdown:</strong>
-        <div class='debug-row'><span class='label'>Stats</span><span class='val'>+6</span></div><div class='debug-row'><span class='label'>content_boost: </span><span class='val'>+600</span></div><div class='debug-row'><span class='label'>keyword_boost: </span><span class='val'>+400</span></div>
-        <div style="border-top: 1px solid #ccc; margin-top: 5px; font-weight: bold; display: flex; justify-content: space-between;">
-            <span>TOTAL</span>
-            <span>1006</span>
-        </div>
-    </div>
-</div>
-
-</a>
-
-    </div>
-</section>
-<section id="research" class="section-block">
-    <div class="section-header">
-        <h2 class="section-title">🔬 Research Papers</h2>
-        <span class="section-desc">Arxiv preprints and academic breakthroughs.</span>
-    </div>
-    <div class="bento-grid">
-        <a href="https://www.reddit.com/r/MachineLearning/comments/1plh4b3/p_ai_voice_cloning_with_coqui_xttsv2_on_google/" target="_blank" class="card compact" style="border-top: 4px solid #27ae60;">
-    <div class="card-meta">
-        <span class="domain">reddit.com</span>
-    </div>
-    <h3>[P] AI Voice Cloning with Coqui XTTS-v2 on Google Colab (Free)</h3>
-    <div class="debug-overlay">
-    <div class="debug-section">
-        <strong>Classification:</strong> 
-                    <div class="debug-section">
-                        <div class="debug-header">CLASSIFICATION</div>
-                        <div class="debug-row"><span class="label">Reason</span><span class="val">source_default</span></div>
-                    </div>
+                    <div>content_boost: 600</div>
                     
-    </div>
-    <div class="debug-section">
-        <strong>Score Breakdown:</strong>
-        <div class='debug-row'><span class='label'>Stats</span><span class='val'>+1</span></div><div class='debug-row'><span class='label'>keyword_boost: </span><span class='val'>+2000</span></div><div class='debug-row'><span class='label'>content_boost: </span><span class='val'>+600</span></div>
-        <div style="border-top: 1px solid #ccc; margin-top: 5px; font-weight: bold; display: flex; justify-content: space-between;">
-            <span>TOTAL</span>
-            <span>2601</span>
-        </div>
-    </div>
-</div>
-
-</a>
-
-    </div>
-</section>
-<section id="engineering" class="section-block">
-    <div class="section-header">
-        <h2 class="section-title">🛠️ Engineering & Code</h2>
-        <span class="section-desc">Tools, libraries, and implementation details.</span>
-    </div>
-    <div class="bento-grid">
-        <a href="https://www.kdnuggets.com/how-to-write-efficient-python-data-classes" target="_blank" class="card compact" style="border-top: 4px solid #8e44ad;">
-    <div class="card-meta">
-        <span class="domain">kdnuggets.com</span>
-    </div>
-    <h3>How to Write Efficient Python Data Classes</h3>
-    <div class="debug-overlay">
-    <div class="debug-section">
-        <strong>Classification:</strong> 
-                    <div class="debug-section">
-                        <div class="debug-header">CLASSIFICATION</div>
-                        <div class="debug-row"><span class="label">Reason</span><span class="val">keyword_weak_match</span></div>
-                    </div>
+                </div>
+            </article>
+            
+            <article class="card">
+                <span class="card-meta">reddit.com</span>
+                <h3><a href="https://www.reddit.com/r/LocalLLaMA/comments/1plnjfy/nvidia_dgx_station_gb300_784gb_available_now/" target="_blank">Nvidia DGX Station GB300 784GB available now! 95,000 USD / 80,000 EUR</a></h3>
+                
+                <div class="debug-card">
+                    <div><strong>Score:</strong> 1416.0</div>
+                    <hr>
                     
-    </div>
-    <div class="debug-section">
-        <strong>Score Breakdown:</strong>
-        <div class='debug-row'><span class='label'>Base</span><span class='val'>+2000</span></div><div class='debug-row'><span class='label'>content_boost: </span><span class='val'>+600</span></div>
-        <div style="border-top: 1px solid #ccc; margin-top: 5px; font-weight: bold; display: flex; justify-content: space-between;">
-            <span>TOTAL</span>
-            <span>2600</span>
-        </div>
-    </div>
-</div>
-
-</a>
-<a href="https://aws.amazon.com/blogs/machine-learning/building-a-voice-driven-aws-assistant-with-amazon-nova-sonic/" target="_blank" class="card compact" style="border-top: 4px solid #c0392b;">
-    <div class="card-meta">
-        <span class="domain">aws.amazon.com</span>
-    </div>
-    <h3>Building a voice-driven AWS assistant with Amazon Nova Sonic</h3>
-    <div class="debug-overlay">
-    <div class="debug-section">
-        <strong>Classification:</strong> 
-                    <div class="debug-section">
-                        <div class="debug-header">CLASSIFICATION</div>
-                        <div class="debug-row"><span class="label">Reason</span><span class="val">source_default</span></div>
-                    </div>
+                    <div>content_boost: 600</div>
                     
-    </div>
-    <div class="debug-section">
-        <strong>Score Breakdown:</strong>
-        <div class='debug-row'><span class='label'>Base</span><span class='val'>+2000</span></div><div class='debug-row'><span class='label'>content_boost: </span><span class='val'>+600</span></div>
-        <div style="border-top: 1px solid #ccc; margin-top: 5px; font-weight: bold; display: flex; justify-content: space-between;">
-            <span>TOTAL</span>
-            <span>2600</span>
-        </div>
-    </div>
-</div>
-
-</a>
-<a href="https://www.kdnuggets.com/5-lightweight-alternatives-to-pandas-you-should-try" target="_blank" class="card compact" style="border-top: 4px solid #27ae60;">
-    <div class="card-meta">
-        <span class="domain">kdnuggets.com</span>
-    </div>
-    <h3>5 Lightweight Alternatives to Pandas You Should Try</h3>
-    <div class="debug-overlay">
-    <div class="debug-section">
-        <strong>Classification:</strong> 
-                    <div class="debug-section">
-                        <div class="debug-header">CLASSIFICATION</div>
-                        <div class="debug-row"><span class="label">Reason</span><span class="val">keyword_weak_match</span></div>
-                    </div>
+                </div>
+            </article>
+            
+            <article class="card">
+                <span class="card-meta">reddit.com</span>
+                <h3><a href="https://www.reddit.com/r/LocalLLaMA/comments/1plg9g1/i_was_terrified_to_let_llama_3_query_my_db_so_i/" target="_blank">I was terrified to let Llama 3 query my DB, so I built a WASM-powered "Airgap" Middleware. Here's the code.</a></h3>
+                
+                <div class="debug-card">
+                    <div><strong>Score:</strong> 1045.0</div>
+                    <hr>
                     
-    </div>
-    <div class="debug-section">
-        <strong>Score Breakdown:</strong>
-        <div class='debug-row'><span class='label'>Base</span><span class='val'>+2000</span></div>
-        <div style="border-top: 1px solid #ccc; margin-top: 5px; font-weight: bold; display: flex; justify-content: space-between;">
-            <span>TOTAL</span>
-            <span>2000</span>
-        </div>
-    </div>
-</div>
-
-</a>
-<a href="https://simonwillison.net/2025/Dec/12/openai-skills/#atom-entries" target="_blank" class="card compact" style="border-top: 4px solid #2980b9;">
-    <div class="card-meta">
-        <span class="domain">simonwillison.net</span>
-    </div>
-    <h3>OpenAI are quietly adopting skills, now available in ChatGPT and Codex CLI</h3>
-    <div class="debug-overlay">
-    <div class="debug-section">
-        <strong>Classification:</strong> 
-                    <div class="debug-section">
-                        <div class="debug-header">CLASSIFICATION</div>
-                        <div class="debug-row"><span class="label">Reason</span><span class="val">source_default</span></div>
-                    </div>
+                    <div>content_boost: 600</div>
                     
-    </div>
-    <div class="debug-section">
-        <strong>Score Breakdown:</strong>
-        <div class='debug-row'><span class='label'>Base</span><span class='val'>+2000</span></div>
-        <div style="border-top: 1px solid #ccc; margin-top: 5px; font-weight: bold; display: flex; justify-content: space-between;">
-            <span>TOTAL</span>
-            <span>2000</span>
-        </div>
-    </div>
-</div>
-
-</a>
-<a href="https://www.reddit.com/r/LocalLLaMA/comments/1plgmbl/kateryna_detect_when_your_llm_is_confidently/" target="_blank" class="card compact" style="border-top: 4px solid #d35400;">
-    <div class="card-meta">
-        <span class="domain">reddit.com</span>
-    </div>
-    <h3>Kateryna: Detect when your LLM is confidently bullshitting (pip install kateryna)</h3>
-    <div class="debug-overlay">
-    <div class="debug-section">
-        <strong>Classification:</strong> 
-                    <div class="debug-section">
-                        <div class="debug-header">CLASSIFICATION</div>
-                        <div class="debug-row"><span class="label">Reason</span><span class="val">keyword_strong_match</span></div>
-                    </div>
+                    <div>keyword_boost: 400</div>
                     
-    </div>
-    <div class="debug-section">
-        <strong>Score Breakdown:</strong>
-        <div class='debug-row'><span class='label'>Stats</span><span class='val'>+24</span></div><div class='debug-row'><span class='label'>content_boost: </span><span class='val'>+600</span></div>
-        <div style="border-top: 1px solid #ccc; margin-top: 5px; font-weight: bold; display: flex; justify-content: space-between;">
-            <span>TOTAL</span>
-            <span>624</span>
+                </div>
+            </article>
+            
         </div>
     </div>
-</div>
-
-</a>
-
-    </div>
-</section>
-<section id="discussion" class="section-block">
-    <div class="section-header">
-        <h2 class="section-title">💬 The Discourse</h2>
-        <span class="section-desc">Debates, ethics, and industry moves.</span>
-    </div>
-    <div class="bento-grid">
-        <a href="https://towardsdatascience.com/the-power-of-decentralization/" target="_blank" class="card standard" style="border-top: 4px solid #2980b9;">
-    <div class="card-meta">
-        <span class="domain">towardsdatascience.com</span>
-    </div>
-    <h3>Decentralized Computation: The Hidden Principle Behind Deep Learning</h3>
-    <div class="debug-overlay">
-    <div class="debug-section">
-        <strong>Classification:</strong> 
-                    <div class="debug-section">
-                        <div class="debug-header">CLASSIFICATION</div>
-                        <div class="debug-row"><span class="label">Reason</span><span class="val">fallback</span></div>
-                    </div>
+    
+    <div class="section-block">
+        <h2 class="section-title">🔬 Research Papers <small style="font-weight: normal; color: #777; font-size: 0.6em;">Arxiv preprints and academic breakthroughs.</small></h2>
+        <div class="grid">
+            
+            <article class="card">
+                <span class="card-meta">reddit.com</span>
+                <h3><a href="https://www.reddit.com/r/MachineLearning/comments/1plh4b3/p_ai_voice_cloning_with_coqui_xttsv2_on_google/" target="_blank">[P] AI Voice Cloning with Coqui XTTS-v2 on Google Colab (Free)</a></h3>
+                
+                <div class="debug-card">
+                    <div><strong>Score:</strong> 2600.0</div>
+                    <hr>
                     
-    </div>
-    <div class="debug-section">
-        <strong>Score Breakdown:</strong>
-        <div class='debug-row'><span class='label'>Base</span><span class='val'>+2000</span></div><div class='debug-row'><span class='label'>content_boost: </span><span class='val'>+600</span></div>
-        <div style="border-top: 1px solid #ccc; margin-top: 5px; font-weight: bold; display: flex; justify-content: space-between;">
-            <span>TOTAL</span>
-            <span>2600</span>
-        </div>
-    </div>
-</div>
-
-</a>
-<a href="https://towardsdatascience.com/spectral-community-detection-in-clinical-knowledge-graphs/" target="_blank" class="card standard" style="border-top: 4px solid #8e44ad;">
-    <div class="card-meta">
-        <span class="domain">towardsdatascience.com</span>
-    </div>
-    <h3>Spectral Community Detection in Clinical Knowledge Graphs</h3>
-    <div class="debug-overlay">
-    <div class="debug-section">
-        <strong>Classification:</strong> 
-                    <div class="debug-section">
-                        <div class="debug-header">CLASSIFICATION</div>
-                        <div class="debug-row"><span class="label">Reason</span><span class="val">fallback</span></div>
-                    </div>
+                    <div>keyword_boost: 2000</div>
                     
-    </div>
-    <div class="debug-section">
-        <strong>Score Breakdown:</strong>
-        <div class='debug-row'><span class='label'>Base</span><span class='val'>+2000</span></div><div class='debug-row'><span class='label'>content_boost: </span><span class='val'>+600</span></div>
-        <div style="border-top: 1px solid #ccc; margin-top: 5px; font-weight: bold; display: flex; justify-content: space-between;">
-            <span>TOTAL</span>
-            <span>2600</span>
-        </div>
-    </div>
-</div>
-
-</a>
-<a href="https://towardsdatascience.com/eda-in-public-part-1-cleaning-exploring-sales-data-with-pandas/" target="_blank" class="card standard" style="border-top: 4px solid #d35400;">
-    <div class="card-meta">
-        <span class="domain">towardsdatascience.com</span>
-    </div>
-    <h3>EDA in Public (Part 1): Cleaning and Exploring Sales Data with Pandas</h3>
-    <div class="debug-overlay">
-    <div class="debug-section">
-        <strong>Classification:</strong> 
-                    <div class="debug-section">
-                        <div class="debug-header">CLASSIFICATION</div>
-                        <div class="debug-row"><span class="label">Reason</span><span class="val">fallback</span></div>
-                    </div>
+                    <div>content_boost: 600</div>
                     
-    </div>
-    <div class="debug-section">
-        <strong>Score Breakdown:</strong>
-        <div class='debug-row'><span class='label'>Base</span><span class='val'>+2000</span></div><div class='debug-row'><span class='label'>content_boost: </span><span class='val'>+600</span></div>
-        <div style="border-top: 1px solid #ccc; margin-top: 5px; font-weight: bold; display: flex; justify-content: space-between;">
-            <span>TOTAL</span>
-            <span>2600</span>
-        </div>
-    </div>
-</div>
-
-</a>
-<a href="https://towardsdatascience.com/the-machine-learning-advent-calendar-day-12-logistic-regression-in-excel/" target="_blank" class="card standard" style="border-top: 4px solid #c0392b;">
-    <div class="card-meta">
-        <span class="domain">towardsdatascience.com</span>
-    </div>
-    <h3>The Machine Learning “Advent Calendar” Day 12: Logistic Regression in Excel</h3>
-    <div class="debug-overlay">
-    <div class="debug-section">
-        <strong>Classification:</strong> 
-                    <div class="debug-section">
-                        <div class="debug-header">CLASSIFICATION</div>
-                        <div class="debug-row"><span class="label">Reason</span><span class="val">fallback</span></div>
-                    </div>
+                </div>
+            </article>
+            
+            <article class="card">
+                <span class="card-meta">towardsdatascience.com</span>
+                <h3><a href="https://towardsdatascience.com/neurips-2025-best-paper-review-qwens-systematic-exploration-of-attention-gating/" target="_blank">NeurIPS 2025 Best Paper Review: Qwen’s Systematic Exploration of Attention Gating</a></h3>
+                
+                <div class="debug-card">
+                    <div><strong>Score:</strong> 2600.0</div>
+                    <hr>
                     
-    </div>
-    <div class="debug-section">
-        <strong>Score Breakdown:</strong>
-        <div class='debug-row'><span class='label'>Base</span><span class='val'>+2000</span></div><div class='debug-row'><span class='label'>content_boost: </span><span class='val'>+600</span></div>
-        <div style="border-top: 1px solid #ccc; margin-top: 5px; font-weight: bold; display: flex; justify-content: space-between;">
-            <span>TOTAL</span>
-            <span>2600</span>
-        </div>
-    </div>
-</div>
-
-</a>
-<a href="https://blogs.nvidia.com/blog/adam-robot-vegas-golden-knights-thor/" target="_blank" class="card compact" style="border-top: 4px solid #d35400;">
-    <div class="card-meta">
-        <span class="domain">blogs.nvidia.com</span>
-    </div>
-    <h3>Cheers to AI: ADAM Robot Bartender Makes Drinks at Vegas Golden Knights Game</h3>
-    <div class="debug-overlay">
-    <div class="debug-section">
-        <strong>Classification:</strong> 
-                    <div class="debug-section">
-                        <div class="debug-header">CLASSIFICATION</div>
-                        <div class="debug-row"><span class="label">Reason</span><span class="val">fallback</span></div>
-                    </div>
+                    <div>content_boost: 600</div>
                     
-    </div>
-    <div class="debug-section">
-        <strong>Score Breakdown:</strong>
-        <div class='debug-row'><span class='label'>Base</span><span class='val'>+2000</span></div><div class='debug-row'><span class='label'>content_boost: </span><span class='val'>+600</span></div>
-        <div style="border-top: 1px solid #ccc; margin-top: 5px; font-weight: bold; display: flex; justify-content: space-between;">
-            <span>TOTAL</span>
-            <span>2600</span>
+                </div>
+            </article>
+            
         </div>
     </div>
-</div>
-
-</a>
-<a href="https://machinelearningmastery.com/3-feature-engineering-techniques-for-unstructured-text-data/" target="_blank" class="card compact" style="border-top: 4px solid #27ae60;">
-    <div class="card-meta">
-        <span class="domain">machinelearningmastery.com</span>
-    </div>
-    <h3>3 Feature Engineering Techniques for Unstructured Text Data</h3>
-    <div class="debug-overlay">
-    <div class="debug-section">
-        <strong>Classification:</strong> 
-                    <div class="debug-section">
-                        <div class="debug-header">CLASSIFICATION</div>
-                        <div class="debug-row"><span class="label">Reason</span><span class="val">fallback</span></div>
-                    </div>
+    
+    <div class="section-block">
+        <h2 class="section-title">🛠️ Engineering & Code <small style="font-weight: normal; color: #777; font-size: 0.6em;">Tools, libraries, and implementation details.</small></h2>
+        <div class="grid">
+            
+            <article class="card">
+                <span class="card-meta">simonwillison.net</span>
+                <h3><a href="https://simonwillison.net/2025/Dec/12/openai-skills/#atom-entries" target="_blank">OpenAI are quietly adopting skills, now available in ChatGPT and Codex CLI</a></h3>
+                
+                <div class="debug-card">
+                    <div><strong>Score:</strong> 2000.0</div>
+                    <hr>
                     
-    </div>
-    <div class="debug-section">
-        <strong>Score Breakdown:</strong>
-        <div class='debug-row'><span class='label'>Base</span><span class='val'>+2000</span></div><div class='debug-row'><span class='label'>content_boost: </span><span class='val'>+600</span></div>
-        <div style="border-top: 1px solid #ccc; margin-top: 5px; font-weight: bold; display: flex; justify-content: space-between;">
-            <span>TOTAL</span>
-            <span>2600</span>
+                </div>
+            </article>
+            
+            <article class="card">
+                <span class="card-meta">reddit.com</span>
+                <h3><a href="https://www.reddit.com/r/LocalLLaMA/comments/1plgmbl/kateryna_detect_when_your_llm_is_confidently/" target="_blank">Kateryna: Detect when your LLM is confidently bullshitting (pip install kateryna)</a></h3>
+                
+                <div class="debug-card">
+                    <div><strong>Score:</strong> 624.0</div>
+                    <hr>
+                    
+                </div>
+            </article>
+            
         </div>
     </div>
-</div>
-
-</a>
-
+    
+    <div class="section-block">
+        <h2 class="section-title">💬 The Discourse <small style="font-weight: normal; color: #777; font-size: 0.6em;">Debates, ethics, and industry moves.</small></h2>
+        <div class="grid">
+            
+            <article class="card">
+                <span class="card-meta">towardsdatascience.com</span>
+                <h3><a href="https://towardsdatascience.com/how-to-increase-coding-iteration-speed/" target="_blank">How to Increase Coding Iteration Speed</a></h3>
+                
+                <div class="debug-card">
+                    <div><strong>Score:</strong> 2600.0</div>
+                    <hr>
+                    
+                    <div>content_boost: 600</div>
+                    
+                </div>
+            </article>
+            
+            <article class="card">
+                <span class="card-meta">towardsdatascience.com</span>
+                <h3><a href="https://towardsdatascience.com/the-machine-learning-advent-calendar-day-13-lasso-and-ridge-regression-in-excel/" target="_blank">The Machine Learning “Advent Calendar” Day 13: LASSO and Ridge Regression in Excel</a></h3>
+                
+                <div class="debug-card">
+                    <div><strong>Score:</strong> 2600.0</div>
+                    <hr>
+                    
+                    <div>content_boost: 600</div>
+                    
+                </div>
+            </article>
+            
+            <article class="card">
+                <span class="card-meta">machinelearningmastery.com</span>
+                <h3><a href="https://machinelearningmastery.com/how-llms-choose-their-words-a-practical-walk-through-of-logits-softmax-and-sampling/" target="_blank">How LLMs Choose Their Words: A Practical Walk-Through of Logits, Softmax and Sampling</a></h3>
+                
+                <div class="debug-card">
+                    <div><strong>Score:</strong> 2600.0</div>
+                    <hr>
+                    
+                    <div>content_boost: 600</div>
+                    
+                </div>
+            </article>
+            
+            <article class="card">
+                <span class="card-meta">reddit.com</span>
+                <h3><a href="https://www.reddit.com/r/artificial/comments/1plkvps/whitecollar_layoffs_are_coming_at_a_scale_weve/" target="_blank">White-collar layoffs are coming at a scale we've never seen. Why is no one talking about this?</a></h3>
+                
+                <div class="debug-card">
+                    <div><strong>Score:</strong> 1146.0</div>
+                    <hr>
+                    
+                    <div>content_boost: 600</div>
+                    
+                    <div>keyword_boost: 400</div>
+                    
+                </div>
+            </article>
+            
+            <article class="card">
+                <span class="card-meta">reddit.com</span>
+                <h3><a href="https://www.reddit.com/r/artificial/comments/1plnzz7/meta_is_pivoting_away_from_open_source_ai_to/" target="_blank">Meta is pivoting away from open source AI to money-making AI</a></h3>
+                
+                <div class="debug-card">
+                    <div><strong>Score:</strong> 1070.0</div>
+                    <hr>
+                    
+                    <div>keyword_boost: 1000</div>
+                    
+                </div>
+            </article>
+            
+            <article class="card">
+                <span class="card-meta">reddit.com</span>
+                <h3><a href="https://www.reddit.com/r/artificial/comments/1plskoq/my_8_year_old_son_created_his_first_game_with/" target="_blank">My 8 year old son created his first game with Google Gemini</a></h3>
+                
+                <div class="debug-card">
+                    <div><strong>Score:</strong> 1026.0</div>
+                    <hr>
+                    
+                    <div>content_boost: 600</div>
+                    
+                    <div>keyword_boost: 400</div>
+                    
+                </div>
+            </article>
+            
+        </div>
     </div>
-</section>
+    
+</main>
 
-    </main>
-</div>
+<footer class="footer">
+    <p>Generated by <a href="https://github.com/maxspevack/fishwrap">Fishwrap</a>.</p>
+    <p>
+        <a href="#" onclick="document.body.classList.toggle('debug-active'); return false;">Toggle Debug Mode</a> | 
+        <a href="#" onclick="openTransparency(); return false;">Source Transparency</a>
+    </p>
+</footer>
 
 <!-- Glass Box Modal -->
 <div id="transparency-modal" class="modal-overlay">
     <div class="modal-content">
         <button class="modal-close" onclick="closeTransparency()">&times;</button>
-        <!-- Injected Fragment -->
         <div class="glass-box-container">
     <div class="audit-header">
         <h1>Source Transparency</h1>
-        <p>Audit Log for Edition: <strong>4f278a10-52a3-41b2-b13d-1f275caa519b</strong></p>
-        <p>Generated: 2025-12-13 01:27:45 PST</p>
+        <p>Audit Log for Edition: <strong>46192ab8-4a8f-4bb2-8e9f-413560e6894e</strong></p>
+        <p>Generated: 2025-12-13 12:42:49 PST</p>
     </div>
 
     <!-- The Funnel -->
     <div class="funnel-container">
         <div class="funnel-step">
-            <span class="funnel-num">532</span>
+            <span class="funnel-num">540</span>
             <small>Total Items</small>
         </div>
         <div class="funnel-step">
-            <span class="funnel-num">74</span>
+            <span class="funnel-num">64</span>
             <small>Candidate Pool</small>
         </div>
         <div class="funnel-step">
-            <span class="funnel-num">17</span>
+            <span class="funnel-num">14</span>
             <small>Published</small>
         </div>
         <div class="funnel-step">
-            <span class="funnel-num">96.8%</span>
+            <span class="funnel-num">97.4%</span>
             <small>Anti-Feed Protection</small>
             <span class="funnel-sub">(Total Items - Published) / Total Items</span>
-            <span class="funnel-sub">Blocked: 515</span>
+            <span class="funnel-sub">Blocked: 526</span>
         </div>
     </div>
 
@@ -1020,67 +823,16 @@ td { border-bottom: 1px solid var(--term-dim); padding: 1rem; color: var(--term-
             <tr>
                 <td>towardsdatascience.com</td>
                 <td>
-                    23.5%
-                    <span class="count-sub">(4)</span>
+                    21.4%
+                    <span class="count-sub">(3)</span>
                 </td>
                 <td>
-                    5.4%
-                    <span class="count-sub">(4)</span>
-                </td>
-                <td>
-                    
-                    <span class="bias-pos">+18.1%</span>
-                    
-                </td>
-            </tr>
-            
-            <tr>
-                <td>www.kdnuggets.com</td>
-                <td>
-                    11.8%
-                    <span class="count-sub">(2)</span>
-                </td>
-                <td>
-                    4.1%
+                    4.7%
                     <span class="count-sub">(3)</span>
                 </td>
                 <td>
                     
-                    <span class="bias-pos">+7.7%</span>
-                    
-                </td>
-            </tr>
-            
-            <tr>
-                <td>blogs.nvidia.com</td>
-                <td>
-                    5.9%
-                    <span class="count-sub">(1)</span>
-                </td>
-                <td>
-                    1.4%
-                    <span class="count-sub">(1)</span>
-                </td>
-                <td>
-                    
-                    <span class="bias-pos">+4.5%</span>
-                    
-                </td>
-            </tr>
-            
-            <tr>
-                <td>simonwillison.net</td>
-                <td>
-                    5.9%
-                    <span class="count-sub">(1)</span>
-                </td>
-                <td>
-                    1.4%
-                    <span class="count-sub">(1)</span>
-                </td>
-                <td>
-                    
-                    <span class="bias-pos">+4.5%</span>
+                    <span class="bias-pos">+16.7%</span>
                     
                 </td>
             </tr>
@@ -1088,50 +840,33 @@ td { border-bottom: 1px solid var(--term-dim); padding: 1rem; color: var(--term-
             <tr>
                 <td>machinelearningmastery.com</td>
                 <td>
-                    5.9%
+                    7.1%
                     <span class="count-sub">(1)</span>
                 </td>
                 <td>
-                    1.4%
-                    <span class="count-sub">(1)</span>
-                </td>
-                <td>
-                    
-                    <span class="bias-pos">+4.5%</span>
-                    
-                </td>
-            </tr>
-            
-            <tr>
-                <td>aws.amazon.com</td>
-                <td>
-                    5.9%
-                    <span class="count-sub">(1)</span>
-                </td>
-                <td>
-                    1.4%
+                    1.6%
                     <span class="count-sub">(1)</span>
                 </td>
                 <td>
                     
-                    <span class="bias-pos">+4.5%</span>
+                    <span class="bias-pos">+5.6%</span>
                     
                 </td>
             </tr>
             
             <tr>
-                <td>deepmind.google</td>
+                <td>simonwillison.net</td>
                 <td>
-                    0.0%
-                    <span class="count-sub">(0)</span>
+                    7.1%
+                    <span class="count-sub">(1)</span>
                 </td>
                 <td>
-                    1.4%
+                    1.6%
                     <span class="count-sub">(1)</span>
                 </td>
                 <td>
                     
-                    <span class="bias-neg">-1.4%</span>
+                    <span class="bias-pos">+5.6%</span>
                     
                 </td>
             </tr>
@@ -1139,16 +874,16 @@ td { border-bottom: 1px solid var(--term-dim); padding: 1rem; color: var(--term-
             <tr>
                 <td>www.reddit.com</td>
                 <td>
-                    41.2%
-                    <span class="count-sub">(7)</span>
+                    64.3%
+                    <span class="count-sub">(9)</span>
                 </td>
                 <td>
-                    83.8%
-                    <span class="count-sub">(62)</span>
+                    92.2%
+                    <span class="count-sub">(59)</span>
                 </td>
                 <td>
                     
-                    <span class="bias-neg">-42.6%</span>
+                    <span class="bias-neg">-27.9%</span>
                     
                 </td>
             </tr>
@@ -1169,17 +904,17 @@ td { border-bottom: 1px solid var(--term-dim); padding: 1rem; color: var(--term-
                 <div class="bubble-header">Last 3 In (Lowest Scores)</div>
                 
                 <div class="bubble-item">
-                    <span class="score-badge">1136</span>
-                    <span>The new monster-server</span>
+                    <span class="score-badge">1612</span>
+                    <span>Maxun: Free, Open-Source Web Data for AI Agents &amp; Data Pipelines</span>
                 </div>
                 
                 <div class="bubble-item">
-                    <span class="score-badge">1075</span>
-                    <span>Training an LLM only on 1800s London texts - 90GB dataset</span>
+                    <span class="score-badge">1416</span>
+                    <span>Nvidia DGX Station GB300 784GB available now! 95,000 USD / 80,000 EUR</span>
                 </div>
                 
                 <div class="bubble-item">
-                    <span class="score-badge">1006</span>
+                    <span class="score-badge">1045</span>
                     <span>I was terrified to let Llama 3 query my DB, so I built a WASM-powered "Airgap" Middleware. Here's the code.</span>
                 </div>
                 
@@ -1190,18 +925,18 @@ td { border-bottom: 1px solid var(--term-dim); padding: 1rem; color: var(--term-
                 <div class="bubble-header">First 3 Out (Highest Scores)</div>
                 
                 <div class="bubble-item">
-                    <span class="score-badge">972</span>
-                    <span>What do you do, if you invent AGI? (seriously)</span>
-                </div>
-                
-                <div class="bubble-item">
-                    <span class="score-badge">783</span>
-                    <span>Olmo 3.1 32B Think &amp; Instruct: New Additions to the Olmo Model Family</span>
-                </div>
-                
-                <div class="bubble-item">
-                    <span class="score-badge">725</span>
+                    <span class="score-badge">935</span>
                     <span>This is how open ai is advertising them selfs on reddit…. They are doomed</span>
+                </div>
+                
+                <div class="bubble-item">
+                    <span class="score-badge">871</span>
+                    <span>NVIDIA gpt-oss-120b Eagle Throughput model</span>
+                </div>
+                
+                <div class="bubble-item">
+                    <span class="score-badge">849</span>
+                    <span>Qwen3 Next generation optimization</span>
                 </div>
                 
             </div>
@@ -1216,8 +951,13 @@ td { border-bottom: 1px solid var(--term-dim); padding: 1rem; color: var(--term-
                 <div class="bubble-header">Last 3 In (Lowest Scores)</div>
                 
                 <div class="bubble-item">
-                    <span class="score-badge">2601</span>
+                    <span class="score-badge">2600</span>
                     <span>[P] AI Voice Cloning with Coqui XTTS-v2 on Google Colab (Free)</span>
+                </div>
+                
+                <div class="bubble-item">
+                    <span class="score-badge">2600</span>
+                    <span>NeurIPS 2025 Best Paper Review: Qwen’s Systematic Exploration of Attention Gating</span>
                 </div>
                 
             </div>
@@ -1227,18 +967,18 @@ td { border-bottom: 1px solid var(--term-dim); padding: 1rem; color: var(--term-
                 <div class="bubble-header">First 3 Out (Highest Scores)</div>
                 
                 <div class="bubble-item">
-                    <span class="score-badge">705</span>
-                    <span>[D] GPT confidently generated a fake NeurIPS architecture. Loss function, code, the works. How does this get fixed?</span>
-                </div>
-                
-                <div class="bubble-item">
-                    <span class="score-badge">699</span>
-                    <span>[D] On the essence of the diffusion model</span>
-                </div>
-                
-                <div class="bubble-item">
-                    <span class="score-badge">670</span>
+                    <span class="score-badge">906</span>
                     <span>[D] How does Claude perform so well without any proprietary data?</span>
+                </div>
+                
+                <div class="bubble-item">
+                    <span class="score-badge">616</span>
+                    <span>[D] Question about cognition in AI systems</span>
+                </div>
+                
+                <div class="bubble-item">
+                    <span class="score-badge">614</span>
+                    <span>[D] Parallel Reasoning Streams: Making LLMs Think Wider, Not Just Longer</span>
                 </div>
                 
             </div>
@@ -1251,11 +991,6 @@ td { border-bottom: 1px solid var(--term-dim); padding: 1rem; color: var(--term-
             <!-- Last 3 In -->
             <div class="bubble-col bubble-in">
                 <div class="bubble-header">Last 3 In (Lowest Scores)</div>
-                
-                <div class="bubble-item">
-                    <span class="score-badge">2000</span>
-                    <span>5 Lightweight Alternatives to Pandas You Should Try</span>
-                </div>
                 
                 <div class="bubble-item">
                     <span class="score-badge">2000</span>
@@ -1287,18 +1022,18 @@ td { border-bottom: 1px solid var(--term-dim); padding: 1rem; color: var(--term-
                 <div class="bubble-header">Last 3 In (Lowest Scores)</div>
                 
                 <div class="bubble-item">
-                    <span class="score-badge">2600</span>
-                    <span>Cheers to AI: ADAM Robot Bartender Makes Drinks at Vegas Golden Knights Game</span>
+                    <span class="score-badge">1146</span>
+                    <span>White-collar layoffs are coming at a scale we've never seen. Why is no one talking about this?</span>
                 </div>
                 
                 <div class="bubble-item">
-                    <span class="score-badge">2600</span>
-                    <span>3 Feature Engineering Techniques for Unstructured Text Data</span>
+                    <span class="score-badge">1070</span>
+                    <span>Meta is pivoting away from open source AI to money-making AI</span>
                 </div>
                 
                 <div class="bubble-item">
-                    <span class="score-badge">2600</span>
-                    <span>The Machine Learning “Advent Calendar” Day 12: Logistic Regression in Excel</span>
+                    <span class="score-badge">1026</span>
+                    <span>My 8 year old son created his first game with Google Gemini</span>
                 </div>
                 
             </div>
@@ -1308,18 +1043,18 @@ td { border-bottom: 1px solid var(--term-dim); padding: 1rem; color: var(--term-
                 <div class="bubble-header">First 3 Out (Highest Scores)</div>
                 
                 <div class="bubble-item">
-                    <span class="score-badge">2400</span>
-                    <span>Improved Gemini audio models for powerful voice experiences</span>
+                    <span class="score-badge">710</span>
+                    <span>The Unspoken Future Plan for AI</span>
                 </div>
                 
                 <div class="bubble-item">
-                    <span class="score-badge">2000</span>
-                    <span>The One Data Analyst Role That’s AI-Proof</span>
+                    <span class="score-badge">708</span>
+                    <span>Identity collapse in LLMs is an architectural problem, not a scaling one</span>
                 </div>
                 
                 <div class="bubble-item">
-                    <span class="score-badge">1004</span>
-                    <span>Professors are turning to this old-school method to stop AI use on exams: A growing number of educators are finding that oral exams allow them to test their students’ learning without the benefit of AI platforms such as ChatGPT.</span>
+                    <span class="score-badge">658</span>
+                    <span>Europe must be ready when the AI bubble bursts</span>
                 </div>
                 
             </div>
