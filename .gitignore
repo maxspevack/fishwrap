@@ -13,6 +13,8 @@ logs/
 articles_db.json
 run_sheet.json
 enhanced_issue.json
+transparency_fragment.html
+publication_stats.json
 
 # User specific deployments (like The Daily Clamour)
 daily_clamour/data/*
