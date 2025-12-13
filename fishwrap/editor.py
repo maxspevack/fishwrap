@@ -214,8 +214,52 @@ def run_editor():
     cut_line_report = {} # Store top 3 misses per section
     section_diversity = {} # Store source breakdown per section
     
+    # Iterate through Configured Sections to maintain order
+    current_time_ts = datetime.now().timestamp()
+    print_cutoff = current_time_ts - (_config.EXPIRATION_HOURS * 3600)
+
+    for section_def in _config.SECTIONS:
+        cat = section_def['id']
+        capacity = _config.EDITION_SIZE.get(cat, 5) # Default capacity if missing
+        
+        items = buckets.get(cat, [])
+        
+        # Filter 1: Freshness (Strict Print Window)
+        items = [i for i in items if i.get('timestamp', 0) >= print_cutoff]
+
+        items.sort(key=lambda x: x.get('impact_score', 0), reverse=True)
+        
+        # Filter 2: Minimum Score
+        min_score = _config.MIN_SECTION_SCORES.get(cat, 0)
+        qualified_items = [i for i in items if i.get('impact_score', 0) >= min_score]
+        
+        selected = qualified_items[:capacity]
+        run_sheet[cat] = selected
+        total_selected += len(selected)
+        
+        # Calculate Diversity for this section
+        source_counts = {}
+        for item in selected:
+            try:
+                # simple domain parse
+                domain = item.get('source_url', '').split('/')[2]
+            except:
+                domain = 'unknown'
+            source_counts[domain] = source_counts.get(domain, 0) + 1
+        
+        # Convert to list of (domain, count) sorted by count
+        sorted_sources = sorted(source_counts.items(), key=lambda x: x[1], reverse=True)
+        section_diversity[cat] = sorted_sources
+        
+        # Capture Cut-Line (The best of the rest)
+        missed = items[len(selected):]
+        cut_line_report[cat] = missed[:3]
+
     # Summary Report (High-level only, details in Auditor report)
     print(f"\n[EDITOR] Selected {total_selected} articles ({drift_count} reclassified).")
+    
+    with open(_config.RUN_SHEET_FILE, 'w') as f:
+        json.dump(run_sheet, f, indent=2)
     
     # The Auditor will now persist and generate the detailed report
     total_db_count = repository.get_total_count()

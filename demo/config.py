@@ -39,6 +39,7 @@ FEEDS = [
 ]
 
 # --- 2. File Paths ---
+DATABASE_URL = 'sqlite:///demo/data/vanilla.db'
 ARTICLES_DB_FILE = 'demo/data/articles_db.json'
 RUN_SHEET_FILE = 'demo/data/run_sheet.json'
 ENHANCED_ISSUE_FILE = 'demo/data/enhanced_issue.json'
@@ -51,9 +52,9 @@ LATEST_PDF_FILE = 'demo/output/edition.pdf'
 TIMEZONE = "US/Pacific"
 FOUNDING_DATE = "2025-12-07"
 THEME = "demo/themes/basic" 
-MAX_ARTICLE_LENGTH = 12000
+MAX_ARTICLE_LENGTH = 15000
 EXPIRATION_HOURS = 24
-USER_AGENT = 'Fishwrap/1.0 (+https://github.com/maxspevack/fishwrap)'
+USER_AGENT = 'Fishwrap-Demo/1.0 (+https://github.com/maxspevack/fishwrap)'
 
 # --- 4. Editor Settings ---
 EDITION_SIZE = {

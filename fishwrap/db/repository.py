@@ -2,13 +2,12 @@ from datetime import datetime, timedelta
 from sqlalchemy import create_engine, select, delete, func
 from sqlalchemy.orm import sessionmaker
 from fishwrap.db.models import Article, Run, RunArticle
+from fishwrap import _config
 import os
 
 # --- Database Setup ---
-# In a real app, this URL comes from config. 
-# For now, we hardcode to the local SQLite file in the PROJECT root (../.. from package).
-DB_PATH = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(__file__))), 'newsroom.db')
-DATABASE_URL = f"sqlite:///{DB_PATH}"
+# Use configured URL or fallback to local default
+DATABASE_URL = getattr(_config, 'DATABASE_URL', 'sqlite:///newsroom.db')
 
 engine = create_engine(DATABASE_URL)
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)

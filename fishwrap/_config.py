@@ -7,7 +7,8 @@ FEEDS = []
 
 # --- 2. File Paths ---
 # Default placeholders. Should be overridden by config.
-ARTICLES_DB_FILE = 'articles_db.json'
+ARTICLES_DB_FILE = 'articles_db.json' # Deprecated, kept for legacy ref
+DATABASE_URL = 'sqlite:///newsroom.db'
 RUN_SHEET_FILE = 'run_sheet.json'
 ENHANCED_ISSUE_FILE = 'enhanced_issue.json'
 SECRETS_FILE = 'secrets.json'

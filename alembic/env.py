@@ -64,6 +64,11 @@ def run_migrations_online() -> None:
     and associate a connection with the context.
 
     """
+    # Check for CLI override
+    cmd_opts = context.get_x_argument(as_dictionary=True)
+    if 'url' in cmd_opts:
+        config.set_main_option("sqlalchemy.url", cmd_opts['url'])
+
     connectable = engine_from_config(
         config.get_section(config.config_ini_section, {}),
         prefix="sqlalchemy.",

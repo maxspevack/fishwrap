@@ -36,6 +36,7 @@ FEEDS = [
 import os
 
 # --- 2. File Paths ---
+DATABASE_URL = 'sqlite:///demo/data/cyber.db'
 ARTICLES_DB_FILE = 'demo/data/cyber_articles_db.json'
 RUN_SHEET_FILE = 'demo/data/cyber_run_sheet.json'
 ENHANCED_ISSUE_FILE = 'demo/data/cyber_enhanced_issue.json'

@@ -38,6 +38,7 @@ FEEDS = [
 import os
 
 # --- 2. File Paths ---
+DATABASE_URL = 'sqlite:///demo/data/ai.db'
 ARTICLES_DB_FILE = 'demo/data/ai_articles_db.json'
 RUN_SHEET_FILE = 'demo/data/ai_run_sheet.json'
 ENHANCED_ISSUE_FILE = 'demo/data/ai_enhanced_issue.json'
