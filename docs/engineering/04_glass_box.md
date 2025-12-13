@@ -75,4 +75,4 @@ We believe that in the Diamond Age of AI, you cannot earn trust with a "Mission 
 
 Fishwrap doesn't just ask you to trust the algorithm. It gives you the keys to the room where it happens.
 
-[**View a Live Transparency Report**](https://fishwrap.org/demo/vanilla/transparency.html)
+[**View the Live Glass Box**](https://fishwrap.org/demo/vanilla/) *(Click "Source Transparency" in the footer)*
