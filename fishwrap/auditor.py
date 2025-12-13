@@ -84,10 +84,10 @@ def audit_run(run_sheet, candidates, stats_context):
             'input_pct': in_pct,
             'output_pct': out_pct,
             'delta': out_pct - in_pct,
-            'sort_metric': out_pct # Sort by impact
+            'sort_metric': out_pct - in_pct # Sort by Delta (Signal Strength)
         })
         
-    # Sort by Output Share descending
+    # Sort by Delta descending (High Signal top, High Noise bottom)
     velocity_data.sort(key=lambda x: x['sort_metric'], reverse=True)
     
     bubble_data = stats_context.get('bubble', {})

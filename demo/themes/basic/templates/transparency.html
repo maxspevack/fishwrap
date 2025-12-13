@@ -49,15 +49,15 @@
     <div class="funnel-container">
         <div class="funnel-step">
             <span class="funnel-num">{{ stats_input }}</span>
-            <small>Items Scanned</small>
+            <small>Total Items</small>
         </div>
         <div class="funnel-step">
             <span class="funnel-num">{{ stats_pool }}</span>
-            <small>Qualified Candidates</small>
+            <small>Pool</small>
         </div>
         <div class="funnel-step">
             <span class="funnel-num">{{ stats_selected }}</span>
-            <small>Published</small>
+            <small>Selection</small>
         </div>
         <div class="funnel-step">
             <span class="funnel-num">{{ "%.1f"|format(yield_rate) }}%</span>
@@ -65,9 +65,14 @@
         </div>
     </div>
 
-    <!-- Source Velocity (Input vs Output) -->
-    <h2>Source Velocity (Top 20)</h2>
-    <p><em>Are we just a mirror of our inputs? A positive Delta means the source "punches above its weight."</em></p>
+    <!-- Source Efficiency (Input vs Output) -->
+    <h2>Source Efficiency</h2>
+    <p>
+        <em>
+            A positive Delta (+) means <strong>High Signal</strong>: We publish this source more often than we find it.<br>
+            A negative Delta (-) means <strong>High Noise</strong>: We filter (but do not silence) this source aggressively.
+        </em>
+    </p>
     
     <table class="audit-table">
         <thead>
@@ -105,8 +110,8 @@
     </table>
 
     <!-- The Bubble -->
-    <h2>The Bubble (Cut-Line Analysis)</h2>
-    <p><em>The Knee of the Curve: Comparing the last stories to make the cut vs. the first to miss it.</em></p>
+    <h2>The Bubble</h2>
+    <p><em>Comparing the last stories to make the cut vs. the first to miss it.</em></p>
     
     {% for section, data in bubble.items() %}
     <div class="bubble-section">
