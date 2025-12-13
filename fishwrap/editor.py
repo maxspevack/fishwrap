@@ -1,6 +1,7 @@
 import json
 from urllib.parse import urlparse
 import difflib
+import time
 from datetime import datetime
 from fishwrap import _config
 from fishwrap import scoring
@@ -211,11 +212,11 @@ def run_editor():
     # --- Phase 3: Select & Save ---
     run_sheet = {}
     total_selected = 0
-    cut_line_report = {} # Store top 3 misses per section
+    bubble_report = {} # Store Last 3 In / First 3 Out
     section_diversity = {} # Store source breakdown per section
     
     # Iterate through Configured Sections to maintain order
-    current_time_ts = datetime.now().timestamp()
+    current_time_ts = time.time()
     print_cutoff = current_time_ts - (_config.EXPIRATION_HOURS * 3600)
 
     for section_def in _config.SECTIONS:
@@ -251,21 +252,26 @@ def run_editor():
         sorted_sources = sorted(source_counts.items(), key=lambda x: x[1], reverse=True)
         section_diversity[cat] = sorted_sources
         
-        # Capture Cut-Line (The best of the rest)
-        missed = items[len(selected):]
-        cut_line_report[cat] = missed[:3]
+        # Capture The Bubble
+        # Last 3 In (Lowest scoring winners)
+        last_in = selected[-3:] if selected else []
+        # First 3 Out (Highest scoring losers - from the FULL pool 'items', not just qualified)
+        # This shows items that missed due to Capacity OR Min Score
+        first_out = items[len(selected):len(selected)+3]
+        
+        bubble_report[cat] = {'in': last_in, 'out': first_out}
 
     # Summary Report (High-level only, details in Auditor report)
     print(f"\n[EDITOR] Selected {total_selected} articles ({drift_count} reclassified).")
     
     with open(_config.RUN_SHEET_FILE, 'w') as f:
         json.dump(run_sheet, f, indent=2)
-    
-    # The Auditor will now persist and generate the detailed report
+
+    # --- Phase 4: The Auditor ---
     total_db_count = repository.get_total_count()
     auditor.audit_run(run_sheet, raw_candidates, {
         'input_count': total_db_count,
-        'cut_line': cut_line_report
+        'bubble': bubble_report
     })
 
 if __name__ == "__main__":
