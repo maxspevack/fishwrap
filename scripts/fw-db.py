@@ -19,6 +19,8 @@ def configure_repository(config_path):
     if config_path:
         os.environ['FISHWRAP_CONFIG'] = config_path
     else:
+        print("[WARN] No configuration file specified. Using default settings (newsroom.db).")
+        print("[HINT] Use --config demo/config.py to target a specific instance.")
         # Default or clear if not specified
         if 'FISHWRAP_CONFIG' in os.environ:
             del os.environ['FISHWRAP_CONFIG']
