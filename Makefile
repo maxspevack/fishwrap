@@ -7,13 +7,12 @@ PIP := $(VENV_PATH)/bin/pip
 # --- Setup & Environment ---
 setup:
 	@echo "Setting up Python virtual environment and installing dependencies..."
-	@# Check for Homebrew and install system dependencies if needed
-	@if command -v brew >/dev/null 2>&1; then \
-		echo "Installing system dependencies via Homebrew..."; \
+	@bash -c "if command -v brew >/dev/null 2>&1; then \
+		echo 'Installing system dependencies via Homebrew...'; \
 		brew install python3 cairo pango gdk-pixbuf libffi || true; \
 	else \
-		echo "Homebrew not found. Skipping system dependency install."; \
-	fi
+		echo 'Homebrew not found. Skipping system dependency install.'; \
+	fi"
 	@python3 -m venv $(VENV_PATH)
 	@$(PIP) install --upgrade pip
 	@$(PIP) install -r requirements.txt
