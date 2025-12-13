@@ -359,14 +359,14 @@ body.debug-active .debug-overlay { display: block; }
     position: relative;
     border: 1px solid var(--term-border);
     box-shadow: 0 0 30px rgba(0, 0, 0, 0.8);
-    padding: 40px;
+    padding: 60px; /* Increased padding */
     box-sizing: border-box;
 }
 
 .modal-close {
     position: absolute;
-    top: 15px;
-    right: 20px;
+    top: 25px;
+    right: 30px;
     font-size: 2rem;
     background: none;
     border: none;
@@ -382,40 +382,42 @@ body.debug-active .debug-overlay { display: block; }
 }
 
 /* Glass Box Styles */
-.glass-box-container h1 { border-bottom: 2px solid var(--term-border); padding-bottom: 1rem; margin-bottom: 2rem; color: #fff; font-family: var(--font-family); letter-spacing: -1px; }
-.glass-box-container h2 { color: #fff; margin-top: 2rem; border-bottom: 1px dashed var(--term-dim); font-family: var(--font-family); font-weight: 300; }
-.glass-box-container p { color: var(--muted-color); line-height: 1.5; }
+.glass-box-container h1 { border-bottom: 2px solid var(--term-border); padding-bottom: 1.5rem; margin-bottom: 3rem; color: #fff; font-family: var(--font-family); letter-spacing: -1px; }
+.glass-box-container h2 { color: #fff; margin-top: 3rem; border-bottom: 1px dashed var(--term-dim); font-family: var(--font-family); font-weight: 300; padding-bottom: 0.5rem; margin-bottom: 1.5rem; }
+.glass-box-container p { color: var(--muted-color); line-height: 1.6; margin-bottom: 2rem; }
 
 .funnel-container {
     display: flex;
     justify-content: space-between;
     background: rgba(255, 255, 255, 0.03);
     border: 1px solid var(--term-dim);
-    padding: 1.5rem;
-    margin-bottom: 2rem;
+    padding: 2.5rem; /* Increased padding */
+    margin-bottom: 3rem; /* Increased margin */
     align-items: flex-start;
+    gap: 2rem; /* Add gap between items */
 }
 .funnel-step { flex: 1; text-align: center; }
-.funnel-num { font-size: 2rem; font-weight: bold; color: var(--term-accent); display: block; margin-bottom: 0.25rem; font-family: var(--font-family); }
-.funnel-step small { font-size: 0.9rem; color: #fff; text-transform: uppercase; letter-spacing: 1px; }
-.funnel-sub { font-size: 0.75rem; color: var(--muted-color); display: block; margin-top: 4px; }
+.funnel-num { font-size: 2.5rem; /* Larger font */ font-weight: bold; color: var(--term-accent); display: block; margin-bottom: 0.5rem; font-family: var(--font-family); }
+.funnel-step small { font-size: 1rem; color: #fff; text-transform: uppercase; letter-spacing: 1px; display: block; margin-bottom: 0.5rem; }
+.funnel-sub { font-size: 0.85rem; color: var(--muted-color); display: block; margin-top: 4px; }
 
-table.audit-table { width: 100%; border-collapse: collapse; margin-bottom: 2rem; font-size: 0.9rem; }
-th { text-align: left; border-bottom: 1px solid var(--term-border); padding: 0.75rem; color: #fff; text-transform: uppercase; font-size: 0.8rem; }
-td { border-bottom: 1px solid var(--term-dim); padding: 0.75rem; color: var(--term-text); }
+table.audit-table { width: 100%; border-collapse: collapse; margin-bottom: 4rem; font-size: 1rem; }
+th { text-align: left; border-bottom: 1px solid var(--term-border); padding: 1rem; color: #fff; text-transform: uppercase; font-size: 0.8rem; }
+td { border-bottom: 1px solid var(--term-dim); padding: 1rem; color: var(--term-text); }
 
 /* Bias Colors adapted for Dark Mode */
 .bias-pos { color: #00ff00; font-weight: bold; } /* Bright Green */
 .bias-neg { color: #ff4444; font-weight: bold; } /* Bright Red */
 
 /* Bubble Grid */
-.bubble-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; }
-.bubble-col { padding: 1rem; border: 1px solid var(--term-dim); background: rgba(255,255,255,0.02); }
+.bubble-section { margin-bottom: 4rem; }
+.bubble-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; /* Increased gap */ }
+.bubble-col { padding: 1.5rem; border: 1px solid var(--term-dim); background: rgba(255,255,255,0.02); }
 .bubble-in { border-left: 4px solid #00ff00; }
 .bubble-out { border-left: 4px solid #ff4444; }
-.bubble-header { color: #fff; margin-bottom: 1rem; font-weight: bold; font-family: var(--font-family); }
-.bubble-item { margin-bottom: 0.5rem; display: flex; align-items: baseline; }
-.score-badge { color: var(--term-accent); width: 60px; text-align: right; margin-right: 15px; }
+.bubble-header { color: #fff; margin-bottom: 1.5rem; font-weight: bold; font-family: var(--font-family); text-transform: uppercase; font-size: 0.9rem; }
+.bubble-item { margin-bottom: 0.75rem; display: flex; align-items: baseline; line-height: 1.4; }
+.score-badge { color: var(--term-accent); width: 60px; text-align: right; margin-right: 15px; font-weight: bold; }
 
 /* Responsive */
 @media (max-width: 1200px) {
@@ -440,9 +442,9 @@ td { border-bottom: 1px solid var(--term-dim); padding: 0.75rem; color: var(--te
     
     /* Mobile Modal */
     .modal-content { height: 100%; width: 100%; border-radius: 0; padding: 20px; }
-    .bubble-grid { grid-template-columns: 1fr; }
+    .bubble-grid { grid-template-columns: 1fr; gap: 1.5rem; }
+    .funnel-container { flex-direction: column; gap: 1rem; align-items: center; }
 }
-
     </style>
 </head>
 <body>
@@ -502,7 +504,32 @@ td { border-bottom: 1px solid var(--term-dim); padding: 0.75rem; color: var(--te
         <span class="section-desc">World Events & Politics</span>
     </div>
     <div class="bento-grid">
-        <a href="https://www.aljazeera.com/news/2025/12/12/nobel-peace-laureate-narges-mohammadi-arrested-in-iran-supporters-say?traffic_source=rss" target="_blank" class="card compact" style="border-top: 4px solid #d35400;">
+        <a href="https://www.bbc.com/news/articles/c0q5504vv0ko?at_medium=RSS&at_campaign=rss" target="_blank" class="card compact" style="border-top: 4px solid #2980b9;">
+    <div class="card-meta">
+        <span class="domain">bbc.com</span>
+    </div>
+    <h3>Swiss Eurovision winner Nemo to return trophy in protest of Israel</h3>
+    <div class="debug-overlay">
+    <div class="debug-section">
+        <strong>Classification:</strong> 
+                    <div class="debug-section">
+                        <div class="debug-header">CLASSIFICATION</div>
+                        <div class="debug-row"><span class="label">Reason</span><span class="val">keyword_weak_match</span></div>
+                    </div>
+                    
+    </div>
+    <div class="debug-section">
+        <strong>Score Breakdown:</strong>
+        <div class='debug-row'><span class='label'>Base</span><span class='val'>+1000</span></div><div class='debug-row'><span class='label'>Cluster</span><span class='val'>+150.0</span></div>
+        <div style="border-top: 1px solid #ccc; margin-top: 5px; font-weight: bold; display: flex; justify-content: space-between;">
+            <span>TOTAL</span>
+            <span>1150.0</span>
+        </div>
+    </div>
+</div>
+
+</a>
+<a href="https://www.aljazeera.com/news/2025/12/12/nobel-peace-laureate-narges-mohammadi-arrested-in-iran-supporters-say?traffic_source=rss" target="_blank" class="card compact" style="border-top: 4px solid #27ae60;">
     <div class="card-meta">
         <span class="domain">aljazeera.com</span>
     </div>
@@ -527,36 +554,11 @@ td { border-bottom: 1px solid var(--term-dim); padding: 0.75rem; color: var(--te
 </div>
 
 </a>
-<a href="https://www.aljazeera.com/news/2025/12/12/eurovision-winner-nemo-returns-trophy-in-protest-over-israels?traffic_source=rss" target="_blank" class="card compact" style="border-top: 4px solid #d35400;">
+<a href="https://www.nytimes.com/2025/12/12/opinion/tom-friedman-david-brooks-polycene.html" target="_blank" class="card compact" style="border-top: 4px solid #27ae60;">
     <div class="card-meta">
-        <span class="domain">aljazeera.com</span>
+        <span class="domain">nytimes.com</span>
     </div>
-    <h3>Eurovision winner Nemo returns trophy in protest over Israel’s inclusion</h3>
-    <div class="debug-overlay">
-    <div class="debug-section">
-        <strong>Classification:</strong> 
-                    <div class="debug-section">
-                        <div class="debug-header">CLASSIFICATION</div>
-                        <div class="debug-row"><span class="label">Reason</span><span class="val">source_default</span></div>
-                    </div>
-                    
-    </div>
-    <div class="debug-section">
-        <strong>Score Breakdown:</strong>
-        <div class='debug-row'><span class='label'>Base</span><span class='val'>+1000</span></div><div class='debug-row'><span class='label'>Cluster</span><span class='val'>+150.0</span></div>
-        <div style="border-top: 1px solid #ccc; margin-top: 5px; font-weight: bold; display: flex; justify-content: space-between;">
-            <span>TOTAL</span>
-            <span>1150.0</span>
-        </div>
-    </div>
-</div>
-
-</a>
-<a href="https://www.aljazeera.com/news/2025/12/12/un-general-assembly-adopts-resolution-demanding-israel-allow-aid-into-gaza?traffic_source=rss" target="_blank" class="card compact" style="border-top: 4px solid #8e44ad;">
-    <div class="card-meta">
-        <span class="domain">aljazeera.com</span>
-    </div>
-    <h3>UN General Assembly adopts resolution demanding Israel allow aid into Gaza</h3>
+    <h3>Thomas L. Friedman Says We’re in a New Epoch. David Brooks Has Questions.</h3>
     <div class="debug-overlay">
     <div class="debug-section">
         <strong>Classification:</strong> 
@@ -577,11 +579,11 @@ td { border-bottom: 1px solid var(--term-dim); padding: 0.75rem; color: var(--te
 </div>
 
 </a>
-<a href="https://www.aljazeera.com/news/2025/12/12/israel-approves-19-new-west-bank-settlements-in-major-annexation-push?traffic_source=rss" target="_blank" class="card compact" style="border-top: 4px solid #c0392b;">
+<a href="https://www.nytimes.com/2025/12/12/us/high-school-english-teachers-assigning-books.html" target="_blank" class="card compact" style="border-top: 4px solid #8e44ad;">
     <div class="card-meta">
-        <span class="domain">aljazeera.com</span>
+        <span class="domain">nytimes.com</span>
     </div>
-    <h3>Israel approves 19 new West Bank settlements in major annexation push</h3>
+    <h3>Kids Rarely Read Whole Books Anymore. Even in English Class.</h3>
     <div class="debug-overlay">
     <div class="debug-section">
         <strong>Classification:</strong> 
@@ -602,11 +604,11 @@ td { border-bottom: 1px solid var(--term-dim); padding: 0.75rem; color: var(--te
 </div>
 
 </a>
-<a href="https://www.aljazeera.com/economy/2025/12/12/mexicos-aerospace-sector-is-growing-will-it-be-undercut-in-usmca-review?traffic_source=rss" target="_blank" class="card compact" style="border-top: 4px solid #2980b9;">
+<a href="https://www.npr.org/2025/12/12/g-s1-101843/up-first-newsletter-ukraine-russia-peace-promises-kilmar-abrego-garcia-indiana-redistricting" target="_blank" class="card compact" style="border-top: 4px solid #d35400;">
     <div class="card-meta">
-        <span class="domain">aljazeera.com</span>
+        <span class="domain">npr.org</span>
     </div>
-    <h3>Mexico’s aerospace sector is growing. Will it be undercut in USMCA review?</h3>
+    <h3>Kilmar Abrego Garcia released from ICE custody. And, Indiana rejects redistricting</h3>
     <div class="debug-overlay">
     <div class="debug-section">
         <strong>Classification:</strong> 
@@ -627,11 +629,11 @@ td { border-bottom: 1px solid var(--term-dim); padding: 0.75rem; color: var(--te
 </div>
 
 </a>
-<a href="https://www.aljazeera.com/news/2025/12/12/us-forces-stormed-cargo-ship-travelling-from-china-to-iran-report?traffic_source=rss" target="_blank" class="card compact" style="border-top: 4px solid #d35400;">
+<a href="https://www.npr.org/2025/12/12/g-s1-100794/germany-train-rail-deutsche-bahn" target="_blank" class="card compact" style="border-top: 4px solid #c0392b;">
     <div class="card-meta">
-        <span class="domain">aljazeera.com</span>
+        <span class="domain">npr.org</span>
     </div>
-    <h3>US forces stormed cargo ship travelling from China to Iran: Report</h3>
+    <h3>Germany's train service is one of Europe's worst. How did it get so bad?</h3>
     <div class="debug-overlay">
     <div class="debug-section">
         <strong>Classification:</strong> 
@@ -652,11 +654,36 @@ td { border-bottom: 1px solid var(--term-dim); padding: 0.75rem; color: var(--te
 </div>
 
 </a>
-<a href="https://www.aljazeera.com/video/newsfeed/2025/12/12/bird-flu-kills-hundreds-of-storks-in-spain?traffic_source=rss" target="_blank" class="card compact" style="border-top: 4px solid #d35400;">
+<a href="https://www.bbc.com/news/articles/c2lvplrxpe9o?at_medium=RSS&at_campaign=rss" target="_blank" class="card compact" style="border-top: 4px solid #27ae60;">
     <div class="card-meta">
-        <span class="domain">aljazeera.com</span>
+        <span class="domain">bbc.com</span>
     </div>
-    <h3>Bird flu kills hundreds of storks in Spain</h3>
+    <h3>Trump's Gaza peace plan struggles to progress as Israel and Hamas face tough choices</h3>
+    <div class="debug-overlay">
+    <div class="debug-section">
+        <strong>Classification:</strong> 
+                    <div class="debug-section">
+                        <div class="debug-header">CLASSIFICATION</div>
+                        <div class="debug-row"><span class="label">Reason</span><span class="val">keyword_weak_match</span></div>
+                    </div>
+                    
+    </div>
+    <div class="debug-section">
+        <strong>Score Breakdown:</strong>
+        <div class='debug-row'><span class='label'>Base</span><span class='val'>+1000</span></div>
+        <div style="border-top: 1px solid #ccc; margin-top: 5px; font-weight: bold; display: flex; justify-content: space-between;">
+            <span>TOTAL</span>
+            <span>1000</span>
+        </div>
+    </div>
+</div>
+
+</a>
+<a href="https://www.npr.org/2025/12/12/nx-s1-5640900/cnn-trump-warner-bros-netflix-paramount" target="_blank" class="card compact" style="border-top: 4px solid #c0392b;">
+    <div class="card-meta">
+        <span class="domain">npr.org</span>
+    </div>
+    <h3>CNN has endured turmoil for years. Now Trump wants role in its fate</h3>
     <div class="debug-overlay">
     <div class="debug-section">
         <strong>Classification:</strong> 
@@ -677,17 +704,17 @@ td { border-bottom: 1px solid var(--term-dim); padding: 0.75rem; color: var(--te
 </div>
 
 </a>
-<a href="https://www.aljazeera.com/video/newsfeed/2025/12/12/kilmar-abrego-garcia-relieved-to-not-be-arrested-after-us-court-hearing?traffic_source=rss" target="_blank" class="card compact" style="border-top: 4px solid #2980b9;">
+<a href="https://www.bbc.com/news/articles/czxgnqx1yplo?at_medium=RSS&at_campaign=rss" target="_blank" class="card compact" style="border-top: 4px solid #d35400;">
     <div class="card-meta">
-        <span class="domain">aljazeera.com</span>
+        <span class="domain">bbc.com</span>
     </div>
-    <h3>Kilmar Abrego Garcia relieved to not be arrested after US court hearing</h3>
+    <h3>Taylor Swift shown breaking down in tears after she met UK attack families</h3>
     <div class="debug-overlay">
     <div class="debug-section">
         <strong>Classification:</strong> 
                     <div class="debug-section">
                         <div class="debug-header">CLASSIFICATION</div>
-                        <div class="debug-row"><span class="label">Reason</span><span class="val">source_default</span></div>
+                        <div class="debug-row"><span class="label">Reason</span><span class="val">keyword_weak_match</span></div>
                     </div>
                     
     </div>
@@ -702,42 +729,17 @@ td { border-bottom: 1px solid var(--term-dim); padding: 0.75rem; color: var(--te
 </div>
 
 </a>
-<a href="https://www.aljazeera.com/news/2025/12/12/tunisia-sentences-opposition-leader-abir-moussi-to-12-years-in?traffic_source=rss" target="_blank" class="card compact" style="border-top: 4px solid #8e44ad;">
+<a href="https://www.bbc.com/news/articles/cy95pr790pro?at_medium=RSS&at_campaign=rss" target="_blank" class="card compact" style="border-top: 4px solid #d35400;">
     <div class="card-meta">
-        <span class="domain">aljazeera.com</span>
+        <span class="domain">bbc.com</span>
     </div>
-    <h3>Tunisia sentences opposition leader Abir Moussi to 12 years in jail</h3>
+    <h3>Venezuela says Trump wants its oil. But is that the case?</h3>
     <div class="debug-overlay">
     <div class="debug-section">
         <strong>Classification:</strong> 
                     <div class="debug-section">
                         <div class="debug-header">CLASSIFICATION</div>
-                        <div class="debug-row"><span class="label">Reason</span><span class="val">source_default</span></div>
-                    </div>
-                    
-    </div>
-    <div class="debug-section">
-        <strong>Score Breakdown:</strong>
-        <div class='debug-row'><span class='label'>Base</span><span class='val'>+1000</span></div>
-        <div style="border-top: 1px solid #ccc; margin-top: 5px; font-weight: bold; display: flex; justify-content: space-between;">
-            <span>TOTAL</span>
-            <span>1000</span>
-        </div>
-    </div>
-</div>
-
-</a>
-<a href="https://www.aljazeera.com/video/the-stream/2025/12/12/how-does-sectarianism-impact-daily-life-in-lebanon?traffic_source=rss" target="_blank" class="card compact" style="border-top: 4px solid #2980b9;">
-    <div class="card-meta">
-        <span class="domain">aljazeera.com</span>
-    </div>
-    <h3>How does sectarianism impact daily life in Lebanon?</h3>
-    <div class="debug-overlay">
-    <div class="debug-section">
-        <strong>Classification:</strong> 
-                    <div class="debug-section">
-                        <div class="debug-header">CLASSIFICATION</div>
-                        <div class="debug-row"><span class="label">Reason</span><span class="val">source_default</span></div>
+                        <div class="debug-row"><span class="label">Reason</span><span class="val">keyword_weak_match</span></div>
                     </div>
                     
     </div>
@@ -761,7 +763,7 @@ td { border-bottom: 1px solid var(--term-dim); padding: 0.75rem; color: var(--te
         <span class="section-desc">The Future, Distributed.</span>
     </div>
     <div class="bento-grid">
-        <a href="https://www.reddit.com/r/technology/comments/1pkm11x/stephen_colbert_wonders_why_the_late_show_was/" target="_blank" class="card feature" style="border-top: 4px solid #27ae60;">
+        <a href="https://www.reddit.com/r/technology/comments/1pkm11x/stephen_colbert_wonders_why_the_late_show_was/" target="_blank" class="card feature" style="border-top: 4px solid #c0392b;">
     <div class="card-meta">
         <span class="domain">reddit.com</span>
     </div>
@@ -777,16 +779,16 @@ td { border-bottom: 1px solid var(--term-dim); padding: 0.75rem; color: var(--te
     </div>
     <div class="debug-section">
         <strong>Score Breakdown:</strong>
-        <div class='debug-row'><span class='label'>Stats</span><span class='val'>+40834</span></div>
+        <div class='debug-row'><span class='label'>Stats</span><span class='val'>+41777</span></div>
         <div style="border-top: 1px solid #ccc; margin-top: 5px; font-weight: bold; display: flex; justify-content: space-between;">
             <span>TOTAL</span>
-            <span>40834</span>
+            <span>41777</span>
         </div>
     </div>
 </div>
 
 </a>
-<a href="https://www.reddit.com/r/technology/comments/1pkvjg0/arizona_city_rejects_data_center_after_ai/" target="_blank" class="card standard" style="border-top: 4px solid #d35400;">
+<a href="https://www.reddit.com/r/technology/comments/1pkvjg0/arizona_city_rejects_data_center_after_ai/" target="_blank" class="card standard" style="border-top: 4px solid #8e44ad;">
     <div class="card-meta">
         <span class="domain">reddit.com</span>
     </div>
@@ -802,16 +804,16 @@ td { border-bottom: 1px solid var(--term-dim); padding: 0.75rem; color: var(--te
     </div>
     <div class="debug-section">
         <strong>Score Breakdown:</strong>
-        <div class='debug-row'><span class='label'>Stats</span><span class='val'>+6132</span></div>
+        <div class='debug-row'><span class='label'>Stats</span><span class='val'>+6898</span></div>
         <div style="border-top: 1px solid #ccc; margin-top: 5px; font-weight: bold; display: flex; justify-content: space-between;">
             <span>TOTAL</span>
-            <span>6132</span>
+            <span>6898</span>
         </div>
     </div>
 </div>
 
 </a>
-<a href="https://www.reddit.com/r/technology/comments/1pkm6cc/arkansas_becoming_1st_state_to_sever_ties_with/" target="_blank" class="card compact" style="border-top: 4px solid #2980b9;">
+<a href="https://www.reddit.com/r/technology/comments/1pkm6cc/arkansas_becoming_1st_state_to_sever_ties_with/" target="_blank" class="card compact" style="border-top: 4px solid #27ae60;">
     <div class="card-meta">
         <span class="domain">reddit.com</span>
     </div>
@@ -827,16 +829,16 @@ td { border-bottom: 1px solid var(--term-dim); padding: 0.75rem; color: var(--te
     </div>
     <div class="debug-section">
         <strong>Score Breakdown:</strong>
-        <div class='debug-row'><span class='label'>Stats</span><span class='val'>+4665</span></div>
+        <div class='debug-row'><span class='label'>Stats</span><span class='val'>+4768</span></div>
         <div style="border-top: 1px solid #ccc; margin-top: 5px; font-weight: bold; display: flex; justify-content: space-between;">
             <span>TOTAL</span>
-            <span>4665</span>
+            <span>4768</span>
         </div>
     </div>
 </div>
 
 </a>
-<a href="https://www.reddit.com/r/technology/comments/1pkumyx/everyone_disliked_that_amazon_pulls_aipowered/" target="_blank" class="card compact" style="border-top: 4px solid #c0392b;">
+<a href="https://www.reddit.com/r/technology/comments/1pkumyx/everyone_disliked_that_amazon_pulls_aipowered/" target="_blank" class="card compact" style="border-top: 4px solid #27ae60;">
     <div class="card-meta">
         <span class="domain">reddit.com</span>
     </div>
@@ -852,16 +854,16 @@ td { border-bottom: 1px solid var(--term-dim); padding: 0.75rem; color: var(--te
     </div>
     <div class="debug-section">
         <strong>Score Breakdown:</strong>
-        <div class='debug-row'><span class='label'>Stats</span><span class='val'>+2924</span></div>
+        <div class='debug-row'><span class='label'>Stats</span><span class='val'>+3137</span></div>
         <div style="border-top: 1px solid #ccc; margin-top: 5px; font-weight: bold; display: flex; justify-content: space-between;">
             <span>TOTAL</span>
-            <span>2924</span>
+            <span>3137</span>
         </div>
     </div>
 </div>
 
 </a>
-<a href="https://www.reddit.com/r/technology/comments/1pkncxz/man_arrested_for_allegedly_wiping_his_google/" target="_blank" class="card compact" style="border-top: 4px solid #d35400;">
+<a href="https://www.reddit.com/r/technology/comments/1pkncxz/man_arrested_for_allegedly_wiping_his_google/" target="_blank" class="card compact" style="border-top: 4px solid #27ae60;">
     <div class="card-meta">
         <span class="domain">reddit.com</span>
     </div>
@@ -877,16 +879,16 @@ td { border-bottom: 1px solid var(--term-dim); padding: 0.75rem; color: var(--te
     </div>
     <div class="debug-section">
         <strong>Score Breakdown:</strong>
-        <div class='debug-row'><span class='label'>Stats</span><span class='val'>+2908</span></div>
+        <div class='debug-row'><span class='label'>Stats</span><span class='val'>+3035</span></div>
         <div style="border-top: 1px solid #ccc; margin-top: 5px; font-weight: bold; display: flex; justify-content: space-between;">
             <span>TOTAL</span>
-            <span>2908</span>
+            <span>3035</span>
         </div>
     </div>
 </div>
 
 </a>
-<a href="https://www.reddit.com/r/technology/comments/1pkz80s/florida_school_locked_down_after_ai_weapon/" target="_blank" class="card compact" style="border-top: 4px solid #8e44ad;">
+<a href="https://www.reddit.com/r/technology/comments/1pkz80s/florida_school_locked_down_after_ai_weapon/" target="_blank" class="card compact" style="border-top: 4px solid #d35400;">
     <div class="card-meta">
         <span class="domain">reddit.com</span>
     </div>
@@ -902,16 +904,41 @@ td { border-bottom: 1px solid var(--term-dim); padding: 0.75rem; color: var(--te
     </div>
     <div class="debug-section">
         <strong>Score Breakdown:</strong>
-        <div class='debug-row'><span class='label'>Stats</span><span class='val'>+2481</span></div>
+        <div class='debug-row'><span class='label'>Stats</span><span class='val'>+2798</span></div>
         <div style="border-top: 1px solid #ccc; margin-top: 5px; font-weight: bold; display: flex; justify-content: space-between;">
             <span>TOTAL</span>
-            <span>2481</span>
+            <span>2798</span>
         </div>
     </div>
 </div>
 
 </a>
-<a href="https://www.reddit.com/r/technology/comments/1pkxien/tech_support_scammers_stole_85000_from_him_his/" target="_blank" class="card compact" style="border-top: 4px solid #8e44ad;">
+<a href="https://www.reddit.com/r/technology/comments/1pkutaj/librarians_are_tired_of_being_accused_of_hiding/" target="_blank" class="card compact" style="border-top: 4px solid #c0392b;">
+    <div class="card-meta">
+        <span class="domain">reddit.com</span>
+    </div>
+    <h3>Librarians Are Tired of Being Accused of Hiding Secret Books That Were Made Up by AI: AI chatbots are generating fake titles that people insist are real.</h3>
+    <div class="debug-overlay">
+    <div class="debug-section">
+        <strong>Classification:</strong> 
+                    <div class="debug-section">
+                        <div class="debug-header">CLASSIFICATION</div>
+                        <div class="debug-row"><span class="label">Reason</span><span class="val">source_default</span></div>
+                    </div>
+                    
+    </div>
+    <div class="debug-section">
+        <strong>Score Breakdown:</strong>
+        <div class='debug-row'><span class='label'>Stats</span><span class='val'>+2577</span></div>
+        <div style="border-top: 1px solid #ccc; margin-top: 5px; font-weight: bold; display: flex; justify-content: space-between;">
+            <span>TOTAL</span>
+            <span>2577</span>
+        </div>
+    </div>
+</div>
+
+</a>
+<a href="https://www.reddit.com/r/technology/comments/1pkxien/tech_support_scammers_stole_85000_from_him_his/" target="_blank" class="card compact" style="border-top: 4px solid #c0392b;">
     <div class="card-meta">
         <span class="domain">reddit.com</span>
     </div>
@@ -927,16 +954,16 @@ td { border-bottom: 1px solid var(--term-dim); padding: 0.75rem; color: var(--te
     </div>
     <div class="debug-section">
         <strong>Score Breakdown:</strong>
-        <div class='debug-row'><span class='label'>Stats</span><span class='val'>+1381</span></div><div class='debug-row'><span class='label'>Cluster</span><span class='val'>+150.0</span></div>
+        <div class='debug-row'><span class='label'>Stats</span><span class='val'>+1523</span></div><div class='debug-row'><span class='label'>Cluster</span><span class='val'>+150.0</span></div>
         <div style="border-top: 1px solid #ccc; margin-top: 5px; font-weight: bold; display: flex; justify-content: space-between;">
             <span>TOTAL</span>
-            <span>1531.0</span>
+            <span>1673.0</span>
         </div>
     </div>
 </div>
 
 </a>
-<a href="https://www.reddit.com/r/technology/comments/1pkrfh6/scientists_just_uncovered_a_major_limitation_in/" target="_blank" class="card compact" style="border-top: 4px solid #2980b9;">
+<a href="https://www.reddit.com/r/technology/comments/1pkrfh6/scientists_just_uncovered_a_major_limitation_in/" target="_blank" class="card compact" style="border-top: 4px solid #27ae60;">
     <div class="card-meta">
         <span class="domain">reddit.com</span>
     </div>
@@ -952,20 +979,20 @@ td { border-bottom: 1px solid var(--term-dim); padding: 0.75rem; color: var(--te
     </div>
     <div class="debug-section">
         <strong>Score Breakdown:</strong>
-        <div class='debug-row'><span class='label'>Stats</span><span class='val'>+1352</span></div>
+        <div class='debug-row'><span class='label'>Stats</span><span class='val'>+1374</span></div>
         <div style="border-top: 1px solid #ccc; margin-top: 5px; font-weight: bold; display: flex; justify-content: space-between;">
             <span>TOTAL</span>
-            <span>1352</span>
+            <span>1374</span>
         </div>
     </div>
 </div>
 
 </a>
-<a href="https://www.engadget.com/social-media/reddit-sues-australia-over-underage-social-media-ban-143018208.html?src=rss" target="_blank" class="card compact" style="border-top: 4px solid #27ae60;">
+<a href="https://www.reddit.com/r/technology/comments/1pl19uv/uk_lords_propose_ban_on_vpns_for_children/" target="_blank" class="card compact" style="border-top: 4px solid #2980b9;">
     <div class="card-meta">
-        <span class="domain">engadget.com</span>
+        <span class="domain">reddit.com</span>
     </div>
-    <h3>Reddit sues Australia over underage social media ban</h3>
+    <h3>UK Lords propose ban on VPNs for children</h3>
     <div class="debug-overlay">
     <div class="debug-section">
         <strong>Classification:</strong> 
@@ -977,35 +1004,10 @@ td { border-bottom: 1px solid var(--term-dim); padding: 0.75rem; color: var(--te
     </div>
     <div class="debug-section">
         <strong>Score Breakdown:</strong>
-        <div class='debug-row'><span class='label'>Base</span><span class='val'>+1000</span></div><div class='debug-row'><span class='label'>Cluster</span><span class='val'>+150.0</span></div>
+        <div class='debug-row'><span class='label'>Stats</span><span class='val'>+1187</span></div>
         <div style="border-top: 1px solid #ccc; margin-top: 5px; font-weight: bold; display: flex; justify-content: space-between;">
             <span>TOTAL</span>
-            <span>1150.0</span>
-        </div>
-    </div>
-</div>
-
-</a>
-<a href="https://www.theverge.com/tech/800440/best-gifts-under-100-2025" target="_blank" class="card compact" style="border-top: 4px solid #27ae60;">
-    <div class="card-meta">
-        <span class="domain">theverge.com</span>
-    </div>
-    <h3>The Verge’s favorite holiday gifts under $100</h3>
-    <div class="debug-overlay">
-    <div class="debug-section">
-        <strong>Classification:</strong> 
-                    <div class="debug-section">
-                        <div class="debug-header">CLASSIFICATION</div>
-                        <div class="debug-row"><span class="label">Reason</span><span class="val">source_default</span></div>
-                    </div>
-                    
-    </div>
-    <div class="debug-section">
-        <strong>Score Breakdown:</strong>
-        <div class='debug-row'><span class='label'>Base</span><span class='val'>+1000</span></div><div class='debug-row'><span class='label'>Cluster</span><span class='val'>+150.0</span></div>
-        <div style="border-top: 1px solid #ccc; margin-top: 5px; font-weight: bold; display: flex; justify-content: space-between;">
-            <span>TOTAL</span>
-            <span>1150.0</span>
+            <span>1187</span>
         </div>
     </div>
 </div>
@@ -1020,7 +1022,7 @@ td { border-bottom: 1px solid var(--term-dim); padding: 0.75rem; color: var(--te
         <span class="section-desc">Games & Scores</span>
     </div>
     <div class="bento-grid">
-        <a href="https://www.reddit.com/r/nba/comments/1pkkn3m/lowlight_no_one_on_the_clippers_went_to_get_the/" target="_blank" class="card feature" style="border-top: 4px solid #d35400;">
+        <a href="https://www.reddit.com/r/nba/comments/1pkkn3m/lowlight_no_one_on_the_clippers_went_to_get_the/" target="_blank" class="card feature" style="border-top: 4px solid #c0392b;">
     <div class="card-meta">
         <span class="domain">reddit.com</span>
     </div>
@@ -1036,16 +1038,16 @@ td { border-bottom: 1px solid var(--term-dim); padding: 0.75rem; color: var(--te
     </div>
     <div class="debug-section">
         <strong>Score Breakdown:</strong>
-        <div class='debug-row'><span class='label'>Stats</span><span class='val'>+9747</span></div>
+        <div class='debug-row'><span class='label'>Stats</span><span class='val'>+9862</span></div>
         <div style="border-top: 1px solid #ccc; margin-top: 5px; font-weight: bold; display: flex; justify-content: space-between;">
             <span>TOTAL</span>
-            <span>9747</span>
+            <span>9862</span>
         </div>
     </div>
 </div>
 
 </a>
-<a href="https://www.reddit.com/r/nfl/comments/1pklaf3/highlight_a_distraught_mike_evans_repeating_its/" target="_blank" class="card feature" style="border-top: 4px solid #c0392b;">
+<a href="https://www.reddit.com/r/nfl/comments/1pklaf3/highlight_a_distraught_mike_evans_repeating_its/" target="_blank" class="card feature" style="border-top: 4px solid #8e44ad;">
     <div class="card-meta">
         <span class="domain">reddit.com</span>
     </div>
@@ -1061,10 +1063,10 @@ td { border-bottom: 1px solid var(--term-dim); padding: 0.75rem; color: var(--te
     </div>
     <div class="debug-section">
         <strong>Score Breakdown:</strong>
-        <div class='debug-row'><span class='label'>Stats</span><span class='val'>+8318</span></div>
+        <div class='debug-row'><span class='label'>Stats</span><span class='val'>+8481</span></div>
         <div style="border-top: 1px solid #ccc; margin-top: 5px; font-weight: bold; display: flex; justify-content: space-between;">
             <span>TOTAL</span>
-            <span>8318</span>
+            <span>8481</span>
         </div>
     </div>
 </div>
@@ -1086,41 +1088,16 @@ td { border-bottom: 1px solid var(--term-dim); padding: 0.75rem; color: var(--te
     </div>
     <div class="debug-section">
         <strong>Score Breakdown:</strong>
-        <div class='debug-row'><span class='label'>Stats</span><span class='val'>+8248</span></div>
+        <div class='debug-row'><span class='label'>Stats</span><span class='val'>+8402</span></div>
         <div style="border-top: 1px solid #ccc; margin-top: 5px; font-weight: bold; display: flex; justify-content: space-between;">
             <span>TOTAL</span>
-            <span>8248</span>
+            <span>8402</span>
         </div>
     </div>
 </div>
 
 </a>
-<a href="https://www.reddit.com/r/nfl/comments/1pkjexs/highlight_in_his_postgame_interview_bijan/" target="_blank" class="card standard" style="border-top: 4px solid #2980b9;">
-    <div class="card-meta">
-        <span class="domain">reddit.com</span>
-    </div>
-    <h3>[Highlight] In his post-game interview, Bijan Robinson says "smear the queer" is what the Falcons do</h3>
-    <div class="debug-overlay">
-    <div class="debug-section">
-        <strong>Classification:</strong> 
-                    <div class="debug-section">
-                        <div class="debug-header">CLASSIFICATION</div>
-                        <div class="debug-row"><span class="label">Reason</span><span class="val">source_default</span></div>
-                    </div>
-                    
-    </div>
-    <div class="debug-section">
-        <strong>Score Breakdown:</strong>
-        <div class='debug-row'><span class='label'>Stats</span><span class='val'>+6870</span></div>
-        <div style="border-top: 1px solid #ccc; margin-top: 5px; font-weight: bold; display: flex; justify-content: space-between;">
-            <span>TOTAL</span>
-            <span>6870</span>
-        </div>
-    </div>
-</div>
-
-</a>
-<a href="https://www.reddit.com/r/nfl/comments/1pkjtzb/fowler_bucs_were_visibly_disgusted_on_the/" target="_blank" class="card standard" style="border-top: 4px solid #27ae60;">
+<a href="https://www.reddit.com/r/nfl/comments/1pkjtzb/fowler_bucs_were_visibly_disgusted_on_the/" target="_blank" class="card standard" style="border-top: 4px solid #c0392b;">
     <div class="card-meta">
         <span class="domain">reddit.com</span>
     </div>
@@ -1136,10 +1113,35 @@ td { border-bottom: 1px solid var(--term-dim); padding: 0.75rem; color: var(--te
     </div>
     <div class="debug-section">
         <strong>Score Breakdown:</strong>
-        <div class='debug-row'><span class='label'>Stats</span><span class='val'>+6837</span></div>
+        <div class='debug-row'><span class='label'>Stats</span><span class='val'>+6934</span></div>
         <div style="border-top: 1px solid #ccc; margin-top: 5px; font-weight: bold; display: flex; justify-content: space-between;">
             <span>TOTAL</span>
-            <span>6837</span>
+            <span>6934</span>
+        </div>
+    </div>
+</div>
+
+</a>
+<a href="https://www.reddit.com/r/nfl/comments/1pkjexs/highlight_in_his_postgame_interview_bijan/" target="_blank" class="card standard" style="border-top: 4px solid #d35400;">
+    <div class="card-meta">
+        <span class="domain">reddit.com</span>
+    </div>
+    <h3>[Highlight] In his post-game interview, Bijan Robinson says "smear the queer" is what the Falcons do</h3>
+    <div class="debug-overlay">
+    <div class="debug-section">
+        <strong>Classification:</strong> 
+                    <div class="debug-section">
+                        <div class="debug-header">CLASSIFICATION</div>
+                        <div class="debug-row"><span class="label">Reason</span><span class="val">source_default</span></div>
+                    </div>
+                    
+    </div>
+    <div class="debug-section">
+        <strong>Score Breakdown:</strong>
+        <div class='debug-row'><span class='label'>Stats</span><span class='val'>+6902</span></div>
+        <div style="border-top: 1px solid #ccc; margin-top: 5px; font-weight: bold; display: flex; justify-content: space-between;">
+            <span>TOTAL</span>
+            <span>6902</span>
         </div>
     </div>
 </div>
@@ -1161,16 +1163,16 @@ td { border-bottom: 1px solid var(--term-dim); padding: 0.75rem; color: var(--te
     </div>
     <div class="debug-section">
         <strong>Score Breakdown:</strong>
-        <div class='debug-row'><span class='label'>Stats</span><span class='val'>+5685</span></div>
+        <div class='debug-row'><span class='label'>Stats</span><span class='val'>+5724</span></div>
         <div style="border-top: 1px solid #ccc; margin-top: 5px; font-weight: bold; display: flex; justify-content: space-between;">
             <span>TOTAL</span>
-            <span>5685</span>
+            <span>5724</span>
         </div>
     </div>
 </div>
 
 </a>
-<a href="https://www.reddit.com/r/nfl/comments/1pknf3r/bowles_bucs_inexcusable_loss_falls_on_players/" target="_blank" class="card compact" style="border-top: 4px solid #d35400;">
+<a href="https://www.reddit.com/r/nfl/comments/1pknf3r/bowles_bucs_inexcusable_loss_falls_on_players/" target="_blank" class="card compact" style="border-top: 4px solid #2980b9;">
     <div class="card-meta">
         <span class="domain">reddit.com</span>
     </div>
@@ -1186,16 +1188,16 @@ td { border-bottom: 1px solid var(--term-dim); padding: 0.75rem; color: var(--te
     </div>
     <div class="debug-section">
         <strong>Score Breakdown:</strong>
-        <div class='debug-row'><span class='label'>Stats</span><span class='val'>+5154</span></div>
+        <div class='debug-row'><span class='label'>Stats</span><span class='val'>+5266</span></div>
         <div style="border-top: 1px solid #ccc; margin-top: 5px; font-weight: bold; display: flex; justify-content: space-between;">
             <span>TOTAL</span>
-            <span>5154</span>
+            <span>5266</span>
         </div>
     </div>
 </div>
 
 </a>
-<a href="https://www.reddit.com/r/soccer/comments/1pkyyjq/var_display_for_potential_offside_during_hertha/" target="_blank" class="card compact" style="border-top: 4px solid #8e44ad;">
+<a href="https://www.reddit.com/r/soccer/comments/1pkyyjq/var_display_for_potential_offside_during_hertha/" target="_blank" class="card compact" style="border-top: 4px solid #27ae60;">
     <div class="card-meta">
         <span class="domain">reddit.com</span>
     </div>
@@ -1211,10 +1213,10 @@ td { border-bottom: 1px solid var(--term-dim); padding: 0.75rem; color: var(--te
     </div>
     <div class="debug-section">
         <strong>Score Breakdown:</strong>
-        <div class='debug-row'><span class='label'>Stats</span><span class='val'>+4778</span></div>
+        <div class='debug-row'><span class='label'>Stats</span><span class='val'>+5045</span></div>
         <div style="border-top: 1px solid #ccc; margin-top: 5px; font-weight: bold; display: flex; justify-content: space-between;">
             <span>TOTAL</span>
-            <span>4778</span>
+            <span>5045</span>
         </div>
     </div>
 </div>
@@ -1229,7 +1231,7 @@ td { border-bottom: 1px solid var(--term-dim); padding: 0.75rem; color: var(--te
         <span class="section-desc">Arts & Entertainment</span>
     </div>
     <div class="bento-grid">
-        <a href="https://www.reddit.com/r/movies/comments/1pl5blh/jim_carrey_offered_to_return_20_million_grinch/" target="_blank" class="card feature" style="border-top: 4px solid #8e44ad;">
+        <a href="https://www.reddit.com/r/movies/comments/1pl5blh/jim_carrey_offered_to_return_20_million_grinch/" target="_blank" class="card feature" style="border-top: 4px solid #d35400;">
     <div class="card-meta">
         <span class="domain">reddit.com</span>
     </div>
@@ -1245,16 +1247,16 @@ td { border-bottom: 1px solid var(--term-dim); padding: 0.75rem; color: var(--te
     </div>
     <div class="debug-section">
         <strong>Score Breakdown:</strong>
-        <div class='debug-row'><span class='label'>Stats</span><span class='val'>+12950</span></div><div class='debug-row'><span class='label'>Cluster</span><span class='val'>+150.0</span></div>
+        <div class='debug-row'><span class='label'>Stats</span><span class='val'>+16314</span></div><div class='debug-row'><span class='label'>Cluster</span><span class='val'>+150.0</span></div>
         <div style="border-top: 1px solid #ccc; margin-top: 5px; font-weight: bold; display: flex; justify-content: space-between;">
             <span>TOTAL</span>
-            <span>13100.0</span>
+            <span>16464.0</span>
         </div>
     </div>
 </div>
 
 </a>
-<a href="https://www.reddit.com/r/movies/comments/1pkx3h1/first_image_of_rebecca_ferguson_in_peaky_blinders/" target="_blank" class="card standard" style="border-top: 4px solid #2980b9;">
+<a href="https://www.reddit.com/r/movies/comments/1pkx3h1/first_image_of_rebecca_ferguson_in_peaky_blinders/" target="_blank" class="card standard" style="border-top: 4px solid #8e44ad;">
     <div class="card-meta">
         <span class="domain">reddit.com</span>
     </div>
@@ -1270,35 +1272,10 @@ td { border-bottom: 1px solid var(--term-dim); padding: 0.75rem; color: var(--te
     </div>
     <div class="debug-section">
         <strong>Score Breakdown:</strong>
-        <div class='debug-row'><span class='label'>Stats</span><span class='val'>+6866</span></div>
+        <div class='debug-row'><span class='label'>Stats</span><span class='val'>+7151</span></div>
         <div style="border-top: 1px solid #ccc; margin-top: 5px; font-weight: bold; display: flex; justify-content: space-between;">
             <span>TOTAL</span>
-            <span>6866</span>
-        </div>
-    </div>
-</div>
-
-</a>
-<a href="https://www.reddit.com/r/books/comments/1pkgupb/librarians_are_tired_of_being_accused_of_hiding/" target="_blank" class="card standard" style="border-top: 4px solid #8e44ad;">
-    <div class="card-meta">
-        <span class="domain">reddit.com</span>
-    </div>
-    <h3>Librarians Are Tired of Being Accused of Hiding Secret Books That Were Made Up by AI</h3>
-    <div class="debug-overlay">
-    <div class="debug-section">
-        <strong>Classification:</strong> 
-                    <div class="debug-section">
-                        <div class="debug-header">CLASSIFICATION</div>
-                        <div class="debug-row"><span class="label">Reason</span><span class="val">source_default</span></div>
-                    </div>
-                    
-    </div>
-    <div class="debug-section">
-        <strong>Score Breakdown:</strong>
-        <div class='debug-row'><span class='label'>Stats</span><span class='val'>+5427</span></div><div class='debug-row'><span class='label'>Cluster</span><span class='val'>+150.0</span></div>
-        <div style="border-top: 1px solid #ccc; margin-top: 5px; font-weight: bold; display: flex; justify-content: space-between;">
-            <span>TOTAL</span>
-            <span>5577.0</span>
+            <span>7151</span>
         </div>
     </div>
 </div>
@@ -1320,16 +1297,16 @@ td { border-bottom: 1px solid var(--term-dim); padding: 0.75rem; color: var(--te
     </div>
     <div class="debug-section">
         <strong>Score Breakdown:</strong>
-        <div class='debug-row'><span class='label'>Stats</span><span class='val'>+4721</span></div>
+        <div class='debug-row'><span class='label'>Stats</span><span class='val'>+4889</span></div>
         <div style="border-top: 1px solid #ccc; margin-top: 5px; font-weight: bold; display: flex; justify-content: space-between;">
             <span>TOTAL</span>
-            <span>4721</span>
+            <span>4889</span>
         </div>
     </div>
 </div>
 
 </a>
-<a href="https://www.reddit.com/r/movies/comments/1pkx22z/zootopia_2_crosses_1_billion_globally_fastest_pg/" target="_blank" class="card compact" style="border-top: 4px solid #2980b9;">
+<a href="https://www.reddit.com/r/movies/comments/1pkx22z/zootopia_2_crosses_1_billion_globally_fastest_pg/" target="_blank" class="card compact" style="border-top: 4px solid #8e44ad;">
     <div class="card-meta">
         <span class="domain">reddit.com</span>
     </div>
@@ -1345,16 +1322,66 @@ td { border-bottom: 1px solid var(--term-dim); padding: 0.75rem; color: var(--te
     </div>
     <div class="debug-section">
         <strong>Score Breakdown:</strong>
-        <div class='debug-row'><span class='label'>Stats</span><span class='val'>+3548</span></div>
+        <div class='debug-row'><span class='label'>Stats</span><span class='val'>+3742</span></div>
         <div style="border-top: 1px solid #ccc; margin-top: 5px; font-weight: bold; display: flex; justify-content: space-between;">
             <span>TOTAL</span>
-            <span>3548</span>
+            <span>3742</span>
         </div>
     </div>
 </div>
 
 </a>
-<a href="https://www.reddit.com/r/movies/comments/1pkuk32/new_poster_for_rian_johnsons_wake_up_dead_man_a/" target="_blank" class="card compact" style="border-top: 4px solid #8e44ad;">
+<a href="https://mashable.com/article/hurdle-hints-answers-december-12-2025" target="_blank" class="card compact" style="border-top: 4px solid #d35400;">
+    <div class="card-meta">
+        <span class="domain">mashable.com</span>
+    </div>
+    <h3>Hurdle hints and answers for December 12, 2025</h3>
+    <div class="debug-overlay">
+    <div class="debug-section">
+        <strong>Classification:</strong> 
+                    <div class="debug-section">
+                        <div class="debug-header">CLASSIFICATION</div>
+                        <div class="debug-row"><span class="label">Reason</span><span class="val">source_default</span></div>
+                    </div>
+                    
+    </div>
+    <div class="debug-section">
+        <strong>Score Breakdown:</strong>
+        <div class='debug-row'><span class='label'>Base</span><span class='val'>+1000</span></div><div class='debug-row'><span class='label'>Cluster</span><span class='val'>+900.0</span></div>
+        <div style="border-top: 1px solid #ccc; margin-top: 5px; font-weight: bold; display: flex; justify-content: space-between;">
+            <span>TOTAL</span>
+            <span>1900.0</span>
+        </div>
+    </div>
+</div>
+
+</a>
+<a href="https://www.reddit.com/r/movies/comments/1pl928s/timothée_chalamet_confirms_dune_part_three_time/" target="_blank" class="card compact" style="border-top: 4px solid #c0392b;">
+    <div class="card-meta">
+        <span class="domain">reddit.com</span>
+    </div>
+    <h3>Timothée Chalamet Confirms ‘Dune: Part Three’ Time Jump</h3>
+    <div class="debug-overlay">
+    <div class="debug-section">
+        <strong>Classification:</strong> 
+                    <div class="debug-section">
+                        <div class="debug-header">CLASSIFICATION</div>
+                        <div class="debug-row"><span class="label">Reason</span><span class="val">source_default</span></div>
+                    </div>
+                    
+    </div>
+    <div class="debug-section">
+        <strong>Score Breakdown:</strong>
+        <div class='debug-row'><span class='label'>Stats</span><span class='val'>+1872</span></div>
+        <div style="border-top: 1px solid #ccc; margin-top: 5px; font-weight: bold; display: flex; justify-content: space-between;">
+            <span>TOTAL</span>
+            <span>1872</span>
+        </div>
+    </div>
+</div>
+
+</a>
+<a href="https://www.reddit.com/r/movies/comments/1pkuk32/new_poster_for_rian_johnsons_wake_up_dead_man_a/" target="_blank" class="card compact" style="border-top: 4px solid #c0392b;">
     <div class="card-meta">
         <span class="domain">reddit.com</span>
     </div>
@@ -1370,16 +1397,16 @@ td { border-bottom: 1px solid var(--term-dim); padding: 0.75rem; color: var(--te
     </div>
     <div class="debug-section">
         <strong>Score Breakdown:</strong>
-        <div class='debug-row'><span class='label'>Stats</span><span class='val'>+1768</span></div>
+        <div class='debug-row'><span class='label'>Stats</span><span class='val'>+1841</span></div>
         <div style="border-top: 1px solid #ccc; margin-top: 5px; font-weight: bold; display: flex; justify-content: space-between;">
             <span>TOTAL</span>
-            <span>1768</span>
+            <span>1841</span>
         </div>
     </div>
 </div>
 
 </a>
-<a href="https://www.reddit.com/r/movies/comments/1pkua1c/first_image_of_barry_keoghan_who_plays_the_leader/" target="_blank" class="card compact" style="border-top: 4px solid #d35400;">
+<a href="https://www.reddit.com/r/movies/comments/1pkua1c/first_image_of_barry_keoghan_who_plays_the_leader/" target="_blank" class="card compact" style="border-top: 4px solid #8e44ad;">
     <div class="card-meta">
         <span class="domain">reddit.com</span>
     </div>
@@ -1395,35 +1422,10 @@ td { border-bottom: 1px solid var(--term-dim); padding: 0.75rem; color: var(--te
     </div>
     <div class="debug-section">
         <strong>Score Breakdown:</strong>
-        <div class='debug-row'><span class='label'>Stats</span><span class='val'>+1722</span></div>
+        <div class='debug-row'><span class='label'>Stats</span><span class='val'>+1802</span></div>
         <div style="border-top: 1px solid #ccc; margin-top: 5px; font-weight: bold; display: flex; justify-content: space-between;">
             <span>TOTAL</span>
-            <span>1722</span>
-        </div>
-    </div>
-</div>
-
-</a>
-<a href="https://www.reddit.com/r/movies/comments/1pkgqcn/official_character_posters_for_street_fighter/" target="_blank" class="card compact" style="border-top: 4px solid #2980b9;">
-    <div class="card-meta">
-        <span class="domain">reddit.com</span>
-    </div>
-    <h3>Official Character Posters for 'Street Fighter'</h3>
-    <div class="debug-overlay">
-    <div class="debug-section">
-        <strong>Classification:</strong> 
-                    <div class="debug-section">
-                        <div class="debug-header">CLASSIFICATION</div>
-                        <div class="debug-row"><span class="label">Reason</span><span class="val">source_default</span></div>
-                    </div>
-                    
-    </div>
-    <div class="debug-section">
-        <strong>Score Breakdown:</strong>
-        <div class='debug-row'><span class='label'>Stats</span><span class='val'>+1574</span></div>
-        <div style="border-top: 1px solid #ccc; margin-top: 5px; font-weight: bold; display: flex; justify-content: space-between;">
-            <span>TOTAL</span>
-            <span>1574</span>
+            <span>1802</span>
         </div>
     </div>
 </div>
@@ -1444,18 +1446,18 @@ td { border-bottom: 1px solid var(--term-dim); padding: 0.75rem; color: var(--te
         <div class="glass-box-container">
     <div class="audit-header">
         <h1>Source Transparency</h1>
-        <p>Audit Log for Edition: <strong>0e1e6bd4-4999-4ce0-8946-e8c519939897</strong></p>
-        <p>Generated: 2025-12-12 18:29:01</p>
+        <p>Audit Log for Edition: <strong>890f379c-c7bd-4618-bb84-58eac5f59375</strong></p>
+        <p>Generated: 2025-12-12 19:53:33</p>
     </div>
 
     <!-- The Funnel -->
     <div class="funnel-container">
         <div class="funnel-step">
-            <span class="funnel-num">987</span>
+            <span class="funnel-num">1066</span>
             <small>Total Items</small>
         </div>
         <div class="funnel-step">
-            <span class="funnel-num">843</span>
+            <span class="funnel-num">913</span>
             <small>Candidate Pool</small>
         </div>
         <div class="funnel-step">
@@ -1463,10 +1465,10 @@ td { border-bottom: 1px solid var(--term-dim); padding: 0.75rem; color: var(--te
             <small>Published</small>
         </div>
         <div class="funnel-step">
-            <span class="funnel-num">96.4%</span>
+            <span class="funnel-num">96.6%</span>
             <small>Anti-Feed Protection</small>
             <span class="funnel-sub">(Total Items - Published) / Total Items</span>
-            <span class="funnel-sub">Blocked: 951</span>
+            <span class="funnel-sub">Blocked: 1030</span>
         </div>
     </div>
 
@@ -1493,16 +1495,67 @@ td { border-bottom: 1px solid var(--term-dim); padding: 0.75rem; color: var(--te
             <tr>
                 <td>old.reddit.com</td>
                 <td>
-                    66.7%
-                    <span class="count-sub">(24)</span>
+                    69.4%
+                    <span class="count-sub">(25)</span>
                 </td>
                 <td>
-                    17.9%
-                    <span class="count-sub">(151)</span>
+                    17.0%
+                    <span class="count-sub">(155)</span>
                 </td>
                 <td>
                     
-                    <span class="bias-pos">+48.8%</span>
+                    <span class="bias-pos">+52.5%</span>
+                    
+                </td>
+            </tr>
+            
+            <tr>
+                <td>feeds.bbci.co.uk</td>
+                <td>
+                    11.1%
+                    <span class="count-sub">(4)</span>
+                </td>
+                <td>
+                    2.7%
+                    <span class="count-sub">(25)</span>
+                </td>
+                <td>
+                    
+                    <span class="bias-pos">+8.4%</span>
+                    
+                </td>
+            </tr>
+            
+            <tr>
+                <td>feeds.npr.org</td>
+                <td>
+                    8.3%
+                    <span class="count-sub">(3)</span>
+                </td>
+                <td>
+                    1.1%
+                    <span class="count-sub">(10)</span>
+                </td>
+                <td>
+                    
+                    <span class="bias-pos">+7.2%</span>
+                    
+                </td>
+            </tr>
+            
+            <tr>
+                <td>rss.nytimes.com</td>
+                <td>
+                    5.6%
+                    <span class="count-sub">(2)</span>
+                </td>
+                <td>
+                    3.8%
+                    <span class="count-sub">(35)</span>
+                </td>
+                <td>
+                    
+                    <span class="bias-pos">+1.7%</span>
                     
                 </td>
             </tr>
@@ -1510,50 +1563,16 @@ td { border-bottom: 1px solid var(--term-dim); padding: 0.75rem; color: var(--te
             <tr>
                 <td>www.aljazeera.com</td>
                 <td>
-                    27.8%
-                    <span class="count-sub">(10)</span>
-                </td>
-                <td>
-                    3.4%
-                    <span class="count-sub">(29)</span>
-                </td>
-                <td>
-                    
-                    <span class="bias-pos">+24.3%</span>
-                    
-                </td>
-            </tr>
-            
-            <tr>
-                <td>www.theverge.com</td>
-                <td>
                     2.8%
                     <span class="count-sub">(1)</span>
                 </td>
                 <td>
-                    1.3%
-                    <span class="count-sub">(11)</span>
+                    3.3%
+                    <span class="count-sub">(30)</span>
                 </td>
                 <td>
                     
-                    <span class="bias-pos">+1.5%</span>
-                    
-                </td>
-            </tr>
-            
-            <tr>
-                <td>www.engadget.com</td>
-                <td>
-                    2.8%
-                    <span class="count-sub">(1)</span>
-                </td>
-                <td>
-                    3.0%
-                    <span class="count-sub">(25)</span>
-                </td>
-                <td>
-                    
-                    <span class="bias-neg">-0.2%</span>
+                    <span class="bias-neg">-0.5%</span>
                     
                 </td>
             </tr>
@@ -1565,12 +1584,12 @@ td { border-bottom: 1px solid var(--term-dim); padding: 0.75rem; color: var(--te
                     <span class="count-sub">(0)</span>
                 </td>
                 <td>
-                    0.6%
+                    0.5%
                     <span class="count-sub">(5)</span>
                 </td>
                 <td>
                     
-                    <span class="bias-neg">-0.6%</span>
+                    <span class="bias-neg">-0.5%</span>
                     
                 </td>
             </tr>
@@ -1583,7 +1602,7 @@ td { border-bottom: 1px solid var(--term-dim); padding: 0.75rem; color: var(--te
                 </td>
                 <td>
                     1.2%
-                    <span class="count-sub">(10)</span>
+                    <span class="count-sub">(11)</span>
                 </td>
                 <td>
                     
@@ -1593,14 +1612,14 @@ td { border-bottom: 1px solid var(--term-dim); padding: 0.75rem; color: var(--te
             </tr>
             
             <tr>
-                <td>feeds.npr.org</td>
+                <td>www.theverge.com</td>
                 <td>
                     0.0%
                     <span class="count-sub">(0)</span>
                 </td>
                 <td>
                     1.2%
-                    <span class="count-sub">(10)</span>
+                    <span class="count-sub">(11)</span>
                 </td>
                 <td>
                     
@@ -1616,8 +1635,25 @@ td { border-bottom: 1px solid var(--term-dim); padding: 0.75rem; color: var(--te
                     <span class="count-sub">(0)</span>
                 </td>
                 <td>
-                    1.4%
+                    1.3%
                     <span class="count-sub">(12)</span>
+                </td>
+                <td>
+                    
+                    <span class="bias-neg">-1.3%</span>
+                    
+                </td>
+            </tr>
+            
+            <tr>
+                <td>feeds.arstechnica.com</td>
+                <td>
+                    0.0%
+                    <span class="count-sub">(0)</span>
+                </td>
+                <td>
+                    1.4%
+                    <span class="count-sub">(13)</span>
                 </td>
                 <td>
                     
@@ -1633,12 +1669,12 @@ td { border-bottom: 1px solid var(--term-dim); padding: 0.75rem; color: var(--te
                     <span class="count-sub">(0)</span>
                 </td>
                 <td>
-                    1.7%
+                    1.5%
                     <span class="count-sub">(14)</span>
                 </td>
                 <td>
                     
-                    <span class="bias-neg">-1.7%</span>
+                    <span class="bias-neg">-1.5%</span>
                     
                 </td>
             </tr>
@@ -1650,29 +1686,12 @@ td { border-bottom: 1px solid var(--term-dim); padding: 0.75rem; color: var(--te
                     <span class="count-sub">(0)</span>
                 </td>
                 <td>
-                    1.7%
+                    1.5%
                     <span class="count-sub">(14)</span>
                 </td>
                 <td>
                     
-                    <span class="bias-neg">-1.7%</span>
-                    
-                </td>
-            </tr>
-            
-            <tr>
-                <td>feeds.arstechnica.com</td>
-                <td>
-                    0.0%
-                    <span class="count-sub">(0)</span>
-                </td>
-                <td>
-                    1.7%
-                    <span class="count-sub">(14)</span>
-                </td>
-                <td>
-                    
-                    <span class="bias-neg">-1.7%</span>
+                    <span class="bias-neg">-1.5%</span>
                     
                 </td>
             </tr>
@@ -1684,12 +1703,12 @@ td { border-bottom: 1px solid var(--term-dim); padding: 0.75rem; color: var(--te
                     <span class="count-sub">(0)</span>
                 </td>
                 <td>
-                    1.8%
+                    1.6%
                     <span class="count-sub">(15)</span>
                 </td>
                 <td>
                     
-                    <span class="bias-neg">-1.8%</span>
+                    <span class="bias-neg">-1.6%</span>
                     
                 </td>
             </tr>
@@ -1701,29 +1720,29 @@ td { border-bottom: 1px solid var(--term-dim); padding: 0.75rem; color: var(--te
                     <span class="count-sub">(0)</span>
                 </td>
                 <td>
-                    2.4%
+                    2.2%
                     <span class="count-sub">(20)</span>
                 </td>
                 <td>
                     
-                    <span class="bias-neg">-2.4%</span>
+                    <span class="bias-neg">-2.2%</span>
                     
                 </td>
             </tr>
             
             <tr>
-                <td>feeds.bbci.co.uk</td>
+                <td>www.engadget.com</td>
                 <td>
                     0.0%
                     <span class="count-sub">(0)</span>
                 </td>
                 <td>
-                    2.7%
-                    <span class="count-sub">(23)</span>
+                    2.4%
+                    <span class="count-sub">(22)</span>
                 </td>
                 <td>
                     
-                    <span class="bias-neg">-2.7%</span>
+                    <span class="bias-neg">-2.4%</span>
                     
                 </td>
             </tr>
@@ -1735,12 +1754,12 @@ td { border-bottom: 1px solid var(--term-dim); padding: 0.75rem; color: var(--te
                     <span class="count-sub">(0)</span>
                 </td>
                 <td>
-                    2.7%
+                    2.5%
                     <span class="count-sub">(23)</span>
                 </td>
                 <td>
                     
-                    <span class="bias-neg">-2.7%</span>
+                    <span class="bias-neg">-2.5%</span>
                     
                 </td>
             </tr>
@@ -1752,29 +1771,12 @@ td { border-bottom: 1px solid var(--term-dim); padding: 0.75rem; color: var(--te
                     <span class="count-sub">(0)</span>
                 </td>
                 <td>
-                    3.0%
+                    2.7%
                     <span class="count-sub">(25)</span>
                 </td>
                 <td>
                     
-                    <span class="bias-neg">-3.0%</span>
-                    
-                </td>
-            </tr>
-            
-            <tr>
-                <td>rss.nytimes.com</td>
-                <td>
-                    0.0%
-                    <span class="count-sub">(0)</span>
-                </td>
-                <td>
-                    4.2%
-                    <span class="count-sub">(35)</span>
-                </td>
-                <td>
-                    
-                    <span class="bias-neg">-4.2%</span>
+                    <span class="bias-neg">-2.7%</span>
                     
                 </td>
             </tr>
@@ -1786,12 +1788,12 @@ td { border-bottom: 1px solid var(--term-dim); padding: 0.75rem; color: var(--te
                     <span class="count-sub">(0)</span>
                 </td>
                 <td>
-                    5.0%
-                    <span class="count-sub">(42)</span>
+                    4.8%
+                    <span class="count-sub">(44)</span>
                 </td>
                 <td>
                     
-                    <span class="bias-neg">-5.0%</span>
+                    <span class="bias-neg">-4.8%</span>
                     
                 </td>
             </tr>
@@ -1803,12 +1805,12 @@ td { border-bottom: 1px solid var(--term-dim); padding: 0.75rem; color: var(--te
                     <span class="count-sub">(0)</span>
                 </td>
                 <td>
-                    5.1%
-                    <span class="count-sub">(43)</span>
+                    4.8%
+                    <span class="count-sub">(44)</span>
                 </td>
                 <td>
                     
-                    <span class="bias-neg">-5.1%</span>
+                    <span class="bias-neg">-4.8%</span>
                     
                 </td>
             </tr>
@@ -1816,16 +1818,16 @@ td { border-bottom: 1px solid var(--term-dim); padding: 0.75rem; color: var(--te
             <tr>
                 <td>mashable.com</td>
                 <td>
-                    0.0%
-                    <span class="count-sub">(0)</span>
+                    2.8%
+                    <span class="count-sub">(1)</span>
                 </td>
                 <td>
-                    8.1%
-                    <span class="count-sub">(68)</span>
+                    7.8%
+                    <span class="count-sub">(71)</span>
                 </td>
                 <td>
                     
-                    <span class="bias-neg">-8.1%</span>
+                    <span class="bias-neg">-5.0%</span>
                     
                 </td>
             </tr>
@@ -1847,17 +1849,17 @@ td { border-bottom: 1px solid var(--term-dim); padding: 0.75rem; color: var(--te
                 
                 <div class="bubble-item">
                     <span class="score-badge">1000</span>
-                    <span>Bird flu kills hundreds of storks in Spain</span>
+                    <span>Kilmar Abrego Garcia released from ICE custody. And, Indiana rejects redistricting</span>
                 </div>
                 
                 <div class="bubble-item">
                     <span class="score-badge">1000</span>
-                    <span>Kilmar Abrego Garcia relieved to not be arrested after US court hearing</span>
+                    <span>CNN has endured turmoil for years. Now Trump wants role in its fate</span>
                 </div>
                 
                 <div class="bubble-item">
                     <span class="score-badge">1000</span>
-                    <span>How does sectarianism impact daily life in Lebanon?</span>
+                    <span>Germany's train service is one of Europe's worst. How did it get so bad?</span>
                 </div>
                 
             </div>
@@ -1868,17 +1870,17 @@ td { border-bottom: 1px solid var(--term-dim); padding: 0.75rem; color: var(--te
                 
                 <div class="bubble-item">
                     <span class="score-badge">1000</span>
-                    <span>Fourteen Palestinians, including children, die in Gaza amid Storm Byron</span>
+                    <span>Trial starts for a Wisconsin judge accused of obstructing ICE</span>
                 </div>
                 
                 <div class="bubble-item">
                     <span class="score-badge">1000</span>
-                    <span>Why do 27 states want to change Europe’s human rights convention?</span>
+                    <span>For 2 Hours, a Soccer Match Offers Palestinians a Rarity: Joy</span>
                 </div>
                 
                 <div class="bubble-item">
                     <span class="score-badge">1000</span>
-                    <span>Were South Africans lured into fighting for Russia’s Ukraine war?</span>
+                    <span>If the holidays are stressing you out, remember: everything is optional</span>
                 </div>
                 
             </div>
@@ -1893,18 +1895,18 @@ td { border-bottom: 1px solid var(--term-dim); padding: 0.75rem; color: var(--te
                 <div class="bubble-header">Last 3 In (Lowest Scores)</div>
                 
                 <div class="bubble-item">
-                    <span class="score-badge">1352</span>
+                    <span class="score-badge">1673</span>
+                    <span>Tech Support Scammers Stole $85,000 From Him. His Bank Refused a Refund.</span>
+                </div>
+                
+                <div class="bubble-item">
+                    <span class="score-badge">1374</span>
                     <span>Scientists just uncovered a major limitation in how AI models understand truth and belief</span>
                 </div>
                 
                 <div class="bubble-item">
-                    <span class="score-badge">1150</span>
-                    <span>The Verge’s favorite holiday gifts under $100</span>
-                </div>
-                
-                <div class="bubble-item">
-                    <span class="score-badge">1150</span>
-                    <span>Reddit sues Australia over underage social media ban</span>
+                    <span class="score-badge">1187</span>
+                    <span>UK Lords propose ban on VPNs for children</span>
                 </div>
                 
             </div>
@@ -1914,18 +1916,18 @@ td { border-bottom: 1px solid var(--term-dim); padding: 0.75rem; color: var(--te
                 <div class="bubble-header">First 3 Out (Highest Scores)</div>
                 
                 <div class="bubble-item">
-                    <span class="score-badge">1053</span>
-                    <span>UK Lords propose ban on VPNs for children</span>
+                    <span class="score-badge">1150</span>
+                    <span>The best E Ink tablets for 2025</span>
                 </div>
                 
                 <div class="bubble-item">
-                    <span class="score-badge">1025</span>
-                    <span>A Chinese whistleblower now living in the US is being hunted by Beijing with help from US tech</span>
+                    <span class="score-badge">1150</span>
+                    <span>Reddit sues Australia over underage social media ban</span>
                 </div>
                 
                 <div class="bubble-item">
-                    <span class="score-badge">1000</span>
-                    <span>AMD CEO Lisa Su Isn’t Afraid of the Competition</span>
+                    <span class="score-badge">1150</span>
+                    <span>The Verge’s favorite holiday gifts under $100</span>
                 </div>
                 
             </div>
@@ -1940,17 +1942,17 @@ td { border-bottom: 1px solid var(--term-dim); padding: 0.75rem; color: var(--te
                 <div class="bubble-header">Last 3 In (Lowest Scores)</div>
                 
                 <div class="bubble-item">
-                    <span class="score-badge">5685</span>
+                    <span class="score-badge">5724</span>
                     <span>[Highlight] Zane Gonzalez wins it for the Falcons to complete comeback</span>
                 </div>
                 
                 <div class="bubble-item">
-                    <span class="score-badge">5154</span>
+                    <span class="score-badge">5266</span>
                     <span>Bowles: Bucs' 'inexcusable' loss falls on players</span>
                 </div>
                 
                 <div class="bubble-item">
-                    <span class="score-badge">4778</span>
+                    <span class="score-badge">5045</span>
                     <span>VAR display for potential offside during Hertha BSC v. Fürth</span>
                 </div>
                 
@@ -1961,17 +1963,17 @@ td { border-bottom: 1px solid var(--term-dim); padding: 0.75rem; color: var(--te
                 <div class="bubble-header">First 3 Out (Highest Scores)</div>
                 
                 <div class="bubble-item">
-                    <span class="score-badge">4623</span>
+                    <span class="score-badge">4699</span>
                     <span>Erling Haaland in severe pain after getting hit in the balls vs Real Madrid</span>
                 </div>
                 
                 <div class="bubble-item">
-                    <span class="score-badge">4622</span>
+                    <span class="score-badge">4695</span>
                     <span>[Highlight] Alperen Sengun slowly goes behind Nicolas Batum like a cat for the sneaky steal and the fastbreak dunk</span>
                 </div>
                 
                 <div class="bubble-item">
-                    <span class="score-badge">4252</span>
+                    <span class="score-badge">4264</span>
                     <span>[Highlight] Mike Evans is heated at the Bucs defense</span>
                 </div>
                 
@@ -1987,18 +1989,18 @@ td { border-bottom: 1px solid var(--term-dim); padding: 0.75rem; color: var(--te
                 <div class="bubble-header">Last 3 In (Lowest Scores)</div>
                 
                 <div class="bubble-item">
-                    <span class="score-badge">1768</span>
+                    <span class="score-badge">1872</span>
+                    <span>Timothée Chalamet Confirms ‘Dune: Part Three’ Time Jump</span>
+                </div>
+                
+                <div class="bubble-item">
+                    <span class="score-badge">1841</span>
                     <span>New Poster for Rian Johnson's 'Wake Up Dead Man: A Knives Out Mystery' - Starring Daniel Craig, Josh O'Connor, Glenn Close, Josh Brolin, Andrew Scott, Cailee Spaeny, Jeremy Renner, Thomas Haden Church, Kerry Washington, Jeffrey Wright, Mila Kunis, and Darryl McCormack</span>
                 </div>
                 
                 <div class="bubble-item">
-                    <span class="score-badge">1722</span>
+                    <span class="score-badge">1802</span>
                     <span>First image of Barry Keoghan who plays the leader of a new generation of Peaky Blinders in the ‘PEAKY BLINDERS’ movie.</span>
-                </div>
-                
-                <div class="bubble-item">
-                    <span class="score-badge">1574</span>
-                    <span>Official Character Posters for 'Street Fighter'</span>
                 </div>
                 
             </div>
@@ -2008,18 +2010,18 @@ td { border-bottom: 1px solid var(--term-dim); padding: 0.75rem; color: var(--te
                 <div class="bubble-header">First 3 Out (Highest Scores)</div>
                 
                 <div class="bubble-item">
-                    <span class="score-badge">1450</span>
-                    <span>Wordle today: Answer, hints for December 12, 2025</span>
-                </div>
-                
-                <div class="bubble-item">
-                    <span class="score-badge">1417</span>
+                    <span class="score-badge">1543</span>
                     <span>How Matt Dinniman’s ‘Dungeon Crawler Carl’ Became a Blockbuster</span>
                 </div>
                 
                 <div class="bubble-item">
                     <span class="score-badge">1410</span>
                     <span>I Need A Good Cry...</span>
+                </div>
+                
+                <div class="bubble-item">
+                    <span class="score-badge">1150</span>
+                    <span>Wake Up Dead Man: A Knives Out Mystery spoiler-free review</span>
                 </div>
                 
             </div>
