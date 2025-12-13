@@ -99,7 +99,8 @@ def audit_run(run_sheet, candidates, stats_context):
         'stats_input': input_count,
         'stats_pool': pool_count,
         'stats_selected': selected_count,
-        'yield_rate': (selected_count / pool_count * 100) if pool_count else 0,
+        'yield_rate': (selected_count / input_count * 100) if input_count else 0,
+        'filtered_count': input_count - selected_count,
         'source_velocity': velocity_data[:20],
         'bubble': bubble_data
     }

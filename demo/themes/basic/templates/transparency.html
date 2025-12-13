@@ -8,9 +8,10 @@
         /* Transparency Specific Overrides */
         body { max-width: 900px; margin: 0 auto; padding: 2rem; }
         .audit-header { border-bottom: 2px solid #000; padding-bottom: 1rem; margin-bottom: 2rem; }
-        .funnel-container { display: flex; justify-content: space-between; background: #eee; padding: 1rem; margin-bottom: 2rem; }
-        .funnel-step { text-align: center; }
-        .funnel-num { font-size: 1.5rem; font-weight: bold; display: block; }
+        .funnel-container { display: flex; justify-content: space-between; background: #eee; padding: 1rem; margin-bottom: 2rem; align-items: flex-start; }
+        .funnel-step { text-align: center; flex: 1; }
+        .funnel-num { font-size: 1.5rem; font-weight: bold; display: block; margin-bottom: 0.25rem; }
+        .funnel-sub { font-size: 0.75rem; color: #666; display: block; margin-top: 0.25rem; }
         
         table.audit-table { width: 100%; border-collapse: collapse; margin-bottom: 2rem; font-size: 0.9rem; }
         th { text-align: left; border-bottom: 2px solid #000; padding: 0.5rem; }
@@ -53,15 +54,17 @@
         </div>
         <div class="funnel-step">
             <span class="funnel-num">{{ stats_pool }}</span>
-            <small>Pool</small>
+            <small>Candidate Pool</small>
         </div>
         <div class="funnel-step">
             <span class="funnel-num">{{ stats_selected }}</span>
-            <small>Selection</small>
+            <small>Published</small>
         </div>
         <div class="funnel-step">
             <span class="funnel-num">{{ "%.1f"|format(yield_rate) }}%</span>
             <small>Yield Rate</small>
+            <span class="funnel-sub">(Published / Total)</span>
+            <span class="funnel-sub">Filtered: {{ filtered_count }}</span>
         </div>
     </div>
 
