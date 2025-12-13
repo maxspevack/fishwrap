@@ -5,6 +5,8 @@ Fishwrap is evolving from a personal script into a robust News Engine platform.
 ## 🟢 Phase 1: Stability & Observability
 *Focus: "The Glass Box" - Making the engine's decisions transparent.*
 
+*   **Branding & UX:**
+    *   [ ] Launch New Fishwrap.org Brand (Digital Origami Logo, Colors, Theme)
 *   **Observability Suite:**
     *   [x] Add console reporting for "Cut-Line" stories (what *almost* made it).
     *   [x] Add source volume histograms (Fetcher Dominance).
@@ -23,7 +25,7 @@ Fishwrap is evolving from a personal script into a robust News Engine platform.
     *   [x] Persist run statistics (`run_stats.json` or SQLite) for trend analysis.
     *   [x] Generate user-facing `transparency.html` artifact.
 *   **Architecture Refinements:**
-    *   [x] Refactor `config.py` to use Pydantic models for validation. (Actually, we implemented dynamic loading, not Pydantic yet. I'll leave this unchecked).
+    *   [ ] Refactor `config.py` to use Pydantic models for validation. (This was not fully completed, it was a tech debt item.)
     *   [ ] Modularize `Scorer` and `Classifier` logic into a plugin system.
 
 ## 🔬 Performance Field Notes (Feedback from Daily Clamour v1.2)
