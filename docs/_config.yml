@@ -9,4 +9,4 @@ color_scheme: dark
 nav_sort: case_insensitive
 
 # Footer
-footer_content: "Fishwrap is open source software licensed under the BSD 3-Clause License."
+footer_content: "Fishwrap is open source software licensed under the Apache License 2.0."
