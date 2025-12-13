@@ -262,7 +262,7 @@ def run_editor():
         bubble_report[cat] = {'in': last_in, 'out': first_out}
 
     # Summary Report (High-level only, details in Auditor report)
-    print(f"\n[EDITOR] Selected {total_selected} articles ({drift_count} reclassified).")
+    print(f"\n[EDITOR] Published {total_selected} articles ({drift_count} reclassified).")
     
     with open(_config.RUN_SHEET_FILE, 'w') as f:
         json.dump(run_sheet, f, indent=2)

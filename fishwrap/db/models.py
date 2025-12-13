@@ -16,7 +16,7 @@ class Article(Base):
     link = Column(String, nullable=False, unique=True) # Ensure link uniqueness
     source_url = Column(String)
     external_id = Column(String, index=True) # RSS GUID
-    timestamp = Column(Float) # Epoch time
+    timestamp = Column(Float, index=True) # Epoch time
     
     # Content
     content = Column(Text)

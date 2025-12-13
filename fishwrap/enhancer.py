@@ -250,9 +250,9 @@ def enhance_articles():
         json.dump(enhanced_results, f, indent=2)
         
     total = len(all_articles)
-    success = stats['hits'] + stats['misses'] # Define success here
-    yield_rate = (success / total * 100) if total > 0 else 0
-    print(f"\n[ENHANCER] Processed {total} articles ({stats['hits']} hits, {stats['misses']} fetches, {stats['errors']} errors). Yield: {yield_rate:.1f}%.")
+    success = stats['hits'] + stats['misses']
+    success_rate = (success / total * 100) if total > 0 else 0
+    print(f"\n[ENHANCER] Processed {total} articles ({stats['hits']} hits, {stats['misses']} fetches, {stats['errors']} errors). Content Success: {success_rate:.1f}%.")
 
 
 if __name__ == "__main__":
