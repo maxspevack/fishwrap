@@ -23,12 +23,12 @@ This release transforms Fishwrap from a script into a platform by introducing a 
 
 ---
 
-## v1.1.0 (Concurrency) - Dec 11, 2025
+## v1.1.0 (Concurrency) - Dec 11, 2025 (Commit: ce6cb5b)
 *   Implemented `ThreadPoolExecutor` for Fetcher/Enhancer (7x speedup).
 *   Fixed caching bugs (Memento).
 *   Implemented Token Bucket Rate Limiting.
 
-## v1.0.0 (Initial Release) - Dec 11, 2025
+## v1.0.0 (Initial Release) - Dec 11, 2025 (Commit: 346d16d)
 *   Core Engine (Fetcher, Editor, Enhancer, Printer).
 *   JSON-based storage.
 *   Basic PDF generation.
