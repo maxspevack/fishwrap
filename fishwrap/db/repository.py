@@ -2,8 +2,9 @@ from datetime import datetime, timedelta
 import time
 from sqlalchemy import create_engine, select, delete, func
 from sqlalchemy.orm import sessionmaker
-from fishwrap.db.models import Article, Run, RunArticle
-from fishwrap import _config
+from fishwrap.db.models import Article, Run, RunArticle, AuditLog
+# Refactor: Use Pydantic Config Loader
+from fishwrap.config_loader import Config as _config
 import os
 
 # --- Database Setup ---
@@ -14,6 +15,7 @@ def _get_database_url():
     """Determines the database URL from _config or falls back to default.
     Resolves relative SQLite paths to absolute based on CWD.
     """
+    # Pydantic: Access attribute
     db_url = getattr(_config, 'DATABASE_URL', 'sqlite:///newsroom.db')
     
     # Resolve relative paths for sqlite dbs to make them absolute
@@ -72,6 +74,33 @@ def save_run(run_data, articles_list):
             
         db.commit()
         return new_run.id
+
+def save_audit_logs(run_id, audit_list):
+    """
+    Bulk inserts audit logs for a run.
+    audit_list: list of dicts matching AuditLog schema.
+    """
+    if not audit_list: return
+    
+    with SessionContext() as db:
+        # We can use bulk_insert_mappings for speed if needed, but objects are fine for SQLite scale
+        logs = []
+        for item in audit_list:
+            log = AuditLog(
+                run_id=run_id,
+                article_id=item['article_id'],
+                original_section=item.get('original_section'),
+                final_section=item.get('final_section'),
+                base_score=item.get('base_score'),
+                modifier_score=item.get('modifier_score'),
+                final_score=item.get('final_score'),
+                decision=item.get('decision'),
+                trace=item.get('trace')
+            )
+            logs.append(log)
+        
+        db.add_all(logs)
+        db.commit()
 
 def upsert_article(article_data):
     """

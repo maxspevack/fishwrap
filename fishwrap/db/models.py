@@ -71,11 +71,13 @@ class Run(Base):
     
     # Relationships
     articles = relationship("RunArticle", back_populates="run", cascade="all, delete-orphan")
+    audit_logs = relationship("AuditLog", back_populates="run", cascade="all, delete-orphan")
 
 class RunArticle(Base):
     """
     Link table: Which articles appeared in which Run?
     Allows us to reconstruct history (The Almanac).
+    Only contains SELECTED articles.
     """
     __tablename__ = 'run_articles'
     
@@ -89,4 +91,35 @@ class RunArticle(Base):
     section = Column(String)
     
     run = relationship("Run", back_populates="articles")
+    article = relationship("Article")
+
+class AuditLog(Base):
+    """
+    The 'Black Box Recorder'.
+    Stores the decision trace for EVERY article processed in a run, 
+    including rejected ones. This drives the 'Fishmonger' Tuning UI.
+    """
+    __tablename__ = 'audit_logs'
+    
+    id = Column(String, primary_key=True, default=lambda: str(uuid.uuid4()))
+    run_id = Column(String, ForeignKey('runs.id'))
+    article_id = Column(String, ForeignKey('articles.id'))
+    
+    # Classification Trace
+    original_section = Column(String) # From Source Affinity
+    final_section = Column(String)    # From Keyword Classifier
+    
+    # Scoring Trace
+    base_score = Column(Float)
+    modifier_score = Column(Float)
+    final_score = Column(Float)
+    
+    # The Verdict
+    decision = Column(String) # SELECTED, REJECTED, BURIED (Penalty)
+    
+    # Detailed Trace (JSON)
+    # { 'boosts': ['AI', 'GitHub'], 'penalties': [], 'drift_reason': 'Keyword match' }
+    trace = Column(JSON)
+    
+    run = relationship("Run", back_populates="audit_logs")
     article = relationship("Article")

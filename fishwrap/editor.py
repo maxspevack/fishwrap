@@ -3,7 +3,8 @@ from urllib.parse import urlparse
 import difflib
 import time
 from datetime import datetime
-from fishwrap import _config
+# Refactor: Use Pydantic Config Loader
+from fishwrap.config_loader import Config as _config
 from fishwrap import scoring
 from fishwrap import auditor
 from fishwrap.db import repository
@@ -36,14 +37,15 @@ def classify_article(article):
     
     reason = "fallback"
     # Default fallback is the LAST section defined in config (usually 'culture' or 'general')
-    final_cat = _config.SECTIONS[-1]['id'] 
+    # Pydantic: Access via list index and attribute
+    final_cat = _config.SECTIONS[-1].id
     
     # 3. Override Logic (Content beats Source if signal is strong)
     match_found = False
     
     # Check for Strong Matches (>= 3)
     for section in _config.SECTIONS:
-        sid = section['id']
+        sid = section.id # Pydantic attribute
         if scores.get(sid, 0) >= 3:
             final_cat = sid
             reason = "keyword_strong_match"
@@ -58,7 +60,7 @@ def classify_article(article):
         else:
             # 5. Check for Weak Matches (>= 1)
             for section in _config.SECTIONS:
-                sid = section['id']
+                sid = section.id
                 if scores.get(sid, 0) >= 1:
                     final_cat = sid
                     reason = "keyword_weak_match"
@@ -140,8 +142,8 @@ def organize_and_cluster(articles):
             clusters.append(candidate)
             
     # 3. Bucketize the Leaders (Dynamic)
-    final_buckets = {section['id']: [] for section in _config.SECTIONS}
-    default_bucket_key = _config.SECTIONS[0]['id']
+    final_buckets = {section.id: [] for section in _config.SECTIONS}
+    default_bucket_key = _config.SECTIONS[0].id
     
     for article in clusters:
         cat = article.get('temp_section')
@@ -168,7 +170,7 @@ def run_editor():
     scored_articles = []
     
     # Dynamic Candidate Counter
-    section_candidates = {section['id']: 0 for section in _config.SECTIONS}
+    section_candidates = {section.id: 0 for section in _config.SECTIONS}
     drift_count = 0
     drift_examples = []
     
@@ -223,7 +225,7 @@ def run_editor():
     print_cutoff = current_time_ts - (_config.EXPIRATION_HOURS * 3600)
 
     for section_def in _config.SECTIONS:
-        cat = section_def['id']
+        cat = section_def.id
         capacity = _config.EDITION_SIZE.get(cat, 5) # Default capacity if missing
         
         items = buckets.get(cat, [])
@@ -272,8 +274,12 @@ def run_editor():
         json.dump(run_sheet, f, indent=2)
 
     # --- Phase 4: The Auditor ---
+    # Sync impact_score back to computed_score for correct auditing of boosts
+    for art in scored_articles:
+        art['computed_score'] = art.get('impact_score', 0)
+
     total_db_count = repository.get_total_count()
-    run_id, transparency_html = auditor.audit_run(run_sheet, raw_candidates, {
+    run_id, transparency_html = auditor.audit_run(run_sheet, scored_articles, {
         'input_count': total_db_count,
         'bubble': bubble_report,
         'perf_metrics': {'editor_duration': duration}
