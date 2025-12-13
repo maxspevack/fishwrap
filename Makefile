@@ -1,5 +1,7 @@
 .PHONY: setup update run-fishwrap generate-pdf publish-resume clean
 
+SHELL := /bin/bash # Ensure bash is used for all shell commands
+
 VENV_PATH := $(CURDIR)/venv
 PYTHON := $(VENV_PATH)/bin/python3 -W ignore::SyntaxWarning
 PIP := $(VENV_PATH)/bin/pip
