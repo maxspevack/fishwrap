@@ -1,4 +1,4 @@
-# Fishwrap.org Brand Bible: The Editor-in-Chief (Digital Origami)
+# Brand Bible: The Editor-in-Chief (Digital Origami)
 
 ## 1. Brand Mission & Vision
 **Mission:** To empower individuals to reclaim agency over their information diet by providing transparent, auditable, and customizable news engines.
