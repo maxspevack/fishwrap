@@ -21,11 +21,7 @@ To build the "Anti-Feed," we had to invert the relationship between the user and
 
 Early in development, we noticed a drift. We’d run the engine, and the "News" section would feel... angry. Or the "Tech" section would feel strangely obsessed with a minor Linux kernel patch.
 
-We checked the code. The weights looked fine. `NYT` had a score of 10. `Reddit` had a score of 1.
-
-But when we looked at the database, the truth was stark. `NYT` published 50 stories a day. `Reddit` published 5,000. Even with a 10x penalty, the sheer volume of the hive mind was drowning out the signal.
-
-We realized that **Volume is a form of Bias.**
+The answer was obvious. `NYT` published 50 stories a day. `Reddit` published 5,000. The sheer volume of the hive mind was drowning out the signal. **Volume is a form of Bias.**
 
 We didn't need better logging. We needed a forensic accountant.
 
@@ -39,7 +35,7 @@ It asks three questions of the engine:
 2.  **What did you kill?** (The Bubble)
 3.  **Are you just a mirror?** (Source Efficiency)
 
-This isn't just `console.log`. The Auditor compiles these answers into a static artifact—`transparency.html`—that ships with every single edition of the paper.
+This isn't just `console.log`. The Auditor compiles these answers into a static artifact that ships with every single edition of the paper.
 
 It is the receipt for the news.
 
@@ -65,7 +61,7 @@ But if `Defector` makes up 0.5% of our input, and 15% of our output? That’s a 
 It means that source "punches above its weight." It means when they speak, we listen.
 Conversely, a **Negative Delta** means we are aggressively filtering a high-volume source.
 
-### 3. The Bubble
+### 3. The Bubble (Fishwrap's March Madness)
 The hardest part of editorial judgment isn't picking the winner; it's cutting the runner-up.
 We track the **"Last 3 In"** and the **"First 3 Out"**.
 
