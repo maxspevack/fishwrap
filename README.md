@@ -94,4 +94,4 @@ We are actively developing Fishwrap to be the engine of the "Anti-Feed" movement
 ---
 
 ## 📜 License
-BSD 3-Clause.
+Apache License 2.0.

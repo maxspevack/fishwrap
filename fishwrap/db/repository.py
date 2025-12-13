@@ -1,4 +1,5 @@
 from datetime import datetime, timedelta
+import time
 from sqlalchemy import create_engine, select, delete, func
 from sqlalchemy.orm import sessionmaker
 from fishwrap.db.models import Article, Run, RunArticle
@@ -105,7 +106,7 @@ def get_recent_articles(hours=24):
     Fetch articles for the Editor within the time window.
     Returns a list of Article objects (which behave like dicts if needed).
     """
-    cutoff = datetime.utcnow().timestamp() - (hours * 3600)
+    cutoff = time.time() - (hours * 3600)
     
     with SessionContext() as db:
         articles = db.query(Article).filter(Article.timestamp >= cutoff).all()
@@ -119,7 +120,7 @@ def prune_old_articles(hours=72):
     """
     Janitor: Delete articles older than X hours.
     """
-    cutoff = datetime.utcnow().timestamp() - (hours * 3600)
+    cutoff = time.time() - (hours * 3600)
     with SessionContext() as db:
         result = db.query(Article).filter(Article.timestamp < cutoff).delete()
         db.commit()

@@ -8,6 +8,11 @@ __pycache__/
 
 # Fishwrap generated artifacts (relative to repo root)
 logs/
+*.db
+*.sqlite
+articles_db.json
+run_sheet.json
+enhanced_issue.json
 
 # User specific deployments (like The Daily Clamour)
 daily_clamour/data/*

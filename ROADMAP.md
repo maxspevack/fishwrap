@@ -10,23 +10,24 @@ Fishwrap is evolving from a personal script into a robust News Engine platform.
     *   [x] Add source volume histograms (Fetcher Dominance).
     *   [x] Add "Run Sheet Diversity" report (Output Dominance).
     *   [x] Drift Tracking (Classification overrides).
-*   **Data Foundation:**
-    *   [ ] Migrate from `articles_db.json` to SQLite (`fishwrap.db`).
+*   **CLI Tools:**
     *   [ ] Build CLI tools for database management (`fw-db stats`, `fw-db clean`).
 
-## 🔵 Phase 1.5: The Auditor & Persistence
-*Focus: Structuralizing the Insights for the User.*
+## 🔵 Phase 1.5: The Auditor & Persistence (v1.2.0 Release Target)
+*Focus: Structuralizing the Insights for the User & Building History.*
 
+*   **Data Foundation:**
+    *   [x] Migrate from `articles_db.json` to SQLite (`fishwrap.db`). (Completed as part of Phase 1.5 setup)
 *   **The Auditor Module (`fishwrap.auditor`):**
     *   [ ] Implement "Funnel Analysis" (Input -> Pool -> Qualified -> Selected).
     *   [ ] Persist run statistics (`run_stats.json` or SQLite) for trend analysis.
     *   [ ] Generate user-facing `transparency.html` artifact.
-*   **Architecture:**
+*   **Architecture Refinements:**
     *   [ ] Refactor `config.py` to use Pydantic models for validation.
     *   [ ] Modularize `Scorer` and `Classifier` logic into a plugin system.
 
-## 🟡 Phase 2: The Chronicle
-*Focus: History and Artifacts.*
+## 🟡 Phase 2: The Chronicle & Products
+*Focus: Enduring value, history, and new editions.*
 
 *   **Archival Modes:**
     *   [ ] Implement "Weekly" and "Monthly" edition generation based on historical data.
@@ -36,7 +37,7 @@ Fishwrap is evolving from a personal script into a robust News Engine platform.
     *   [ ] Improve multi-column newspaper layout (CSS Grid/Flexbox).
 
 ## 🔴 Phase 3: The Platform
-*Focus: Democratization.*
+*Focus: Democratization & SaaS.*
 
 *   **Web UI:** A local dashboard for configuring feeds and tuning weights visually.
 *   **Granular Consent:** A UI for creating transparent scoring rules ("I dislike X because Y") to replace opaque "Thumbs Down" buttons.

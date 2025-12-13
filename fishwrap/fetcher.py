@@ -1,6 +1,7 @@
 import json
 import urllib.request
 import xml.etree.ElementTree as ET
+import time
 from datetime import datetime
 import os
 import re
@@ -182,7 +183,7 @@ def update_database():
 
     print(f"\n[FETCHER] Starting Parallel Fetch... (DB: {initial_db_count} -> Pruned: {deleted_count})")
     
-    current_ts = datetime.utcnow().timestamp()
+    current_ts = time.time()
     cutoff_ts = current_ts - (cutoff_hours * 3600)
 
     # Use ThreadPoolExecutor for I/O bound tasks
@@ -206,12 +207,7 @@ def update_database():
                         if article['timestamp'] < cutoff_ts: continue
                         
                         # --- PRE-COMPUTE SCORING ---
-                        # We must inject 'base_boosts' if they were added in process_feed
-                        # Actually process_feed handles it? Yes.
-                        # Wait, fetch_reddit_json doesn't set base_boosts dynamically.
-                        # Fix: Check logic.
                         if 'base_boosts' not in article:
-                            # Default fallback
                              article['base_boosts'] = 0
 
                         cat, cls_debug = editor.classify_article(article)
@@ -222,7 +218,6 @@ def update_database():
                         article['computed_breakdown'] = breakdown
                         article['computed_debug'] = cls_debug
                         
-                        # Remove helper keys not in Model
                         if 'base_boosts' in article: del article['base_boosts']
                         # ---------------------------
 
@@ -240,9 +235,8 @@ def update_database():
 
     final_count = repository.get_total_count()
 
-    # Summary Report (High-level only, details in Auditor report)
+    # Summary Report
     print(f"\n[FETCHER] Processed {stats['feeds_processed']}/{len(urls)} feeds. {stats['new_items']} new, {stats['updated_items']} updated. DB Size: {final_count}.")
-
 
 if __name__ == "__main__":
     update_database()
