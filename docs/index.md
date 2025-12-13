@@ -14,6 +14,10 @@ nav_order: 1
 >
 > — **Neal Stephenson**, *The Diamond Age*
 
+> "The only criterion for a news item... was that it still had to seem interesting."
+>
+> — **Neal Stephenson**, *Anathem*
+
 ---
 
 ## The Manifesto: Aperture & Artifacts
@@ -33,11 +37,8 @@ Most feeds are black boxes. Fishwrap is a **Glass Box**.
 The value of transparency isn't that you *will* tune the algorithm every day, but that you **can**. Trust comes from the **option to verify**. Our scoring logic is a clear, simple Python script (`scoring.py`) that you can audit, edit, and control. You are the Editor-in-Chief.
 
 ### 3. The Aperture of Time
-We don't just aggregate; we condense.
 In *Anathem*, the intellectuals filtered information through time to separate signal from noise.
-*   **The Feed (0-Year):** The raw noise of the Saecular world. We ignore this.
-*   **The Paper (12-Hour Aperture):** A bi-diurnal summary. Only what matters *now*.
-*   **The Chronicle (1-Year Aperture):** (Coming Soon) A re-aggregation of the year's best stories. If it's not interesting a year later, it was never news.
+We don't just aggregate; we condense. A single daily edition. We publish once per planetary rotation, prioritizing clarity over speed.
 
 ### 4. The Anxiety of the "Thumbs Down"
 In the Black Box Era (Google News, TikTok), feedback is a trap.
