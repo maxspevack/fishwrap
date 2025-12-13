@@ -20,10 +20,10 @@
             <small>Published</small>
         </div>
         <div class="funnel-step">
-            <span class="funnel-num">{{ "%.1f"|format(yield_rate) }}%</span>
-            <small>Signal Ratio</small>
-            <span class="funnel-sub">(Published / Total)</span>
-            <span class="funnel-sub">Filtered: {{ filtered_count }}</span>
+            <span class="funnel-num">{{ "%.1f"|format(anti_feed_protection) }}%</span>
+            <small>Anti-Feed Protection</small>
+            <span class="funnel-sub">(Filtered / Total)</span>
+            <span class="funnel-sub">Blocked: {{ filtered_count }}</span>
         </div>
     </div>
 
