@@ -1,6 +1,6 @@
 <div class="glass-box-container">
     <div class="audit-header">
-        <h1>Glass Box Report</h1>
+        <h1>Source Transparency</h1>
         <p>Audit Log for Edition: <strong>{{ run_id }}</strong></p>
         <p>Generated: {{ timestamp }}</p>
     </div>
@@ -31,8 +31,8 @@
     <h2>Source Efficiency</h2>
     <p>
         <em>
-            A positive Delta (+) means <strong>High Signal</strong>: We publish this source more often than we find it.<br>
-            A negative Delta (-) means <strong>High Noise</strong>: We filter (but do not silence) this source aggressively.
+            A <span class="bias-pos">positive Delta (+)</span> means <strong>High Signal</strong>: We publish this source more often than we find it.<br>
+            A <span class="bias-neg">negative Delta (-)</span> means <strong>High Noise</strong>: We filter (but do not silence) this source aggressively.
         </em>
     </p>
     
