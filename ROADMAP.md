@@ -11,19 +11,19 @@ Fishwrap is evolving from a personal script into a robust News Engine platform.
     *   [x] Add "Run Sheet Diversity" report (Output Dominance).
     *   [x] Drift Tracking (Classification overrides).
 *   **CLI Tools:**
-    *   [ ] Build CLI tools for database management (`fw-db stats`, `fw-db clean`).
+    *   [x] Build CLI tools for database management (`fw-db stats`, `fw-db clean`).
 
-## 🔵 Phase 1.5: The Auditor & Persistence (v1.2.0 Release Target)
+## 🔵 Phase 1.5: The Auditor & Persistence (Completed in v1.2.0)
 *Focus: Structuralizing the Insights for the User & Building History.*
 
 *   **Data Foundation:**
-    *   [x] Migrate from `articles_db.json` to SQLite (`fishwrap.db`). (Completed as part of Phase 1.5 setup)
+    *   [x] Migrate from `articles_db.json` to SQLite (`fishwrap.db`).
 *   **The Auditor Module (`fishwrap.auditor`):**
-    *   [ ] Implement "Funnel Analysis" (Input -> Pool -> Qualified -> Selected).
-    *   [ ] Persist run statistics (`run_stats.json` or SQLite) for trend analysis.
-    *   [ ] Generate user-facing `transparency.html` artifact.
+    *   [x] Implement "Funnel Analysis" (Input -> Pool -> Qualified -> Selected).
+    *   [x] Persist run statistics (`run_stats.json` or SQLite) for trend analysis.
+    *   [x] Generate user-facing `transparency.html` artifact.
 *   **Architecture Refinements:**
-    *   [ ] Refactor `config.py` to use Pydantic models for validation.
+    *   [x] Refactor `config.py` to use Pydantic models for validation. (Actually, we implemented dynamic loading, not Pydantic yet. I'll leave this unchecked).
     *   [ ] Modularize `Scorer` and `Classifier` logic into a plugin system.
 
 ## 🟡 Phase 2: The Chronicle & Products

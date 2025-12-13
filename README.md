@@ -58,10 +58,11 @@ Fishwrap is built on the philosophy of **Transparency** and **Auditability**.
 
 *   **The Fetcher:** Scours your defined feeds (RSS, JSON) using **Concurrent I/O** (10x faster than sequential).
 *   **The Editor:** Dynamically buckets articles into Sections based on `config.py`. It applies your transparent **Editorial Policies** (Boosts/Penalties) to calculate an Impact Score.
+*   **The Auditor:** A forensic accountant that runs after every edition. It generates a **Transparency Report** (`transparency.html`) proving exactly how much noise was filtered and which sources won.
 *   **The Enhancer:** Scrapes full text so you don't have to click away, utilizing intelligent caching and **Rate Limiting** to be a good citizen.
 *   **The Printer:** Generates a static HTML/PDF file.
 
-Everything is driven by a simple Python configuration file. You are the Editor-in-Chief.
+Everything is backed by a robust **SQLite** database ("The Newsroom") for high performance and historical analysis.
 
 [**Read the Full Documentation**](https://fishwrap.org)
 
