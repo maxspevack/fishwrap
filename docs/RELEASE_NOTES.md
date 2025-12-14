@@ -24,7 +24,7 @@ This release focuses on **Experience and Stability**. We polished the "Glass Box
 
 ---
 
-## v1.2.0 (The Glass Box) - Dec 13, 2025
+## v1.2.0 (The Glass Box) - Dec 12, 2025
 **Commit:** `2b59503`
 
 This release marks the transition from "Script" to "System." We realized that speed wasn't enough; we needed **Trust**. We rebuilt the engine to be auditable, persistent, and transparent.
@@ -44,7 +44,7 @@ This release marks the transition from "Script" to "System." We realized that sp
 
 ---
 
-## v1.1.0 (The Parallel Press) - Dec 11, 2025
+## v1.1.0 (The Parallel Press) - Dec 12, 2025
 **Commit:** `ce6cb5b`
 
 The "Speed" update. We realized our sequential processing was too slow for the scale of the web. We broke the single-lane highway and built a ten-lane freeway.
