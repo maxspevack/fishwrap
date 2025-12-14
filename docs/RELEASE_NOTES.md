@@ -17,6 +17,7 @@ A maintenance release focused on UI refinement and release engineering.
 ### 🛠️ Release Engineering
 *   **Automated Release Script:** Introduced `scripts/release.sh` to automate the version bump, build verification, and tagging process.
 *   **Release Runbook:** Published `docs/RELEASING.md` as the definitive guide for shipping new versions.
+*   **Test Gate:** Added comprehensive unit testing to the release pipeline.
 
 ---
 
