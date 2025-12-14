@@ -5,6 +5,7 @@ from zoneinfo import ZoneInfo
 from jinja2 import Environment, FileSystemLoader
 from weasyprint import HTML
 from fishwrap import _config
+from fishwrap import __version__ # Version Import
 
 def generate_edition(run_sheet):
     """
@@ -98,7 +99,8 @@ def generate_edition(run_sheet):
         vol_issue_str=f"Vol. {vol_num}, No. {issue_num}",
         sections=sections_data,
         css_block=css_content,
-        transparency_report=transparency_frag
+        transparency_report=transparency_frag,
+        engine_version=f"v{__version__}" # Inject Version
     )
     
     # 3. Save Artifacts
@@ -106,7 +108,7 @@ def generate_edition(run_sheet):
     with open(output_path, 'w') as f:
         f.write(html_out)
         
-    print(f"[PRINTER] Edition Published: {output_path}")
+    print(f"\n[PRINTER] Edition Published: {output_path}")
     
     # 4. Generate PDF (Optional/Bonus)
     if _config.LATEST_PDF_FILE:
