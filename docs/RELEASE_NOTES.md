@@ -6,18 +6,19 @@ Fishwrap is evolving from a personal script into a robust "Anti-Feed" platform. 
 
 ## v1.3.1 (The Polish) - Dec 13, 2025
 
-A maintenance release focused on UI refinement and release engineering.
+A maintenance release focused on UI refinement, build stability, and release engineering.
 
 ### 🐛 Bug Fixes & Polish
-*   **Transparency UI:** Fixed the "Tab Flashing" bug in the Glass Box modal.
+*   **Transparency UI:** Fixed the "Tab Flashing" bug in the Glass Box modal and enforced high-contrast text colors for readability.
 *   **Visuals:** Updated the "Bubble" score badges to have fixed widths for better alignment.
-*   **Readability:** Enforced high-contrast text colors in the modal to prevent dark-mode conflicts.
+*   **Data Clarity:** Renamed "Signal Delta" to "Delta" and reordered the "Source Efficiency" table (Input → Output → Delta) for better logical flow.
 *   **Footer:** Replaced the text-based version string with a clean GitHub icon + version badge (e.g., `v1.3.1`).
 
 ### 🛠️ Release Engineering
 *   **Automated Release Script:** Introduced `scripts/release.sh` to automate the version bump, build verification, and tagging process.
-*   **Release Runbook:** Published `docs/RELEASING.md` as the definitive guide for shipping new versions.
-*   **Test Gate:** Added comprehensive unit testing to the release pipeline.
+*   **Test Gate:** The release pipeline now enforces a `make test` pass, running the full unit test suite before allowing a release.
+*   **Build Hardening:** Updated `Makefile` to suppress legacy `SyntaxWarning` noise and use a robust `install_venv.sh` script for environment setup.
+*   **Runbook:** Published `docs/RELEASING.md` as the definitive guide for shipping new versions.
 
 ---
 
