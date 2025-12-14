@@ -16,7 +16,7 @@
     </div>
 
     <!-- Tab Content: Vitals -->
-    <div id="tab-vitals" class="tab-pane active">
+    <div id="tab-vitals" class="tab-pane active" style="display: block;">
         <div class="stats-grid">
             <div class="stat-card">
                 <span class="stat-value">{{ stats_input }}</span>
@@ -33,20 +33,20 @@
             <div class="stat-card highlight">
                 <span class="stat-value">{{ "%.1f"|format(anti_feed_protection) }}%</span>
                 <span class="stat-label">Anti-Feed Protection</span>
-                <small class="stat-sub">Noise Filtered Out</small>
+                <small class="stat-sub">(Total - Published) / Total</small>
             </div>
         </div>
     </div>
 
     <!-- Tab Content: Sources -->
-    <div id="tab-sources" class="tab-pane">
+    <div id="tab-sources" class="tab-pane" style="display: none;">
         <div class="table-responsive">
             <table class="data-table">
                 <thead>
                     <tr>
                         <th>Source</th>
-                        <th>Output Share</th>
                         <th>Input Share</th>
+                        <th>Output Share</th>
                         <th>Signal Delta</th>
                     </tr>
                 </thead>
@@ -55,12 +55,12 @@
                     <tr>
                         <td class="source-name">{{ row.domain }}</td>
                         <td>
-                            {{ "%.1f"|format(row.output_pct) }}%
-                            <span class="count-pill">{{ row.output_count }}</span>
-                        </td>
-                        <td>
                             {{ "%.1f"|format(row.input_pct) }}%
                             <span class="count-pill">{{ row.input_count }}</span>
+                        </td>
+                        <td>
+                            {{ "%.1f"|format(row.output_pct) }}%
+                            <span class="count-pill">{{ row.output_count }}</span>
                         </td>
                         <td>
                             {% if row.delta > 0 %}
@@ -79,7 +79,7 @@
     </div>
 
     <!-- Tab Content: The Bubble -->
-    <div id="tab-bubble" class="tab-pane">
+    <div id="tab-bubble" class="tab-pane" style="display: none;">
         <p class="bubble-intro">Comparing the lowest-scoring articles that made the cut versus the highest-scoring ones that missed it.</p>
         
         {% for section, data in bubble.items() %}
