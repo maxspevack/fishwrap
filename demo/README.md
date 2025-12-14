@@ -5,7 +5,7 @@ This directory contains a reference implementation of a Fishwrap publication. Us
 ## Structure
 
 *   **`config.py`**: The brain of your newspaper. Define your feeds, timezone, and file paths here.
-*   **`data/`**: Where your database (`articles_db.json`) and run logs live.
+*   **`data/`**: Where your database (`newsroom.db`) and run logs live.
 *   **`output/`**: Where the generated newspaper (`index.html`) is saved.
 *   **`themes/basic/`**: A clean, unbranded theme to get you started.
 
@@ -18,6 +18,14 @@ FEEDS = [
     "https://rss.nytimes.com/services/xml/rss/nyt/HomePage.xml",
     "https://your-favorite-blog.com/feed.xml"
 ]
+```
+
+### Setting Your Timezone
+Fishwrap uses your local timezone to calculate "Issue Date" and edition numbers. Set this in `config.py` using standard IANA timezone names.
+
+```python
+# config.py
+TIMEZONE = "America/New_York" # or "Europe/London", "Asia/Tokyo", etc.
 ```
 
 ### Changing Colors
