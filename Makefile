@@ -8,12 +8,7 @@ PIP := $(VENV_PATH)/bin/pip
 
 # --- Setup & Environment ---
 setup:
-	@echo "Setting up Python virtual environment and installing dependencies..."
-	@# System dependencies are assumed to be met (e.g., brew install python3 cairo pango gdk-pixbuf libffi)
-	@python3 -m venv $(VENV_PATH)
-	@$(PIP) install --upgrade pip
-	@$(PIP) install -r requirements.txt
-	@echo "Setup complete. To activate the venv, run 'source venv/bin/activate'."
+	@./scripts/install_venv.sh
 
 update:
 	@echo "Updating Python dependencies..."
