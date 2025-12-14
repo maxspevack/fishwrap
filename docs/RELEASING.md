@@ -51,7 +51,20 @@ If the smoke test fails, the script aborts before tagging.
 
 ---
 
-## 3. Hotfixes & YOLO Mode
+## 3. Policy: Forward Compatibility
+
+Fishwrap separates **Engine** (Logic) from **Theme** (Presentation). When introducing new data to the templates:
+
+1.  **Engine First:** Update `printer.py` to inject the new variable (e.g., `time_str`) into the context. This goes into `main`.
+2.  **Theme Second:** Update themes (e.g., `layout.html`) to use the variable conditionally:
+    ```html
+    {% if time_str %}{{ time_str }}{% endif %}
+    ```
+3.  **No Greedy Releases:** Do **not** cut a new Engine Release just to support a minor UI tweak in a downstream consumer. Let the consumer update their theme first (it will be invisible/safe). When the next Engine Release eventually ships, the feature will light up automatically.
+
+---
+
+## 4. Hotfixes & YOLO Mode
 
 If you need to ship a critical fix *right now* without a tag:
 
