@@ -9,9 +9,6 @@ nav_order: 5
 ## Stabilizing the Press: A Case Study in Release Engineering
 
 **Date:** December 13, 2025
-**Author:** Max Spevack
-
-*"Fixing forward is for startups. Release Engineering is for professionals."* — The Mean Principal Engineer
 
 Today, we faced a crisis. Fishwrap, the engine powering the Daily Clamour, had become unstable. We were deploying "v1.2.x" tags rapidly, trying to hotfix a build issue caused by a Python 3.14 incompatibility. We were editing Makefiles in production. We were tired.
 
@@ -37,7 +34,7 @@ We wanted to add a "Publication Timestamp" to the sidebar.
 *   **Engine:** Needs to calculate the time.
 *   **Theme:** Needs to display it.
 
-If we updated the Theme first, it would crash (missing variable). If we updated the Engine first, the timestamp would be invisible.
+If we updated the Theme first, it would be buggy (missing variable). If we updated the Engine first, the timestamp would be invisible.
 We adopted a **Forward Compatibility** policy: The Theme checks `{% if time_str %}`. This allows us to deploy the Theme change *today*, and have the feature "light up" automatically when the Engine is upgraded next week.
 
 ### 3. Smart Builds (Makefiles are DAGs)
@@ -46,9 +43,9 @@ We rewrote our build system to be a **Dependency Graph**.
 *   If `config.py` changes -> Re-run Fetcher.
 *   If `style.css` changes -> Re-run Printer (Instant).
 
-## The Result: v1.3.1
+## The Result: v1.3.2
 
-We shipped **Fishwrap v1.3.1**. It is clean. It is tested. It has a shiny new "Glass Box" UI.
+We shipped **Fishwrap v1.3.2**. It is clean. It is tested. It has a shiny new "Glass Box" UI.
 And most importantly, we shipped it without touching the production server manually.
 
 We moved from "It works on my machine" to "It works."
