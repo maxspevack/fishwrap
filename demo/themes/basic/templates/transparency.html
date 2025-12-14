@@ -1,80 +1,74 @@
-<div class="glass-box-container">
-    <div class="audit-header">
-        <h1>Source Transparency</h1>
-        <p>Audit Log for Edition: <strong>{{ run_id }}</strong></p>
-        <p>Generated: {{ timestamp }}</p>
+<!-- Basic Theme Transparency Report -->
+<div class="transparency-report">
+    <div class="report-header">
+        <h2>Source Transparency</h2>
+        <div class="report-meta">
+            <span>Edition: {{ run_id }}</span>
+            <span>Generated: {{ timestamp }}</span>
+        </div>
     </div>
 
-    <!-- Tabs Navigation -->
+    <!-- Tabs -->
     <div class="tabs">
-        <button class="tab-btn active" onclick="openTab(event, 'tab-vitals')">Vitals</button>
-        <button class="tab-btn" onclick="openTab(event, 'tab-sources')">Sources</button>
-        <button class="tab-btn" onclick="openTab(event, 'tab-bubble')">The Bubble</button>
+        <button class="tab-link active" onclick="switchTab(event, 'tab-vitals')">Vitals</button>
+        <button class="tab-link" onclick="switchTab(event, 'tab-sources')">Source Efficiency</button>
+        <button class="tab-link" onclick="switchTab(event, 'tab-bubble')">The Bubble</button>
     </div>
 
-    <!-- Tab: Vitals (The Funnel) -->
-    <div id="tab-vitals" class="tab-content active">
-        <div class="funnel-container">
-            <div class="funnel-step">
-                <span class="funnel-num">{{ stats_input }}</span>
-                <small>Total Items</small>
+    <!-- Tab Content: Vitals -->
+    <div id="tab-vitals" class="tab-pane active">
+        <div class="stats-grid">
+            <div class="stat-card">
+                <span class="stat-value">{{ stats_input }}</span>
+                <span class="stat-label">Total Items Scanned</span>
             </div>
-            <div class="funnel-step">
-                <span class="funnel-num">{{ stats_pool }}</span>
-                <small>Candidate Pool</small>
+            <div class="stat-card">
+                <span class="stat-value">{{ stats_pool }}</span>
+                <span class="stat-label">Fresh Candidates</span>
             </div>
-            <div class="funnel-step">
-                <span class="funnel-num">{{ stats_selected }}</span>
-                <small>Published</small>
+            <div class="stat-card">
+                <span class="stat-value">{{ stats_selected }}</span>
+                <span class="stat-label">Published</span>
             </div>
-            <div class="funnel-step">
-                <span class="funnel-num">{{ "%.1f"|format(anti_feed_protection) }}%</span>
-                <small>Anti-Feed Protection</small>
-                <span class="funnel-sub">(Total - Published) / Total</span>
-                <span class="funnel-sub">Blocked: {{ filtered_count }}</span>
+            <div class="stat-card highlight">
+                <span class="stat-value">{{ "%.1f"|format(anti_feed_protection) }}%</span>
+                <span class="stat-label">Anti-Feed Protection</span>
+                <small class="stat-sub">Noise Filtered Out</small>
             </div>
         </div>
     </div>
 
-    <!-- Tab: Sources (Efficiency Table) -->
-    <div id="tab-sources" class="tab-content">
-        <h2>Source Efficiency</h2>
-        <p>
-            <em>
-                A <span class="bias-pos">positive Delta (+)</span> means <strong>High Signal</strong>: We publish this source more often than we find it.<br>
-                A <span class="bias-neg">negative Delta (-)</span> means <strong>High Noise</strong>: We filter (but do not silence) this source aggressively.
-            </em>
-        </p>
-        
-        <div class="table-scroll-container">
-            <table class="audit-table">
+    <!-- Tab Content: Sources -->
+    <div id="tab-sources" class="tab-pane">
+        <div class="table-responsive">
+            <table class="data-table">
                 <thead>
                     <tr>
                         <th>Source</th>
-                        <th>Output Share (Count)</th>
-                        <th>Input Share (Count)</th>
-                        <th>Delta</th>
+                        <th>Output Share</th>
+                        <th>Input Share</th>
+                        <th>Signal Delta</th>
                     </tr>
                 </thead>
                 <tbody>
                     {% for row in source_velocity %}
                     <tr>
-                        <td>{{ row.domain }}</td>
+                        <td class="source-name">{{ row.domain }}</td>
                         <td>
                             {{ "%.1f"|format(row.output_pct) }}%
-                            <span class="count-sub">({{ row.output_count }})</span>
+                            <span class="count-pill">{{ row.output_count }}</span>
                         </td>
                         <td>
                             {{ "%.1f"|format(row.input_pct) }}%
-                            <span class="count-sub">({{ row.input_count }})</span>
+                            <span class="count-pill">{{ row.input_count }}</span>
                         </td>
                         <td>
                             {% if row.delta > 0 %}
-                            <span class="bias-pos">+{{ "%.1f"|format(row.delta) }}%</span>
+                            <span class="delta-pos">+{{ "%.1f"|format(row.delta) }}%</span>
                             {% elif row.delta < 0 %}
-                            <span class="bias-neg">{{ "%.1f"|format(row.delta) }}%</span>
+                            <span class="delta-neg">{{ "%.1f"|format(row.delta) }}%</span>
                             {% else %}
-                            0.0%
+                            <span class="delta-neutral">-</span>
                             {% endif %}
                         </td>
                     </tr>
@@ -84,39 +78,41 @@
         </div>
     </div>
 
-    <!-- Tab: The Bubble -->
-    <div id="tab-bubble" class="tab-content">
-        <h2>The Bubble</h2>
-        <p><em>Comparing the last stories to make the cut vs. the first to miss it.</em></p>
+    <!-- Tab Content: The Bubble -->
+    <div id="tab-bubble" class="tab-pane">
+        <p class="bubble-intro">Comparing the lowest-scoring articles that made the cut versus the highest-scoring ones that missed it.</p>
         
         {% for section, data in bubble.items() %}
-        <div class="bubble-section">
-            <h3>{{ section_map.get(section, section) }}</h3>
-            <div class="bubble-grid">
-                <!-- Last 3 In -->
-                <div class="bubble-col bubble-in">
-                    <div class="bubble-header">Last 3 In (Lowest Scores)</div>
-                    {% for item in data.in %}
-                    <div class="bubble-item">
-                        <span class="score-badge">{{ "%.0f"|format(item.impact_score) }}</span>
-                        <span>{{ item.title }}</span>
-                    </div>
-                    {% else %}
-                    <div class="bubble-item">No articles selected.</div>
-                    {% endfor %}
+        <div class="bubble-group">
+            <h3 class="bubble-section-title">{{ section_map.get(section, section)|title }}</h3>
+            <div class="bubble-columns">
+                <!-- In -->
+                <div class="bubble-col in">
+                    <h4>Last In (Lowest Score)</h4>
+                    <ul>
+                        {% for item in data.in %}
+                        <li>
+                            <span class="score-badge">{{ "%.0f"|format(item.impact_score) }}</span>
+                            {{ item.title }}
+                        </li>
+                        {% else %}
+                        <li><em class="empty">None</em></li>
+                        {% endfor %}
+                    </ul>
                 </div>
-                
-                <!-- First 3 Out -->
-                <div class="bubble-col bubble-out">
-                    <div class="bubble-header">First 3 Out (Highest Scores)</div>
-                    {% for item in data.out %}
-                    <div class="bubble-item">
-                        <span class="score-badge">{{ "%.0f"|format(item.impact_score) }}</span>
-                        <span>{{ item.title }}</span>
-                    </div>
-                    {% else %}
-                    <div class="bubble-item">No bubble (Capacity not met).</div>
-                    {% endfor %}
+                <!-- Out -->
+                <div class="bubble-col out">
+                    <h4>First Out (Highest Score)</h4>
+                    <ul>
+                        {% for item in data.out %}
+                        <li>
+                            <span class="score-badge">{{ "%.0f"|format(item.impact_score) }}</span>
+                            {{ item.title }}
+                        </li>
+                        {% else %}
+                        <li><em class="empty">None</em></li>
+                        {% endfor %}
+                    </ul>
                 </div>
             </div>
         </div>
@@ -125,29 +121,22 @@
 </div>
 
 <script>
-function openTab(evt, tabName) {
+function switchTab(evt, tabName) {
     var i, tabcontent, tablinks;
     
-    // Hide all tab content
-    tabcontent = document.getElementsByClassName("tab-content");
+    tabcontent = document.getElementsByClassName("tab-pane");
     for (i = 0; i < tabcontent.length; i++) {
         tabcontent[i].style.display = "none";
         tabcontent[i].classList.remove("active");
     }
     
-    // Remove active class from all tab links
-    tablinks = document.getElementsByClassName("tab-btn");
+    tablinks = document.getElementsByClassName("tab-link");
     for (i = 0; i < tablinks.length; i++) {
-        tablinks[i].className = tablinks[i].className.replace(" active", "");
+        tablinks[i].classList.remove("active");
     }
     
-    // Show the current tab, and add an "active" class to the button that opened the tab
     document.getElementById(tabName).style.display = "block";
-    // Slight delay to allow display:block to apply before adding opacity class for animation
-    setTimeout(() => {
-        document.getElementById(tabName).classList.add("active");
-    }, 10);
-    
-    evt.currentTarget.className += " active";
+    document.getElementById(tabName).classList.add("active");
+    evt.currentTarget.classList.add("active");
 }
 </script>
