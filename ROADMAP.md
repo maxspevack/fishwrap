@@ -25,7 +25,7 @@ Fishwrap is evolving from a personal script into a robust News Engine platform.
     *   [x] Persist run statistics (`run_stats.json` or SQLite) for trend analysis.
     *   [x] Generate user-facing `transparency.html` artifact.
 *   **Architecture Refinements:**
-    *   [ ] Refactor `config.py` to use Pydantic models for validation. (This was not fully completed, it was a tech debt item.)
+    *   [ ] Refactor `config.py` to use Pydantic models for validation. (This was not fully completed, it was a tech debt item. Attempting this caused a huge operational disaster that cost a day of time.  DANGER WILL ROBINSON if you ever try to come back to this.  We need a better solution to whatever problem we were trying to solve.)
     *   [ ] Modularize `Scorer` and `Classifier` logic into a plugin system.
 
 ## 🔬 Performance Field Notes (Feedback from Daily Clamour v1.2)

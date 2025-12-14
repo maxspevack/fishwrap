@@ -5,7 +5,7 @@ from zoneinfo import ZoneInfo
 from jinja2 import Environment, FileSystemLoader
 from weasyprint import HTML
 from fishwrap import _config
-from fishwrap import __version__ # Version Import
+from fishwrap import __version__
 
 def generate_edition(run_sheet):
     """
@@ -100,11 +100,15 @@ def generate_edition(run_sheet):
         sections=sections_data,
         css_block=css_content,
         transparency_report=transparency_frag,
-        engine_version=f"v{__version__}" # Inject Version
+        engine_version=f"v{__version__}"
     )
     
     # 3. Save Artifacts
     output_path = _config.LATEST_HTML_FILE
+    
+    # Ensure directory exists
+    os.makedirs(os.path.dirname(output_path), exist_ok=True)
+    
     with open(output_path, 'w') as f:
         f.write(html_out)
         

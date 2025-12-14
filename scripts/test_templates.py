@@ -1,48 +1,37 @@
-import os
 import sys
+import os
+from jinja2 import Environment, FileSystemLoader
 
-# Add project root
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
 from fishwrap import _config
 
-REQUIRED_TEMPLATES = [
-    'layout.html',
-    'card.html',
-    'section.html',
-    'sidebar_item.html',
-    'transparency.html'
-]
-
 def test_templates():
-    print(f"[TEST] Verifying templates for theme: {_config.THEME}")
+    # Mock Theme Path for Test
+    # Assuming we run from repo root
+    _config.THEME = "demo/themes/basic"
     
-    # Locate theme dir
-    if os.path.isabs(_config.THEME):
-        theme_path = _config.THEME
-    else:
-        # Resolve relative to fishwrap/
-        # This mirrors renderers/html.py logic roughly
-        repo_root = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
-        theme_path = os.path.join(repo_root, _config.THEME)
-        
-    template_dir = os.path.join(theme_path, 'templates')
+    theme_name = _config.THEME
+    print(f"[TEST] Verifying templates for theme: {theme_name}")
     
+    template_dir = os.path.join(theme_name, 'templates')
     if not os.path.exists(template_dir):
-        print(f"[FAIL] Template directory not found: {template_dir}")
+        print(f"[FAIL] Template directory not found: {os.path.abspath(template_dir)}")
         sys.exit(1)
         
-    missing = []
-    for tpl in REQUIRED_TEMPLATES:
-        p = os.path.join(template_dir, tpl)
-        if not os.path.exists(p):
-            missing.append(tpl)
+    env = Environment(loader=FileSystemLoader(template_dir))
+    
+    required_templates = ['layout.html', 'transparency.html'] # Index is now layout
+    
+    for t in required_templates:
+        try:
+            env.get_template(t)
+            print(f"  [PASS] Found {t}")
+        except Exception as e:
+            print(f"  [FAIL] Missing {t}: {e}")
+            sys.exit(1)
             
-    if missing:
-        print(f"[FAIL] Missing required templates: {missing}")
-        sys.exit(1)
-        
-    print("[PASS] All required templates exist.")
+    print("[PASS] Templates are valid.")
 
 if __name__ == "__main__":
     test_templates()

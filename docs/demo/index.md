@@ -10,7 +10,7 @@ See the Fishwrap engine in action.
 
 ## 🌟 Live Production
 **[The Daily Clamour](https://dailyclamour.com)**  
-*The Flagship Edition.* A general-purpose tech and culture newspaper running on the `vintage` theme. It demonstrates the full power of the "Glass-Box" engine with custom branding, Scoop the mascot, and automated daily publishing.
+*The Flagship Edition.* A general-purpose news, sports, tech, and culture newspaper running on the `vintage` theme. It demonstrates the full power of the "Glass-Box" engine with custom branding, Scoop-the-Pearl as mascot, and automated daily publishing.
 
 ---
 

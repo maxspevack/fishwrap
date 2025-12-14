@@ -1,92 +1,85 @@
-.PHONY: setup update run-fishwrap generate-pdf publish-resume clean
+SHELL := /bin/bash
+.PHONY: setup update test build-core run-vanilla run-cyber run-ai publish ship clean-output clean-venv run-clamour
 
-SHELL := /bin/bash # Ensure bash is used for all shell commands
+# Paths
+VENV := venv
+PYTHON := $(VENV)/bin/python3
+PIP := $(VENV)/bin/pip
 
-VENV_PATH := $(CURDIR)/venv
-PYTHON := $(VENV_PATH)/bin/python3 -W ignore::SyntaxWarning
-PIP := $(VENV_PATH)/bin/pip
+# Environment Variables
+# Suppress SyntaxWarnings (from legacy libs like newspaper3k)
+export PYTHONWARNINGS := ignore::SyntaxWarning
 
-# --- Setup & Environment ---
+# --- Environment ---
 setup:
 	@./scripts/install_venv.sh
 
 update:
-	@echo "Updating Python dependencies..."
 	@$(PIP) install --upgrade -r requirements.txt
 
-# --- Production: The Daily Clamour ---
-# Aliased to 'run-fishwrap' for backward compatibility with launchd scripts
-run-fishwrap: run-clamour
+# --- Testing ---
+test:
+	@echo "--- Running Unit Tests ---"
+	@$(PYTHON) scripts/test_editor_logic.py
+	@$(PYTHON) scripts/test_enhancer_db.py
+	@$(PYTHON) scripts/test_fetcher_resilience.py
+	@$(PYTHON) scripts/test_schema_integrity.py
+	@$(PYTHON) scripts/test_scoring_determinism.py
+	@$(PYTHON) scripts/test_templates.py
+	@# test_fw_db.sh is a shell script, run it if it exists and is executable
+	@if [ -x scripts/test_fw_db.sh ]; then ./scripts/test_fw_db.sh; fi
+	@echo "✅ All Tests Passed."
 
-run-clamour:
-	@echo "Running The Daily Clamour..."
-	@export FISHWRAP_CONFIG=$(CURDIR)/daily_clamour/config.py && \
+# --- Atomic Build Unit ---
+# Usage: make build-core CONFIG=demo/config.py
+build-core:
+	@if [ -z "$(CONFIG)" ]; then echo "Error: CONFIG argument required"; exit 1; fi
+	@export FISHWRAP_CONFIG=$(CURDIR)/$(CONFIG) && \
 	$(PYTHON) -m fishwrap.fetcher && \
 	$(PYTHON) -m fishwrap.editor && \
 	$(PYTHON) -m fishwrap.enhancer && \
 	$(PYTHON) -m fishwrap.printer
 
-# --- Demo: Vanilla Fishwrap ---
+# --- Demo Targets ---
 run-vanilla:
-	@echo "Running Vanilla Fishwrap Demo..."
-	@export FISHWRAP_CONFIG=$(CURDIR)/demo/config.py && \
-	$(PYTHON) -m fishwrap.fetcher && \
-	$(PYTHON) -m fishwrap.editor && \
-	$(PYTHON) -m fishwrap.enhancer && \
-	$(PYTHON) -m fishwrap.printer
+	@echo "--- Building Vanilla Demo ---"
+	@$(MAKE) build-core CONFIG=demo/config.py
 
-# --- Demo: Cyber Fishwrap ---
 run-cyber:
-	@echo "Running Cyber Fishwrap Demo..."
-	@export FISHWRAP_CONFIG=$(CURDIR)/demo/cyber_config.py && \
-	$(PYTHON) -m fishwrap.fetcher && \
-	$(PYTHON) -m fishwrap.editor && \
-	$(PYTHON) -m fishwrap.enhancer && \
-	$(PYTHON) -m fishwrap.printer
+	@echo "--- Building Cyber Demo ---"
+	@$(MAKE) build-core CONFIG=demo/cyber_config.py
 
-# --- Demo: AI Fishwrap ---
 run-ai:
-	@echo "Running AI Fishwrap Demo..."
-	@export FISHWRAP_CONFIG=$(CURDIR)/demo/ai_config.py && \
-	$(PYTHON) -m fishwrap.fetcher && \
+	@echo "--- Building AI Demo ---"
+	@$(MAKE) build-core CONFIG=demo/ai_config.py
+
+# --- Production Target (Daily Clamour Hook) ---
+# Kept for backward compatibility with dailyclamour.com/deploy.sh logic
+# But ideally, DC should use its own Makefile that calls into this if needed
+run-clamour:
+	@echo "Running The Daily Clamour (Legacy Hook)..."
+	@if [ -z "$(FISHWRAP_CONFIG)" ]; then echo "Error: FISHWRAP_CONFIG env var required for run-clamour"; exit 1; fi
+	@$(PYTHON) -m fishwrap.fetcher && \
 	$(PYTHON) -m fishwrap.editor && \
 	$(PYTHON) -m fishwrap.enhancer && \
 	$(PYTHON) -m fishwrap.printer
 
-# --- Core Pipeline (for external calls) ---
-run-core-pipeline:
-	@echo "Running Fishwrap core pipeline..."
-	$(PYTHON) -m fishwrap.fetcher && \
-	$(PYTHON) -m fishwrap.editor && \
-	$(PYTHON) -m fishwrap.enhancer && \
-	$(PYTHON) -m fishwrap.printer
+# --- Publishing ---
+publish:
+	@./publish_demo.sh vanilla
+	@./publish_demo.sh cyber
+	@./publish_demo.sh ai
 
-# --- Shipping ---
-ship: run-vanilla run-cyber run-ai
-	@echo "Publishing demos..."
-	./publish_demo.sh vanilla
-	./publish_demo.sh cyber
-	./publish_demo.sh ai
-	@echo "All demos regenerated and published to docs/. Ready for git commit."
+# --- The "One Button" ---
+ship: setup test run-vanilla run-cyber run-ai publish
+	@echo "✅ Ship Complete. Verify in docs/ and commit."
 
 # --- Cleanup ---
-clean-demo:
-	@echo "Cleaning up Demo artifacts..."
-	rm -f demo/data/*.json demo/output/*.html demo/output/*.pdf
-	rm -rf demo/output/static
+clean-output:
+	rm -rf demo/output/* fishwrap/logs/*
 
-clean-clamour:
-	@echo "Cleaning up Daily Clamour artifacts..."
-	rm -f daily_clamour/data/*.json daily_clamour/output/*.html daily_clamour/output/*.pdf
-	rm -rf daily_clamour/output/static
-
-clean: clean-demo clean-clamour
-	@echo "Cleaning up logs..."
-	rm -rf fishwrap/logs/* fishwrap/fishwrap/logs/*
-	@echo "Cleanup complete."
-
-clean-all: clean
-	@echo "Cleaning up virtual environment and Python bytecode..."
+clean-venv:
 	rm -rf venv
-	find . -depth -name "__pycache__" -exec rm -rf {} \;
-	@echo "Full cleanup complete."
+	find . -name "__pycache__" -type d -exec rm -rf {} +
+
+clean-all: clean-output clean-venv
