@@ -1112,9 +1112,9 @@ td { border-bottom: 1px solid var(--term-dim); padding: 1rem; color: var(--term-
                 
                 <!-- Debug Overlay -->
                 <div class="debug-card">
-                    <div><strong>Score:</strong> 5008.0</div>
+                    <div><strong>Score:</strong> 5007.0</div>
                     <hr style="border: 0; border-top: 1px dashed #ccc; margin: 5px 0;">
-                    <div>Base: 8</div>
+                    <div>Base: 7</div>
                     
                     <div>keyword_boost: 5000</div>
                     
@@ -1200,8 +1200,8 @@ td { border-bottom: 1px solid var(--term-dim); padding: 1rem; color: var(--term-
     <div class="report-header">
         <h2>Source Transparency</h2>
         <div class="report-meta">
-            <span>Edition: 04f66b39-8725-4868-8470-55cfe035bd3b</span>
-            <span>Generated: 2025-12-13 17:37:43 PST</span>
+            <span>Edition: 6e6aeae7-4c1a-43b0-a40b-6a1fe57bf561</span>
+            <span>Generated: 2025-12-13 17:48:11 PST</span>
         </div>
     </div>
 
@@ -1213,7 +1213,7 @@ td { border-bottom: 1px solid var(--term-dim); padding: 1rem; color: var(--term-
     </div>
 
     <!-- Tab Content: Vitals -->
-    <div id="tab-vitals" class="tab-pane active">
+    <div id="tab-vitals" class="tab-pane active" style="display: block;">
         <div class="stats-grid">
             <div class="stat-card">
                 <span class="stat-value">152</span>
@@ -1230,20 +1230,20 @@ td { border-bottom: 1px solid var(--term-dim); padding: 1rem; color: var(--term-
             <div class="stat-card highlight">
                 <span class="stat-value">80.3%</span>
                 <span class="stat-label">Anti-Feed Protection</span>
-                <small class="stat-sub">Noise Filtered Out</small>
+                <small class="stat-sub">(Total - Published) / Total</small>
             </div>
         </div>
     </div>
 
     <!-- Tab Content: Sources -->
-    <div id="tab-sources" class="tab-pane">
+    <div id="tab-sources" class="tab-pane" style="display: none;">
         <div class="table-responsive">
             <table class="data-table">
                 <thead>
                     <tr>
                         <th>Source</th>
-                        <th>Output Share</th>
                         <th>Input Share</th>
+                        <th>Output Share</th>
                         <th>Signal Delta</th>
                     </tr>
                 </thead>
@@ -1252,12 +1252,12 @@ td { border-bottom: 1px solid var(--term-dim); padding: 1rem; color: var(--term-
                     <tr>
                         <td class="source-name">feeds.feedburner.com</td>
                         <td>
-                            23.3%
-                            <span class="count-pill">7</span>
-                        </td>
-                        <td>
                             8.1%
                             <span class="count-pill">8</span>
+                        </td>
+                        <td>
+                            23.3%
+                            <span class="count-pill">7</span>
                         </td>
                         <td>
                             
@@ -1269,12 +1269,12 @@ td { border-bottom: 1px solid var(--term-dim); padding: 1rem; color: var(--term-
                     <tr>
                         <td class="source-name">www.helpnetsecurity.com</td>
                         <td>
-                            16.7%
-                            <span class="count-pill">5</span>
-                        </td>
-                        <td>
                             8.1%
                             <span class="count-pill">8</span>
+                        </td>
+                        <td>
+                            16.7%
+                            <span class="count-pill">5</span>
                         </td>
                         <td>
                             
@@ -1286,12 +1286,12 @@ td { border-bottom: 1px solid var(--term-dim); padding: 1rem; color: var(--term-
                     <tr>
                         <td class="source-name">www.bleepingcomputer.com</td>
                         <td>
-                            16.7%
-                            <span class="count-pill">5</span>
-                        </td>
-                        <td>
                             9.1%
                             <span class="count-pill">9</span>
+                        </td>
+                        <td>
+                            16.7%
+                            <span class="count-pill">5</span>
                         </td>
                         <td>
                             
@@ -1303,11 +1303,11 @@ td { border-bottom: 1px solid var(--term-dim); padding: 1rem; color: var(--term-
                     <tr>
                         <td class="source-name">securelist.com</td>
                         <td>
-                            6.7%
+                            2.0%
                             <span class="count-pill">2</span>
                         </td>
                         <td>
-                            2.0%
+                            6.7%
                             <span class="count-pill">2</span>
                         </td>
                         <td>
@@ -1320,12 +1320,12 @@ td { border-bottom: 1px solid var(--term-dim); padding: 1rem; color: var(--term-
                     <tr>
                         <td class="source-name">securityaffairs.co</td>
                         <td>
-                            10.0%
-                            <span class="count-pill">3</span>
-                        </td>
-                        <td>
                             6.1%
                             <span class="count-pill">6</span>
+                        </td>
+                        <td>
+                            10.0%
+                            <span class="count-pill">3</span>
                         </td>
                         <td>
                             
@@ -1335,30 +1335,13 @@ td { border-bottom: 1px solid var(--term-dim); padding: 1rem; color: var(--term-
                     </tr>
                     
                     <tr>
-                        <td class="source-name">googleprojectzero.blogspot.com</td>
-                        <td>
-                            3.3%
-                            <span class="count-pill">1</span>
-                        </td>
+                        <td class="source-name">unit42.paloaltonetworks.com</td>
                         <td>
                             1.0%
                             <span class="count-pill">1</span>
                         </td>
                         <td>
-                            
-                            <span class="delta-pos">+2.3%</span>
-                            
-                        </td>
-                    </tr>
-                    
-                    <tr>
-                        <td class="source-name">www.crowdstrike.com</td>
-                        <td>
                             3.3%
-                            <span class="count-pill">1</span>
-                        </td>
-                        <td>
-                            1.0%
                             <span class="count-pill">1</span>
                         </td>
                         <td>
@@ -1371,11 +1354,11 @@ td { border-bottom: 1px solid var(--term-dim); padding: 1rem; color: var(--term-
                     <tr>
                         <td class="source-name">www.mandiant.com</td>
                         <td>
-                            3.3%
+                            1.0%
                             <span class="count-pill">1</span>
                         </td>
                         <td>
-                            1.0%
+                            3.3%
                             <span class="count-pill">1</span>
                         </td>
                         <td>
@@ -1386,13 +1369,30 @@ td { border-bottom: 1px solid var(--term-dim); padding: 1rem; color: var(--term-
                     </tr>
                     
                     <tr>
-                        <td class="source-name">unit42.paloaltonetworks.com</td>
+                        <td class="source-name">www.crowdstrike.com</td>
+                        <td>
+                            1.0%
+                            <span class="count-pill">1</span>
+                        </td>
                         <td>
                             3.3%
                             <span class="count-pill">1</span>
                         </td>
                         <td>
+                            
+                            <span class="delta-pos">+2.3%</span>
+                            
+                        </td>
+                    </tr>
+                    
+                    <tr>
+                        <td class="source-name">googleprojectzero.blogspot.com</td>
+                        <td>
                             1.0%
+                            <span class="count-pill">1</span>
+                        </td>
+                        <td>
+                            3.3%
                             <span class="count-pill">1</span>
                         </td>
                         <td>
@@ -1405,12 +1405,12 @@ td { border-bottom: 1px solid var(--term-dim); padding: 1rem; color: var(--term-
                     <tr>
                         <td class="source-name">www.darkreading.com</td>
                         <td>
-                            6.7%
-                            <span class="count-pill">2</span>
-                        </td>
-                        <td>
                             7.1%
                             <span class="count-pill">7</span>
+                        </td>
+                        <td>
+                            6.7%
+                            <span class="count-pill">2</span>
                         </td>
                         <td>
                             
@@ -1422,12 +1422,12 @@ td { border-bottom: 1px solid var(--term-dim); padding: 1rem; color: var(--term-
                     <tr>
                         <td class="source-name">www.troyhunt.com</td>
                         <td>
-                            0.0%
-                            <span class="count-pill">0</span>
-                        </td>
-                        <td>
                             1.0%
                             <span class="count-pill">1</span>
+                        </td>
+                        <td>
+                            0.0%
+                            <span class="count-pill">0</span>
                         </td>
                         <td>
                             
@@ -1439,12 +1439,12 @@ td { border-bottom: 1px solid var(--term-dim); padding: 1rem; color: var(--term-
                     <tr>
                         <td class="source-name">www.schneier.com</td>
                         <td>
-                            0.0%
-                            <span class="count-pill">0</span>
-                        </td>
-                        <td>
                             1.0%
                             <span class="count-pill">1</span>
+                        </td>
+                        <td>
+                            0.0%
+                            <span class="count-pill">0</span>
                         </td>
                         <td>
                             
@@ -1456,12 +1456,12 @@ td { border-bottom: 1px solid var(--term-dim); padding: 1rem; color: var(--term-
                     <tr>
                         <td class="source-name">therecord.media</td>
                         <td>
-                            0.0%
-                            <span class="count-pill">0</span>
-                        </td>
-                        <td>
                             5.1%
                             <span class="count-pill">5</span>
+                        </td>
+                        <td>
+                            0.0%
+                            <span class="count-pill">0</span>
                         </td>
                         <td>
                             
@@ -1473,12 +1473,12 @@ td { border-bottom: 1px solid var(--term-dim); padding: 1rem; color: var(--term-
                     <tr>
                         <td class="source-name">www.reddit.com</td>
                         <td>
-                            6.7%
-                            <span class="count-pill">2</span>
-                        </td>
-                        <td>
                             48.5%
                             <span class="count-pill">48</span>
+                        </td>
+                        <td>
+                            6.7%
+                            <span class="count-pill">2</span>
                         </td>
                         <td>
                             
@@ -1493,7 +1493,7 @@ td { border-bottom: 1px solid var(--term-dim); padding: 1rem; color: var(--term-
     </div>
 
     <!-- Tab Content: The Bubble -->
-    <div id="tab-bubble" class="tab-pane">
+    <div id="tab-bubble" class="tab-pane" style="display: none;">
         <p class="bubble-intro">Comparing the lowest-scoring articles that made the cut versus the highest-scoring ones that missed it.</p>
         
         
@@ -1578,7 +1578,7 @@ td { border-bottom: 1px solid var(--term-dim); padding: 1rem; color: var(--term-
                         </li>
                         
                         <li>
-                            <span class="score-badge">48</span>
+                            <span class="score-badge">46</span>
                             what are some good options that provide a virtual environment to browse online?
                         </li>
                         
