@@ -4,6 +4,26 @@ Fishwrap is evolving from a personal script into a robust "Anti-Feed" platform. 
 
 ---
 
+## v1.3.0 (Digital Origami) - Dec 13, 2025
+**Commit:** `b4627de`
+
+This release focuses on **Experience and Stability**. We polished the "Glass Box" UI, overhauled the documentation identity, and hardened the build system to survive bleeding-edge environments (Python 3.14).
+
+### 🎨 UX & Branding
+*   **Tabbed Transparency UI:** The "Glass Box" modal now features a clean, tabbed interface separating "Vitals" (The Funnel), "Sources" (Efficiency), and "The Bubble" (Cut-Line).
+*   **Digital Origami:** Rolled out the new brand identity across the documentation.
+*   **Sidebar Restoration:** Fixed a regression in the demo themes where the sidebar navigation was lost.
+
+### 📚 Documentation
+*   **The Architect's Log:** Reorganized the engineering docs into a proper blog structure.
+*   **Brand Bible:** Added comprehensive brand guidelines and GenAI prompts for assets.
+
+### 🛡️ Engineering
+*   **Robust Build System:** Updated `Makefile` to explicitly handle shell environments (`bash`) and simplify dependency installation (`install_venv.sh`), fixing deployment issues on modern macOS.
+*   **Dependencies:** Cleaned up the dependency tree, reverting the experimental Pydantic refactor to maintain compatibility with Python 3.14.
+
+---
+
 ## v1.2.0 (The Glass Box) - Dec 13, 2025
 **Commit:** `2b59503`
 
