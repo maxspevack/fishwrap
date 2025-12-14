@@ -129,33 +129,93 @@
         }
         body.debug-active .debug-card { display: block; }
         
-        /* Modal */
+        /* Modal - Updated for Clean Basic Theme */
         .modal-overlay {
             display: none;
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.8);
+            background: rgba(0,0,0,0.5); /* Lighter backdrop */
             z-index: 1000;
             justify-content: center; align-items: center;
         }
         .modal-content {
-            background: #1a1a1a; /* Dark mode modal for Glass Box */
-            color: #f0f0f0;
+            background: #fff; /* White modal */
+            color: #333;
             width: 90%; max-width: 900px; height: 85vh;
             overflow-y: auto;
             padding: 40px;
             border-radius: 8px;
-            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+            box-shadow: 0 20px 50px rgba(0,0,0,0.2);
         }
         .modal-close {
             position: absolute; top: 20px; right: 20px;
-            font-size: 2rem; border: none; background: none; color: #fff; cursor: pointer;
+            font-size: 2rem; border: none; background: none; color: #333; cursor: pointer;
         }
+        .modal-close:hover { color: var(--accent-color); }
+        
+        /* Transparency Report Styles (Clean) */
+        .transparency-report { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
+        
+        .report-header { margin-bottom: 30px; border-bottom: 1px solid #eee; padding-bottom: 20px; }
+        .report-header h2 { margin: 0 0 10px 0; font-size: 1.8em; color: #333; }
+        .report-meta { color: #666; font-size: 0.9em; display: flex; gap: 20px; }
+        
+        /* Tabs */
+        .tabs { display: flex; border-bottom: 2px solid #eee; margin-bottom: 30px; }
+        .tab-link {
+            background: none; border: none; padding: 10px 20px;
+            font-size: 1rem; color: #666; cursor: pointer;
+            border-bottom: 2px solid transparent; margin-bottom: -2px;
+            font-weight: 500;
+        }
+        .tab-link:hover { color: var(--accent-color); }
+        .tab-link.active { color: var(--accent-color); border-bottom-color: var(--accent-color); }
+        
+        .tab-pane { display: none; animation: fadeIn 0.3s; }
+        .tab-pane.active { display: block; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
+        
+        /* Stats Grid */
+        .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 20px; }
+        .stat-card { background: #f8f9fa; padding: 20px; border-radius: 8px; text-align: center; border: 1px solid #eee; }
+        .stat-card.highlight { background: #eff6ff; border-color: #bfdbfe; }
+        .stat-value { display: block; font-size: 2rem; font-weight: 700; color: #333; margin-bottom: 5px; }
+        .stat-label { display: block; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.5px; color: #666; }
+        .stat-sub { font-size: 0.75rem; color: #888; display: block; margin-top: 5px; }
+        
+        /* Tables */
+        .table-responsive { overflow-x: auto; }
+        .data-table { width: 100%; border-collapse: collapse; font-size: 0.9rem; }
+        .data-table th { text-align: left; padding: 12px; border-bottom: 2px solid #eee; color: #666; font-weight: 600; }
+        .data-table td { padding: 12px; border-bottom: 1px solid #eee; color: #333; }
+        .source-name { font-weight: 500; color: #333; }
+        .count-pill { display: inline-block; background: #eee; padding: 2px 6px; border-radius: 10px; font-size: 0.75rem; margin-left: 5px; color: #666; }
+        
+        /* Deltas */
+        .delta-pos { color: #16a34a; font-weight: 600; }
+        .delta-neg { color: #dc2626; font-weight: 600; }
+        .delta-neutral { color: #9ca3af; }
+        
+        /* Bubble */
+        .bubble-group { margin-bottom: 40px; }
+        .bubble-section-title { font-size: 1.2rem; color: #333; border-left: 4px solid var(--accent-color); padding-left: 10px; margin-bottom: 15px; }
+        .bubble-columns { display: grid; grid-template-columns: 1fr 1fr; gap: 30px; }
+        .bubble-col h4 { font-size: 0.9rem; text-transform: uppercase; color: #666; margin-bottom: 10px; border-bottom: 1px solid #eee; padding-bottom: 5px; }
+        .bubble-col ul { list-style: none; padding: 0; margin: 0; }
+        .bubble-col li { margin-bottom: 8px; font-size: 0.9rem; display: flex; align-items: baseline; }
+        .score-badge { 
+            background: #eee; color: #555; font-family: monospace; font-size: 0.75rem; 
+            padding: 2px 5px; border-radius: 4px; margin-right: 10px; min-width: 40px; text-align: right; 
+        }
+        .bubble-col.in .score-badge { background: #dcfce7; color: #166534; }
+        .bubble-col.out .score-badge { background: #fee2e2; color: #991b1b; }
+        .empty { color: #ccc; }
         
         /* Mobile */
         @media (max-width: 768px) {
             body { flex-direction: column; }
             .sidebar { width: 100%; height: auto; position: relative; }
             .layout-container { flex-direction: column; }
+            .bubble-columns { grid-template-columns: 1fr; gap: 15px; }
         }
 
         :root {
@@ -692,58 +752,6 @@ td { border-bottom: 1px solid var(--term-dim); padding: 1rem; color: var(--term-
             
             <article class="card">
                 <span class="card-meta">rss.nytimes.com</span>
-                <h3><a href="https://www.nytimes.com/2025/12/12/us/politics/machado-venezuela-escape-oslo.html" target="_blank">Behind the Venezuelan Opposition Leader’s Daring Escape to Oslo</a></h3>
-                
-                <!-- Debug Overlay -->
-                <div class="debug-card">
-                    <div><strong>Score:</strong> 1000.0</div>
-                    <hr style="border: 0; border-top: 1px dashed #ccc; margin: 5px 0;">
-                    <div>Base: </div>
-                    
-                </div>
-            </article>
-            
-            <article class="card">
-                <span class="card-meta">rss.nytimes.com</span>
-                <h3><a href="https://www.nytimes.com/2025/12/12/technology/elon-musk-spacex-ipo.html" target="_blank">Elon Musk’s SpaceX Valued at $800 Billion, as It Prepares to Go Public</a></h3>
-                
-                <!-- Debug Overlay -->
-                <div class="debug-card">
-                    <div><strong>Score:</strong> 1000.0</div>
-                    <hr style="border: 0; border-top: 1px dashed #ccc; margin: 5px 0;">
-                    <div>Base: </div>
-                    
-                </div>
-            </article>
-            
-            <article class="card">
-                <span class="card-meta">rss.nytimes.com</span>
-                <h3><a href="https://www.nytimes.com/2025/12/12/us/politics/republican-health-care-plan-subsidies-expire.html" target="_blank">House G.O.P. Releases Health Plan That Would Allow Subsidies to End</a></h3>
-                
-                <!-- Debug Overlay -->
-                <div class="debug-card">
-                    <div><strong>Score:</strong> 1000.0</div>
-                    <hr style="border: 0; border-top: 1px dashed #ccc; margin: 5px 0;">
-                    <div>Base: </div>
-                    
-                </div>
-            </article>
-            
-            <article class="card">
-                <span class="card-meta">aljazeera.com</span>
-                <h3><a href="https://www.aljazeera.com/news/2025/12/13/russia-ukraine-war-list-of-key-events-day-1388?traffic_source=rss" target="_blank">Russia-Ukraine war: List of key events, day 1,388</a></h3>
-                
-                <!-- Debug Overlay -->
-                <div class="debug-card">
-                    <div><strong>Score:</strong> 1000.0</div>
-                    <hr style="border: 0; border-top: 1px dashed #ccc; margin: 5px 0;">
-                    <div>Base: </div>
-                    
-                </div>
-            </article>
-            
-            <article class="card">
-                <span class="card-meta">rss.nytimes.com</span>
                 <h3><a href="https://www.nytimes.com/2025/12/12/business/christies-bonnie-brennan-art-auctions.html" target="_blank">The Fine Art of Managing Christie’s</a></h3>
                 
                 <!-- Debug Overlay -->
@@ -794,6 +802,58 @@ td { border-bottom: 1px solid var(--term-dim); padding: 1rem; color: var(--term-
                 </div>
             </article>
             
+            <article class="card">
+                <span class="card-meta">rss.nytimes.com</span>
+                <h3><a href="https://www.nytimes.com/2025/12/12/us/florida-school-vaccine-mandates.html" target="_blank">In Florida’s Panhandle, a Hearing on School Vaccine Mandates Gets Heated</a></h3>
+                
+                <!-- Debug Overlay -->
+                <div class="debug-card">
+                    <div><strong>Score:</strong> 1000.0</div>
+                    <hr style="border: 0; border-top: 1px dashed #ccc; margin: 5px 0;">
+                    <div>Base: </div>
+                    
+                </div>
+            </article>
+            
+            <article class="card">
+                <span class="card-meta">rss.nytimes.com</span>
+                <h3><a href="https://www.nytimes.com/2025/12/12/world/asia/myanmar-hospital-attack-rakhine.html" target="_blank">Dozens Killed as a Hospital Is Bombed in Myanmar’s Brutal Civil War</a></h3>
+                
+                <!-- Debug Overlay -->
+                <div class="debug-card">
+                    <div><strong>Score:</strong> 1000.0</div>
+                    <hr style="border: 0; border-top: 1px dashed #ccc; margin: 5px 0;">
+                    <div>Base: </div>
+                    
+                </div>
+            </article>
+            
+            <article class="card">
+                <span class="card-meta">rss.nytimes.com</span>
+                <h3><a href="https://www.nytimes.com/2025/12/12/style/tucker-carlson-theo-von-show.html" target="_blank">Amid Fractures on the Right, Tucker Carlson Continues His Attacks</a></h3>
+                
+                <!-- Debug Overlay -->
+                <div class="debug-card">
+                    <div><strong>Score:</strong> 1000.0</div>
+                    <hr style="border: 0; border-top: 1px dashed #ccc; margin: 5px 0;">
+                    <div>Base: </div>
+                    
+                </div>
+            </article>
+            
+            <article class="card">
+                <span class="card-meta">aljazeera.com</span>
+                <h3><a href="https://www.aljazeera.com/news/2025/12/13/russia-damages-turkish-owned-vessels-in-attack-on-ukrainian-ports?traffic_source=rss" target="_blank">Russia damages Turkish-owned vessels in attack on Ukrainian ports</a></h3>
+                
+                <!-- Debug Overlay -->
+                <div class="debug-card">
+                    <div><strong>Score:</strong> 1000.0</div>
+                    <hr style="border: 0; border-top: 1px dashed #ccc; margin: 5px 0;">
+                    <div>Base: </div>
+                    
+                </div>
+            </article>
+            
         </div>
     </div>
     
@@ -810,9 +870,9 @@ td { border-bottom: 1px solid var(--term-dim); padding: 1rem; color: var(--term-
                 
                 <!-- Debug Overlay -->
                 <div class="debug-card">
-                    <div><strong>Score:</strong> 14180.0</div>
+                    <div><strong>Score:</strong> 14419.0</div>
                     <hr style="border: 0; border-top: 1px dashed #ccc; margin: 5px 0;">
-                    <div>Base: 14180</div>
+                    <div>Base: 14419</div>
                     
                 </div>
             </article>
@@ -823,9 +883,9 @@ td { border-bottom: 1px solid var(--term-dim); padding: 1rem; color: var(--term-
                 
                 <!-- Debug Overlay -->
                 <div class="debug-card">
-                    <div><strong>Score:</strong> 12399.0</div>
+                    <div><strong>Score:</strong> 12703.0</div>
                     <hr style="border: 0; border-top: 1px dashed #ccc; margin: 5px 0;">
-                    <div>Base: 12399</div>
+                    <div>Base: 12703</div>
                     
                 </div>
             </article>
@@ -836,9 +896,9 @@ td { border-bottom: 1px solid var(--term-dim); padding: 1rem; color: var(--term-
                 
                 <!-- Debug Overlay -->
                 <div class="debug-card">
-                    <div><strong>Score:</strong> 5426.0</div>
+                    <div><strong>Score:</strong> 5490.0</div>
                     <hr style="border: 0; border-top: 1px dashed #ccc; margin: 5px 0;">
-                    <div>Base: 5426</div>
+                    <div>Base: 5490</div>
                     
                 </div>
             </article>
@@ -849,9 +909,9 @@ td { border-bottom: 1px solid var(--term-dim); padding: 1rem; color: var(--term-
                 
                 <!-- Debug Overlay -->
                 <div class="debug-card">
-                    <div><strong>Score:</strong> 3129.0</div>
+                    <div><strong>Score:</strong> 3149.0</div>
                     <hr style="border: 0; border-top: 1px dashed #ccc; margin: 5px 0;">
-                    <div>Base: 2829</div>
+                    <div>Base: 2849</div>
                     
                 </div>
             </article>
@@ -862,9 +922,9 @@ td { border-bottom: 1px solid var(--term-dim); padding: 1rem; color: var(--term-
                 
                 <!-- Debug Overlay -->
                 <div class="debug-card">
-                    <div><strong>Score:</strong> 1665.0</div>
+                    <div><strong>Score:</strong> 1761.0</div>
                     <hr style="border: 0; border-top: 1px dashed #ccc; margin: 5px 0;">
-                    <div>Base: 1665</div>
+                    <div>Base: 1761</div>
                     
                 </div>
             </article>
@@ -875,9 +935,9 @@ td { border-bottom: 1px solid var(--term-dim); padding: 1rem; color: var(--term-
                 
                 <!-- Debug Overlay -->
                 <div class="debug-card">
-                    <div><strong>Score:</strong> 1438.0</div>
+                    <div><strong>Score:</strong> 1487.0</div>
                     <hr style="border: 0; border-top: 1px dashed #ccc; margin: 5px 0;">
-                    <div>Base: 1438</div>
+                    <div>Base: 1487</div>
                     
                 </div>
             </article>
@@ -888,9 +948,9 @@ td { border-bottom: 1px solid var(--term-dim); padding: 1rem; color: var(--term-
                 
                 <!-- Debug Overlay -->
                 <div class="debug-card">
-                    <div><strong>Score:</strong> 1088.0</div>
+                    <div><strong>Score:</strong> 1128.0</div>
                     <hr style="border: 0; border-top: 1px dashed #ccc; margin: 5px 0;">
-                    <div>Base: 1088</div>
+                    <div>Base: 1128</div>
                     
                 </div>
             </article>
@@ -950,9 +1010,9 @@ td { border-bottom: 1px solid var(--term-dim); padding: 1rem; color: var(--term-
                 
                 <!-- Debug Overlay -->
                 <div class="debug-card">
-                    <div><strong>Score:</strong> 13830.0</div>
+                    <div><strong>Score:</strong> 13881.0</div>
                     <hr style="border: 0; border-top: 1px dashed #ccc; margin: 5px 0;">
-                    <div>Base: 13830</div>
+                    <div>Base: 13881</div>
                     
                 </div>
             </article>
@@ -963,22 +1023,9 @@ td { border-bottom: 1px solid var(--term-dim); padding: 1rem; color: var(--term-
                 
                 <!-- Debug Overlay -->
                 <div class="debug-card">
-                    <div><strong>Score:</strong> 10487.0</div>
+                    <div><strong>Score:</strong> 10628.0</div>
                     <hr style="border: 0; border-top: 1px dashed #ccc; margin: 5px 0;">
-                    <div>Base: 10487</div>
-                    
-                </div>
-            </article>
-            
-            <article class="card">
-                <span class="card-meta">old.reddit.com</span>
-                <h3><a href="https://www.reddit.com/r/nba/comments/1pl8egh/sga_on_if_breaking_the_73win_record_would_mean/" target="_blank">[SGA] on if breaking the 73-win record would mean anything to him: "Absolutely. Winning matters."</a></h3>
-                
-                <!-- Debug Overlay -->
-                <div class="debug-card">
-                    <div><strong>Score:</strong> 8494.0</div>
-                    <hr style="border: 0; border-top: 1px dashed #ccc; margin: 5px 0;">
-                    <div>Base: 8494</div>
+                    <div>Base: 10628</div>
                     
                 </div>
             </article>
@@ -989,9 +1036,9 @@ td { border-bottom: 1px solid var(--term-dim); padding: 1rem; color: var(--term-
                 
                 <!-- Debug Overlay -->
                 <div class="debug-card">
-                    <div><strong>Score:</strong> 8111.0</div>
+                    <div><strong>Score:</strong> 8174.0</div>
                     <hr style="border: 0; border-top: 1px dashed #ccc; margin: 5px 0;">
-                    <div>Base: 8111</div>
+                    <div>Base: 8174</div>
                     
                 </div>
             </article>
@@ -1002,9 +1049,9 @@ td { border-bottom: 1px solid var(--term-dim); padding: 1rem; color: var(--term-
                 
                 <!-- Debug Overlay -->
                 <div class="debug-card">
-                    <div><strong>Score:</strong> 7366.0</div>
+                    <div><strong>Score:</strong> 7384.0</div>
                     <hr style="border: 0; border-top: 1px dashed #ccc; margin: 5px 0;">
-                    <div>Base: 7366</div>
+                    <div>Base: 7384</div>
                     
                 </div>
             </article>
@@ -1015,9 +1062,9 @@ td { border-bottom: 1px solid var(--term-dim); padding: 1rem; color: var(--term-
                 
                 <!-- Debug Overlay -->
                 <div class="debug-card">
-                    <div><strong>Score:</strong> 7301.0</div>
+                    <div><strong>Score:</strong> 7325.0</div>
                     <hr style="border: 0; border-top: 1px dashed #ccc; margin: 5px 0;">
-                    <div>Base: 7301</div>
+                    <div>Base: 7325</div>
                     
                 </div>
             </article>
@@ -1028,9 +1075,9 @@ td { border-bottom: 1px solid var(--term-dim); padding: 1rem; color: var(--term-
                 
                 <!-- Debug Overlay -->
                 <div class="debug-card">
-                    <div><strong>Score:</strong> 5588.0</div>
+                    <div><strong>Score:</strong> 5754.0</div>
                     <hr style="border: 0; border-top: 1px dashed #ccc; margin: 5px 0;">
-                    <div>Base: 5588</div>
+                    <div>Base: 5754</div>
                     
                 </div>
             </article>
@@ -1041,9 +1088,22 @@ td { border-bottom: 1px solid var(--term-dim); padding: 1rem; color: var(--term-
                 
                 <!-- Debug Overlay -->
                 <div class="debug-card">
-                    <div><strong>Score:</strong> 4957.0</div>
+                    <div><strong>Score:</strong> 5078.0</div>
                     <hr style="border: 0; border-top: 1px dashed #ccc; margin: 5px 0;">
-                    <div>Base: 4957</div>
+                    <div>Base: 5078</div>
+                    
+                </div>
+            </article>
+            
+            <article class="card">
+                <span class="card-meta">old.reddit.com</span>
+                <h3><a href="https://www.reddit.com/r/soccer/comments/1plgyvc/pti_everyone_was_excited_today_as_messi_was/" target="_blank">[PTI] “Everyone was excited today as Messi was coming. It’s my wedding day, but I left all the ceremonies to be here. Still, the management was so pathetic that I couldn’t even see him,” says a fan as Argentine footballer Lionel Messi’s event draws ire.</a></h3>
+                
+                <!-- Debug Overlay -->
+                <div class="debug-card">
+                    <div><strong>Score:</strong> 4850.0</div>
+                    <hr style="border: 0; border-top: 1px dashed #ccc; margin: 5px 0;">
+                    <div>Base: 4850</div>
                     
                 </div>
             </article>
@@ -1064,9 +1124,9 @@ td { border-bottom: 1px solid var(--term-dim); padding: 1rem; color: var(--term-
                 
                 <!-- Debug Overlay -->
                 <div class="debug-card">
-                    <div><strong>Score:</strong> 7481.0</div>
+                    <div><strong>Score:</strong> 7527.0</div>
                     <hr style="border: 0; border-top: 1px dashed #ccc; margin: 5px 0;">
-                    <div>Base: 7481</div>
+                    <div>Base: 7527</div>
                     
                 </div>
             </article>
@@ -1077,9 +1137,9 @@ td { border-bottom: 1px solid var(--term-dim); padding: 1rem; color: var(--term-
                 
                 <!-- Debug Overlay -->
                 <div class="debug-card">
-                    <div><strong>Score:</strong> 7130.0</div>
+                    <div><strong>Score:</strong> 7187.0</div>
                     <hr style="border: 0; border-top: 1px dashed #ccc; margin: 5px 0;">
-                    <div>Base: 7130</div>
+                    <div>Base: 7187</div>
                     
                 </div>
             </article>
@@ -1090,9 +1150,9 @@ td { border-bottom: 1px solid var(--term-dim); padding: 1rem; color: var(--term-
                 
                 <!-- Debug Overlay -->
                 <div class="debug-card">
-                    <div><strong>Score:</strong> 5091.0</div>
+                    <div><strong>Score:</strong> 5206.0</div>
                     <hr style="border: 0; border-top: 1px dashed #ccc; margin: 5px 0;">
-                    <div>Base: 5091</div>
+                    <div>Base: 5206</div>
                     
                 </div>
             </article>
@@ -1116,9 +1176,9 @@ td { border-bottom: 1px solid var(--term-dim); padding: 1rem; color: var(--term-
                 
                 <!-- Debug Overlay -->
                 <div class="debug-card">
-                    <div><strong>Score:</strong> 3709.0</div>
+                    <div><strong>Score:</strong> 3796.0</div>
                     <hr style="border: 0; border-top: 1px dashed #ccc; margin: 5px 0;">
-                    <div>Base: 3559</div>
+                    <div>Base: 3646</div>
                     
                 </div>
             </article>
@@ -1129,9 +1189,9 @@ td { border-bottom: 1px solid var(--term-dim); padding: 1rem; color: var(--term-
                 
                 <!-- Debug Overlay -->
                 <div class="debug-card">
-                    <div><strong>Score:</strong> 3677.0</div>
+                    <div><strong>Score:</strong> 3690.0</div>
                     <hr style="border: 0; border-top: 1px dashed #ccc; margin: 5px 0;">
-                    <div>Base: 3677</div>
+                    <div>Base: 3690</div>
                     
                 </div>
             </article>
@@ -1142,9 +1202,9 @@ td { border-bottom: 1px solid var(--term-dim); padding: 1rem; color: var(--term-
                 
                 <!-- Debug Overlay -->
                 <div class="debug-card">
-                    <div><strong>Score:</strong> 2620.0</div>
+                    <div><strong>Score:</strong> 2648.0</div>
                     <hr style="border: 0; border-top: 1px dashed #ccc; margin: 5px 0;">
-                    <div>Base: 2620</div>
+                    <div>Base: 2648</div>
                     
                 </div>
             </article>
@@ -1155,9 +1215,9 @@ td { border-bottom: 1px solid var(--term-dim); padding: 1rem; color: var(--term-
                 
                 <!-- Debug Overlay -->
                 <div class="debug-card">
-                    <div><strong>Score:</strong> 2076.0</div>
+                    <div><strong>Score:</strong> 2081.0</div>
                     <hr style="border: 0; border-top: 1px dashed #ccc; margin: 5px 0;">
-                    <div>Base: 126</div>
+                    <div>Base: 131</div>
                     
                 </div>
             </article>
@@ -1171,385 +1231,379 @@ td { border-bottom: 1px solid var(--term-dim); padding: 1rem; color: var(--term-
 <div id="transparency-modal" class="modal-overlay">
     <div class="modal-content">
         <button class="modal-close" onclick="closeTransparency()">&times;</button>
-        <div class="glass-box-container">
-    <div class="audit-header">
-        <h1>Source Transparency</h1>
-        <p>Audit Log for Edition: <strong>d58e8ed8-939f-4054-b8f4-19fa30e47ab6</strong></p>
-        <p>Generated: 2025-12-13 16:48:54 PST</p>
+        <!-- Basic Theme Transparency Report -->
+<div class="transparency-report">
+    <div class="report-header">
+        <h2>Source Transparency</h2>
+        <div class="report-meta">
+            <span>Edition: b966f8d2-3d2b-49d1-b85b-f067d8c79b63</span>
+            <span>Generated: 2025-12-13 17:17:20 PST</span>
+        </div>
     </div>
 
-    <!-- Tabs Navigation -->
+    <!-- Tabs -->
     <div class="tabs">
-        <button class="tab-btn active" onclick="openTab(event, 'tab-vitals')">Vitals</button>
-        <button class="tab-btn" onclick="openTab(event, 'tab-sources')">Sources</button>
-        <button class="tab-btn" onclick="openTab(event, 'tab-bubble')">The Bubble</button>
+        <button class="tab-link active" onclick="switchTab(event, 'tab-vitals')">Vitals</button>
+        <button class="tab-link" onclick="switchTab(event, 'tab-sources')">Source Efficiency</button>
+        <button class="tab-link" onclick="switchTab(event, 'tab-bubble')">The Bubble</button>
     </div>
 
-    <!-- Tab: Vitals (The Funnel) -->
-    <div id="tab-vitals" class="tab-content active">
-        <div class="funnel-container">
-            <div class="funnel-step">
-                <span class="funnel-num">1592</span>
-                <small>Total Items</small>
+    <!-- Tab Content: Vitals -->
+    <div id="tab-vitals" class="tab-pane active">
+        <div class="stats-grid">
+            <div class="stat-card">
+                <span class="stat-value">1643</span>
+                <span class="stat-label">Total Items Scanned</span>
             </div>
-            <div class="funnel-step">
-                <span class="funnel-num">927</span>
-                <small>Candidate Pool</small>
+            <div class="stat-card">
+                <span class="stat-value">918</span>
+                <span class="stat-label">Fresh Candidates</span>
             </div>
-            <div class="funnel-step">
-                <span class="funnel-num">36</span>
-                <small>Published</small>
+            <div class="stat-card">
+                <span class="stat-value">36</span>
+                <span class="stat-label">Published</span>
             </div>
-            <div class="funnel-step">
-                <span class="funnel-num">97.7%</span>
-                <small>Anti-Feed Protection</small>
-                <span class="funnel-sub">(Total - Published) / Total</span>
-                <span class="funnel-sub">Blocked: 1556</span>
+            <div class="stat-card highlight">
+                <span class="stat-value">97.8%</span>
+                <span class="stat-label">Anti-Feed Protection</span>
+                <small class="stat-sub">Noise Filtered Out</small>
             </div>
         </div>
     </div>
 
-    <!-- Tab: Sources (Efficiency Table) -->
-    <div id="tab-sources" class="tab-content">
-        <h2>Source Efficiency</h2>
-        <p>
-            <em>
-                A <span class="bias-pos">positive Delta (+)</span> means <strong>High Signal</strong>: We publish this source more often than we find it.<br>
-                A <span class="bias-neg">negative Delta (-)</span> means <strong>High Noise</strong>: We filter (but do not silence) this source aggressively.
-            </em>
-        </p>
-        
-        <div class="table-scroll-container">
-            <table class="audit-table">
+    <!-- Tab Content: Sources -->
+    <div id="tab-sources" class="tab-pane">
+        <div class="table-responsive">
+            <table class="data-table">
                 <thead>
                     <tr>
                         <th>Source</th>
-                        <th>Output Share (Count)</th>
-                        <th>Input Share (Count)</th>
-                        <th>Delta</th>
+                        <th>Output Share</th>
+                        <th>Input Share</th>
+                        <th>Signal Delta</th>
                     </tr>
                 </thead>
                 <tbody>
                     
                     <tr>
-                        <td>old.reddit.com</td>
+                        <td class="source-name">old.reddit.com</td>
                         <td>
                             63.9%
-                            <span class="count-sub">(23)</span>
+                            <span class="count-pill">23</span>
                         </td>
                         <td>
                             19.5%
-                            <span class="count-sub">(181)</span>
+                            <span class="count-pill">179</span>
                         </td>
                         <td>
                             
-                            <span class="bias-pos">+44.4%</span>
+                            <span class="delta-pos">+44.4%</span>
                             
                         </td>
                     </tr>
                     
                     <tr>
-                        <td>rss.nytimes.com</td>
+                        <td class="source-name">rss.nytimes.com</td>
                         <td>
                             19.4%
-                            <span class="count-sub">(7)</span>
+                            <span class="count-pill">7</span>
                         </td>
                         <td>
-                            3.6%
-                            <span class="count-sub">(33)</span>
+                            3.4%
+                            <span class="count-pill">31</span>
                         </td>
                         <td>
                             
-                            <span class="bias-pos">+15.9%</span>
+                            <span class="delta-pos">+16.1%</span>
                             
                         </td>
                     </tr>
                     
                     <tr>
-                        <td>www.wired.com</td>
+                        <td class="source-name">www.wired.com</td>
                         <td>
                             8.3%
-                            <span class="count-sub">(3)</span>
+                            <span class="count-pill">3</span>
                         </td>
                         <td>
                             1.1%
-                            <span class="count-sub">(10)</span>
+                            <span class="count-pill">10</span>
                         </td>
                         <td>
                             
-                            <span class="bias-pos">+7.3%</span>
+                            <span class="delta-pos">+7.2%</span>
                             
                         </td>
                     </tr>
                     
                     <tr>
-                        <td>www.aljazeera.com</td>
+                        <td class="source-name">www.aljazeera.com</td>
                         <td>
                             8.3%
-                            <span class="count-sub">(3)</span>
-                        </td>
-                        <td>
-                            3.9%
-                            <span class="count-sub">(36)</span>
-                        </td>
-                        <td>
-                            
-                            <span class="bias-pos">+4.4%</span>
-                            
-                        </td>
-                    </tr>
-                    
-                    <tr>
-                        <td>feeds.arstechnica.com</td>
-                        <td>
-                            0.0%
-                            <span class="count-sub">(0)</span>
-                        </td>
-                        <td>
-                            0.1%
-                            <span class="count-sub">(1)</span>
-                        </td>
-                        <td>
-                            
-                            <span class="bias-neg">-0.1%</span>
-                            
-                        </td>
-                    </tr>
-                    
-                    <tr>
-                        <td>techcrunch.com</td>
-                        <td>
-                            0.0%
-                            <span class="count-sub">(0)</span>
-                        </td>
-                        <td>
-                            0.2%
-                            <span class="count-sub">(2)</span>
-                        </td>
-                        <td>
-                            
-                            <span class="bias-neg">-0.2%</span>
-                            
-                        </td>
-                    </tr>
-                    
-                    <tr>
-                        <td>www.engadget.com</td>
-                        <td>
-                            0.0%
-                            <span class="count-sub">(0)</span>
-                        </td>
-                        <td>
-                            0.4%
-                            <span class="count-sub">(4)</span>
-                        </td>
-                        <td>
-                            
-                            <span class="bias-neg">-0.4%</span>
-                            
-                        </td>
-                    </tr>
-                    
-                    <tr>
-                        <td>www.theverge.com</td>
-                        <td>
-                            0.0%
-                            <span class="count-sub">(0)</span>
-                        </td>
-                        <td>
-                            0.6%
-                            <span class="count-sub">(6)</span>
-                        </td>
-                        <td>
-                            
-                            <span class="bias-neg">-0.6%</span>
-                            
-                        </td>
-                    </tr>
-                    
-                    <tr>
-                        <td>www.polygon.com</td>
-                        <td>
-                            0.0%
-                            <span class="count-sub">(0)</span>
-                        </td>
-                        <td>
-                            0.6%
-                            <span class="count-sub">(6)</span>
-                        </td>
-                        <td>
-                            
-                            <span class="bias-neg">-0.6%</span>
-                            
-                        </td>
-                    </tr>
-                    
-                    <tr>
-                        <td>gizmodo.com</td>
-                        <td>
-                            0.0%
-                            <span class="count-sub">(0)</span>
-                        </td>
-                        <td>
-                            1.2%
-                            <span class="count-sub">(11)</span>
-                        </td>
-                        <td>
-                            
-                            <span class="bias-neg">-1.2%</span>
-                            
-                        </td>
-                    </tr>
-                    
-                    <tr>
-                        <td>www.rollingstone.com</td>
-                        <td>
-                            0.0%
-                            <span class="count-sub">(0)</span>
-                        </td>
-                        <td>
-                            1.4%
-                            <span class="count-sub">(13)</span>
-                        </td>
-                        <td>
-                            
-                            <span class="bias-neg">-1.4%</span>
-                            
-                        </td>
-                    </tr>
-                    
-                    <tr>
-                        <td>feeds.npr.org</td>
-                        <td>
-                            0.0%
-                            <span class="count-sub">(0)</span>
-                        </td>
-                        <td>
-                            1.4%
-                            <span class="count-sub">(13)</span>
-                        </td>
-                        <td>
-                            
-                            <span class="bias-neg">-1.4%</span>
-                            
-                        </td>
-                    </tr>
-                    
-                    <tr>
-                        <td>feeds.bbci.co.uk</td>
-                        <td>
-                            0.0%
-                            <span class="count-sub">(0)</span>
-                        </td>
-                        <td>
-                            1.5%
-                            <span class="count-sub">(14)</span>
-                        </td>
-                        <td>
-                            
-                            <span class="bias-neg">-1.5%</span>
-                            
-                        </td>
-                    </tr>
-                    
-                    <tr>
-                        <td>variety.com</td>
-                        <td>
-                            0.0%
-                            <span class="count-sub">(0)</span>
-                        </td>
-                        <td>
-                            2.3%
-                            <span class="count-sub">(21)</span>
-                        </td>
-                        <td>
-                            
-                            <span class="bias-neg">-2.3%</span>
-                            
-                        </td>
-                    </tr>
-                    
-                    <tr>
-                        <td>mashable.com</td>
-                        <td>
-                            0.0%
-                            <span class="count-sub">(0)</span>
-                        </td>
-                        <td>
-                            3.5%
-                            <span class="count-sub">(32)</span>
-                        </td>
-                        <td>
-                            
-                            <span class="bias-neg">-3.5%</span>
-                            
-                        </td>
-                    </tr>
-                    
-                    <tr>
-                        <td>hnrss.org</td>
-                        <td>
-                            0.0%
-                            <span class="count-sub">(0)</span>
+                            <span class="count-pill">3</span>
                         </td>
                         <td>
                             3.8%
-                            <span class="count-sub">(35)</span>
+                            <span class="count-pill">35</span>
                         </td>
                         <td>
                             
-                            <span class="bias-neg">-3.8%</span>
-                            
-                        </td>
-                    </tr>
-                    
-                    <tr>
-                        <td>www.cbssports.com</td>
-                        <td>
-                            0.0%
-                            <span class="count-sub">(0)</span>
-                        </td>
-                        <td>
-                            5.9%
-                            <span class="count-sub">(55)</span>
-                        </td>
-                        <td>
-                            
-                            <span class="bias-neg">-5.9%</span>
+                            <span class="delta-pos">+4.5%</span>
                             
                         </td>
                     </tr>
                     
                     <tr>
-                        <td>www.espn.com</td>
+                        <td class="source-name">feeds.arstechnica.com</td>
                         <td>
                             0.0%
-                            <span class="count-sub">(0)</span>
+                            <span class="count-pill">0</span>
                         </td>
                         <td>
-                            6.9%
-                            <span class="count-sub">(64)</span>
+                            0.1%
+                            <span class="count-pill">1</span>
                         </td>
                         <td>
                             
-                            <span class="bias-neg">-6.9%</span>
+                            <span class="delta-neg">-0.1%</span>
                             
                         </td>
                     </tr>
                     
                     <tr>
-                        <td>sports.yahoo.com</td>
+                        <td class="source-name">techcrunch.com</td>
                         <td>
                             0.0%
-                            <span class="count-sub">(0)</span>
+                            <span class="count-pill">0</span>
                         </td>
                         <td>
-                            42.1%
-                            <span class="count-sub">(390)</span>
+                            0.2%
+                            <span class="count-pill">2</span>
                         </td>
                         <td>
                             
-                            <span class="bias-neg">-42.1%</span>
+                            <span class="delta-neg">-0.2%</span>
+                            
+                        </td>
+                    </tr>
+                    
+                    <tr>
+                        <td class="source-name">www.engadget.com</td>
+                        <td>
+                            0.0%
+                            <span class="count-pill">0</span>
+                        </td>
+                        <td>
+                            0.4%
+                            <span class="count-pill">4</span>
+                        </td>
+                        <td>
+                            
+                            <span class="delta-neg">-0.4%</span>
+                            
+                        </td>
+                    </tr>
+                    
+                    <tr>
+                        <td class="source-name">www.polygon.com</td>
+                        <td>
+                            0.0%
+                            <span class="count-pill">0</span>
+                        </td>
+                        <td>
+                            0.7%
+                            <span class="count-pill">6</span>
+                        </td>
+                        <td>
+                            
+                            <span class="delta-neg">-0.7%</span>
+                            
+                        </td>
+                    </tr>
+                    
+                    <tr>
+                        <td class="source-name">www.theverge.com</td>
+                        <td>
+                            0.0%
+                            <span class="count-pill">0</span>
+                        </td>
+                        <td>
+                            0.7%
+                            <span class="count-pill">6</span>
+                        </td>
+                        <td>
+                            
+                            <span class="delta-neg">-0.7%</span>
+                            
+                        </td>
+                    </tr>
+                    
+                    <tr>
+                        <td class="source-name">gizmodo.com</td>
+                        <td>
+                            0.0%
+                            <span class="count-pill">0</span>
+                        </td>
+                        <td>
+                            1.2%
+                            <span class="count-pill">11</span>
+                        </td>
+                        <td>
+                            
+                            <span class="delta-neg">-1.2%</span>
+                            
+                        </td>
+                    </tr>
+                    
+                    <tr>
+                        <td class="source-name">feeds.npr.org</td>
+                        <td>
+                            0.0%
+                            <span class="count-pill">0</span>
+                        </td>
+                        <td>
+                            1.4%
+                            <span class="count-pill">13</span>
+                        </td>
+                        <td>
+                            
+                            <span class="delta-neg">-1.4%</span>
+                            
+                        </td>
+                    </tr>
+                    
+                    <tr>
+                        <td class="source-name">www.rollingstone.com</td>
+                        <td>
+                            0.0%
+                            <span class="count-pill">0</span>
+                        </td>
+                        <td>
+                            1.4%
+                            <span class="count-pill">13</span>
+                        </td>
+                        <td>
+                            
+                            <span class="delta-neg">-1.4%</span>
+                            
+                        </td>
+                    </tr>
+                    
+                    <tr>
+                        <td class="source-name">feeds.bbci.co.uk</td>
+                        <td>
+                            0.0%
+                            <span class="count-pill">0</span>
+                        </td>
+                        <td>
+                            1.5%
+                            <span class="count-pill">14</span>
+                        </td>
+                        <td>
+                            
+                            <span class="delta-neg">-1.5%</span>
+                            
+                        </td>
+                    </tr>
+                    
+                    <tr>
+                        <td class="source-name">variety.com</td>
+                        <td>
+                            0.0%
+                            <span class="count-pill">0</span>
+                        </td>
+                        <td>
+                            2.3%
+                            <span class="count-pill">21</span>
+                        </td>
+                        <td>
+                            
+                            <span class="delta-neg">-2.3%</span>
+                            
+                        </td>
+                    </tr>
+                    
+                    <tr>
+                        <td class="source-name">mashable.com</td>
+                        <td>
+                            0.0%
+                            <span class="count-pill">0</span>
+                        </td>
+                        <td>
+                            3.4%
+                            <span class="count-pill">31</span>
+                        </td>
+                        <td>
+                            
+                            <span class="delta-neg">-3.4%</span>
+                            
+                        </td>
+                    </tr>
+                    
+                    <tr>
+                        <td class="source-name">hnrss.org</td>
+                        <td>
+                            0.0%
+                            <span class="count-pill">0</span>
+                        </td>
+                        <td>
+                            3.7%
+                            <span class="count-pill">34</span>
+                        </td>
+                        <td>
+                            
+                            <span class="delta-neg">-3.7%</span>
+                            
+                        </td>
+                    </tr>
+                    
+                    <tr>
+                        <td class="source-name">www.cbssports.com</td>
+                        <td>
+                            0.0%
+                            <span class="count-pill">0</span>
+                        </td>
+                        <td>
+                            6.3%
+                            <span class="count-pill">58</span>
+                        </td>
+                        <td>
+                            
+                            <span class="delta-neg">-6.3%</span>
+                            
+                        </td>
+                    </tr>
+                    
+                    <tr>
+                        <td class="source-name">www.espn.com</td>
+                        <td>
+                            0.0%
+                            <span class="count-pill">0</span>
+                        </td>
+                        <td>
+                            7.2%
+                            <span class="count-pill">66</span>
+                        </td>
+                        <td>
+                            
+                            <span class="delta-neg">-7.2%</span>
+                            
+                        </td>
+                    </tr>
+                    
+                    <tr>
+                        <td class="source-name">sports.yahoo.com</td>
+                        <td>
+                            0.0%
+                            <span class="count-pill">0</span>
+                        </td>
+                        <td>
+                            41.7%
+                            <span class="count-pill">383</span>
+                        </td>
+                        <td>
+                            
+                            <span class="delta-neg">-41.7%</span>
                             
                         </td>
                     </tr>
@@ -1559,196 +1613,207 @@ td { border-bottom: 1px solid var(--term-dim); padding: 1rem; color: var(--term-
         </div>
     </div>
 
-    <!-- Tab: The Bubble -->
-    <div id="tab-bubble" class="tab-content">
-        <h2>The Bubble</h2>
-        <p><em>Comparing the last stories to make the cut vs. the first to miss it.</em></p>
+    <!-- Tab Content: The Bubble -->
+    <div id="tab-bubble" class="tab-pane">
+        <p class="bubble-intro">Comparing the lowest-scoring articles that made the cut versus the highest-scoring ones that missed it.</p>
         
         
-        <div class="bubble-section">
-            <h3>🌍 News</h3>
-            <div class="bubble-grid">
-                <!-- Last 3 In -->
-                <div class="bubble-col bubble-in">
-                    <div class="bubble-header">Last 3 In (Lowest Scores)</div>
-                    
-                    <div class="bubble-item">
-                        <span class="score-badge">1000</span>
-                        <span>For Republicans, Trump’s Hands-Off Approach to Health Care Is a Problem</span>
-                    </div>
-                    
-                    <div class="bubble-item">
-                        <span class="score-badge">1000</span>
-                        <span>In a Hamlet Built on Forbidden Love, a Cyclone Buried It All</span>
-                    </div>
-                    
-                    <div class="bubble-item">
-                        <span class="score-badge">1000</span>
-                        <span>Risk-Based Screening Works as Well as Yearly Checks After 40 in Finding Breast Cancers</span>
-                    </div>
-                    
+        <div class="bubble-group">
+            <h3 class="bubble-section-title">🌍 News</h3>
+            <div class="bubble-columns">
+                <!-- In -->
+                <div class="bubble-col in">
+                    <h4>Last In (Lowest Score)</h4>
+                    <ul>
+                        
+                        <li>
+                            <span class="score-badge">1000</span>
+                            Dozens Killed as a Hospital Is Bombed in Myanmar’s Brutal Civil War
+                        </li>
+                        
+                        <li>
+                            <span class="score-badge">1000</span>
+                            Amid Fractures on the Right, Tucker Carlson Continues His Attacks
+                        </li>
+                        
+                        <li>
+                            <span class="score-badge">1000</span>
+                            Russia damages Turkish-owned vessels in attack on Ukrainian ports
+                        </li>
+                        
+                    </ul>
                 </div>
-                
-                <!-- First 3 Out -->
-                <div class="bubble-col bubble-out">
-                    <div class="bubble-header">First 3 Out (Highest Scores)</div>
-                    
-                    <div class="bubble-item">
-                        <span class="score-badge">1000</span>
-                        <span>In Florida’s Panhandle, a Hearing on School Vaccine Mandates Gets Heated</span>
-                    </div>
-                    
-                    <div class="bubble-item">
-                        <span class="score-badge">1000</span>
-                        <span>Dozens Killed as a Hospital Is Bombed in Myanmar’s Brutal Civil War</span>
-                    </div>
-                    
-                    <div class="bubble-item">
-                        <span class="score-badge">1000</span>
-                        <span>Amid Fractures on the Right, Tucker Carlson Continues His Attacks</span>
-                    </div>
-                    
+                <!-- Out -->
+                <div class="bubble-col out">
+                    <h4>First Out (Highest Score)</h4>
+                    <ul>
+                        
+                        <li>
+                            <span class="score-badge">1000</span>
+                            Judge’s Order Complicates Justice Dept. Plans to Again Charge Comey
+                        </li>
+                        
+                        <li>
+                            <span class="score-badge">1000</span>
+                            After False Earthquake Alert in Nevada, Lawmakers Demand Answers on How it Was Sent
+                        </li>
+                        
+                        <li>
+                            <span class="score-badge">1000</span>
+                            Venezuela oil exports fall steeply after US forces seize tanker off coast
+                        </li>
+                        
+                    </ul>
                 </div>
             </div>
         </div>
         
-        <div class="bubble-section">
-            <h3>💾 Technology</h3>
-            <div class="bubble-grid">
-                <!-- Last 3 In -->
-                <div class="bubble-col bubble-in">
-                    <div class="bubble-header">Last 3 In (Lowest Scores)</div>
-                    
-                    <div class="bubble-item">
-                        <span class="score-badge">1000</span>
-                        <span>The Instagram-Fueled Boom in Copycat Vintage Car-Body Shells</span>
-                    </div>
-                    
-                    <div class="bubble-item">
-                        <span class="score-badge">1000</span>
-                        <span>How to Use Smart Lighting Around the Home: Reviewer Recommendations</span>
-                    </div>
-                    
-                    <div class="bubble-item">
-                        <span class="score-badge">1000</span>
-                        <span>Gear News of the Week: Android Gets Emergency Live Video, and the Pixel Watch 4 Supports Gestures</span>
-                    </div>
-                    
+        <div class="bubble-group">
+            <h3 class="bubble-section-title">💾 Technology</h3>
+            <div class="bubble-columns">
+                <!-- In -->
+                <div class="bubble-col in">
+                    <h4>Last In (Lowest Score)</h4>
+                    <ul>
+                        
+                        <li>
+                            <span class="score-badge">1000</span>
+                            The Instagram-Fueled Boom in Copycat Vintage Car-Body Shells
+                        </li>
+                        
+                        <li>
+                            <span class="score-badge">1000</span>
+                            How to Use Smart Lighting Around the Home: Reviewer Recommendations
+                        </li>
+                        
+                        <li>
+                            <span class="score-badge">1000</span>
+                            Gear News of the Week: Android Gets Emergency Live Video, and the Pixel Watch 4 Supports Gestures
+                        </li>
+                        
+                    </ul>
                 </div>
-                
-                <!-- First 3 Out -->
-                <div class="bubble-col bubble-out">
-                    <div class="bubble-header">First 3 Out (Highest Scores)</div>
-                    
-                    <div class="bubble-item">
-                        <span class="score-badge">1000</span>
-                        <span>Velotric Discover 2 Electric Bike Review: Versatile and Powerful</span>
-                    </div>
-                    
-                    <div class="bubble-item">
-                        <span class="score-badge">1000</span>
-                        <span>AI Toys for Kids Talk About Sex, Drugs, and Chinese Propaganda</span>
-                    </div>
-                    
-                    <div class="bubble-item">
-                        <span class="score-badge">1000</span>
-                        <span>Google Data Centers Are Returning Nuclear Power to Tornado Country</span>
-                    </div>
-                    
-                </div>
-            </div>
-        </div>
-        
-        <div class="bubble-section">
-            <h3>🏈 Sports</h3>
-            <div class="bubble-grid">
-                <!-- Last 3 In -->
-                <div class="bubble-col bubble-in">
-                    <div class="bubble-header">Last 3 In (Lowest Scores)</div>
-                    
-                    <div class="bubble-item">
-                        <span class="score-badge">7301</span>
-                        <span>[ANI] Fans at Salt Lake Stadium got angry with the management and threw chairs and bottles after Messi left Kolkata. He stayed at the stadium for only 15 minutes, meeting politicians and VIPs.</span>
-                    </div>
-                    
-                    <div class="bubble-item">
-                        <span class="score-badge">5588</span>
-                        <span>[Adam Friedland] “If David Stern were commissioner, Pablo Torre would be dead”</span>
-                    </div>
-                    
-                    <div class="bubble-item">
-                        <span class="score-badge">4957</span>
-                        <span>Liverpool counter-attack vs Brighton 90+7'</span>
-                    </div>
-                    
-                </div>
-                
-                <!-- First 3 Out -->
-                <div class="bubble-col bubble-out">
-                    <div class="bubble-header">First 3 Out (Highest Scores)</div>
-                    
-                    <div class="bubble-item">
-                        <span class="score-badge">4820</span>
-                        <span>[PTI] “Everyone was excited today as Messi was coming. It’s my wedding day, but I left all the ceremonies to be here. Still, the management was so pathetic that I couldn’t even see him,” says a fan as Argentine footballer Lionel Messi’s event draws ire.</span>
-                    </div>
-                    
-                    <div class="bubble-item">
-                        <span class="score-badge">4213</span>
-                        <span>In seven seasons, Andrew Luck missed 26 games due to injury. In six seasons, Joe Burrow has missed 22 games due to injury.</span>
-                    </div>
-                    
-                    <div class="bubble-item">
-                        <span class="score-badge">3808</span>
-                        <span>Bernardo Silva: “What Manchester City has done in my first 7 years there is not normal. We have achieved 6 Premier League trophies, a treble, a domestic quadruple, doing 100 points, setting the goals record. I’m biased, but I could argue Pep’s Manchester City was the best ever in English football.”</span>
-                    </div>
-                    
+                <!-- Out -->
+                <div class="bubble-col out">
+                    <h4>First Out (Highest Score)</h4>
+                    <ul>
+                        
+                        <li>
+                            <span class="score-badge">1000</span>
+                            Velotric Discover 2 Electric Bike Review: Versatile and Powerful
+                        </li>
+                        
+                        <li>
+                            <span class="score-badge">1000</span>
+                            AI Toys for Kids Talk About Sex, Drugs, and Chinese Propaganda
+                        </li>
+                        
+                        <li>
+                            <span class="score-badge">1000</span>
+                            Google Data Centers Are Returning Nuclear Power to Tornado Country
+                        </li>
+                        
+                    </ul>
                 </div>
             </div>
         </div>
         
-        <div class="bubble-section">
-            <h3>🎭 Culture</h3>
-            <div class="bubble-grid">
-                <!-- Last 3 In -->
-                <div class="bubble-col bubble-in">
-                    <div class="bubble-header">Last 3 In (Lowest Scores)</div>
-                    
-                    <div class="bubble-item">
-                        <span class="score-badge">3677</span>
-                        <span>Official Discussion - Wake Up, Dead Man: A Knives Out Mystery [SPOILERS]</span>
-                    </div>
-                    
-                    <div class="bubble-item">
-                        <span class="score-badge">2620</span>
-                        <span>Hosting a NYE party. I want to put a film on the TV on mute. What to play?</span>
-                    </div>
-                    
-                    <div class="bubble-item">
-                        <span class="score-badge">2076</span>
-                        <span>Best Literary Fiction of 2025 - Voting Thread</span>
-                    </div>
-                    
+        <div class="bubble-group">
+            <h3 class="bubble-section-title">🏈 Sports</h3>
+            <div class="bubble-columns">
+                <!-- In -->
+                <div class="bubble-col in">
+                    <h4>Last In (Lowest Score)</h4>
+                    <ul>
+                        
+                        <li>
+                            <span class="score-badge">5754</span>
+                            [Adam Friedland] “If David Stern were commissioner, Pablo Torre would be dead”
+                        </li>
+                        
+                        <li>
+                            <span class="score-badge">5078</span>
+                            Liverpool counter-attack vs Brighton 90+7'
+                        </li>
+                        
+                        <li>
+                            <span class="score-badge">4850</span>
+                            [PTI] “Everyone was excited today as Messi was coming. It’s my wedding day, but I left all the ceremonies to be here. Still, the management was so pathetic that I couldn’t even see him,” says a fan as Argentine footballer Lionel Messi’s event draws ire.
+                        </li>
+                        
+                    </ul>
                 </div>
-                
-                <!-- First 3 Out -->
-                <div class="bubble-col bubble-out">
-                    <div class="bubble-header">First 3 Out (Highest Scores)</div>
-                    
-                    <div class="bubble-item">
-                        <span class="score-badge">2046</span>
-                        <span>The Lord of The Rings Trilogy - Official 25th Anniversary Teaser Trailer</span>
-                    </div>
-                    
-                    <div class="bubble-item">
-                        <span class="score-badge">2043</span>
-                        <span>LaKeith Stanfield Cast As Dennis Rodman In Lionsgate’s Revived ’48 Hours in Vegas’ After Jonathan Majors Exit</span>
-                    </div>
-                    
-                    <div class="bubble-item">
-                        <span class="score-badge">1947</span>
-                        <span>Dick Van Dyke and Julie Andrews in Behind-the-Scenes footage from "Mary Poppins" (1964), filming the 'Jolly Holiday' sequence which utilized a sodium vapour travelling matte process to combine their live-action movements later with animation</span>
-                    </div>
-                    
+                <!-- Out -->
+                <div class="bubble-col out">
+                    <h4>First Out (Highest Score)</h4>
+                    <ul>
+                        
+                        <li>
+                            <span class="score-badge">4370</span>
+                            In seven seasons, Andrew Luck missed 26 games due to injury. In six seasons, Joe Burrow has missed 22 games due to injury.
+                        </li>
+                        
+                        <li>
+                            <span class="score-badge">3889</span>
+                            Bernardo Silva: “What Manchester City has done in my first 7 years there is not normal. We have achieved 6 Premier League trophies, a treble, a domestic quadruple, doing 100 points, setting the goals record. I’m biased, but I could argue Pep’s Manchester City was the best ever in English football.”
+                        </li>
+                        
+                        <li>
+                            <span class="score-badge">3823</span>
+                            The state head of Telangana struggles to find Messi with his passes before an exhibition match in India.
+                        </li>
+                        
+                    </ul>
+                </div>
+            </div>
+        </div>
+        
+        <div class="bubble-group">
+            <h3 class="bubble-section-title">🎭 Culture</h3>
+            <div class="bubble-columns">
+                <!-- In -->
+                <div class="bubble-col in">
+                    <h4>Last In (Lowest Score)</h4>
+                    <ul>
+                        
+                        <li>
+                            <span class="score-badge">3690</span>
+                            Official Discussion - Wake Up, Dead Man: A Knives Out Mystery [SPOILERS]
+                        </li>
+                        
+                        <li>
+                            <span class="score-badge">2648</span>
+                            Hosting a NYE party. I want to put a film on the TV on mute. What to play?
+                        </li>
+                        
+                        <li>
+                            <span class="score-badge">2081</span>
+                            Best Literary Fiction of 2025 - Voting Thread
+                        </li>
+                        
+                    </ul>
+                </div>
+                <!-- Out -->
+                <div class="bubble-col out">
+                    <h4>First Out (Highest Score)</h4>
+                    <ul>
+                        
+                        <li>
+                            <span class="score-badge">2076</span>
+                            The Lord of The Rings Trilogy - Official 25th Anniversary Teaser Trailer
+                        </li>
+                        
+                        <li>
+                            <span class="score-badge">2049</span>
+                            LaKeith Stanfield Cast As Dennis Rodman In Lionsgate’s Revived ’48 Hours in Vegas’ After Jonathan Majors Exit
+                        </li>
+                        
+                        <li>
+                            <span class="score-badge">2004</span>
+                            Dick Van Dyke and Julie Andrews in Behind-the-Scenes footage from "Mary Poppins" (1964), filming the 'Jolly Holiday' sequence which utilized a sodium vapour travelling matte process to combine their live-action movements later with animation
+                        </li>
+                        
+                    </ul>
                 </div>
             </div>
         </div>
@@ -1757,30 +1822,23 @@ td { border-bottom: 1px solid var(--term-dim); padding: 1rem; color: var(--term-
 </div>
 
 <script>
-function openTab(evt, tabName) {
+function switchTab(evt, tabName) {
     var i, tabcontent, tablinks;
     
-    // Hide all tab content
-    tabcontent = document.getElementsByClassName("tab-content");
+    tabcontent = document.getElementsByClassName("tab-pane");
     for (i = 0; i < tabcontent.length; i++) {
         tabcontent[i].style.display = "none";
         tabcontent[i].classList.remove("active");
     }
     
-    // Remove active class from all tab links
-    tablinks = document.getElementsByClassName("tab-btn");
+    tablinks = document.getElementsByClassName("tab-link");
     for (i = 0; i < tablinks.length; i++) {
-        tablinks[i].className = tablinks[i].className.replace(" active", "");
+        tablinks[i].classList.remove("active");
     }
     
-    // Show the current tab, and add an "active" class to the button that opened the tab
     document.getElementById(tabName).style.display = "block";
-    // Slight delay to allow display:block to apply before adding opacity class for animation
-    setTimeout(() => {
-        document.getElementById(tabName).classList.add("active");
-    }, 10);
-    
-    evt.currentTarget.className += " active";
+    document.getElementById(tabName).classList.add("active");
+    evt.currentTarget.classList.add("active");
 }
 </script>
     </div>

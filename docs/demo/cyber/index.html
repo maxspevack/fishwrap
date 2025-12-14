@@ -129,33 +129,93 @@
         }
         body.debug-active .debug-card { display: block; }
         
-        /* Modal */
+        /* Modal - Updated for Clean Basic Theme */
         .modal-overlay {
             display: none;
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.8);
+            background: rgba(0,0,0,0.5); /* Lighter backdrop */
             z-index: 1000;
             justify-content: center; align-items: center;
         }
         .modal-content {
-            background: #1a1a1a; /* Dark mode modal for Glass Box */
-            color: #f0f0f0;
+            background: #fff; /* White modal */
+            color: #333;
             width: 90%; max-width: 900px; height: 85vh;
             overflow-y: auto;
             padding: 40px;
             border-radius: 8px;
-            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+            box-shadow: 0 20px 50px rgba(0,0,0,0.2);
         }
         .modal-close {
             position: absolute; top: 20px; right: 20px;
-            font-size: 2rem; border: none; background: none; color: #fff; cursor: pointer;
+            font-size: 2rem; border: none; background: none; color: #333; cursor: pointer;
         }
+        .modal-close:hover { color: var(--accent-color); }
+        
+        /* Transparency Report Styles (Clean) */
+        .transparency-report { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
+        
+        .report-header { margin-bottom: 30px; border-bottom: 1px solid #eee; padding-bottom: 20px; }
+        .report-header h2 { margin: 0 0 10px 0; font-size: 1.8em; color: #333; }
+        .report-meta { color: #666; font-size: 0.9em; display: flex; gap: 20px; }
+        
+        /* Tabs */
+        .tabs { display: flex; border-bottom: 2px solid #eee; margin-bottom: 30px; }
+        .tab-link {
+            background: none; border: none; padding: 10px 20px;
+            font-size: 1rem; color: #666; cursor: pointer;
+            border-bottom: 2px solid transparent; margin-bottom: -2px;
+            font-weight: 500;
+        }
+        .tab-link:hover { color: var(--accent-color); }
+        .tab-link.active { color: var(--accent-color); border-bottom-color: var(--accent-color); }
+        
+        .tab-pane { display: none; animation: fadeIn 0.3s; }
+        .tab-pane.active { display: block; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
+        
+        /* Stats Grid */
+        .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 20px; }
+        .stat-card { background: #f8f9fa; padding: 20px; border-radius: 8px; text-align: center; border: 1px solid #eee; }
+        .stat-card.highlight { background: #eff6ff; border-color: #bfdbfe; }
+        .stat-value { display: block; font-size: 2rem; font-weight: 700; color: #333; margin-bottom: 5px; }
+        .stat-label { display: block; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.5px; color: #666; }
+        .stat-sub { font-size: 0.75rem; color: #888; display: block; margin-top: 5px; }
+        
+        /* Tables */
+        .table-responsive { overflow-x: auto; }
+        .data-table { width: 100%; border-collapse: collapse; font-size: 0.9rem; }
+        .data-table th { text-align: left; padding: 12px; border-bottom: 2px solid #eee; color: #666; font-weight: 600; }
+        .data-table td { padding: 12px; border-bottom: 1px solid #eee; color: #333; }
+        .source-name { font-weight: 500; color: #333; }
+        .count-pill { display: inline-block; background: #eee; padding: 2px 6px; border-radius: 10px; font-size: 0.75rem; margin-left: 5px; color: #666; }
+        
+        /* Deltas */
+        .delta-pos { color: #16a34a; font-weight: 600; }
+        .delta-neg { color: #dc2626; font-weight: 600; }
+        .delta-neutral { color: #9ca3af; }
+        
+        /* Bubble */
+        .bubble-group { margin-bottom: 40px; }
+        .bubble-section-title { font-size: 1.2rem; color: #333; border-left: 4px solid var(--accent-color); padding-left: 10px; margin-bottom: 15px; }
+        .bubble-columns { display: grid; grid-template-columns: 1fr 1fr; gap: 30px; }
+        .bubble-col h4 { font-size: 0.9rem; text-transform: uppercase; color: #666; margin-bottom: 10px; border-bottom: 1px solid #eee; padding-bottom: 5px; }
+        .bubble-col ul { list-style: none; padding: 0; margin: 0; }
+        .bubble-col li { margin-bottom: 8px; font-size: 0.9rem; display: flex; align-items: baseline; }
+        .score-badge { 
+            background: #eee; color: #555; font-family: monospace; font-size: 0.75rem; 
+            padding: 2px 5px; border-radius: 4px; margin-right: 10px; min-width: 40px; text-align: right; 
+        }
+        .bubble-col.in .score-badge { background: #dcfce7; color: #166534; }
+        .bubble-col.out .score-badge { background: #fee2e2; color: #991b1b; }
+        .empty { color: #ccc; }
         
         /* Mobile */
         @media (max-width: 768px) {
             body { flex-direction: column; }
             .sidebar { width: 100%; height: auto; position: relative; }
             .layout-container { flex-direction: column; }
+            .bubble-columns { grid-template-columns: 1fr; gap: 15px; }
         }
 
         :root {
@@ -1129,300 +1189,294 @@ td { border-bottom: 1px solid var(--term-dim); padding: 1rem; color: var(--term-
 <div id="transparency-modal" class="modal-overlay">
     <div class="modal-content">
         <button class="modal-close" onclick="closeTransparency()">&times;</button>
-        <div class="glass-box-container">
-    <div class="audit-header">
-        <h1>Source Transparency</h1>
-        <p>Audit Log for Edition: <strong>503cefc7-dc5c-4237-b6fa-164e4e5fe077</strong></p>
-        <p>Generated: 2025-12-13 16:49:02 PST</p>
+        <!-- Basic Theme Transparency Report -->
+<div class="transparency-report">
+    <div class="report-header">
+        <h2>Source Transparency</h2>
+        <div class="report-meta">
+            <span>Edition: b4fe6d81-7030-4421-9549-e6e68da2f62a</span>
+            <span>Generated: 2025-12-13 17:17:28 PST</span>
+        </div>
     </div>
 
-    <!-- Tabs Navigation -->
+    <!-- Tabs -->
     <div class="tabs">
-        <button class="tab-btn active" onclick="openTab(event, 'tab-vitals')">Vitals</button>
-        <button class="tab-btn" onclick="openTab(event, 'tab-sources')">Sources</button>
-        <button class="tab-btn" onclick="openTab(event, 'tab-bubble')">The Bubble</button>
+        <button class="tab-link active" onclick="switchTab(event, 'tab-vitals')">Vitals</button>
+        <button class="tab-link" onclick="switchTab(event, 'tab-sources')">Source Efficiency</button>
+        <button class="tab-link" onclick="switchTab(event, 'tab-bubble')">The Bubble</button>
     </div>
 
-    <!-- Tab: Vitals (The Funnel) -->
-    <div id="tab-vitals" class="tab-content active">
-        <div class="funnel-container">
-            <div class="funnel-step">
-                <span class="funnel-num">152</span>
-                <small>Total Items</small>
+    <!-- Tab Content: Vitals -->
+    <div id="tab-vitals" class="tab-pane active">
+        <div class="stats-grid">
+            <div class="stat-card">
+                <span class="stat-value">152</span>
+                <span class="stat-label">Total Items Scanned</span>
             </div>
-            <div class="funnel-step">
-                <span class="funnel-num">99</span>
-                <small>Candidate Pool</small>
+            <div class="stat-card">
+                <span class="stat-value">99</span>
+                <span class="stat-label">Fresh Candidates</span>
             </div>
-            <div class="funnel-step">
-                <span class="funnel-num">30</span>
-                <small>Published</small>
+            <div class="stat-card">
+                <span class="stat-value">30</span>
+                <span class="stat-label">Published</span>
             </div>
-            <div class="funnel-step">
-                <span class="funnel-num">80.3%</span>
-                <small>Anti-Feed Protection</small>
-                <span class="funnel-sub">(Total - Published) / Total</span>
-                <span class="funnel-sub">Blocked: 122</span>
+            <div class="stat-card highlight">
+                <span class="stat-value">80.3%</span>
+                <span class="stat-label">Anti-Feed Protection</span>
+                <small class="stat-sub">Noise Filtered Out</small>
             </div>
         </div>
     </div>
 
-    <!-- Tab: Sources (Efficiency Table) -->
-    <div id="tab-sources" class="tab-content">
-        <h2>Source Efficiency</h2>
-        <p>
-            <em>
-                A <span class="bias-pos">positive Delta (+)</span> means <strong>High Signal</strong>: We publish this source more often than we find it.<br>
-                A <span class="bias-neg">negative Delta (-)</span> means <strong>High Noise</strong>: We filter (but do not silence) this source aggressively.
-            </em>
-        </p>
-        
-        <div class="table-scroll-container">
-            <table class="audit-table">
+    <!-- Tab Content: Sources -->
+    <div id="tab-sources" class="tab-pane">
+        <div class="table-responsive">
+            <table class="data-table">
                 <thead>
                     <tr>
                         <th>Source</th>
-                        <th>Output Share (Count)</th>
-                        <th>Input Share (Count)</th>
-                        <th>Delta</th>
+                        <th>Output Share</th>
+                        <th>Input Share</th>
+                        <th>Signal Delta</th>
                     </tr>
                 </thead>
                 <tbody>
                     
                     <tr>
-                        <td>feeds.feedburner.com</td>
+                        <td class="source-name">feeds.feedburner.com</td>
                         <td>
                             23.3%
-                            <span class="count-sub">(7)</span>
+                            <span class="count-pill">7</span>
                         </td>
                         <td>
                             8.1%
-                            <span class="count-sub">(8)</span>
+                            <span class="count-pill">8</span>
                         </td>
                         <td>
                             
-                            <span class="bias-pos">+15.3%</span>
+                            <span class="delta-pos">+15.3%</span>
                             
                         </td>
                     </tr>
                     
                     <tr>
-                        <td>www.helpnetsecurity.com</td>
+                        <td class="source-name">www.helpnetsecurity.com</td>
                         <td>
                             16.7%
-                            <span class="count-sub">(5)</span>
+                            <span class="count-pill">5</span>
                         </td>
                         <td>
                             8.1%
-                            <span class="count-sub">(8)</span>
+                            <span class="count-pill">8</span>
                         </td>
                         <td>
                             
-                            <span class="bias-pos">+8.6%</span>
+                            <span class="delta-pos">+8.6%</span>
                             
                         </td>
                     </tr>
                     
                     <tr>
-                        <td>www.bleepingcomputer.com</td>
+                        <td class="source-name">www.bleepingcomputer.com</td>
                         <td>
                             16.7%
-                            <span class="count-sub">(5)</span>
+                            <span class="count-pill">5</span>
                         </td>
                         <td>
                             9.1%
-                            <span class="count-sub">(9)</span>
+                            <span class="count-pill">9</span>
                         </td>
                         <td>
                             
-                            <span class="bias-pos">+7.6%</span>
+                            <span class="delta-pos">+7.6%</span>
                             
                         </td>
                     </tr>
                     
                     <tr>
-                        <td>securelist.com</td>
+                        <td class="source-name">securelist.com</td>
                         <td>
                             6.7%
-                            <span class="count-sub">(2)</span>
+                            <span class="count-pill">2</span>
                         </td>
                         <td>
                             2.0%
-                            <span class="count-sub">(2)</span>
+                            <span class="count-pill">2</span>
                         </td>
                         <td>
                             
-                            <span class="bias-pos">+4.6%</span>
+                            <span class="delta-pos">+4.6%</span>
                             
                         </td>
                     </tr>
                     
                     <tr>
-                        <td>securityaffairs.co</td>
+                        <td class="source-name">securityaffairs.co</td>
                         <td>
                             10.0%
-                            <span class="count-sub">(3)</span>
+                            <span class="count-pill">3</span>
                         </td>
                         <td>
                             6.1%
-                            <span class="count-sub">(6)</span>
+                            <span class="count-pill">6</span>
                         </td>
                         <td>
                             
-                            <span class="bias-pos">+3.9%</span>
+                            <span class="delta-pos">+3.9%</span>
                             
                         </td>
                     </tr>
                     
                     <tr>
-                        <td>www.mandiant.com</td>
+                        <td class="source-name">unit42.paloaltonetworks.com</td>
                         <td>
                             3.3%
-                            <span class="count-sub">(1)</span>
+                            <span class="count-pill">1</span>
                         </td>
                         <td>
                             1.0%
-                            <span class="count-sub">(1)</span>
+                            <span class="count-pill">1</span>
                         </td>
                         <td>
                             
-                            <span class="bias-pos">+2.3%</span>
+                            <span class="delta-pos">+2.3%</span>
                             
                         </td>
                     </tr>
                     
                     <tr>
-                        <td>www.crowdstrike.com</td>
+                        <td class="source-name">www.crowdstrike.com</td>
                         <td>
                             3.3%
-                            <span class="count-sub">(1)</span>
+                            <span class="count-pill">1</span>
                         </td>
                         <td>
                             1.0%
-                            <span class="count-sub">(1)</span>
+                            <span class="count-pill">1</span>
                         </td>
                         <td>
                             
-                            <span class="bias-pos">+2.3%</span>
+                            <span class="delta-pos">+2.3%</span>
                             
                         </td>
                     </tr>
                     
                     <tr>
-                        <td>googleprojectzero.blogspot.com</td>
+                        <td class="source-name">www.mandiant.com</td>
                         <td>
                             3.3%
-                            <span class="count-sub">(1)</span>
+                            <span class="count-pill">1</span>
                         </td>
                         <td>
                             1.0%
-                            <span class="count-sub">(1)</span>
+                            <span class="count-pill">1</span>
                         </td>
                         <td>
                             
-                            <span class="bias-pos">+2.3%</span>
+                            <span class="delta-pos">+2.3%</span>
                             
                         </td>
                     </tr>
                     
                     <tr>
-                        <td>unit42.paloaltonetworks.com</td>
+                        <td class="source-name">googleprojectzero.blogspot.com</td>
                         <td>
                             3.3%
-                            <span class="count-sub">(1)</span>
+                            <span class="count-pill">1</span>
                         </td>
                         <td>
                             1.0%
-                            <span class="count-sub">(1)</span>
+                            <span class="count-pill">1</span>
                         </td>
                         <td>
                             
-                            <span class="bias-pos">+2.3%</span>
+                            <span class="delta-pos">+2.3%</span>
                             
                         </td>
                     </tr>
                     
                     <tr>
-                        <td>www.darkreading.com</td>
+                        <td class="source-name">www.darkreading.com</td>
                         <td>
                             6.7%
-                            <span class="count-sub">(2)</span>
+                            <span class="count-pill">2</span>
                         </td>
                         <td>
                             7.1%
-                            <span class="count-sub">(7)</span>
+                            <span class="count-pill">7</span>
                         </td>
                         <td>
                             
-                            <span class="bias-neg">-0.4%</span>
+                            <span class="delta-neg">-0.4%</span>
                             
                         </td>
                     </tr>
                     
                     <tr>
-                        <td>www.troyhunt.com</td>
+                        <td class="source-name">www.troyhunt.com</td>
                         <td>
                             0.0%
-                            <span class="count-sub">(0)</span>
+                            <span class="count-pill">0</span>
                         </td>
                         <td>
                             1.0%
-                            <span class="count-sub">(1)</span>
+                            <span class="count-pill">1</span>
                         </td>
                         <td>
                             
-                            <span class="bias-neg">-1.0%</span>
+                            <span class="delta-neg">-1.0%</span>
                             
                         </td>
                     </tr>
                     
                     <tr>
-                        <td>www.schneier.com</td>
+                        <td class="source-name">www.schneier.com</td>
                         <td>
                             0.0%
-                            <span class="count-sub">(0)</span>
+                            <span class="count-pill">0</span>
                         </td>
                         <td>
                             1.0%
-                            <span class="count-sub">(1)</span>
+                            <span class="count-pill">1</span>
                         </td>
                         <td>
                             
-                            <span class="bias-neg">-1.0%</span>
+                            <span class="delta-neg">-1.0%</span>
                             
                         </td>
                     </tr>
                     
                     <tr>
-                        <td>therecord.media</td>
+                        <td class="source-name">therecord.media</td>
                         <td>
                             0.0%
-                            <span class="count-sub">(0)</span>
+                            <span class="count-pill">0</span>
                         </td>
                         <td>
                             5.1%
-                            <span class="count-sub">(5)</span>
+                            <span class="count-pill">5</span>
                         </td>
                         <td>
                             
-                            <span class="bias-neg">-5.1%</span>
+                            <span class="delta-neg">-5.1%</span>
                             
                         </td>
                     </tr>
                     
                     <tr>
-                        <td>www.reddit.com</td>
+                        <td class="source-name">www.reddit.com</td>
                         <td>
                             6.7%
-                            <span class="count-sub">(2)</span>
+                            <span class="count-pill">2</span>
                         </td>
                         <td>
                             48.5%
-                            <span class="count-sub">(48)</span>
+                            <span class="count-pill">48</span>
                         </td>
                         <td>
                             
-                            <span class="bias-neg">-41.8%</span>
+                            <span class="delta-neg">-41.8%</span>
                             
                         </td>
                     </tr>
@@ -1432,186 +1486,197 @@ td { border-bottom: 1px solid var(--term-dim); padding: 1rem; color: var(--term-
         </div>
     </div>
 
-    <!-- Tab: The Bubble -->
-    <div id="tab-bubble" class="tab-content">
-        <h2>The Bubble</h2>
-        <p><em>Comparing the last stories to make the cut vs. the first to miss it.</em></p>
+    <!-- Tab Content: The Bubble -->
+    <div id="tab-bubble" class="tab-pane">
+        <p class="bubble-intro">Comparing the lowest-scoring articles that made the cut versus the highest-scoring ones that missed it.</p>
         
         
-        <div class="bubble-section">
-            <h3>🚨 Zero-Days & Critical Exploits</h3>
-            <div class="bubble-grid">
-                <!-- Last 3 In -->
-                <div class="bubble-col bubble-in">
-                    <div class="bubble-header">Last 3 In (Lowest Scores)</div>
-                    
-                    <div class="bubble-item">
-                        <span class="score-badge">10000</span>
-                        <span>Emergency fixes deployed by Google and Apple after targeted attacks</span>
-                    </div>
-                    
-                    <div class="bubble-item">
-                        <span class="score-badge">10000</span>
-                        <span>CISA Adds Actively Exploited Sierra Wireless Router Flaw Enabling RCE Attacks</span>
-                    </div>
-                    
-                    <div class="bubble-item">
-                        <span class="score-badge">7500</span>
-                        <span>A look at an Android ITW DNG exploit</span>
-                    </div>
-                    
+        <div class="bubble-group">
+            <h3 class="bubble-section-title">🚨 Zero-Days & Critical Exploits</h3>
+            <div class="bubble-columns">
+                <!-- In -->
+                <div class="bubble-col in">
+                    <h4>Last In (Lowest Score)</h4>
+                    <ul>
+                        
+                        <li>
+                            <span class="score-badge">10000</span>
+                            Emergency fixes deployed by Google and Apple after targeted attacks
+                        </li>
+                        
+                        <li>
+                            <span class="score-badge">10000</span>
+                            CISA Adds Actively Exploited Sierra Wireless Router Flaw Enabling RCE Attacks
+                        </li>
+                        
+                        <li>
+                            <span class="score-badge">7500</span>
+                            A look at an Android ITW DNG exploit
+                        </li>
+                        
+                    </ul>
                 </div>
-                
-                <!-- First 3 Out -->
-                <div class="bubble-col bubble-out">
-                    <div class="bubble-header">First 3 Out (Highest Scores)</div>
-                    
-                    <div class="bubble-item">
-                        <span class="score-badge">21</span>
-                        <span>Google launches AI agent defense system in Chrome, offers $20K bounties for prompt injection exploits</span>
-                    </div>
-                    
+                <!-- Out -->
+                <div class="bubble-col out">
+                    <h4>First Out (Highest Score)</h4>
+                    <ul>
+                        
+                        <li>
+                            <span class="score-badge">21</span>
+                            Google launches AI agent defense system in Chrome, offers $20K bounties for prompt injection exploits
+                        </li>
+                        
+                    </ul>
                 </div>
             </div>
         </div>
         
-        <div class="bubble-section">
-            <h3>🕵️ Threat Intelligence</h3>
-            <div class="bubble-grid">
-                <!-- Last 3 In -->
-                <div class="bubble-col bubble-in">
-                    <div class="bubble-header">Last 3 In (Lowest Scores)</div>
-                    
-                    <div class="bubble-item">
-                        <span class="score-badge">5000</span>
-                        <span>Following the digital trail: what happens to data stolen in a phishing attack</span>
-                    </div>
-                    
-                    <div class="bubble-item">
-                        <span class="score-badge">5000</span>
-                        <span>Elastic detects stealthy NANOREMOTE malware using Google Drive as C2</span>
-                    </div>
-                    
-                    <div class="bubble-item">
-                        <span class="score-badge">5000</span>
-                        <span>Fake OSINT and GPT Utility GitHub Repos Spread PyStoreRAT Malware Payloads</span>
-                    </div>
-                    
+        <div class="bubble-group">
+            <h3 class="bubble-section-title">🕵️ Threat Intelligence</h3>
+            <div class="bubble-columns">
+                <!-- In -->
+                <div class="bubble-col in">
+                    <h4>Last In (Lowest Score)</h4>
+                    <ul>
+                        
+                        <li>
+                            <span class="score-badge">5000</span>
+                            Following the digital trail: what happens to data stolen in a phishing attack
+                        </li>
+                        
+                        <li>
+                            <span class="score-badge">5000</span>
+                            Elastic detects stealthy NANOREMOTE malware using Google Drive as C2
+                        </li>
+                        
+                        <li>
+                            <span class="score-badge">5000</span>
+                            Fake OSINT and GPT Utility GitHub Repos Spread PyStoreRAT Malware Payloads
+                        </li>
+                        
+                    </ul>
                 </div>
-                
-                <!-- First 3 Out -->
-                <div class="bubble-col bubble-out">
-                    <div class="bubble-header">First 3 Out (Highest Scores)</div>
-                    
-                    <div class="bubble-item">
-                        <span class="score-badge">5000</span>
-                        <span>Hamas-affiliated APT targeting government agencies in the Middle East, Morocco</span>
-                    </div>
-                    
-                    <div class="bubble-item">
-                        <span class="score-badge">5000</span>
-                        <span>Germany calls in Russian Ambassador over air traffic control hack claims</span>
-                    </div>
-                    
-                    <div class="bubble-item">
-                        <span class="score-badge">47</span>
-                        <span>what are some good options that provide a virtual environment to browse online?</span>
-                    </div>
-                    
-                </div>
-            </div>
-        </div>
-        
-        <div class="bubble-section">
-            <h3>🐛 Vulnerability News</h3>
-            <div class="bubble-grid">
-                <!-- Last 3 In -->
-                <div class="bubble-col bubble-in">
-                    <div class="bubble-header">Last 3 In (Lowest Scores)</div>
-                    
-                    <div class="bubble-item">
-                        <span class="score-badge">7500</span>
-                        <span>Supply Chain Attacks Targeting GitHub Actions Increased in 2025</span>
-                    </div>
-                    
-                    <div class="bubble-item">
-                        <span class="score-badge">6000</span>
-                        <span>MITRE shares 2025's top 25 most dangerous software weaknesses</span>
-                    </div>
-                    
-                    <div class="bubble-item">
-                        <span class="score-badge">5000</span>
-                        <span>Hamas-Linked Hackers Probe Middle Eastern Diplomats</span>
-                    </div>
-                    
-                </div>
-                
-                <!-- First 3 Out -->
-                <div class="bubble-col bubble-out">
-                    <div class="bubble-header">First 3 Out (Highest Scores)</div>
-                    
-                    <div class="bubble-item">
-                        <span class="score-badge">5000</span>
-                        <span>What 35 years of privacy law say about the state of data protection</span>
-                    </div>
-                    
-                    <div class="bubble-item">
-                        <span class="score-badge">5000</span>
-                        <span>MKVCinemas streaming piracy service with 142M visits shuts down</span>
-                    </div>
-                    
-                    <div class="bubble-item">
-                        <span class="score-badge">5000</span>
-                        <span>ImmuniWeb enhances AI vulnerability testing and compliance reporting</span>
-                    </div>
-                    
+                <!-- Out -->
+                <div class="bubble-col out">
+                    <h4>First Out (Highest Score)</h4>
+                    <ul>
+                        
+                        <li>
+                            <span class="score-badge">5000</span>
+                            Hamas-affiliated APT targeting government agencies in the Middle East, Morocco
+                        </li>
+                        
+                        <li>
+                            <span class="score-badge">5000</span>
+                            Germany calls in Russian Ambassador over air traffic control hack claims
+                        </li>
+                        
+                        <li>
+                            <span class="score-badge">47</span>
+                            what are some good options that provide a virtual environment to browse online?
+                        </li>
+                        
+                    </ul>
                 </div>
             </div>
         </div>
         
-        <div class="bubble-section">
-            <h3>🔭 Community Watch</h3>
-            <div class="bubble-grid">
-                <!-- Last 3 In -->
-                <div class="bubble-col bubble-in">
-                    <div class="bubble-header">Last 3 In (Lowest Scores)</div>
-                    
-                    <div class="bubble-item">
-                        <span class="score-badge">5000</span>
-                        <span>LLM privacy policies keep getting longer, denser, and nearly impossible to decode</span>
-                    </div>
-                    
-                    <div class="bubble-item">
-                        <span class="score-badge">5000</span>
-                        <span>Turn me on, turn me off: Zigbee assessment in industrial environments</span>
-                    </div>
-                    
-                    <div class="bubble-item">
-                        <span class="score-badge">5000</span>
-                        <span>Firewalla Orange brings zero trust anywhere</span>
-                    </div>
-                    
+        <div class="bubble-group">
+            <h3 class="bubble-section-title">🐛 Vulnerability News</h3>
+            <div class="bubble-columns">
+                <!-- In -->
+                <div class="bubble-col in">
+                    <h4>Last In (Lowest Score)</h4>
+                    <ul>
+                        
+                        <li>
+                            <span class="score-badge">7500</span>
+                            Supply Chain Attacks Targeting GitHub Actions Increased in 2025
+                        </li>
+                        
+                        <li>
+                            <span class="score-badge">6000</span>
+                            MITRE shares 2025's top 25 most dangerous software weaknesses
+                        </li>
+                        
+                        <li>
+                            <span class="score-badge">5000</span>
+                            Hamas-Linked Hackers Probe Middle Eastern Diplomats
+                        </li>
+                        
+                    </ul>
                 </div>
-                
-                <!-- First 3 Out -->
-                <div class="bubble-col bubble-out">
-                    <div class="bubble-header">First 3 Out (Highest Scores)</div>
-                    
-                    <div class="bubble-item">
-                        <span class="score-badge">5000</span>
-                        <span>Swissbit adds HID Seos to iShield Key 2</span>
-                    </div>
-                    
-                    <div class="bubble-item">
-                        <span class="score-badge">5000</span>
-                        <span>Securing GenAI in the Browser: Policy, Isolation, and Data Controls That Actually Work</span>
-                    </div>
-                    
-                    <div class="bubble-item">
-                        <span class="score-badge">5000</span>
-                        <span>Building Trustworthy AI Agents</span>
-                    </div>
-                    
+                <!-- Out -->
+                <div class="bubble-col out">
+                    <h4>First Out (Highest Score)</h4>
+                    <ul>
+                        
+                        <li>
+                            <span class="score-badge">5000</span>
+                            What 35 years of privacy law say about the state of data protection
+                        </li>
+                        
+                        <li>
+                            <span class="score-badge">5000</span>
+                            MKVCinemas streaming piracy service with 142M visits shuts down
+                        </li>
+                        
+                        <li>
+                            <span class="score-badge">5000</span>
+                            ImmuniWeb enhances AI vulnerability testing and compliance reporting
+                        </li>
+                        
+                    </ul>
+                </div>
+            </div>
+        </div>
+        
+        <div class="bubble-group">
+            <h3 class="bubble-section-title">🔭 Community Watch</h3>
+            <div class="bubble-columns">
+                <!-- In -->
+                <div class="bubble-col in">
+                    <h4>Last In (Lowest Score)</h4>
+                    <ul>
+                        
+                        <li>
+                            <span class="score-badge">5000</span>
+                            LLM privacy policies keep getting longer, denser, and nearly impossible to decode
+                        </li>
+                        
+                        <li>
+                            <span class="score-badge">5000</span>
+                            Turn me on, turn me off: Zigbee assessment in industrial environments
+                        </li>
+                        
+                        <li>
+                            <span class="score-badge">5000</span>
+                            Firewalla Orange brings zero trust anywhere
+                        </li>
+                        
+                    </ul>
+                </div>
+                <!-- Out -->
+                <div class="bubble-col out">
+                    <h4>First Out (Highest Score)</h4>
+                    <ul>
+                        
+                        <li>
+                            <span class="score-badge">5000</span>
+                            Swissbit adds HID Seos to iShield Key 2
+                        </li>
+                        
+                        <li>
+                            <span class="score-badge">5000</span>
+                            Securing GenAI in the Browser: Policy, Isolation, and Data Controls That Actually Work
+                        </li>
+                        
+                        <li>
+                            <span class="score-badge">5000</span>
+                            Building Trustworthy AI Agents
+                        </li>
+                        
+                    </ul>
                 </div>
             </div>
         </div>
@@ -1620,30 +1685,23 @@ td { border-bottom: 1px solid var(--term-dim); padding: 1rem; color: var(--term-
 </div>
 
 <script>
-function openTab(evt, tabName) {
+function switchTab(evt, tabName) {
     var i, tabcontent, tablinks;
     
-    // Hide all tab content
-    tabcontent = document.getElementsByClassName("tab-content");
+    tabcontent = document.getElementsByClassName("tab-pane");
     for (i = 0; i < tabcontent.length; i++) {
         tabcontent[i].style.display = "none";
         tabcontent[i].classList.remove("active");
     }
     
-    // Remove active class from all tab links
-    tablinks = document.getElementsByClassName("tab-btn");
+    tablinks = document.getElementsByClassName("tab-link");
     for (i = 0; i < tablinks.length; i++) {
-        tablinks[i].className = tablinks[i].className.replace(" active", "");
+        tablinks[i].classList.remove("active");
     }
     
-    // Show the current tab, and add an "active" class to the button that opened the tab
     document.getElementById(tabName).style.display = "block";
-    // Slight delay to allow display:block to apply before adding opacity class for animation
-    setTimeout(() => {
-        document.getElementById(tabName).classList.add("active");
-    }, 10);
-    
-    evt.currentTarget.className += " active";
+    document.getElementById(tabName).classList.add("active");
+    evt.currentTarget.classList.add("active");
 }
 </script>
     </div>
