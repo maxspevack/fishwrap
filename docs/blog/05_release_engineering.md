@@ -35,7 +35,7 @@ We wanted to add a "Publication Timestamp" to the sidebar.
 *   **Theme:** Needs to display it.
 
 If we updated the Theme first, it would be buggy (missing variable). If we updated the Engine first, the timestamp would be invisible.
-We adopted a **Forward Compatibility** policy: The Theme checks `{% if time_str %}`. This allows us to deploy the Theme change *today*, and have the feature "light up" automatically when the Engine is upgraded next week.
+We adopted a **Forward Compatibility** policy: The Theme checks `{% raw %}{% if time_str %}{% endraw %}`. This allows us to deploy the Theme change *today*, and have the feature "light up" automatically when the Engine is upgraded next week.
 
 ### 3. Smart Builds (Makefiles are DAGs)
 We realized we were re-fetching RSS feeds (expensive!) just to fix a CSS padding issue.
