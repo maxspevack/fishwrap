@@ -4,8 +4,23 @@ Fishwrap is evolving from a personal script into a robust "Anti-Feed" platform. 
 
 ---
 
+## v1.3.1 (The Polish) - Dec 13, 2025
+
+A maintenance release focused on UI refinement and release engineering.
+
+### 🐛 Bug Fixes & Polish
+*   **Transparency UI:** Fixed the "Tab Flashing" bug in the Glass Box modal.
+*   **Visuals:** Updated the "Bubble" score badges to have fixed widths for better alignment.
+*   **Readability:** Enforced high-contrast text colors in the modal to prevent dark-mode conflicts.
+*   **Footer:** Replaced the text-based version string with a clean GitHub icon + version badge (e.g., `v1.3.1`).
+
+### 🛠️ Release Engineering
+*   **Automated Release Script:** Introduced `scripts/release.sh` to automate the version bump, build verification, and tagging process.
+*   **Release Runbook:** Published `docs/RELEASING.md` as the definitive guide for shipping new versions.
+
+---
+
 ## v1.3.0 (Digital Origami) - Dec 13, 2025
-**Commit:** `b4627de`
 
 This release focuses on **Experience and Stability**. We polished the "Glass Box" UI, overhauled the documentation identity, and hardened the build system to survive bleeding-edge environments (Python 3.14).
 
@@ -25,7 +40,6 @@ This release focuses on **Experience and Stability**. We polished the "Glass Box
 ---
 
 ## v1.2.0 (The Glass Box) - Dec 12, 2025
-**Commit:** `2b59503`
 
 This release marks the transition from "Script" to "System." We realized that speed wasn't enough; we needed **Trust**. We rebuilt the engine to be auditable, persistent, and transparent.
 
@@ -45,7 +59,6 @@ This release marks the transition from "Script" to "System." We realized that sp
 ---
 
 ## v1.1.0 (The Parallel Press) - Dec 12, 2025
-**Commit:** `ce6cb5b`
 
 The "Speed" update. We realized our sequential processing was too slow for the scale of the web. We broke the single-lane highway and built a ten-lane freeway.
 
@@ -60,7 +73,6 @@ The "Speed" update. We realized our sequential processing was too slow for the s
 ---
 
 ## v1.0.0 (The Foundation) - Dec 11, 2025
-**Commit:** `346d16d`
 
 The initial release. A proof-of-concept that a Python script could replace a doomscroll.
 
@@ -75,27 +87,23 @@ The initial release. A proof-of-concept that a Python script could replace a doo
 Before v1.0, we were figuring out what we were actually building.
 
 ### v0.9.0 (The Fleet) - Dec 10, 2025
-**Commit:** `65b49aa`
 **Theme:** "Verticalization." We proved the platform thesis by launching specific verticals.
 *   **The Zero Day:** A cybersecurity-focused briefing.
 *   **The Hallucination:** An AI research briefing.
 *   This proved Fishwrap wasn't just a news reader; it was a generic engine for *any* stream of information.
 
 ### v0.3.0 (The Schism) - Dec 9, 2025
-**Commit:** `5e9a5cb`
 **Theme:** "Separation of Concerns."
 *   We extracted the "Engine" (`fishwrap`) from the "Product" (`dailyclamour.com`).
 *   This architecture allowed us to treat the Daily Clamour as just one *instance* of the Fishwrap technology.
 
 ### v0.2.0 (The Identity) - Dec 8, 2025
-**Commit:** `3f26894`
 **Theme:** "Ink & Grit."
 *   Established the "Vintage" aesthetic.
 *   Introduced "Scoop the Pearl" as the mascot.
 *   Moved from a generic HTML list to the "Bento Grid" layout.
 
 ### v0.1.0 (The Seed) - Dec 07, 2025
-**Commit:** `e0c55b0`
 **Theme:** "The Genesis."
 *   The very first commit of the Fishwrap project. A simple script to fetch, process, and print basic news headlines.
 *   This was the day the "Anti-Feed" began.
