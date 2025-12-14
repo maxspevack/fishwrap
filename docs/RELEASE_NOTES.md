@@ -4,6 +4,16 @@ Fishwrap is evolving from a personal script into a robust "Anti-Feed" platform. 
 
 ---
 
+## v1.3.2 (The Chronos Update) - Dec 13, 2025
+
+A feature release enabling high-precision publication metadata.
+
+### 🚀 New Features
+*   **Publication Timestamp:** The engine now injects the precise generation time (e.g., `08:00 AM PST`) into the template context (`time_str`). This reinforces the "Snapshot in Time" philosophy of the Anti-Feed.
+*   **Forward Compatibility:** Themes have been updated to conditionally render this timestamp, ensuring smooth upgrades.
+
+---
+
 ## v1.3.1 (The Polish) - Dec 13, 2025
 
 A maintenance release focused on UI refinement, build stability, and release engineering.
