@@ -140,8 +140,8 @@
             justify-content: center; align-items: center;
         }
         .modal-content {
-            background: #fff; /* White modal */
-            color: #333; /* Dark text */
+            background-color: #ffffff !important; /* Force White modal */
+            color: #333333 !important; /* Force Dark text */
             width: 90%; max-width: 900px; height: 85vh;
             overflow-y: auto;
             padding: 40px;
@@ -208,7 +208,7 @@
         .score-badge { 
             background: #eee; color: #555; font-family: monospace; font-size: 0.75rem; 
             padding: 2px 5px; border-radius: 4px; margin-right: 10px; 
-            min-width: 40px; text-align: right; display: inline-block;
+            width: 60px; text-align: center; display: inline-block; /* FIXED */
         }
         .bubble-col.in .score-badge { background: #dcfce7; color: #166534; }
         .bubble-col.out .score-badge { background: #fee2e2; color: #991b1b; }
@@ -745,32 +745,6 @@ td { border-bottom: 1px solid var(--term-dim); padding: 1rem; color: var(--term-
             
             <article class="card">
                 <span class="card-meta">rss.nytimes.com</span>
-                <h3><a href="https://www.nytimes.com/2025/12/12/us/politics/trump-republicans-obamacare-health-costs.html" target="_blank">For Republicans, Trump’s Hands-Off Approach to Health Care Is a Problem</a></h3>
-                
-                <!-- Debug Overlay -->
-                <div class="debug-card">
-                    <div><strong>Score:</strong> 1000.0</div>
-                    <hr style="border: 0; border-top: 1px dashed #ccc; margin: 5px 0;">
-                    <div>Base: </div>
-                    
-                </div>
-            </article>
-            
-            <article class="card">
-                <span class="card-meta">rss.nytimes.com</span>
-                <h3><a href="https://www.nytimes.com/2025/12/12/world/asia/sri-lanka-cyclone-hamlet.html" target="_blank">In a Hamlet Built on Forbidden Love, a Cyclone Buried It All</a></h3>
-                
-                <!-- Debug Overlay -->
-                <div class="debug-card">
-                    <div><strong>Score:</strong> 1000.0</div>
-                    <hr style="border: 0; border-top: 1px dashed #ccc; margin: 5px 0;">
-                    <div>Base: </div>
-                    
-                </div>
-            </article>
-            
-            <article class="card">
-                <span class="card-meta">rss.nytimes.com</span>
                 <h3><a href="https://www.nytimes.com/2025/12/12/health/jama-breast-cancer-risk-based-screening.html" target="_blank">Risk-Based Screening Works as Well as Yearly Checks After 40 in Finding Breast Cancers</a></h3>
                 
                 <!-- Debug Overlay -->
@@ -860,6 +834,32 @@ td { border-bottom: 1px solid var(--term-dim); padding: 1rem; color: var(--term-
                 </div>
             </article>
             
+            <article class="card">
+                <span class="card-meta">aljazeera.com</span>
+                <h3><a href="https://www.aljazeera.com/news/2025/12/13/venezuela-oil-exports-fall-steeply-after-us-forces-seize-tanker-off-coast?traffic_source=rss" target="_blank">Venezuela oil exports fall steeply after US forces seize tanker off coast</a></h3>
+                
+                <!-- Debug Overlay -->
+                <div class="debug-card">
+                    <div><strong>Score:</strong> 1000.0</div>
+                    <hr style="border: 0; border-top: 1px dashed #ccc; margin: 5px 0;">
+                    <div>Base: </div>
+                    
+                </div>
+            </article>
+            
+            <article class="card">
+                <span class="card-meta">aljazeera.com</span>
+                <h3><a href="https://www.aljazeera.com/video/talk-to-al-jazeera/2025/12/13/spains-fm-on-trumps-new-security-strategy-europe-and-palestine?traffic_source=rss" target="_blank">Spain’s FM on Trump’s new security strategy, Europe and Palestine</a></h3>
+                
+                <!-- Debug Overlay -->
+                <div class="debug-card">
+                    <div><strong>Score:</strong> 1000.0</div>
+                    <hr style="border: 0; border-top: 1px dashed #ccc; margin: 5px 0;">
+                    <div>Base: </div>
+                    
+                </div>
+            </article>
+            
         </div>
     </div>
     
@@ -876,9 +876,9 @@ td { border-bottom: 1px solid var(--term-dim); padding: 1rem; color: var(--term-
                 
                 <!-- Debug Overlay -->
                 <div class="debug-card">
-                    <div><strong>Score:</strong> 14677.0</div>
+                    <div><strong>Score:</strong> 14739.0</div>
                     <hr style="border: 0; border-top: 1px dashed #ccc; margin: 5px 0;">
-                    <div>Base: 14677</div>
+                    <div>Base: 14739</div>
                     
                 </div>
             </article>
@@ -889,9 +889,9 @@ td { border-bottom: 1px solid var(--term-dim); padding: 1rem; color: var(--term-
                 
                 <!-- Debug Overlay -->
                 <div class="debug-card">
-                    <div><strong>Score:</strong> 13036.0</div>
+                    <div><strong>Score:</strong> 13102.0</div>
                     <hr style="border: 0; border-top: 1px dashed #ccc; margin: 5px 0;">
-                    <div>Base: 13036</div>
+                    <div>Base: 13102</div>
                     
                 </div>
             </article>
@@ -902,9 +902,9 @@ td { border-bottom: 1px solid var(--term-dim); padding: 1rem; color: var(--term-
                 
                 <!-- Debug Overlay -->
                 <div class="debug-card">
-                    <div><strong>Score:</strong> 5553.0</div>
+                    <div><strong>Score:</strong> 5563.0</div>
                     <hr style="border: 0; border-top: 1px dashed #ccc; margin: 5px 0;">
-                    <div>Base: 5553</div>
+                    <div>Base: 5563</div>
                     
                 </div>
             </article>
@@ -915,9 +915,9 @@ td { border-bottom: 1px solid var(--term-dim); padding: 1rem; color: var(--term-
                 
                 <!-- Debug Overlay -->
                 <div class="debug-card">
-                    <div><strong>Score:</strong> 1855.0</div>
+                    <div><strong>Score:</strong> 1890.0</div>
                     <hr style="border: 0; border-top: 1px dashed #ccc; margin: 5px 0;">
-                    <div>Base: 1855</div>
+                    <div>Base: 1890</div>
                     
                 </div>
             </article>
@@ -928,9 +928,9 @@ td { border-bottom: 1px solid var(--term-dim); padding: 1rem; color: var(--term-
                 
                 <!-- Debug Overlay -->
                 <div class="debug-card">
-                    <div><strong>Score:</strong> 1527.0</div>
+                    <div><strong>Score:</strong> 1541.0</div>
                     <hr style="border: 0; border-top: 1px dashed #ccc; margin: 5px 0;">
-                    <div>Base: 1527</div>
+                    <div>Base: 1541</div>
                     
                 </div>
             </article>
@@ -941,9 +941,9 @@ td { border-bottom: 1px solid var(--term-dim); padding: 1rem; color: var(--term-
                 
                 <!-- Debug Overlay -->
                 <div class="debug-card">
-                    <div><strong>Score:</strong> 1174.0</div>
+                    <div><strong>Score:</strong> 1191.0</div>
                     <hr style="border: 0; border-top: 1px dashed #ccc; margin: 5px 0;">
-                    <div>Base: 1174</div>
+                    <div>Base: 1191</div>
                     
                 </div>
             </article>
@@ -1016,9 +1016,9 @@ td { border-bottom: 1px solid var(--term-dim); padding: 1rem; color: var(--term-
                 
                 <!-- Debug Overlay -->
                 <div class="debug-card">
-                    <div><strong>Score:</strong> 13928.0</div>
+                    <div><strong>Score:</strong> 13942.0</div>
                     <hr style="border: 0; border-top: 1px dashed #ccc; margin: 5px 0;">
-                    <div>Base: 13928</div>
+                    <div>Base: 13942</div>
                     
                 </div>
             </article>
@@ -1029,9 +1029,9 @@ td { border-bottom: 1px solid var(--term-dim); padding: 1rem; color: var(--term-
                 
                 <!-- Debug Overlay -->
                 <div class="debug-card">
-                    <div><strong>Score:</strong> 10760.0</div>
+                    <div><strong>Score:</strong> 10813.0</div>
                     <hr style="border: 0; border-top: 1px dashed #ccc; margin: 5px 0;">
-                    <div>Base: 10760</div>
+                    <div>Base: 10813</div>
                     
                 </div>
             </article>
@@ -1042,9 +1042,9 @@ td { border-bottom: 1px solid var(--term-dim); padding: 1rem; color: var(--term-
                 
                 <!-- Debug Overlay -->
                 <div class="debug-card">
-                    <div><strong>Score:</strong> 8238.0</div>
+                    <div><strong>Score:</strong> 8251.0</div>
                     <hr style="border: 0; border-top: 1px dashed #ccc; margin: 5px 0;">
-                    <div>Base: 8238</div>
+                    <div>Base: 8251</div>
                     
                 </div>
             </article>
@@ -1055,9 +1055,9 @@ td { border-bottom: 1px solid var(--term-dim); padding: 1rem; color: var(--term-
                 
                 <!-- Debug Overlay -->
                 <div class="debug-card">
-                    <div><strong>Score:</strong> 7374.0</div>
+                    <div><strong>Score:</strong> 7387.0</div>
                     <hr style="border: 0; border-top: 1px dashed #ccc; margin: 5px 0;">
-                    <div>Base: 7374</div>
+                    <div>Base: 7387</div>
                     
                 </div>
             </article>
@@ -1068,9 +1068,9 @@ td { border-bottom: 1px solid var(--term-dim); padding: 1rem; color: var(--term-
                 
                 <!-- Debug Overlay -->
                 <div class="debug-card">
-                    <div><strong>Score:</strong> 5907.0</div>
+                    <div><strong>Score:</strong> 5966.0</div>
                     <hr style="border: 0; border-top: 1px dashed #ccc; margin: 5px 0;">
-                    <div>Base: 5907</div>
+                    <div>Base: 5966</div>
                     
                 </div>
             </article>
@@ -1081,9 +1081,9 @@ td { border-bottom: 1px solid var(--term-dim); padding: 1rem; color: var(--term-
                 
                 <!-- Debug Overlay -->
                 <div class="debug-card">
-                    <div><strong>Score:</strong> 5179.0</div>
+                    <div><strong>Score:</strong> 5209.0</div>
                     <hr style="border: 0; border-top: 1px dashed #ccc; margin: 5px 0;">
-                    <div>Base: 5179</div>
+                    <div>Base: 5209</div>
                     
                 </div>
             </article>
@@ -1094,9 +1094,9 @@ td { border-bottom: 1px solid var(--term-dim); padding: 1rem; color: var(--term-
                 
                 <!-- Debug Overlay -->
                 <div class="debug-card">
-                    <div><strong>Score:</strong> 4873.0</div>
+                    <div><strong>Score:</strong> 4880.0</div>
                     <hr style="border: 0; border-top: 1px dashed #ccc; margin: 5px 0;">
-                    <div>Base: 4873</div>
+                    <div>Base: 4880</div>
                     
                 </div>
             </article>
@@ -1107,9 +1107,9 @@ td { border-bottom: 1px solid var(--term-dim); padding: 1rem; color: var(--term-
                 
                 <!-- Debug Overlay -->
                 <div class="debug-card">
-                    <div><strong>Score:</strong> 4510.0</div>
+                    <div><strong>Score:</strong> 4551.0</div>
                     <hr style="border: 0; border-top: 1px dashed #ccc; margin: 5px 0;">
-                    <div>Base: 4510</div>
+                    <div>Base: 4551</div>
                     
                 </div>
             </article>
@@ -1130,9 +1130,9 @@ td { border-bottom: 1px solid var(--term-dim); padding: 1rem; color: var(--term-
                 
                 <!-- Debug Overlay -->
                 <div class="debug-card">
-                    <div><strong>Score:</strong> 7565.0</div>
+                    <div><strong>Score:</strong> 7577.0</div>
                     <hr style="border: 0; border-top: 1px dashed #ccc; margin: 5px 0;">
-                    <div>Base: 7565</div>
+                    <div>Base: 7577</div>
                     
                 </div>
             </article>
@@ -1143,9 +1143,9 @@ td { border-bottom: 1px solid var(--term-dim); padding: 1rem; color: var(--term-
                 
                 <!-- Debug Overlay -->
                 <div class="debug-card">
-                    <div><strong>Score:</strong> 5343.0</div>
+                    <div><strong>Score:</strong> 5361.0</div>
                     <hr style="border: 0; border-top: 1px dashed #ccc; margin: 5px 0;">
-                    <div>Base: 5343</div>
+                    <div>Base: 5361</div>
                     
                 </div>
             </article>
@@ -1169,9 +1169,9 @@ td { border-bottom: 1px solid var(--term-dim); padding: 1rem; color: var(--term-
                 
                 <!-- Debug Overlay -->
                 <div class="debug-card">
-                    <div><strong>Score:</strong> 3843.0</div>
+                    <div><strong>Score:</strong> 3872.0</div>
                     <hr style="border: 0; border-top: 1px dashed #ccc; margin: 5px 0;">
-                    <div>Base: 3693</div>
+                    <div>Base: 3722</div>
                     
                 </div>
             </article>
@@ -1182,9 +1182,9 @@ td { border-bottom: 1px solid var(--term-dim); padding: 1rem; color: var(--term-
                 
                 <!-- Debug Overlay -->
                 <div class="debug-card">
-                    <div><strong>Score:</strong> 3712.0</div>
+                    <div><strong>Score:</strong> 3718.0</div>
                     <hr style="border: 0; border-top: 1px dashed #ccc; margin: 5px 0;">
-                    <div>Base: 3712</div>
+                    <div>Base: 3718</div>
                     
                 </div>
             </article>
@@ -1195,9 +1195,9 @@ td { border-bottom: 1px solid var(--term-dim); padding: 1rem; color: var(--term-
                 
                 <!-- Debug Overlay -->
                 <div class="debug-card">
-                    <div><strong>Score:</strong> 2665.0</div>
+                    <div><strong>Score:</strong> 2664.0</div>
                     <hr style="border: 0; border-top: 1px dashed #ccc; margin: 5px 0;">
-                    <div>Base: 2665</div>
+                    <div>Base: 2664</div>
                     
                 </div>
             </article>
@@ -1208,9 +1208,9 @@ td { border-bottom: 1px solid var(--term-dim); padding: 1rem; color: var(--term-
                 
                 <!-- Debug Overlay -->
                 <div class="debug-card">
-                    <div><strong>Score:</strong> 2105.0</div>
+                    <div><strong>Score:</strong> 2113.0</div>
                     <hr style="border: 0; border-top: 1px dashed #ccc; margin: 5px 0;">
-                    <div>Base: 2105</div>
+                    <div>Base: 2113</div>
                     
                 </div>
             </article>
@@ -1242,8 +1242,8 @@ td { border-bottom: 1px solid var(--term-dim); padding: 1rem; color: var(--term-
     <div class="report-header">
         <h2>Source Transparency</h2>
         <div class="report-meta">
-            <span>Edition: 400baf88-89a6-4b1f-8aa7-dfd69892bbcc</span>
-            <span>Generated: 2025-12-13 17:48:03 PST</span>
+            <span>Edition: 61c740c5-90ff-4119-a9ce-38fd4dd3cbd7</span>
+            <span>Generated: 2025-12-13 17:56:28 PST</span>
         </div>
     </div>
 
@@ -1258,11 +1258,11 @@ td { border-bottom: 1px solid var(--term-dim); padding: 1rem; color: var(--term-
     <div id="tab-vitals" class="tab-pane active" style="display: block;">
         <div class="stats-grid">
             <div class="stat-card">
-                <span class="stat-value">1686</span>
+                <span class="stat-value">1701</span>
                 <span class="stat-label">Total Items Scanned</span>
             </div>
             <div class="stat-card">
-                <span class="stat-value">930</span>
+                <span class="stat-value">937</span>
                 <span class="stat-label">Fresh Candidates</span>
             </div>
             <div class="stat-card">
@@ -1286,7 +1286,7 @@ td { border-bottom: 1px solid var(--term-dim); padding: 1rem; color: var(--term-
                         <th>Source</th>
                         <th>Input Share</th>
                         <th>Output Share</th>
-                        <th>Signal Delta</th>
+                        <th>Delta</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -1294,8 +1294,8 @@ td { border-bottom: 1px solid var(--term-dim); padding: 1rem; color: var(--term-
                     <tr>
                         <td class="source-name">old.reddit.com</td>
                         <td>
-                            18.8%
-                            <span class="count-pill">175</span>
+                            18.9%
+                            <span class="count-pill">177</span>
                         </td>
                         <td>
                             61.1%
@@ -1303,7 +1303,7 @@ td { border-bottom: 1px solid var(--term-dim); padding: 1rem; color: var(--term-
                         </td>
                         <td>
                             
-                            <span class="delta-pos">+42.3%</span>
+                            <span class="delta-pos">+42.2%</span>
                             
                         </td>
                     </tr>
@@ -1311,16 +1311,16 @@ td { border-bottom: 1px solid var(--term-dim); padding: 1rem; color: var(--term-
                     <tr>
                         <td class="source-name">rss.nytimes.com</td>
                         <td>
-                            3.2%
-                            <span class="count-pill">30</span>
+                            3.0%
+                            <span class="count-pill">28</span>
                         </td>
                         <td>
-                            22.2%
-                            <span class="count-pill">8</span>
+                            16.7%
+                            <span class="count-pill">6</span>
                         </td>
                         <td>
                             
-                            <span class="delta-pos">+19.0%</span>
+                            <span class="delta-pos">+13.7%</span>
                             
                         </td>
                     </tr>
@@ -1345,16 +1345,16 @@ td { border-bottom: 1px solid var(--term-dim); padding: 1rem; color: var(--term-
                     <tr>
                         <td class="source-name">www.aljazeera.com</td>
                         <td>
-                            3.8%
+                            3.7%
                             <span class="count-pill">35</span>
                         </td>
                         <td>
-                            5.6%
-                            <span class="count-pill">2</span>
+                            11.1%
+                            <span class="count-pill">4</span>
                         </td>
                         <td>
                             
-                            <span class="delta-pos">+1.8%</span>
+                            <span class="delta-pos">+7.4%</span>
                             
                         </td>
                     </tr>
@@ -1396,8 +1396,8 @@ td { border-bottom: 1px solid var(--term-dim); padding: 1rem; color: var(--term-
                     <tr>
                         <td class="source-name">www.engadget.com</td>
                         <td>
-                            0.4%
-                            <span class="count-pill">4</span>
+                            0.5%
+                            <span class="count-pill">5</span>
                         </td>
                         <td>
                             0.0%
@@ -1405,13 +1405,13 @@ td { border-bottom: 1px solid var(--term-dim); padding: 1rem; color: var(--term-
                         </td>
                         <td>
                             
-                            <span class="delta-neg">-0.4%</span>
+                            <span class="delta-neg">-0.5%</span>
                             
                         </td>
                     </tr>
                     
                     <tr>
-                        <td class="source-name">www.theverge.com</td>
+                        <td class="source-name">www.polygon.com</td>
                         <td>
                             0.6%
                             <span class="count-pill">6</span>
@@ -1428,7 +1428,7 @@ td { border-bottom: 1px solid var(--term-dim); padding: 1rem; color: var(--term-
                     </tr>
                     
                     <tr>
-                        <td class="source-name">www.polygon.com</td>
+                        <td class="source-name">www.theverge.com</td>
                         <td>
                             0.6%
                             <span class="count-pill">6</span>
@@ -1515,7 +1515,7 @@ td { border-bottom: 1px solid var(--term-dim); padding: 1rem; color: var(--term-
                     <tr>
                         <td class="source-name">variety.com</td>
                         <td>
-                            2.2%
+                            2.1%
                             <span class="count-pill">20</span>
                         </td>
                         <td>
@@ -1524,7 +1524,7 @@ td { border-bottom: 1px solid var(--term-dim); padding: 1rem; color: var(--term-
                         </td>
                         <td>
                             
-                            <span class="delta-neg">-2.2%</span>
+                            <span class="delta-neg">-2.1%</span>
                             
                         </td>
                     </tr>
@@ -1549,7 +1549,7 @@ td { border-bottom: 1px solid var(--term-dim); padding: 1rem; color: var(--term-
                     <tr>
                         <td class="source-name">hnrss.org</td>
                         <td>
-                            3.7%
+                            3.6%
                             <span class="count-pill">34</span>
                         </td>
                         <td>
@@ -1558,7 +1558,7 @@ td { border-bottom: 1px solid var(--term-dim); padding: 1rem; color: var(--term-
                         </td>
                         <td>
                             
-                            <span class="delta-neg">-3.7%</span>
+                            <span class="delta-neg">-3.6%</span>
                             
                         </td>
                     </tr>
@@ -1583,7 +1583,7 @@ td { border-bottom: 1px solid var(--term-dim); padding: 1rem; color: var(--term-
                     <tr>
                         <td class="source-name">www.espn.com</td>
                         <td>
-                            7.0%
+                            6.9%
                             <span class="count-pill">65</span>
                         </td>
                         <td>
@@ -1592,7 +1592,7 @@ td { border-bottom: 1px solid var(--term-dim); padding: 1rem; color: var(--term-
                         </td>
                         <td>
                             
-                            <span class="delta-neg">-7.0%</span>
+                            <span class="delta-neg">-6.9%</span>
                             
                         </td>
                     </tr>
@@ -1600,8 +1600,8 @@ td { border-bottom: 1px solid var(--term-dim); padding: 1rem; color: var(--term-
                     <tr>
                         <td class="source-name">sports.yahoo.com</td>
                         <td>
-                            43.3%
-                            <span class="count-pill">403</span>
+                            43.6%
+                            <span class="count-pill">409</span>
                         </td>
                         <td>
                             0.0%
@@ -1609,7 +1609,7 @@ td { border-bottom: 1px solid var(--term-dim); padding: 1rem; color: var(--term-
                         </td>
                         <td>
                             
-                            <span class="delta-neg">-43.3%</span>
+                            <span class="delta-neg">-43.6%</span>
                             
                         </td>
                     </tr>
@@ -1634,25 +1634,8 @@ td { border-bottom: 1px solid var(--term-dim); padding: 1rem; color: var(--term-
                         
                         <li>
                             <span class="score-badge">1000</span>
-                            Russia damages Turkish-owned vessels in attack on Ukrainian ports
-                        </li>
-                        
-                        <li>
-                            <span class="score-badge">1000</span>
-                            Judge’s Order Complicates Justice Dept. Plans to Again Charge Comey
-                        </li>
-                        
-                        <li>
-                            <span class="score-badge">1000</span>
                             After False Earthquake Alert in Nevada, Lawmakers Demand Answers on How it Was Sent
                         </li>
-                        
-                    </ul>
-                </div>
-                <!-- Out -->
-                <div class="bubble-col out">
-                    <h4>First Out (Highest Score)</h4>
-                    <ul>
                         
                         <li>
                             <span class="score-badge">1000</span>
@@ -1664,9 +1647,26 @@ td { border-bottom: 1px solid var(--term-dim); padding: 1rem; color: var(--term-
                             Spain’s FM on Trump’s new security strategy, Europe and Palestine
                         </li>
                         
+                    </ul>
+                </div>
+                <!-- Out -->
+                <div class="bubble-col out">
+                    <h4>First Out (Highest Score)</h4>
+                    <ul>
+                        
                         <li>
                             <span class="score-badge">1000</span>
                             China holds low-key Nanjing Massacre memorial without Xi amid Japan row
+                        </li>
+                        
+                        <li>
+                            <span class="score-badge">1000</span>
+                            Bolivia jails ex-president Arce on corruption charges ahead of trial
+                        </li>
+                        
+                        <li>
+                            <span class="score-badge">1000</span>
+                            North Korean Soldiers Return From Russia’s War With Ukraine
                         </li>
                         
                     </ul>
@@ -1733,17 +1733,17 @@ td { border-bottom: 1px solid var(--term-dim); padding: 1rem; color: var(--term-
                     <ul>
                         
                         <li>
-                            <span class="score-badge">5179</span>
+                            <span class="score-badge">5209</span>
                             Liverpool counter-attack vs Brighton 90+7'
                         </li>
                         
                         <li>
-                            <span class="score-badge">4873</span>
+                            <span class="score-badge">4880</span>
                             [PTI] “Everyone was excited today as Messi was coming. It’s my wedding day, but I left all the ceremonies to be here. Still, the management was so pathetic that I couldn’t even see him,” says a fan as Argentine footballer Lionel Messi’s event draws ire.
                         </li>
                         
                         <li>
-                            <span class="score-badge">4510</span>
+                            <span class="score-badge">4551</span>
                             In seven seasons, Andrew Luck missed 26 games due to injury. In six seasons, Joe Burrow has missed 22 games due to injury.
                         </li>
                         
@@ -1755,17 +1755,17 @@ td { border-bottom: 1px solid var(--term-dim); padding: 1rem; color: var(--term-
                     <ul>
                         
                         <li>
-                            <span class="score-badge">4001</span>
+                            <span class="score-badge">4047</span>
                             The state head of Telangana struggles to find Messi with his passes before an exhibition match in India.
                         </li>
                         
                         <li>
-                            <span class="score-badge">3944</span>
+                            <span class="score-badge">3964</span>
                             Bernardo Silva: “What Manchester City has done in my first 7 years there is not normal. We have achieved 6 Premier League trophies, a treble, a domestic quadruple, doing 100 points, setting the goals record. I’m biased, but I could argue Pep’s Manchester City was the best ever in English football.”
                         </li>
                         
                         <li>
-                            <span class="score-badge">3620</span>
+                            <span class="score-badge">3637</span>
                             Ticket prices 2022 World Cup vs 2026 World Cup
                         </li>
                         
@@ -1783,12 +1783,12 @@ td { border-bottom: 1px solid var(--term-dim); padding: 1rem; color: var(--term-
                     <ul>
                         
                         <li>
-                            <span class="score-badge">2665</span>
+                            <span class="score-badge">2664</span>
                             Hosting a NYE party. I want to put a film on the TV on mute. What to play?
                         </li>
                         
                         <li>
-                            <span class="score-badge">2105</span>
+                            <span class="score-badge">2113</span>
                             The Lord of The Rings Trilogy - Official 25th Anniversary Teaser Trailer
                         </li>
                         
@@ -1805,17 +1805,17 @@ td { border-bottom: 1px solid var(--term-dim); padding: 1rem; color: var(--term-
                     <ul>
                         
                         <li>
-                            <span class="score-badge">2067</span>
+                            <span class="score-badge">2077</span>
                             Dick Van Dyke and Julie Andrews in Behind-the-Scenes footage from "Mary Poppins" (1964), filming the 'Jolly Holiday' sequence which utilized a sodium vapour travelling matte process to combine their live-action movements later with animation
                         </li>
                         
                         <li>
-                            <span class="score-badge">2062</span>
+                            <span class="score-badge">2073</span>
                             LaKeith Stanfield Cast As Dennis Rodman In Lionsgate’s Revived ’48 Hours in Vegas’ After Jonathan Majors Exit
                         </li>
                         
                         <li>
-                            <span class="score-badge">1780</span>
+                            <span class="score-badge">1796</span>
                             Béatrice Picard, ‘The Simpsons’ Voice Actor Behind French-Canadian Dub, Dies at 96
                         </li>
                         

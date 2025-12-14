@@ -140,8 +140,8 @@
             justify-content: center; align-items: center;
         }
         .modal-content {
-            background: #fff; /* White modal */
-            color: #333; /* Dark text */
+            background-color: #ffffff !important; /* Force White modal */
+            color: #333333 !important; /* Force Dark text */
             width: 90%; max-width: 900px; height: 85vh;
             overflow-y: auto;
             padding: 40px;
@@ -208,7 +208,7 @@
         .score-badge { 
             background: #eee; color: #555; font-family: monospace; font-size: 0.75rem; 
             padding: 2px 5px; border-radius: 4px; margin-right: 10px; 
-            min-width: 40px; text-align: right; display: inline-block;
+            width: 60px; text-align: center; display: inline-block; /* FIXED */
         }
         .bubble-col.in .score-badge { background: #dcfce7; color: #166534; }
         .bubble-col.out .score-badge { background: #fee2e2; color: #991b1b; }
@@ -785,9 +785,9 @@ td { border-bottom: 1px solid var(--term-dim); padding: 1rem; color: var(--term-
                 
                 <!-- Debug Overlay -->
                 <div class="debug-card">
-                    <div><strong>Score:</strong> 1091.0</div>
+                    <div><strong>Score:</strong> 1093.0</div>
                     <hr style="border: 0; border-top: 1px dashed #ccc; margin: 5px 0;">
-                    <div>Base: 491</div>
+                    <div>Base: 493</div>
                     
                     <div>content_boost: 600</div>
                     
@@ -869,9 +869,9 @@ td { border-bottom: 1px solid var(--term-dim); padding: 1rem; color: var(--term-
                 
                 <!-- Debug Overlay -->
                 <div class="debug-card">
-                    <div><strong>Score:</strong> 1011.0</div>
+                    <div><strong>Score:</strong> 1010.0</div>
                     <hr style="border: 0; border-top: 1px dashed #ccc; margin: 5px 0;">
-                    <div>Base: 11</div>
+                    <div>Base: 10</div>
                     
                     <div>content_boost: 600</div>
                     
@@ -954,9 +954,9 @@ td { border-bottom: 1px solid var(--term-dim); padding: 1rem; color: var(--term-
                 
                 <!-- Debug Overlay -->
                 <div class="debug-card">
-                    <div><strong>Score:</strong> 1168.0</div>
+                    <div><strong>Score:</strong> 1178.0</div>
                     <hr style="border: 0; border-top: 1px dashed #ccc; margin: 5px 0;">
-                    <div>Base: 168</div>
+                    <div>Base: 178</div>
                     
                     <div>keyword_boost: 1000</div>
                     
@@ -986,9 +986,9 @@ td { border-bottom: 1px solid var(--term-dim); padding: 1rem; color: var(--term-
                 
                 <!-- Debug Overlay -->
                 <div class="debug-card">
-                    <div><strong>Score:</strong> 1064.0</div>
+                    <div><strong>Score:</strong> 1059.0</div>
                     <hr style="border: 0; border-top: 1px dashed #ccc; margin: 5px 0;">
-                    <div>Base: 64</div>
+                    <div>Base: 59</div>
                     
                     <div>content_boost: 600</div>
                     
@@ -1011,8 +1011,8 @@ td { border-bottom: 1px solid var(--term-dim); padding: 1rem; color: var(--term-
     <div class="report-header">
         <h2>Source Transparency</h2>
         <div class="report-meta">
-            <span>Edition: ee1b2617-b0d1-4d46-b406-5e7a6b30818a</span>
-            <span>Generated: 2025-12-13 17:48:20 PST</span>
+            <span>Edition: b5318d54-25ed-47df-ba12-ac7696f44b8b</span>
+            <span>Generated: 2025-12-13 17:56:44 PST</span>
         </div>
     </div>
 
@@ -1055,7 +1055,7 @@ td { border-bottom: 1px solid var(--term-dim); padding: 1rem; color: var(--term-
                         <th>Source</th>
                         <th>Input Share</th>
                         <th>Output Share</th>
-                        <th>Signal Delta</th>
+                        <th>Delta</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -1135,7 +1135,7 @@ td { border-bottom: 1px solid var(--term-dim); padding: 1rem; color: var(--term-
                         </li>
                         
                         <li>
-                            <span class="score-badge">1091</span>
+                            <span class="score-badge">1093</span>
                             8x RTX Pro 6000 server complete
                         </li>
                         
@@ -1152,12 +1152,12 @@ td { border-bottom: 1px solid var(--term-dim); padding: 1rem; color: var(--term-
                     <ul>
                         
                         <li>
-                            <span class="score-badge">959</span>
+                            <span class="score-badge">957</span>
                             This is how open ai is advertising them selfs on reddit…. They are doomed
                         </li>
                         
                         <li>
-                            <span class="score-badge">916</span>
+                            <span class="score-badge">925</span>
                             Qwen3 Next generation optimization
                         </li>
                         
@@ -1197,12 +1197,12 @@ td { border-bottom: 1px solid var(--term-dim); padding: 1rem; color: var(--term-
                     <ul>
                         
                         <li>
-                            <span class="score-badge">935</span>
+                            <span class="score-badge">939</span>
                             [D] How does Claude perform so well without any proprietary data?
                         </li>
                         
                         <li>
-                            <span class="score-badge">654</span>
+                            <span class="score-badge">657</span>
                             [D] Do Some Research Areas Get an Easier Accept? The Quiet Biases Hiding in ICLR's Peer Review
                         </li>
                         
@@ -1225,7 +1225,7 @@ td { border-bottom: 1px solid var(--term-dim); padding: 1rem; color: var(--term-
                     <ul>
                         
                         <li>
-                            <span class="score-badge">1011</span>
+                            <span class="score-badge">1010</span>
                             I built an open-source MCP server for uv so your agents can self-repair their Python environments (and install their own packages)
                         </li>
                         
@@ -1257,7 +1257,7 @@ td { border-bottom: 1px solid var(--term-dim); padding: 1rem; color: var(--term-
                     <ul>
                         
                         <li>
-                            <span class="score-badge">1168</span>
+                            <span class="score-badge">1178</span>
                             Meta is pivoting away from open source AI to money-making AI
                         </li>
                         
@@ -1267,7 +1267,7 @@ td { border-bottom: 1px solid var(--term-dim); padding: 1rem; color: var(--term-
                         </li>
                         
                         <li>
-                            <span class="score-badge">1064</span>
+                            <span class="score-badge">1059</span>
                             My 8 year old son created his first game with Google Gemini
                         </li>
                         
@@ -1279,12 +1279,12 @@ td { border-bottom: 1px solid var(--term-dim); padding: 1rem; color: var(--term-
                     <ul>
                         
                         <li>
-                            <span class="score-badge">788</span>
+                            <span class="score-badge">785</span>
                             Meta AI translates peoples words into different languages and edits their mouth movements to match
                         </li>
                         
                         <li>
-                            <span class="score-badge">712</span>
+                            <span class="score-badge">713</span>
                             The Unspoken Future Plan for AI
                         </li>
                         

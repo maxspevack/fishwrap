@@ -140,8 +140,8 @@
             justify-content: center; align-items: center;
         }
         .modal-content {
-            background: #fff; /* White modal */
-            color: #333; /* Dark text */
+            background-color: #ffffff !important; /* Force White modal */
+            color: #333333 !important; /* Force Dark text */
             width: 90%; max-width: 900px; height: 85vh;
             overflow-y: auto;
             padding: 40px;
@@ -208,7 +208,7 @@
         .score-badge { 
             background: #eee; color: #555; font-family: monospace; font-size: 0.75rem; 
             padding: 2px 5px; border-radius: 4px; margin-right: 10px; 
-            min-width: 40px; text-align: right; display: inline-block;
+            width: 60px; text-align: center; display: inline-block; /* FIXED */
         }
         .bubble-col.in .score-badge { background: #dcfce7; color: #166534; }
         .bubble-col.out .score-badge { background: #fee2e2; color: #991b1b; }
@@ -1200,8 +1200,8 @@ td { border-bottom: 1px solid var(--term-dim); padding: 1rem; color: var(--term-
     <div class="report-header">
         <h2>Source Transparency</h2>
         <div class="report-meta">
-            <span>Edition: 6e6aeae7-4c1a-43b0-a40b-6a1fe57bf561</span>
-            <span>Generated: 2025-12-13 17:48:11 PST</span>
+            <span>Edition: 0133740c-8138-47e4-bccc-eb4616d50f0e</span>
+            <span>Generated: 2025-12-13 17:56:36 PST</span>
         </div>
     </div>
 
@@ -1244,7 +1244,7 @@ td { border-bottom: 1px solid var(--term-dim); padding: 1rem; color: var(--term-
                         <th>Source</th>
                         <th>Input Share</th>
                         <th>Output Share</th>
-                        <th>Signal Delta</th>
+                        <th>Delta</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -1335,7 +1335,24 @@ td { border-bottom: 1px solid var(--term-dim); padding: 1rem; color: var(--term-
                     </tr>
                     
                     <tr>
-                        <td class="source-name">unit42.paloaltonetworks.com</td>
+                        <td class="source-name">www.crowdstrike.com</td>
+                        <td>
+                            1.0%
+                            <span class="count-pill">1</span>
+                        </td>
+                        <td>
+                            3.3%
+                            <span class="count-pill">1</span>
+                        </td>
+                        <td>
+                            
+                            <span class="delta-pos">+2.3%</span>
+                            
+                        </td>
+                    </tr>
+                    
+                    <tr>
+                        <td class="source-name">googleprojectzero.blogspot.com</td>
                         <td>
                             1.0%
                             <span class="count-pill">1</span>
@@ -1369,24 +1386,7 @@ td { border-bottom: 1px solid var(--term-dim); padding: 1rem; color: var(--term-
                     </tr>
                     
                     <tr>
-                        <td class="source-name">www.crowdstrike.com</td>
-                        <td>
-                            1.0%
-                            <span class="count-pill">1</span>
-                        </td>
-                        <td>
-                            3.3%
-                            <span class="count-pill">1</span>
-                        </td>
-                        <td>
-                            
-                            <span class="delta-pos">+2.3%</span>
-                            
-                        </td>
-                    </tr>
-                    
-                    <tr>
-                        <td class="source-name">googleprojectzero.blogspot.com</td>
+                        <td class="source-name">unit42.paloaltonetworks.com</td>
                         <td>
                             1.0%
                             <span class="count-pill">1</span>
@@ -1578,7 +1578,7 @@ td { border-bottom: 1px solid var(--term-dim); padding: 1rem; color: var(--term-
                         </li>
                         
                         <li>
-                            <span class="score-badge">46</span>
+                            <span class="score-badge">47</span>
                             what are some good options that provide a virtual environment to browse online?
                         </li>
                         
