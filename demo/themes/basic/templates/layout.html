@@ -55,6 +55,7 @@
             border-bottom: 1px solid #333; 
             padding-bottom: 15px; 
         }
+        .meta-info div { margin-bottom: 4px; }
         
         .nav-list { list-style: none; padding: 0; margin: 0; flex-grow: 1; }
         .nav-item { margin-bottom: 10px; }
@@ -236,6 +237,7 @@
     
     <div class="meta-info">
         <div>{{ date_str }}</div>
+        {% if time_str %}<div>{{ time_str }}</div>{% endif %}
         <div>{{ vol_issue_str }}</div>
     </div>
     

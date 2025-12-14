@@ -96,6 +96,7 @@ def generate_edition(run_sheet):
         issue_number=issue_num,
         volume_number=vol_num,
         date_str=now.strftime("%A, %B %d, %Y"),
+        time_str=now.strftime("%I:%M %p %Z"), # New: 08:00 AM PST
         vol_issue_str=f"Vol. {vol_num}, No. {issue_num}",
         sections=sections_data,
         css_block=css_content,
