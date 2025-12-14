@@ -7,8 +7,7 @@ import os
 import re
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from tqdm import tqdm
-# Refactor: Use Pydantic Config Loader
-from fishwrap.config_loader import Config as _config
+from fishwrap import _config
 from fishwrap import utils
 from fishwrap import editor
 from fishwrap import scoring
@@ -74,12 +73,8 @@ def process_feed(url, cutoff):
             items = fetch_reddit_json(url)
         else:
             scoring_profile_key = get_scoring_profile_for_url(url)
-            # Pydantic Access: Dictionary access vs Object access?
-            # _config is now a Model. SCORING_PROFILES is a dict of models.
-            # profiles = _config.SCORING_PROFILES -> Dict[str, ScoringProfile]
             profile = _config.SCORING_PROFILES[scoring_profile_key]
-            # profile is a ScoringProfile object. Access fields with dot notation.
-            
+
             raw_data = utils.fetch_url(url)
             if raw_data:
                 # Basic XML parsing
@@ -152,8 +147,7 @@ def process_feed(url, cutoff):
                             
                         article['content'] = content_val
                     
-                    # Pydantic Change: Access .base_boosts
-                    article['base_boosts'] = profile.base_boosts
+                    article['base_boosts'] = profile['base_boosts']
                     article['stats_score'] = 0
                     article['stats_comments'] = 0
 

@@ -3,8 +3,7 @@ import time
 from sqlalchemy import create_engine, select, delete, func
 from sqlalchemy.orm import sessionmaker
 from fishwrap.db.models import Article, Run, RunArticle, AuditLog
-# Refactor: Use Pydantic Config Loader
-from fishwrap.config_loader import Config as _config
+from fishwrap import _config
 import os
 
 # --- Database Setup ---
@@ -15,7 +14,6 @@ def _get_database_url():
     """Determines the database URL from _config or falls back to default.
     Resolves relative SQLite paths to absolute based on CWD.
     """
-    # Pydantic: Access attribute
     db_url = getattr(_config, 'DATABASE_URL', 'sqlite:///newsroom.db')
     
     # Resolve relative paths for sqlite dbs to make them absolute

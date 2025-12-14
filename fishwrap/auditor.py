@@ -4,8 +4,7 @@ from datetime import datetime
 from zoneinfo import ZoneInfo
 from jinja2 import Environment, FileSystemLoader
 from fishwrap.db import repository
-# Refactor: Use Pydantic Config Loader
-from fishwrap.config_loader import Config as _config
+from fishwrap import _config
 
 def audit_run(run_sheet, candidates, stats_context):
     """
@@ -72,9 +71,9 @@ def audit_run(run_sheet, candidates, stats_context):
         
         audit_entry = {
             'article_id': art.get('id'),
-            'original_section': art.get('computed_category'), # This is the initial classification
-            'final_section': art.get('computed_category'),    # For now, same. Future: if moved manually.
-            'base_score': 0, # Placeholder, hard to unbundle without refactoring scorer
+            'original_section': art.get('computed_category'),
+            'final_section': art.get('computed_category'),
+            'base_score': 0,
             'modifier_score': 0,
             'final_score': score,
             'decision': decision,
@@ -134,8 +133,7 @@ def audit_run(run_sheet, candidates, stats_context):
     now = datetime.now(tz)
 
     # Map Section IDs to Titles (e.g., 'news' -> 'Beat')
-    # Pydantic: Iterate list of Section models
-    section_map = {s.id: s.title for s in _config.SECTIONS} if hasattr(_config, 'SECTIONS') else {}
+    section_map = {s['id']: s['title'] for s in _config.SECTIONS} if hasattr(_config, 'SECTIONS') else {}
 
     render_context = {
         'run_id': run_id,
@@ -160,14 +158,10 @@ def generate_report(context):
     """
     Renders the Jinja2 template and returns HTML string.
     """
-    # Locate Template
-    # We look in the configured theme directory
     theme_dir = _config.THEME
     template_dir = os.path.join(theme_dir, 'templates')
     
-    # Fallback to internal if not found (e.g. for default themes)
     if not os.path.exists(template_dir):
-        # Try finding relative to repo root if _config.THEME is "basic"
         pass
 
     env = Environment(loader=FileSystemLoader(template_dir))

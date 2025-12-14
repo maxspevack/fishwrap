@@ -4,8 +4,7 @@ from datetime import datetime
 from zoneinfo import ZoneInfo
 from jinja2 import Environment, FileSystemLoader
 from weasyprint import HTML
-# Refactor: Use Pydantic Config Loader
-from fishwrap.config_loader import Config as _config
+from fishwrap import _config
 
 def generate_edition(run_sheet):
     """
@@ -26,32 +25,23 @@ def generate_edition(run_sheet):
     # Organize Content for Template
     sections_data = []
     
-    # Pydantic: Iterate list of Section models
     for section_def in _config.SECTIONS:
-        sid = section_def.id
+        sid = section_def['id']
         articles = run_sheet.get(sid, [])
         if not articles: continue
         
         # Apply Visual Formatting logic based on scores
-        # "Lead" vs "Feature" vs "Standard" vs "Compact"
-        # Logic:
-        # Lead: Top scoring item IF above threshold
-        # Feature: Next N items above feature threshold
-        # Standard: Middle tier
-        # Compact: Bottom tier or short snippets
-        
         formatted_articles = []
-        # Pydantic: Access dict of models
         thresholds = _config.VISUAL_THRESHOLDS.get(sid)
         
         for idx, art in enumerate(articles):
             score = art.get('impact_score', 0)
             art_type = 'standard' # Default
             
-            if idx == 0 and thresholds and score >= thresholds.lead:
-                art_type = 'feature' # 'feature' class in CSS is the big one
-            elif thresholds and score >= thresholds.feature:
-                art_type = 'standard' # Keeping standard for high quality
+            if idx == 0 and thresholds and score >= thresholds['lead']:
+                art_type = 'feature'
+            elif thresholds and score >= thresholds['feature']:
+                art_type = 'standard'
             elif idx > 3:
                 art_type = 'compact'
                 
@@ -67,8 +57,8 @@ def generate_edition(run_sheet):
             formatted_articles.append(art)
             
         sections_data.append({
-            'title': section_def.title,
-            'description': section_def.description,
+            'title': section_def['title'],
+            'description': section_def['description'],
             'articles': formatted_articles
         })
 
@@ -84,7 +74,15 @@ def generate_edition(run_sheet):
     template_dir = os.path.join(theme_dir, 'templates')
     
     env = Environment(loader=FileSystemLoader(template_dir))
-    template = env.get_template('index.html')
+    
+    # Fix: Use 'layout.html' as the standard entry point, not 'index.html'
+    template_name = 'layout.html'
+    if not os.path.exists(os.path.join(template_dir, template_name)):
+         # Fallback check if index.html exists (e.g. legacy themes?)
+         if os.path.exists(os.path.join(template_dir, 'index.html')):
+             template_name = 'index.html'
+    
+    template = env.get_template(template_name)
     
     # Inject CSS for inline email/single-file portability if needed
     css_path = os.path.join(theme_dir, 'css', 'style.css')
@@ -108,7 +106,7 @@ def generate_edition(run_sheet):
     with open(output_path, 'w') as f:
         f.write(html_out)
         
-    print(f"\n[PRINTER] Edition Published: {output_path}")
+    print(f"[PRINTER] Edition Published: {output_path}")
     
     # 4. Generate PDF (Optional/Bonus)
     if _config.LATEST_PDF_FILE:

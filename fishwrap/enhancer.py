@@ -4,8 +4,7 @@ from concurrent.futures import ThreadPoolExecutor, as_completed
 from tqdm import tqdm
 from newspaper import Article as NewsArticle
 from fishwrap.db import repository
-# Refactor: Use Pydantic Config Loader
-from fishwrap.config_loader import Config as _config
+from fishwrap import _config
 from fishwrap import utils
 
 def enhance_article(article_data):
@@ -60,21 +59,9 @@ def run_enhancer():
     to_fetch = []
     
     for art in all_articles:
-        # Check DB
-        # Note: Editor output comes from DB, so art['is_enhanced'] should be accurate
-        # BUT, let's verify or trust the flag.
-        # If is_enhanced is False, we queue it.
-        # However, the run_sheet objects are dicts from Editor.
-        # Let's re-check the DB by ID to be absolutely sure we have content.
-        
         db_art = repository.get_article_by_id(art.get('id'))
         if db_art and db_art.get('is_enhanced'):
             # Cache Hit
-            # Inject content into run_sheet object for Printer?
-            # Actually, Printer might need to re-read from DB or we update the JSON.
-            # Current architecture: Enhancer updates DB. Printer renders from JSON?
-            # Wait, if Printer uses JSON, and JSON doesn't have text, Printer fails.
-            # We must update the JSON list with text.
             art['full_content'] = db_art.get('full_content')
             pass
         else:
@@ -110,8 +97,6 @@ def run_enhancer():
                     pbar.update(1)
     
     # 4. Save Updated Run Sheet (Now with Text)
-    # The 'art' references in 'all_articles' loop were references to the dicts inside 'run_sheet'.
-    # So 'run_sheet' is mutated.
     with open(_config.RUN_SHEET_FILE, 'w') as f:
         json.dump(run_sheet, f, indent=2)
         
