@@ -34,20 +34,22 @@ make setup
 echo "Running Unit Tests..."
 make test
 
-echo "Building Vanilla Demo..."
-make run-vanilla
+echo "Building & Shipping Demos..."
+# Use 'make ship' to build ALL demos and copy them to docs/
+make ship
 
-# Check result
-if [ ! -f "demo/output/index.html" ]; then
-    echo "❌ Build failed! demo/output/index.html not found."
+# Check result (Check one demo)
+if [ ! -f "docs/demo/vanilla/index.html" ]; then
+    echo "❌ Build failed! docs/demo/vanilla/index.html not found."
     exit 1
 fi
 
-echo "✅ Smoke Test Passed."
+echo "✅ Smoke Test & Build Passed."
 
 # 3. Git Operations
 echo "--- Committing & Tagging ---"
-git add "$INIT_FILE" "docs/RELEASE_NOTES.md" # Assume user updated notes manually
+# Add docs/demo to the commit so the release includes the updated demos
+git add "$INIT_FILE" "docs/RELEASE_NOTES.md" "docs/demo"
 git commit -m "release: Bump version to v$VERSION"
 
 echo "Tagging v$VERSION..."
