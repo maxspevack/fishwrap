@@ -2,7 +2,7 @@
 
 This document describes the process for cutting a new stable release of the Fishwrap Engine (`fishwrap`).
 
-**Objective:** To tag a clean, tested version that downstream consumers (like `dailyclamour.com`) can pin to.
+**Objective:** To tag a clean, tested version that downstream consumers can pin to.
 
 ---
 
@@ -33,8 +33,9 @@ Summary of the release...
 We use an automated script to enforce hygiene. This script will:
 1.  Update `fishwrap/__init__.py`.
 2.  Wipe the `venv` and rebuild it from scratch (`make clean-all && make setup`).
-3.  Run the pipeline (`make run-vanilla`) to prove it works.
-4.  Commit, Tag, and Push.
+3.  Run the full test suite (`make test`).
+4.  Run the pipeline (`make run-vanilla`) to prove it builds.
+5.  Commit, Tag, and Push.
 
 **Command:**
 ```bash
@@ -50,38 +51,13 @@ If the smoke test fails, the script aborts before tagging.
 
 ---
 
-## 3. Downstream Deployment (Daily Clamour)
-
-Once the tag is live on GitHub, update the production site.
-
-1.  Go to the product repo:
-    ```bash
-    cd ../dailyclamour.com
-    ```
-2.  Install the new stable engine:
-    ```bash
-    make install-stable VERSION=v1.4.0
-    ```
-3.  Deploy:
-    ```bash
-    make deploy
-    ```
-
----
-
-## 4. Hotfixes & YOLO Mode
+## 3. Hotfixes & YOLO Mode
 
 If you need to ship a critical fix *right now* without a tag:
 
 1.  **YOLO Mode:**
-    ```bash
-    cd dailyclamour.com
-    make install-yolo  # Symlinks to your local dev repo
-    make deploy
-    ```
-    *Warning:* This deploys whatever dirty state is on your laptop. Use with caution.
+    Downstream projects can symlink to your local development directory to test bleeding-edge changes.
+    *   *Warning:* This deploys whatever dirty state is on your laptop. Use with caution.
 
 2.  **To Return to Stable:**
-    ```bash
-    make install-stable VERSION=v1.4.0
-    ```
+    Downstream projects should reinstall the pinned version (e.g., `make install-stable VERSION=v1.4.0`).
