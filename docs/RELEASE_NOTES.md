@@ -4,6 +4,16 @@ Fishwrap is evolving from a personal script into a robust "Anti-Feed" platform. 
 
 ---
 
+## v1.3.3 (The Synchronization) - Dec 14, 2025
+
+A maintenance release to synchronize documentation updates and ensure all downstream artifacts are built from the latest stable baseline.
+
+### 📚 Documentation
+*   **Blog Vol 5:** Added "The Release" (Release Engineering Case Study).
+*   **Runbook Refinements:** Clarified the separation of concerns between Engine and Product in deployment documentation.
+
+---
+
 ## v1.3.2 (The Chronos Update) - Dec 13, 2025
 
 A feature release enabling high-precision publication metadata.
