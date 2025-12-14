@@ -27,17 +27,15 @@ We didn't need better logging. We needed a forensic accountant.
 
 ## Enter The Auditor
 
-In Fishwrap v1.2, we introduced **The Auditor**. It’s a dedicated module that runs *after* the Editor has made its decisions but *before* the Printer warms up the plates.
+In Fishwrap v1.2, we introduced **The Auditor**. It’s a dedicated module that runs *after* the Editor has made its decisions but *before* the Printer warms up the plates. It pulls data from our **SQLite** history (`newsroom.db`) to provide context on what we *could* have printed versus what we *did* print.
 
 It asks three questions of the engine:
 
-1.  **What did you see?** (Input Dominance)
+1.  **What did you see?** (The Funnel)
 2.  **What did you kill?** (The Bubble)
 3.  **Are you just a mirror?** (Source Efficiency)
 
-This isn't just `console.log`. The Auditor compiles these answers into a static artifact that ships with every single edition of the paper.
-
-It is the receipt for the news.
+This isn't just `console.log`. The Auditor compiles these answers into a **Transparency Report** (`transparency.html`) that ships with every single edition of the paper. It is the receipt for the news.
 
 ## The Metrics of Truth
 
