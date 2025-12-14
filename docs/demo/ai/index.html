@@ -47,14 +47,6 @@
         
         .brand-logo-container { margin-bottom: 30px; text-align: center; }
         .brand-logo-img { max-width: 180px; height: auto; }
-        .demo-label { 
-            display: block; 
-            font-size: 0.75rem; 
-            text-transform: uppercase; 
-            letter-spacing: 1px; 
-            color: #888; 
-            margin-top: 5px; 
-        }
         
         .meta-info { 
             font-size: 0.85rem; 
@@ -79,6 +71,16 @@
         .sidebar-footer { margin-top: auto; padding-top: 20px; border-top: 1px solid #333; font-size: 0.8rem; }
         .glass-link { display: block; color: #888; text-decoration: none; margin-bottom: 8px; }
         .glass-link:hover { color: #fff; }
+        
+        /* Version Tag in Footer */
+        .version-tag {
+            display: inline-block;
+            font-family: monospace;
+            font-size: 0.75rem;
+            color: #666;
+            margin-left: 8px;
+            vertical-align: middle;
+        }
         
         /* Main Content */
         .main-content {
@@ -139,7 +141,7 @@
         }
         .modal-content {
             background: #fff; /* White modal */
-            color: #333;
+            color: #333; /* Dark text */
             width: 90%; max-width: 900px; height: 85vh;
             overflow-y: auto;
             padding: 40px;
@@ -202,9 +204,11 @@
         .bubble-col h4 { font-size: 0.9rem; text-transform: uppercase; color: #666; margin-bottom: 10px; border-bottom: 1px solid #eee; padding-bottom: 5px; }
         .bubble-col ul { list-style: none; padding: 0; margin: 0; }
         .bubble-col li { margin-bottom: 8px; font-size: 0.9rem; display: flex; align-items: baseline; }
+        /* Fixed width badge */
         .score-badge { 
             background: #eee; color: #555; font-family: monospace; font-size: 0.75rem; 
-            padding: 2px 5px; border-radius: 4px; margin-right: 10px; min-width: 40px; text-align: right; 
+            padding: 2px 5px; border-radius: 4px; margin-right: 10px; 
+            min-width: 40px; text-align: right; display: inline-block;
         }
         .bubble-col.in .score-badge { background: #dcfce7; color: #166534; }
         .bubble-col.out .score-badge { background: #fee2e2; color: #991b1b; }
@@ -667,7 +671,6 @@ td { border-bottom: 1px solid var(--term-dim); padding: 1rem; color: var(--term-
         <a href="https://github.com/maxspevack/fishwrap" target="_blank">
             <img src="static/images/fishwrap_logo.svg" alt="Fishwrap" class="brand-logo-img">
         </a>
-        <span class="demo-label">Briefing Engine</span>
     </div>
     
     <div class="meta-info">
@@ -710,7 +713,10 @@ td { border-bottom: 1px solid var(--term-dim); padding: 1rem; color: var(--term-
             <a href="#" onclick="document.body.classList.toggle('debug-active'); return false;" class="glass-link">Scoring Debugger</a>
         </div>
         <div style="margin-top: 20px;">
-            <a href="https://github.com/maxspevack/fishwrap" target="_blank" class="glass-link">View Source</a>
+            <a href="https://github.com/maxspevack/fishwrap" target="_blank" style="display: flex; align-items: center; color: #888; text-decoration: none;">
+                <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" style="width: 20px; height: 20px; margin-right: 8px; filter: grayscale(100%); opacity: 0.7;"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"></path></svg>
+                <span class="version-tag">v1.3.0</span>
+            </a>
         </div>
     </div>
 </nav>
@@ -730,9 +736,9 @@ td { border-bottom: 1px solid var(--term-dim); padding: 1rem; color: var(--term-
                 
                 <!-- Debug Overlay -->
                 <div class="debug-card">
-                    <div><strong>Score:</strong> 2627.0</div>
+                    <div><strong>Score:</strong> 2625.0</div>
                     <hr style="border: 0; border-top: 1px dashed #ccc; margin: 5px 0;">
-                    <div>Base: 27</div>
+                    <div>Base: 25</div>
                     
                     <div>keyword_boost: 2000</div>
                     
@@ -779,9 +785,9 @@ td { border-bottom: 1px solid var(--term-dim); padding: 1rem; color: var(--term-
                 
                 <!-- Debug Overlay -->
                 <div class="debug-card">
-                    <div><strong>Score:</strong> 1058.0</div>
+                    <div><strong>Score:</strong> 1066.0</div>
                     <hr style="border: 0; border-top: 1px dashed #ccc; margin: 5px 0;">
-                    <div>Base: 458</div>
+                    <div>Base: 466</div>
                     
                     <div>content_boost: 600</div>
                     
@@ -863,9 +869,9 @@ td { border-bottom: 1px solid var(--term-dim); padding: 1rem; color: var(--term-
                 
                 <!-- Debug Overlay -->
                 <div class="debug-card">
-                    <div><strong>Score:</strong> 1005.0</div>
+                    <div><strong>Score:</strong> 1006.0</div>
                     <hr style="border: 0; border-top: 1px dashed #ccc; margin: 5px 0;">
-                    <div>Base: 5</div>
+                    <div>Base: 6</div>
                     
                     <div>content_boost: 600</div>
                     
@@ -948,9 +954,9 @@ td { border-bottom: 1px solid var(--term-dim); padding: 1rem; color: var(--term-
                 
                 <!-- Debug Overlay -->
                 <div class="debug-card">
-                    <div><strong>Score:</strong> 1161.0</div>
+                    <div><strong>Score:</strong> 1168.0</div>
                     <hr style="border: 0; border-top: 1px dashed #ccc; margin: 5px 0;">
-                    <div>Base: 161</div>
+                    <div>Base: 168</div>
                     
                     <div>keyword_boost: 1000</div>
                     
@@ -980,9 +986,9 @@ td { border-bottom: 1px solid var(--term-dim); padding: 1rem; color: var(--term-
                 
                 <!-- Debug Overlay -->
                 <div class="debug-card">
-                    <div><strong>Score:</strong> 1058.0</div>
+                    <div><strong>Score:</strong> 1054.0</div>
                     <hr style="border: 0; border-top: 1px dashed #ccc; margin: 5px 0;">
-                    <div>Base: 58</div>
+                    <div>Base: 54</div>
                     
                     <div>content_boost: 600</div>
                     
@@ -1005,8 +1011,8 @@ td { border-bottom: 1px solid var(--term-dim); padding: 1rem; color: var(--term-
     <div class="report-header">
         <h2>Source Transparency</h2>
         <div class="report-meta">
-            <span>Edition: 7bdabb38-8e1c-4833-894d-9d0d2295d955</span>
-            <span>Generated: 2025-12-13 17:17:36 PST</span>
+            <span>Edition: 72abb1ac-c7fd-457a-9185-0ad028e24a95</span>
+            <span>Generated: 2025-12-13 17:32:14 PST</span>
         </div>
     </div>
 
@@ -1021,11 +1027,11 @@ td { border-bottom: 1px solid var(--term-dim); padding: 1rem; color: var(--term-
     <div id="tab-vitals" class="tab-pane active">
         <div class="stats-grid">
             <div class="stat-card">
-                <span class="stat-value">545</span>
+                <span class="stat-value">546</span>
                 <span class="stat-label">Total Items Scanned</span>
             </div>
             <div class="stat-card">
-                <span class="stat-value">62</span>
+                <span class="stat-value">63</span>
                 <span class="stat-label">Fresh Candidates</span>
             </div>
             <div class="stat-card">
@@ -1033,7 +1039,7 @@ td { border-bottom: 1px solid var(--term-dim); padding: 1rem; color: var(--term-
                 <span class="stat-label">Published</span>
             </div>
             <div class="stat-card highlight">
-                <span class="stat-value">97.2%</span>
+                <span class="stat-value">97.3%</span>
                 <span class="stat-label">Anti-Feed Protection</span>
                 <small class="stat-sub">Noise Filtered Out</small>
             </div>
@@ -1095,12 +1101,12 @@ td { border-bottom: 1px solid var(--term-dim); padding: 1rem; color: var(--term-
                             <span class="count-pill">11</span>
                         </td>
                         <td>
-                            93.5%
-                            <span class="count-pill">58</span>
+                            93.7%
+                            <span class="count-pill">59</span>
                         </td>
                         <td>
                             
-                            <span class="delta-neg">-20.2%</span>
+                            <span class="delta-neg">-20.3%</span>
                             
                         </td>
                     </tr>
@@ -1129,7 +1135,7 @@ td { border-bottom: 1px solid var(--term-dim); padding: 1rem; color: var(--term-
                         </li>
                         
                         <li>
-                            <span class="score-badge">1058</span>
+                            <span class="score-badge">1066</span>
                             8x RTX Pro 6000 server complete
                         </li>
                         
@@ -1151,12 +1157,12 @@ td { border-bottom: 1px solid var(--term-dim); padding: 1rem; color: var(--term-
                         </li>
                         
                         <li>
-                            <span class="score-badge">908</span>
+                            <span class="score-badge">911</span>
                             Qwen3 Next generation optimization
                         </li>
                         
                         <li>
-                            <span class="score-badge">896</span>
+                            <span class="score-badge">893</span>
                             NVIDIA gpt-oss-120b Eagle Throughput model
                         </li>
                         
@@ -1191,12 +1197,12 @@ td { border-bottom: 1px solid var(--term-dim); padding: 1rem; color: var(--term-
                     <ul>
                         
                         <li>
-                            <span class="score-badge">934</span>
+                            <span class="score-badge">933</span>
                             [D] How does Claude perform so well without any proprietary data?
                         </li>
                         
                         <li>
-                            <span class="score-badge">649</span>
+                            <span class="score-badge">650</span>
                             [D] Do Some Research Areas Get an Easier Accept? The Quiet Biases Hiding in ICLR's Peer Review
                         </li>
                         
@@ -1219,7 +1225,7 @@ td { border-bottom: 1px solid var(--term-dim); padding: 1rem; color: var(--term-
                     <ul>
                         
                         <li>
-                            <span class="score-badge">1005</span>
+                            <span class="score-badge">1006</span>
                             I built an open-source MCP server for uv so your agents can self-repair their Python environments (and install their own packages)
                         </li>
                         
@@ -1251,7 +1257,7 @@ td { border-bottom: 1px solid var(--term-dim); padding: 1rem; color: var(--term-
                     <ul>
                         
                         <li>
-                            <span class="score-badge">1161</span>
+                            <span class="score-badge">1168</span>
                             Meta is pivoting away from open source AI to money-making AI
                         </li>
                         
@@ -1261,7 +1267,7 @@ td { border-bottom: 1px solid var(--term-dim); padding: 1rem; color: var(--term-
                         </li>
                         
                         <li>
-                            <span class="score-badge">1058</span>
+                            <span class="score-badge">1054</span>
                             My 8 year old son created his first game with Google Gemini
                         </li>
                         
@@ -1273,12 +1279,12 @@ td { border-bottom: 1px solid var(--term-dim); padding: 1rem; color: var(--term-
                     <ul>
                         
                         <li>
-                            <span class="score-badge">763</span>
+                            <span class="score-badge">777</span>
                             Meta AI translates peoples words into different languages and edits their mouth movements to match
                         </li>
                         
                         <li>
-                            <span class="score-badge">712</span>
+                            <span class="score-badge">714</span>
                             The Unspoken Future Plan for AI
                         </li>
                         

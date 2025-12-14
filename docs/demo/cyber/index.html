@@ -47,14 +47,6 @@
         
         .brand-logo-container { margin-bottom: 30px; text-align: center; }
         .brand-logo-img { max-width: 180px; height: auto; }
-        .demo-label { 
-            display: block; 
-            font-size: 0.75rem; 
-            text-transform: uppercase; 
-            letter-spacing: 1px; 
-            color: #888; 
-            margin-top: 5px; 
-        }
         
         .meta-info { 
             font-size: 0.85rem; 
@@ -79,6 +71,16 @@
         .sidebar-footer { margin-top: auto; padding-top: 20px; border-top: 1px solid #333; font-size: 0.8rem; }
         .glass-link { display: block; color: #888; text-decoration: none; margin-bottom: 8px; }
         .glass-link:hover { color: #fff; }
+        
+        /* Version Tag in Footer */
+        .version-tag {
+            display: inline-block;
+            font-family: monospace;
+            font-size: 0.75rem;
+            color: #666;
+            margin-left: 8px;
+            vertical-align: middle;
+        }
         
         /* Main Content */
         .main-content {
@@ -139,7 +141,7 @@
         }
         .modal-content {
             background: #fff; /* White modal */
-            color: #333;
+            color: #333; /* Dark text */
             width: 90%; max-width: 900px; height: 85vh;
             overflow-y: auto;
             padding: 40px;
@@ -202,9 +204,11 @@
         .bubble-col h4 { font-size: 0.9rem; text-transform: uppercase; color: #666; margin-bottom: 10px; border-bottom: 1px solid #eee; padding-bottom: 5px; }
         .bubble-col ul { list-style: none; padding: 0; margin: 0; }
         .bubble-col li { margin-bottom: 8px; font-size: 0.9rem; display: flex; align-items: baseline; }
+        /* Fixed width badge */
         .score-badge { 
             background: #eee; color: #555; font-family: monospace; font-size: 0.75rem; 
-            padding: 2px 5px; border-radius: 4px; margin-right: 10px; min-width: 40px; text-align: right; 
+            padding: 2px 5px; border-radius: 4px; margin-right: 10px; 
+            min-width: 40px; text-align: right; display: inline-block;
         }
         .bubble-col.in .score-badge { background: #dcfce7; color: #166534; }
         .bubble-col.out .score-badge { background: #fee2e2; color: #991b1b; }
@@ -667,7 +671,6 @@ td { border-bottom: 1px solid var(--term-dim); padding: 1rem; color: var(--term-
         <a href="https://github.com/maxspevack/fishwrap" target="_blank">
             <img src="static/images/fishwrap_logo.svg" alt="Fishwrap" class="brand-logo-img">
         </a>
-        <span class="demo-label">Briefing Engine</span>
     </div>
     
     <div class="meta-info">
@@ -710,7 +713,10 @@ td { border-bottom: 1px solid var(--term-dim); padding: 1rem; color: var(--term-
             <a href="#" onclick="document.body.classList.toggle('debug-active'); return false;" class="glass-link">Scoring Debugger</a>
         </div>
         <div style="margin-top: 20px;">
-            <a href="https://github.com/maxspevack/fishwrap" target="_blank" class="glass-link">View Source</a>
+            <a href="https://github.com/maxspevack/fishwrap" target="_blank" style="display: flex; align-items: center; color: #888; text-decoration: none;">
+                <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" style="width: 20px; height: 20px; margin-right: 8px; filter: grayscale(100%); opacity: 0.7;"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"></path></svg>
+                <span class="version-tag">v1.3.0</span>
+            </a>
         </div>
     </div>
 </nav>
@@ -1106,9 +1112,9 @@ td { border-bottom: 1px solid var(--term-dim); padding: 1rem; color: var(--term-
                 
                 <!-- Debug Overlay -->
                 <div class="debug-card">
-                    <div><strong>Score:</strong> 5007.0</div>
+                    <div><strong>Score:</strong> 5008.0</div>
                     <hr style="border: 0; border-top: 1px dashed #ccc; margin: 5px 0;">
-                    <div>Base: 7</div>
+                    <div>Base: 8</div>
                     
                     <div>keyword_boost: 5000</div>
                     
@@ -1194,8 +1200,8 @@ td { border-bottom: 1px solid var(--term-dim); padding: 1rem; color: var(--term-
     <div class="report-header">
         <h2>Source Transparency</h2>
         <div class="report-meta">
-            <span>Edition: b4fe6d81-7030-4421-9549-e6e68da2f62a</span>
-            <span>Generated: 2025-12-13 17:17:28 PST</span>
+            <span>Edition: d005e3de-f786-4b1a-a282-9fc2736e8c0c</span>
+            <span>Generated: 2025-12-13 17:32:06 PST</span>
         </div>
     </div>
 
@@ -1346,6 +1352,23 @@ td { border-bottom: 1px solid var(--term-dim); padding: 1rem; color: var(--term-
                     </tr>
                     
                     <tr>
+                        <td class="source-name">googleprojectzero.blogspot.com</td>
+                        <td>
+                            3.3%
+                            <span class="count-pill">1</span>
+                        </td>
+                        <td>
+                            1.0%
+                            <span class="count-pill">1</span>
+                        </td>
+                        <td>
+                            
+                            <span class="delta-pos">+2.3%</span>
+                            
+                        </td>
+                    </tr>
+                    
+                    <tr>
                         <td class="source-name">www.crowdstrike.com</td>
                         <td>
                             3.3%
@@ -1380,23 +1403,6 @@ td { border-bottom: 1px solid var(--term-dim); padding: 1rem; color: var(--term-
                     </tr>
                     
                     <tr>
-                        <td class="source-name">googleprojectzero.blogspot.com</td>
-                        <td>
-                            3.3%
-                            <span class="count-pill">1</span>
-                        </td>
-                        <td>
-                            1.0%
-                            <span class="count-pill">1</span>
-                        </td>
-                        <td>
-                            
-                            <span class="delta-pos">+2.3%</span>
-                            
-                        </td>
-                    </tr>
-                    
-                    <tr>
                         <td class="source-name">www.darkreading.com</td>
                         <td>
                             6.7%
@@ -1414,7 +1420,7 @@ td { border-bottom: 1px solid var(--term-dim); padding: 1rem; color: var(--term-
                     </tr>
                     
                     <tr>
-                        <td class="source-name">www.troyhunt.com</td>
+                        <td class="source-name">www.schneier.com</td>
                         <td>
                             0.0%
                             <span class="count-pill">0</span>
@@ -1431,7 +1437,7 @@ td { border-bottom: 1px solid var(--term-dim); padding: 1rem; color: var(--term-
                     </tr>
                     
                     <tr>
-                        <td class="source-name">www.schneier.com</td>
+                        <td class="source-name">www.troyhunt.com</td>
                         <td>
                             0.0%
                             <span class="count-pill">0</span>
@@ -1572,7 +1578,7 @@ td { border-bottom: 1px solid var(--term-dim); padding: 1rem; color: var(--term-
                         </li>
                         
                         <li>
-                            <span class="score-badge">47</span>
+                            <span class="score-badge">46</span>
                             what are some good options that provide a virtual environment to browse online?
                         </li>
                         

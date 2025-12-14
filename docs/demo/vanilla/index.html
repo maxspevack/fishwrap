@@ -47,14 +47,6 @@
         
         .brand-logo-container { margin-bottom: 30px; text-align: center; }
         .brand-logo-img { max-width: 180px; height: auto; }
-        .demo-label { 
-            display: block; 
-            font-size: 0.75rem; 
-            text-transform: uppercase; 
-            letter-spacing: 1px; 
-            color: #888; 
-            margin-top: 5px; 
-        }
         
         .meta-info { 
             font-size: 0.85rem; 
@@ -79,6 +71,16 @@
         .sidebar-footer { margin-top: auto; padding-top: 20px; border-top: 1px solid #333; font-size: 0.8rem; }
         .glass-link { display: block; color: #888; text-decoration: none; margin-bottom: 8px; }
         .glass-link:hover { color: #fff; }
+        
+        /* Version Tag in Footer */
+        .version-tag {
+            display: inline-block;
+            font-family: monospace;
+            font-size: 0.75rem;
+            color: #666;
+            margin-left: 8px;
+            vertical-align: middle;
+        }
         
         /* Main Content */
         .main-content {
@@ -139,7 +141,7 @@
         }
         .modal-content {
             background: #fff; /* White modal */
-            color: #333;
+            color: #333; /* Dark text */
             width: 90%; max-width: 900px; height: 85vh;
             overflow-y: auto;
             padding: 40px;
@@ -202,9 +204,11 @@
         .bubble-col h4 { font-size: 0.9rem; text-transform: uppercase; color: #666; margin-bottom: 10px; border-bottom: 1px solid #eee; padding-bottom: 5px; }
         .bubble-col ul { list-style: none; padding: 0; margin: 0; }
         .bubble-col li { margin-bottom: 8px; font-size: 0.9rem; display: flex; align-items: baseline; }
+        /* Fixed width badge */
         .score-badge { 
             background: #eee; color: #555; font-family: monospace; font-size: 0.75rem; 
-            padding: 2px 5px; border-radius: 4px; margin-right: 10px; min-width: 40px; text-align: right; 
+            padding: 2px 5px; border-radius: 4px; margin-right: 10px; 
+            min-width: 40px; text-align: right; display: inline-block;
         }
         .bubble-col.in .score-badge { background: #dcfce7; color: #166534; }
         .bubble-col.out .score-badge { background: #fee2e2; color: #991b1b; }
@@ -667,7 +671,6 @@ td { border-bottom: 1px solid var(--term-dim); padding: 1rem; color: var(--term-
         <a href="https://github.com/maxspevack/fishwrap" target="_blank">
             <img src="static/images/fishwrap_logo.svg" alt="Fishwrap" class="brand-logo-img">
         </a>
-        <span class="demo-label">Briefing Engine</span>
     </div>
     
     <div class="meta-info">
@@ -710,7 +713,10 @@ td { border-bottom: 1px solid var(--term-dim); padding: 1rem; color: var(--term-
             <a href="#" onclick="document.body.classList.toggle('debug-active'); return false;" class="glass-link">Scoring Debugger</a>
         </div>
         <div style="margin-top: 20px;">
-            <a href="https://github.com/maxspevack/fishwrap" target="_blank" class="glass-link">View Source</a>
+            <a href="https://github.com/maxspevack/fishwrap" target="_blank" style="display: flex; align-items: center; color: #888; text-decoration: none;">
+                <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" style="width: 20px; height: 20px; margin-right: 8px; filter: grayscale(100%); opacity: 0.7;"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"></path></svg>
+                <span class="version-tag">v1.3.0</span>
+            </a>
         </div>
     </div>
 </nav>
@@ -870,9 +876,9 @@ td { border-bottom: 1px solid var(--term-dim); padding: 1rem; color: var(--term-
                 
                 <!-- Debug Overlay -->
                 <div class="debug-card">
-                    <div><strong>Score:</strong> 14419.0</div>
+                    <div><strong>Score:</strong> 14527.0</div>
                     <hr style="border: 0; border-top: 1px dashed #ccc; margin: 5px 0;">
-                    <div>Base: 14419</div>
+                    <div>Base: 14527</div>
                     
                 </div>
             </article>
@@ -883,9 +889,9 @@ td { border-bottom: 1px solid var(--term-dim); padding: 1rem; color: var(--term-
                 
                 <!-- Debug Overlay -->
                 <div class="debug-card">
-                    <div><strong>Score:</strong> 12703.0</div>
+                    <div><strong>Score:</strong> 12845.0</div>
                     <hr style="border: 0; border-top: 1px dashed #ccc; margin: 5px 0;">
-                    <div>Base: 12703</div>
+                    <div>Base: 12845</div>
                     
                 </div>
             </article>
@@ -896,9 +902,9 @@ td { border-bottom: 1px solid var(--term-dim); padding: 1rem; color: var(--term-
                 
                 <!-- Debug Overlay -->
                 <div class="debug-card">
-                    <div><strong>Score:</strong> 5490.0</div>
+                    <div><strong>Score:</strong> 5518.0</div>
                     <hr style="border: 0; border-top: 1px dashed #ccc; margin: 5px 0;">
-                    <div>Base: 5490</div>
+                    <div>Base: 5518</div>
                     
                 </div>
             </article>
@@ -909,9 +915,9 @@ td { border-bottom: 1px solid var(--term-dim); padding: 1rem; color: var(--term-
                 
                 <!-- Debug Overlay -->
                 <div class="debug-card">
-                    <div><strong>Score:</strong> 3149.0</div>
+                    <div><strong>Score:</strong> 3162.0</div>
                     <hr style="border: 0; border-top: 1px dashed #ccc; margin: 5px 0;">
-                    <div>Base: 2849</div>
+                    <div>Base: 2862</div>
                     
                 </div>
             </article>
@@ -922,9 +928,9 @@ td { border-bottom: 1px solid var(--term-dim); padding: 1rem; color: var(--term-
                 
                 <!-- Debug Overlay -->
                 <div class="debug-card">
-                    <div><strong>Score:</strong> 1761.0</div>
+                    <div><strong>Score:</strong> 1804.0</div>
                     <hr style="border: 0; border-top: 1px dashed #ccc; margin: 5px 0;">
-                    <div>Base: 1761</div>
+                    <div>Base: 1804</div>
                     
                 </div>
             </article>
@@ -935,9 +941,9 @@ td { border-bottom: 1px solid var(--term-dim); padding: 1rem; color: var(--term-
                 
                 <!-- Debug Overlay -->
                 <div class="debug-card">
-                    <div><strong>Score:</strong> 1487.0</div>
+                    <div><strong>Score:</strong> 1507.0</div>
                     <hr style="border: 0; border-top: 1px dashed #ccc; margin: 5px 0;">
-                    <div>Base: 1487</div>
+                    <div>Base: 1507</div>
                     
                 </div>
             </article>
@@ -948,9 +954,9 @@ td { border-bottom: 1px solid var(--term-dim); padding: 1rem; color: var(--term-
                 
                 <!-- Debug Overlay -->
                 <div class="debug-card">
-                    <div><strong>Score:</strong> 1128.0</div>
+                    <div><strong>Score:</strong> 1152.0</div>
                     <hr style="border: 0; border-top: 1px dashed #ccc; margin: 5px 0;">
-                    <div>Base: 1128</div>
+                    <div>Base: 1152</div>
                     
                 </div>
             </article>
@@ -1010,9 +1016,9 @@ td { border-bottom: 1px solid var(--term-dim); padding: 1rem; color: var(--term-
                 
                 <!-- Debug Overlay -->
                 <div class="debug-card">
-                    <div><strong>Score:</strong> 13881.0</div>
+                    <div><strong>Score:</strong> 13897.0</div>
                     <hr style="border: 0; border-top: 1px dashed #ccc; margin: 5px 0;">
-                    <div>Base: 13881</div>
+                    <div>Base: 13897</div>
                     
                 </div>
             </article>
@@ -1023,9 +1029,9 @@ td { border-bottom: 1px solid var(--term-dim); padding: 1rem; color: var(--term-
                 
                 <!-- Debug Overlay -->
                 <div class="debug-card">
-                    <div><strong>Score:</strong> 10628.0</div>
+                    <div><strong>Score:</strong> 10691.0</div>
                     <hr style="border: 0; border-top: 1px dashed #ccc; margin: 5px 0;">
-                    <div>Base: 10628</div>
+                    <div>Base: 10691</div>
                     
                 </div>
             </article>
@@ -1036,9 +1042,9 @@ td { border-bottom: 1px solid var(--term-dim); padding: 1rem; color: var(--term-
                 
                 <!-- Debug Overlay -->
                 <div class="debug-card">
-                    <div><strong>Score:</strong> 8174.0</div>
+                    <div><strong>Score:</strong> 8205.0</div>
                     <hr style="border: 0; border-top: 1px dashed #ccc; margin: 5px 0;">
-                    <div>Base: 8174</div>
+                    <div>Base: 8205</div>
                     
                 </div>
             </article>
@@ -1049,9 +1055,9 @@ td { border-bottom: 1px solid var(--term-dim); padding: 1rem; color: var(--term-
                 
                 <!-- Debug Overlay -->
                 <div class="debug-card">
-                    <div><strong>Score:</strong> 7384.0</div>
+                    <div><strong>Score:</strong> 7395.0</div>
                     <hr style="border: 0; border-top: 1px dashed #ccc; margin: 5px 0;">
-                    <div>Base: 7384</div>
+                    <div>Base: 7395</div>
                     
                 </div>
             </article>
@@ -1062,9 +1068,9 @@ td { border-bottom: 1px solid var(--term-dim); padding: 1rem; color: var(--term-
                 
                 <!-- Debug Overlay -->
                 <div class="debug-card">
-                    <div><strong>Score:</strong> 7325.0</div>
+                    <div><strong>Score:</strong> 7342.0</div>
                     <hr style="border: 0; border-top: 1px dashed #ccc; margin: 5px 0;">
-                    <div>Base: 7325</div>
+                    <div>Base: 7342</div>
                     
                 </div>
             </article>
@@ -1075,9 +1081,9 @@ td { border-bottom: 1px solid var(--term-dim); padding: 1rem; color: var(--term-
                 
                 <!-- Debug Overlay -->
                 <div class="debug-card">
-                    <div><strong>Score:</strong> 5754.0</div>
+                    <div><strong>Score:</strong> 5826.0</div>
                     <hr style="border: 0; border-top: 1px dashed #ccc; margin: 5px 0;">
-                    <div>Base: 5754</div>
+                    <div>Base: 5826</div>
                     
                 </div>
             </article>
@@ -1088,9 +1094,9 @@ td { border-bottom: 1px solid var(--term-dim); padding: 1rem; color: var(--term-
                 
                 <!-- Debug Overlay -->
                 <div class="debug-card">
-                    <div><strong>Score:</strong> 5078.0</div>
+                    <div><strong>Score:</strong> 5123.0</div>
                     <hr style="border: 0; border-top: 1px dashed #ccc; margin: 5px 0;">
-                    <div>Base: 5078</div>
+                    <div>Base: 5123</div>
                     
                 </div>
             </article>
@@ -1101,9 +1107,9 @@ td { border-bottom: 1px solid var(--term-dim); padding: 1rem; color: var(--term-
                 
                 <!-- Debug Overlay -->
                 <div class="debug-card">
-                    <div><strong>Score:</strong> 4850.0</div>
+                    <div><strong>Score:</strong> 4861.0</div>
                     <hr style="border: 0; border-top: 1px dashed #ccc; margin: 5px 0;">
-                    <div>Base: 4850</div>
+                    <div>Base: 4861</div>
                     
                 </div>
             </article>
@@ -1124,22 +1130,9 @@ td { border-bottom: 1px solid var(--term-dim); padding: 1rem; color: var(--term-
                 
                 <!-- Debug Overlay -->
                 <div class="debug-card">
-                    <div><strong>Score:</strong> 7527.0</div>
+                    <div><strong>Score:</strong> 7546.0</div>
                     <hr style="border: 0; border-top: 1px dashed #ccc; margin: 5px 0;">
-                    <div>Base: 7527</div>
-                    
-                </div>
-            </article>
-            
-            <article class="card">
-                <span class="card-meta">old.reddit.com</span>
-                <h3><a href="https://www.reddit.com/r/movies/comments/1pl928s/timothée_chalamet_confirms_dune_part_three_time/" target="_blank">Timothée Chalamet Confirms ‘Dune: Part Three’ Time Jump</a></h3>
-                
-                <!-- Debug Overlay -->
-                <div class="debug-card">
-                    <div><strong>Score:</strong> 7187.0</div>
-                    <hr style="border: 0; border-top: 1px dashed #ccc; margin: 5px 0;">
-                    <div>Base: 7187</div>
+                    <div>Base: 7546</div>
                     
                 </div>
             </article>
@@ -1150,9 +1143,9 @@ td { border-bottom: 1px solid var(--term-dim); padding: 1rem; color: var(--term-
                 
                 <!-- Debug Overlay -->
                 <div class="debug-card">
-                    <div><strong>Score:</strong> 5206.0</div>
+                    <div><strong>Score:</strong> 5267.0</div>
                     <hr style="border: 0; border-top: 1px dashed #ccc; margin: 5px 0;">
-                    <div>Base: 5206</div>
+                    <div>Base: 5267</div>
                     
                 </div>
             </article>
@@ -1176,9 +1169,9 @@ td { border-bottom: 1px solid var(--term-dim); padding: 1rem; color: var(--term-
                 
                 <!-- Debug Overlay -->
                 <div class="debug-card">
-                    <div><strong>Score:</strong> 3796.0</div>
+                    <div><strong>Score:</strong> 3818.0</div>
                     <hr style="border: 0; border-top: 1px dashed #ccc; margin: 5px 0;">
-                    <div>Base: 3646</div>
+                    <div>Base: 3668</div>
                     
                 </div>
             </article>
@@ -1189,9 +1182,9 @@ td { border-bottom: 1px solid var(--term-dim); padding: 1rem; color: var(--term-
                 
                 <!-- Debug Overlay -->
                 <div class="debug-card">
-                    <div><strong>Score:</strong> 3690.0</div>
+                    <div><strong>Score:</strong> 3698.0</div>
                     <hr style="border: 0; border-top: 1px dashed #ccc; margin: 5px 0;">
-                    <div>Base: 3690</div>
+                    <div>Base: 3698</div>
                     
                 </div>
             </article>
@@ -1202,9 +1195,22 @@ td { border-bottom: 1px solid var(--term-dim); padding: 1rem; color: var(--term-
                 
                 <!-- Debug Overlay -->
                 <div class="debug-card">
-                    <div><strong>Score:</strong> 2648.0</div>
+                    <div><strong>Score:</strong> 2646.0</div>
                     <hr style="border: 0; border-top: 1px dashed #ccc; margin: 5px 0;">
-                    <div>Base: 2648</div>
+                    <div>Base: 2646</div>
+                    
+                </div>
+            </article>
+            
+            <article class="card">
+                <span class="card-meta">old.reddit.com</span>
+                <h3><a href="https://www.reddit.com/r/movies/comments/1pldb0k/the_lord_of_the_rings_trilogy_official_25th/" target="_blank">The Lord of The Rings Trilogy - Official 25th Anniversary Teaser Trailer</a></h3>
+                
+                <!-- Debug Overlay -->
+                <div class="debug-card">
+                    <div><strong>Score:</strong> 2089.0</div>
+                    <hr style="border: 0; border-top: 1px dashed #ccc; margin: 5px 0;">
+                    <div>Base: 2089</div>
                     
                 </div>
             </article>
@@ -1215,9 +1221,9 @@ td { border-bottom: 1px solid var(--term-dim); padding: 1rem; color: var(--term-
                 
                 <!-- Debug Overlay -->
                 <div class="debug-card">
-                    <div><strong>Score:</strong> 2081.0</div>
+                    <div><strong>Score:</strong> 2078.0</div>
                     <hr style="border: 0; border-top: 1px dashed #ccc; margin: 5px 0;">
-                    <div>Base: 131</div>
+                    <div>Base: 128</div>
                     
                 </div>
             </article>
@@ -1236,8 +1242,8 @@ td { border-bottom: 1px solid var(--term-dim); padding: 1rem; color: var(--term-
     <div class="report-header">
         <h2>Source Transparency</h2>
         <div class="report-meta">
-            <span>Edition: b966f8d2-3d2b-49d1-b85b-f067d8c79b63</span>
-            <span>Generated: 2025-12-13 17:17:20 PST</span>
+            <span>Edition: a3510a77-b36b-415e-88b2-99de9f9e2cc5</span>
+            <span>Generated: 2025-12-13 17:31:58 PST</span>
         </div>
     </div>
 
@@ -1252,11 +1258,11 @@ td { border-bottom: 1px solid var(--term-dim); padding: 1rem; color: var(--term-
     <div id="tab-vitals" class="tab-pane active">
         <div class="stats-grid">
             <div class="stat-card">
-                <span class="stat-value">1643</span>
+                <span class="stat-value">1663</span>
                 <span class="stat-label">Total Items Scanned</span>
             </div>
             <div class="stat-card">
-                <span class="stat-value">918</span>
+                <span class="stat-value">919</span>
                 <span class="stat-label">Fresh Candidates</span>
             </div>
             <div class="stat-card">
@@ -1292,12 +1298,12 @@ td { border-bottom: 1px solid var(--term-dim); padding: 1rem; color: var(--term-
                             <span class="count-pill">23</span>
                         </td>
                         <td>
-                            19.5%
-                            <span class="count-pill">179</span>
+                            19.3%
+                            <span class="count-pill">177</span>
                         </td>
                         <td>
                             
-                            <span class="delta-pos">+44.4%</span>
+                            <span class="delta-pos">+44.6%</span>
                             
                         </td>
                     </tr>
@@ -1343,12 +1349,12 @@ td { border-bottom: 1px solid var(--term-dim); padding: 1rem; color: var(--term-
                             <span class="count-pill">3</span>
                         </td>
                         <td>
-                            3.8%
-                            <span class="count-pill">35</span>
+                            3.9%
+                            <span class="count-pill">36</span>
                         </td>
                         <td>
                             
-                            <span class="delta-pos">+4.5%</span>
+                            <span class="delta-pos">+4.4%</span>
                             
                         </td>
                     </tr>
@@ -1456,6 +1462,40 @@ td { border-bottom: 1px solid var(--term-dim); padding: 1rem; color: var(--term-
                     </tr>
                     
                     <tr>
+                        <td class="source-name">www.rollingstone.com</td>
+                        <td>
+                            0.0%
+                            <span class="count-pill">0</span>
+                        </td>
+                        <td>
+                            1.3%
+                            <span class="count-pill">12</span>
+                        </td>
+                        <td>
+                            
+                            <span class="delta-neg">-1.3%</span>
+                            
+                        </td>
+                    </tr>
+                    
+                    <tr>
+                        <td class="source-name">feeds.bbci.co.uk</td>
+                        <td>
+                            0.0%
+                            <span class="count-pill">0</span>
+                        </td>
+                        <td>
+                            1.4%
+                            <span class="count-pill">13</span>
+                        </td>
+                        <td>
+                            
+                            <span class="delta-neg">-1.4%</span>
+                            
+                        </td>
+                    </tr>
+                    
+                    <tr>
                         <td class="source-name">feeds.npr.org</td>
                         <td>
                             0.0%
@@ -1468,40 +1508,6 @@ td { border-bottom: 1px solid var(--term-dim); padding: 1rem; color: var(--term-
                         <td>
                             
                             <span class="delta-neg">-1.4%</span>
-                            
-                        </td>
-                    </tr>
-                    
-                    <tr>
-                        <td class="source-name">www.rollingstone.com</td>
-                        <td>
-                            0.0%
-                            <span class="count-pill">0</span>
-                        </td>
-                        <td>
-                            1.4%
-                            <span class="count-pill">13</span>
-                        </td>
-                        <td>
-                            
-                            <span class="delta-neg">-1.4%</span>
-                            
-                        </td>
-                    </tr>
-                    
-                    <tr>
-                        <td class="source-name">feeds.bbci.co.uk</td>
-                        <td>
-                            0.0%
-                            <span class="count-pill">0</span>
-                        </td>
-                        <td>
-                            1.5%
-                            <span class="count-pill">14</span>
-                        </td>
-                        <td>
-                            
-                            <span class="delta-neg">-1.5%</span>
                             
                         </td>
                     </tr>
@@ -1564,12 +1570,12 @@ td { border-bottom: 1px solid var(--term-dim); padding: 1rem; color: var(--term-
                             <span class="count-pill">0</span>
                         </td>
                         <td>
-                            6.3%
-                            <span class="count-pill">58</span>
+                            6.4%
+                            <span class="count-pill">59</span>
                         </td>
                         <td>
                             
-                            <span class="delta-neg">-6.3%</span>
+                            <span class="delta-neg">-6.4%</span>
                             
                         </td>
                     </tr>
@@ -1581,12 +1587,12 @@ td { border-bottom: 1px solid var(--term-dim); padding: 1rem; color: var(--term-
                             <span class="count-pill">0</span>
                         </td>
                         <td>
-                            7.2%
-                            <span class="count-pill">66</span>
+                            6.9%
+                            <span class="count-pill">63</span>
                         </td>
                         <td>
                             
-                            <span class="delta-neg">-7.2%</span>
+                            <span class="delta-neg">-6.9%</span>
                             
                         </td>
                     </tr>
@@ -1598,12 +1604,12 @@ td { border-bottom: 1px solid var(--term-dim); padding: 1rem; color: var(--term-
                             <span class="count-pill">0</span>
                         </td>
                         <td>
-                            41.7%
-                            <span class="count-pill">383</span>
+                            42.3%
+                            <span class="count-pill">389</span>
                         </td>
                         <td>
                             
-                            <span class="delta-neg">-41.7%</span>
+                            <span class="delta-neg">-42.3%</span>
                             
                         </td>
                     </tr>
@@ -1727,17 +1733,17 @@ td { border-bottom: 1px solid var(--term-dim); padding: 1rem; color: var(--term-
                     <ul>
                         
                         <li>
-                            <span class="score-badge">5754</span>
+                            <span class="score-badge">5826</span>
                             [Adam Friedland] “If David Stern were commissioner, Pablo Torre would be dead”
                         </li>
                         
                         <li>
-                            <span class="score-badge">5078</span>
+                            <span class="score-badge">5123</span>
                             Liverpool counter-attack vs Brighton 90+7'
                         </li>
                         
                         <li>
-                            <span class="score-badge">4850</span>
+                            <span class="score-badge">4861</span>
                             [PTI] “Everyone was excited today as Messi was coming. It’s my wedding day, but I left all the ceremonies to be here. Still, the management was so pathetic that I couldn’t even see him,” says a fan as Argentine footballer Lionel Messi’s event draws ire.
                         </li>
                         
@@ -1749,18 +1755,18 @@ td { border-bottom: 1px solid var(--term-dim); padding: 1rem; color: var(--term-
                     <ul>
                         
                         <li>
-                            <span class="score-badge">4370</span>
+                            <span class="score-badge">4437</span>
                             In seven seasons, Andrew Luck missed 26 games due to injury. In six seasons, Joe Burrow has missed 22 games due to injury.
                         </li>
                         
                         <li>
-                            <span class="score-badge">3889</span>
-                            Bernardo Silva: “What Manchester City has done in my first 7 years there is not normal. We have achieved 6 Premier League trophies, a treble, a domestic quadruple, doing 100 points, setting the goals record. I’m biased, but I could argue Pep’s Manchester City was the best ever in English football.”
+                            <span class="score-badge">3925</span>
+                            The state head of Telangana struggles to find Messi with his passes before an exhibition match in India.
                         </li>
                         
                         <li>
-                            <span class="score-badge">3823</span>
-                            The state head of Telangana struggles to find Messi with his passes before an exhibition match in India.
+                            <span class="score-badge">3918</span>
+                            Bernardo Silva: “What Manchester City has done in my first 7 years there is not normal. We have achieved 6 Premier League trophies, a treble, a domestic quadruple, doing 100 points, setting the goals record. I’m biased, but I could argue Pep’s Manchester City was the best ever in English football.”
                         </li>
                         
                     </ul>
@@ -1777,17 +1783,17 @@ td { border-bottom: 1px solid var(--term-dim); padding: 1rem; color: var(--term-
                     <ul>
                         
                         <li>
-                            <span class="score-badge">3690</span>
-                            Official Discussion - Wake Up, Dead Man: A Knives Out Mystery [SPOILERS]
-                        </li>
-                        
-                        <li>
-                            <span class="score-badge">2648</span>
+                            <span class="score-badge">2646</span>
                             Hosting a NYE party. I want to put a film on the TV on mute. What to play?
                         </li>
                         
                         <li>
-                            <span class="score-badge">2081</span>
+                            <span class="score-badge">2089</span>
+                            The Lord of The Rings Trilogy - Official 25th Anniversary Teaser Trailer
+                        </li>
+                        
+                        <li>
+                            <span class="score-badge">2078</span>
                             Best Literary Fiction of 2025 - Voting Thread
                         </li>
                         
@@ -1799,18 +1805,18 @@ td { border-bottom: 1px solid var(--term-dim); padding: 1rem; color: var(--term-
                     <ul>
                         
                         <li>
-                            <span class="score-badge">2076</span>
-                            The Lord of The Rings Trilogy - Official 25th Anniversary Teaser Trailer
-                        </li>
-                        
-                        <li>
-                            <span class="score-badge">2049</span>
+                            <span class="score-badge">2061</span>
                             LaKeith Stanfield Cast As Dennis Rodman In Lionsgate’s Revived ’48 Hours in Vegas’ After Jonathan Majors Exit
                         </li>
                         
                         <li>
-                            <span class="score-badge">2004</span>
+                            <span class="score-badge">2037</span>
                             Dick Van Dyke and Julie Andrews in Behind-the-Scenes footage from "Mary Poppins" (1964), filming the 'Jolly Holiday' sequence which utilized a sodium vapour travelling matte process to combine their live-action movements later with animation
+                        </li>
+                        
+                        <li>
+                            <span class="score-badge">1750</span>
+                            How to watch the 2026 Australian Open online for free
                         </li>
                         
                     </ul>
