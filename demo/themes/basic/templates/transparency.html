@@ -5,106 +5,149 @@
         <p>Generated: {{ timestamp }}</p>
     </div>
 
-    <!-- The Funnel -->
-    <div class="funnel-container">
-        <div class="funnel-step">
-            <span class="funnel-num">{{ stats_input }}</span>
-            <small>Total Items</small>
-        </div>
-        <div class="funnel-step">
-            <span class="funnel-num">{{ stats_pool }}</span>
-            <small>Candidate Pool</small>
-        </div>
-        <div class="funnel-step">
-            <span class="funnel-num">{{ stats_selected }}</span>
-            <small>Published</small>
-        </div>
-        <div class="funnel-step">
-            <span class="funnel-num">{{ "%.1f"|format(anti_feed_protection) }}%</span>
-            <small>Anti-Feed Protection</small>
-            <span class="funnel-sub">(Total Items - Published) / Total Items</span>
-            <span class="funnel-sub">Blocked: {{ filtered_count }}</span>
+    <!-- Tabs Navigation -->
+    <div class="tabs">
+        <button class="tab-btn active" onclick="openTab(event, 'tab-vitals')">Vitals</button>
+        <button class="tab-btn" onclick="openTab(event, 'tab-sources')">Sources</button>
+        <button class="tab-btn" onclick="openTab(event, 'tab-bubble')">The Bubble</button>
+    </div>
+
+    <!-- Tab: Vitals (The Funnel) -->
+    <div id="tab-vitals" class="tab-content active">
+        <div class="funnel-container">
+            <div class="funnel-step">
+                <span class="funnel-num">{{ stats_input }}</span>
+                <small>Total Items</small>
+            </div>
+            <div class="funnel-step">
+                <span class="funnel-num">{{ stats_pool }}</span>
+                <small>Candidate Pool</small>
+            </div>
+            <div class="funnel-step">
+                <span class="funnel-num">{{ stats_selected }}</span>
+                <small>Published</small>
+            </div>
+            <div class="funnel-step">
+                <span class="funnel-num">{{ "%.1f"|format(anti_feed_protection) }}%</span>
+                <small>Anti-Feed Protection</small>
+                <span class="funnel-sub">(Total - Published) / Total</span>
+                <span class="funnel-sub">Blocked: {{ filtered_count }}</span>
+            </div>
         </div>
     </div>
 
-    <!-- Source Efficiency -->
-    <h2>Source Efficiency</h2>
-    <p>
-        <em>
-            A <span class="bias-pos">positive Delta (+)</span> means <strong>High Signal</strong>: We publish this source more often than we find it.<br>
-            A <span class="bias-neg">negative Delta (-)</span> means <strong>High Noise</strong>: We filter (but do not silence) this source aggressively.
-        </em>
-    </p>
-    
-    <table class="audit-table">
-        <thead>
-            <tr>
-                <th>Source</th>
-                <th>Output Share (Count)</th>
-                <th>Input Share (Count)</th>
-                <th>Delta</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for row in source_velocity %}
-            <tr>
-                <td>{{ row.domain }}</td>
-                <td>
-                    {{ "%.1f"|format(row.output_pct) }}%
-                    <span class="count-sub">({{ row.output_count }})</span>
-                </td>
-                <td>
-                    {{ "%.1f"|format(row.input_pct) }}%
-                    <span class="count-sub">({{ row.input_count }})</span>
-                </td>
-                <td>
-                    {% if row.delta > 0 %}
-                    <span class="bias-pos">+{{ "%.1f"|format(row.delta) }}%</span>
-                    {% elif row.delta < 0 %}
-                    <span class="bias-neg">{{ "%.1f"|format(row.delta) }}%</span>
+    <!-- Tab: Sources (Efficiency Table) -->
+    <div id="tab-sources" class="tab-content">
+        <h2>Source Efficiency</h2>
+        <p>
+            <em>
+                A <span class="bias-pos">positive Delta (+)</span> means <strong>High Signal</strong>: We publish this source more often than we find it.<br>
+                A <span class="bias-neg">negative Delta (-)</span> means <strong>High Noise</strong>: We filter (but do not silence) this source aggressively.
+            </em>
+        </p>
+        
+        <div class="table-scroll-container">
+            <table class="audit-table">
+                <thead>
+                    <tr>
+                        <th>Source</th>
+                        <th>Output Share (Count)</th>
+                        <th>Input Share (Count)</th>
+                        <th>Delta</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for row in source_velocity %}
+                    <tr>
+                        <td>{{ row.domain }}</td>
+                        <td>
+                            {{ "%.1f"|format(row.output_pct) }}%
+                            <span class="count-sub">({{ row.output_count }})</span>
+                        </td>
+                        <td>
+                            {{ "%.1f"|format(row.input_pct) }}%
+                            <span class="count-sub">({{ row.input_count }})</span>
+                        </td>
+                        <td>
+                            {% if row.delta > 0 %}
+                            <span class="bias-pos">+{{ "%.1f"|format(row.delta) }}%</span>
+                            {% elif row.delta < 0 %}
+                            <span class="bias-neg">{{ "%.1f"|format(row.delta) }}%</span>
+                            {% else %}
+                            0.0%
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Tab: The Bubble -->
+    <div id="tab-bubble" class="tab-content">
+        <h2>The Bubble</h2>
+        <p><em>Comparing the last stories to make the cut vs. the first to miss it.</em></p>
+        
+        {% for section, data in bubble.items() %}
+        <div class="bubble-section">
+            <h3>{{ section_map.get(section, section) }}</h3>
+            <div class="bubble-grid">
+                <!-- Last 3 In -->
+                <div class="bubble-col bubble-in">
+                    <div class="bubble-header">Last 3 In (Lowest Scores)</div>
+                    {% for item in data.in %}
+                    <div class="bubble-item">
+                        <span class="score-badge">{{ "%.0f"|format(item.impact_score) }}</span>
+                        <span>{{ item.title }}</span>
+                    </div>
                     {% else %}
-                    0.0%
-                    {% endif %}
-                </td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
-
-    <!-- The Bubble -->
-    <h2>The Bubble</h2>
-    <p><em>Comparing the last stories to make the cut vs. the first to miss it.</em></p>
-    
-    {% for section, data in bubble.items() %}
-    <div class="bubble-section">
-        <h3>{{ section }}</h3>
-        <div class="bubble-grid">
-            <!-- Last 3 In -->
-            <div class="bubble-col bubble-in">
-                <div class="bubble-header">Last 3 In (Lowest Scores)</div>
-                {% for item in data.in %}
-                <div class="bubble-item">
-                    <span class="score-badge">{{ "%.0f"|format(item.impact_score) }}</span>
-                    <span>{{ item.title }}</span>
+                    <div class="bubble-item">No articles selected.</div>
+                    {% endfor %}
                 </div>
-                {% else %}
-                <div class="bubble-item">No articles selected.</div>
-                {% endfor %}
-            </div>
-            
-            <!-- First 3 Out -->
-            <div class="bubble-col bubble-out">
-                <div class="bubble-header">First 3 Out (Highest Scores)</div>
-                {% for item in data.out %}
-                <div class="bubble-item">
-                    <span class="score-badge">{{ "%.0f"|format(item.impact_score) }}</span>
-                    <span>{{ item.title }}</span>
+                
+                <!-- First 3 Out -->
+                <div class="bubble-col bubble-out">
+                    <div class="bubble-header">First 3 Out (Highest Scores)</div>
+                    {% for item in data.out %}
+                    <div class="bubble-item">
+                        <span class="score-badge">{{ "%.0f"|format(item.impact_score) }}</span>
+                        <span>{{ item.title }}</span>
+                    </div>
+                    {% else %}
+                    <div class="bubble-item">No bubble (Capacity not met).</div>
+                    {% endfor %}
                 </div>
-                {% else %}
-                <div class="bubble-item">No bubble (Capacity not met).</div>
-                {% endfor %}
             </div>
         </div>
+        {% endfor %}
     </div>
-    {% endfor %}
 </div>
+
+<script>
+function openTab(evt, tabName) {
+    var i, tabcontent, tablinks;
+    
+    // Hide all tab content
+    tabcontent = document.getElementsByClassName("tab-content");
+    for (i = 0; i < tabcontent.length; i++) {
+        tabcontent[i].style.display = "none";
+        tabcontent[i].classList.remove("active");
+    }
+    
+    // Remove active class from all tab links
+    tablinks = document.getElementsByClassName("tab-btn");
+    for (i = 0; i < tablinks.length; i++) {
+        tablinks[i].className = tablinks[i].className.replace(" active", "");
+    }
+    
+    // Show the current tab, and add an "active" class to the button that opened the tab
+    document.getElementById(tabName).style.display = "block";
+    // Slight delay to allow display:block to apply before adding opacity class for animation
+    setTimeout(() => {
+        document.getElementById(tabName).classList.add("active");
+    }, 10);
+    
+    evt.currentTarget.className += " active";
+}
+</script>
