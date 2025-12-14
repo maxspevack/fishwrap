@@ -4,88 +4,160 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Fishwrap Demo - Saturday, December 13, 2025</title>
-    <!-- Basic Theme Fonts: System Stack -->
     <style>
         :root {
-            --bg-color: #ffffff;
-            --text-color: #333333;
-            --accent-color: #0066cc;
-            --border-color: #eeeeee;
+            --bg-color: #f4f4f9;
+            --sidebar-bg: #1a1a1a;
+            --text-color: #333;
+            --sidebar-text: #f0f0f0;
+            --accent-color: #3b82f6;
+            --border-color: #ddd;
         }
+        
         body {
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
             color: var(--text-color);
             background: var(--bg-color);
-            line-height: 1.6;
             margin: 0;
+            padding: 0;
+            display: flex;
+            min-height: 100vh;
+        }
+        
+        /* Layout */
+        .layout-container {
+            display: flex;
+            width: 100%;
+        }
+        
+        /* Sidebar */
+        .sidebar {
+            width: 260px;
+            background: var(--sidebar-bg);
+            color: var(--sidebar-text);
             padding: 20px;
+            position: sticky;
+            top: 0;
+            height: 100vh;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            flex-shrink: 0;
+        }
+        
+        .brand-logo-container { margin-bottom: 30px; text-align: center; }
+        .brand-logo-img { max-width: 180px; height: auto; }
+        .demo-label { 
+            display: block; 
+            font-size: 0.75rem; 
+            text-transform: uppercase; 
+            letter-spacing: 1px; 
+            color: #888; 
+            margin-top: 5px; 
+        }
+        
+        .meta-info { 
+            font-size: 0.85rem; 
+            color: #888; 
+            margin-bottom: 30px; 
+            border-bottom: 1px solid #333; 
+            padding-bottom: 15px; 
+        }
+        
+        .nav-list { list-style: none; padding: 0; margin: 0; flex-grow: 1; }
+        .nav-item { margin-bottom: 10px; }
+        .nav-link { 
+            color: var(--sidebar-text); 
+            text-decoration: none; 
+            display: block; 
+            padding: 8px 10px; 
+            border-radius: 4px; 
+            transition: background 0.2s; 
+        }
+        .nav-link:hover { background: #333; }
+        
+        .sidebar-footer { margin-top: auto; padding-top: 20px; border-top: 1px solid #333; font-size: 0.8rem; }
+        .glass-link { display: block; color: #888; text-decoration: none; margin-bottom: 8px; }
+        .glass-link:hover { color: #fff; }
+        
+        /* Main Content */
+        .main-content {
+            flex-grow: 1;
+            padding: 40px;
             max-width: 1200px;
             margin: 0 auto;
         }
-        h1, h2, h3 { margin-top: 0; }
-        a { color: var(--accent-color); text-decoration: none; }
-        a:hover { text-decoration: underline; }
         
-        .header { border-bottom: 2px solid var(--text-color); padding-bottom: 20px; margin-bottom: 40px; }
-        .header h1 { font-size: 2.5em; margin-bottom: 5px; }
-        .meta { color: #666; font-size: 0.9em; }
+        .section-block { margin-bottom: 60px; }
+        .section-title { 
+            font-size: 2em; 
+            border-bottom: 2px solid var(--border-color); 
+            padding-bottom: 10px; 
+            margin-bottom: 25px; 
+        }
         
-        .section-block { margin-bottom: 50px; }
-        .section-title { font-size: 1.8em; border-bottom: 1px solid var(--border-color); margin-bottom: 20px; padding-bottom: 10px; }
-        
-        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 20px; }
+        .grid { 
+            display: grid; 
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); 
+            gap: 25px; 
+        }
         
         .card { 
+            background: #fff; 
             border: 1px solid var(--border-color); 
             padding: 20px; 
-            border-radius: 4px; 
-            transition: box-shadow 0.2s;
-            position: relative;
+            border-radius: 6px; 
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05); 
+            transition: transform 0.2s; 
         }
-        .card:hover { box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
-        .card-meta { font-size: 0.8em; color: #888; margin-bottom: 10px; display: block; }
-        .card h3 { font-size: 1.2em; margin-bottom: 10px; }
+        .card:hover { transform: translateY(-2px); box-shadow: 0 5px 15px rgba(0,0,0,0.1); }
+        .card-meta { font-size: 0.8rem; color: #888; text-transform: uppercase; margin-bottom: 10px; display: block; }
+        .card h3 { margin: 0 0 10px 0; font-size: 1.25rem; line-height: 1.4; }
+        .card h3 a { color: var(--text-color); text-decoration: none; }
+        .card h3 a:hover { color: var(--accent-color); }
         
-        /* Debug Overlay (Hidden by default) */
+        /* Debug Overlay */
         .debug-card {
             display: none;
-            position: absolute; top: 0; left: 0; right: 0; bottom: 0;
-            background: rgba(255,255,255,0.95);
-            padding: 15px;
+            margin-top: 15px;
+            padding: 10px;
+            background: #f8f8f8;
+            border: 1px solid #ddd;
             font-family: monospace;
             font-size: 0.75rem;
-            color: #333;
-            border: 2px solid red;
-            overflow-y: auto;
+            color: #555;
         }
         body.debug-active .debug-card { display: block; }
-        
-        /* Glass Box Footer */
-        .footer { margin-top: 60px; border-top: 1px solid var(--border-color); padding-top: 20px; text-align: center; color: #666; font-size: 0.9em; }
         
         /* Modal */
         .modal-overlay {
             display: none;
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.5);
+            background: rgba(0,0,0,0.8);
             z-index: 1000;
             justify-content: center; align-items: center;
         }
         .modal-content {
-            background: #fff;
-            width: 90%; max-width: 800px; height: 80vh;
+            background: #1a1a1a; /* Dark mode modal for Glass Box */
+            color: #f0f0f0;
+            width: 90%; max-width: 900px; height: 85vh;
             overflow-y: auto;
             padding: 40px;
-            position: relative;
             border-radius: 8px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
         }
         .modal-close {
-            position: absolute; top: 15px; right: 20px;
-            font-size: 2rem; border: none; background: none; cursor: pointer;
+            position: absolute; top: 20px; right: 20px;
+            font-size: 2rem; border: none; background: none; color: #fff; cursor: pointer;
         }
         
-        /* Injected CSS */
+        /* Mobile */
+        @media (max-width: 768px) {
+            body { flex-direction: column; }
+            .sidebar { width: 100%; height: auto; position: relative; }
+            .layout-container { flex-direction: column; }
+        }
+
         :root {
     /* Dark Theme Palette */
     --bg-color: #121212;
@@ -530,27 +602,77 @@ td { border-bottom: 1px solid var(--term-dim); padding: 1rem; color: var(--term-
 </head>
 <body>
 
-<div class="header">
-    <h1>Fishwrap Demo</h1>
-    <div class="meta">
-        Saturday, December 13, 2025 | Vol. 1, No. 7
+<nav class="sidebar">
+    <div class="brand-logo-container">
+        <a href="https://github.com/maxspevack/fishwrap" target="_blank">
+            <img src="static/images/fishwrap_logo.svg" alt="Fishwrap" class="brand-logo-img">
+        </a>
+        <span class="demo-label">Briefing Engine</span>
     </div>
-</div>
-
-<main>
     
-    <div class="section-block">
-        <h2 class="section-title">✨ New Models & Weights <small style="font-weight: normal; color: #777; font-size: 0.6em;">Fresh releases you can run locally.</small></h2>
+    <div class="meta-info">
+        <div>Saturday, December 13, 2025</div>
+        <div>Vol. 1, No. 7</div>
+    </div>
+    
+    <ul class="nav-list">
+        
+        <li class="nav-item">
+            <a href="#section-✨ new models & weights" class="nav-link">
+                ✨ New Models & Weights
+            </a>
+        </li>
+        
+        <li class="nav-item">
+            <a href="#section-🔬 research papers" class="nav-link">
+                🔬 Research Papers
+            </a>
+        </li>
+        
+        <li class="nav-item">
+            <a href="#section-🛠️ engineering & code" class="nav-link">
+                🛠️ Engineering & Code
+            </a>
+        </li>
+        
+        <li class="nav-item">
+            <a href="#section-💬 the discourse" class="nav-link">
+                💬 The Discourse
+            </a>
+        </li>
+        
+    </ul>
+    
+    <div class="sidebar-footer">
+        <div class="glass-box-menu">
+            <div class="glass-box-header" style="text-transform: uppercase; font-size: 0.75rem; color: #666; margin-bottom: 5px;">Glass Box</div>
+            <a href="#" onclick="openTransparency(); return false;" class="glass-link">Source Transparency</a>
+            <a href="#" onclick="document.body.classList.toggle('debug-active'); return false;" class="glass-link">Scoring Debugger</a>
+        </div>
+        <div style="margin-top: 20px;">
+            <a href="https://github.com/maxspevack/fishwrap" target="_blank" class="glass-link">View Source</a>
+        </div>
+    </div>
+</nav>
+
+<main class="main-content">
+    
+    <div id="section-✨ new models & weights" class="section-block">
+        <div class="section-header">
+            <h2 class="section-title">✨ New Models & Weights <small style="font-weight: normal; color: #777; font-size: 0.6em;">Fresh releases you can run locally.</small></h2>
+        </div>
+
         <div class="grid">
             
             <article class="card">
                 <span class="card-meta">reddit.com</span>
                 <h3><a href="https://www.reddit.com/r/LocalLLaMA/comments/1plqr3q/day_6_21_days_of_building_a_small_language_model/" target="_blank">Day 6: 21 Days of Building a Small Language Model: Tokenizer</a></h3>
                 
+                <!-- Debug Overlay -->
                 <div class="debug-card">
-                    <div><strong>Score:</strong> 2624.0</div>
-                    <hr>
-                    <div>Base: 24</div>
+                    <div><strong>Score:</strong> 2625.0</div>
+                    <hr style="border: 0; border-top: 1px dashed #ccc; margin: 5px 0;">
+                    <div>Base: 25</div>
                     
                     <div>keyword_boost: 2000</div>
                     
@@ -563,9 +685,10 @@ td { border-bottom: 1px solid var(--term-dim); padding: 1rem; color: var(--term-
                 <span class="card-meta">reddit.com</span>
                 <h3><a href="https://www.reddit.com/r/LocalLLaMA/comments/1plkv9n/maxun_free_opensource_web_data_for_ai_agents_data/" target="_blank">Maxun: Free, Open-Source Web Data for AI Agents &amp; Data Pipelines</a></h3>
                 
+                <!-- Debug Overlay -->
                 <div class="debug-card">
                     <div><strong>Score:</strong> 1612.0</div>
-                    <hr>
+                    <hr style="border: 0; border-top: 1px dashed #ccc; margin: 5px 0;">
                     <div>Base: 12</div>
                     
                     <div>keyword_boost: 1000</div>
@@ -579,9 +702,10 @@ td { border-bottom: 1px solid var(--term-dim); padding: 1rem; color: var(--term-
                 <span class="card-meta">reddit.com</span>
                 <h3><a href="https://www.reddit.com/r/LocalLLaMA/comments/1plnjfy/nvidia_dgx_station_gb300_784gb_available_now/" target="_blank">Nvidia DGX Station GB300 784GB available now! 95,000 USD / 80,000 EUR</a></h3>
                 
+                <!-- Debug Overlay -->
                 <div class="debug-card">
                     <div><strong>Score:</strong> 1416.0</div>
-                    <hr>
+                    <hr style="border: 0; border-top: 1px dashed #ccc; margin: 5px 0;">
                     <div>Base: 816</div>
                     
                     <div>content_boost: 600</div>
@@ -593,9 +717,10 @@ td { border-bottom: 1px solid var(--term-dim); padding: 1rem; color: var(--term-
                 <span class="card-meta">reddit.com</span>
                 <h3><a href="https://www.reddit.com/r/LocalLLaMA/comments/1plg9g1/i_was_terrified_to_let_llama_3_query_my_db_so_i/" target="_blank">I was terrified to let Llama 3 query my DB, so I built a WASM-powered "Airgap" Middleware. Here's the code.</a></h3>
                 
+                <!-- Debug Overlay -->
                 <div class="debug-card">
                     <div><strong>Score:</strong> 1045.0</div>
-                    <hr>
+                    <hr style="border: 0; border-top: 1px dashed #ccc; margin: 5px 0;">
                     <div>Base: 45</div>
                     
                     <div>content_boost: 600</div>
@@ -608,17 +733,21 @@ td { border-bottom: 1px solid var(--term-dim); padding: 1rem; color: var(--term-
         </div>
     </div>
     
-    <div class="section-block">
-        <h2 class="section-title">🔬 Research Papers <small style="font-weight: normal; color: #777; font-size: 0.6em;">Arxiv preprints and academic breakthroughs.</small></h2>
+    <div id="section-🔬 research papers" class="section-block">
+        <div class="section-header">
+            <h2 class="section-title">🔬 Research Papers <small style="font-weight: normal; color: #777; font-size: 0.6em;">Arxiv preprints and academic breakthroughs.</small></h2>
+        </div>
+
         <div class="grid">
             
             <article class="card">
                 <span class="card-meta">reddit.com</span>
                 <h3><a href="https://www.reddit.com/r/MachineLearning/comments/1plh4b3/p_ai_voice_cloning_with_coqui_xttsv2_on_google/" target="_blank">[P] AI Voice Cloning with Coqui XTTS-v2 on Google Colab (Free)</a></h3>
                 
+                <!-- Debug Overlay -->
                 <div class="debug-card">
                     <div><strong>Score:</strong> 2600.0</div>
-                    <hr>
+                    <hr style="border: 0; border-top: 1px dashed #ccc; margin: 5px 0;">
                     <div>Base: 0</div>
                     
                     <div>keyword_boost: 2000</div>
@@ -632,9 +761,10 @@ td { border-bottom: 1px solid var(--term-dim); padding: 1rem; color: var(--term-
                 <span class="card-meta">towardsdatascience.com</span>
                 <h3><a href="https://towardsdatascience.com/neurips-2025-best-paper-review-qwens-systematic-exploration-of-attention-gating/" target="_blank">NeurIPS 2025 Best Paper Review: Qwen’s Systematic Exploration of Attention Gating</a></h3>
                 
+                <!-- Debug Overlay -->
                 <div class="debug-card">
                     <div><strong>Score:</strong> 2600.0</div>
-                    <hr>
+                    <hr style="border: 0; border-top: 1px dashed #ccc; margin: 5px 0;">
                     <div>Base: 2000</div>
                     
                     <div>content_boost: 600</div>
@@ -645,17 +775,21 @@ td { border-bottom: 1px solid var(--term-dim); padding: 1rem; color: var(--term-
         </div>
     </div>
     
-    <div class="section-block">
-        <h2 class="section-title">🛠️ Engineering & Code <small style="font-weight: normal; color: #777; font-size: 0.6em;">Tools, libraries, and implementation details.</small></h2>
+    <div id="section-🛠️ engineering & code" class="section-block">
+        <div class="section-header">
+            <h2 class="section-title">🛠️ Engineering & Code <small style="font-weight: normal; color: #777; font-size: 0.6em;">Tools, libraries, and implementation details.</small></h2>
+        </div>
+
         <div class="grid">
             
             <article class="card">
                 <span class="card-meta">reddit.com</span>
                 <h3><a href="https://www.reddit.com/r/LocalLLaMA/comments/1pm0ccl/i_built_an_opensource_mcp_server_for_uv_so_your/" target="_blank">I built an open-source MCP server for uv so your agents can self-repair their Python environments (and install their own packages)</a></h3>
                 
+                <!-- Debug Overlay -->
                 <div class="debug-card">
                     <div><strong>Score:</strong> 1002.0</div>
-                    <hr>
+                    <hr style="border: 0; border-top: 1px dashed #ccc; margin: 5px 0;">
                     <div>Base: 2</div>
                     
                     <div>content_boost: 600</div>
@@ -669,9 +803,10 @@ td { border-bottom: 1px solid var(--term-dim); padding: 1rem; color: var(--term-
                 <span class="card-meta">reddit.com</span>
                 <h3><a href="https://www.reddit.com/r/LocalLLaMA/comments/1plgmbl/kateryna_detect_when_your_llm_is_confidently/" target="_blank">Kateryna: Detect when your LLM is confidently bullshitting (pip install kateryna)</a></h3>
                 
+                <!-- Debug Overlay -->
                 <div class="debug-card">
                     <div><strong>Score:</strong> 624.0</div>
-                    <hr>
+                    <hr style="border: 0; border-top: 1px dashed #ccc; margin: 5px 0;">
                     <div>Base: </div>
                     
                 </div>
@@ -680,17 +815,21 @@ td { border-bottom: 1px solid var(--term-dim); padding: 1rem; color: var(--term-
         </div>
     </div>
     
-    <div class="section-block">
-        <h2 class="section-title">💬 The Discourse <small style="font-weight: normal; color: #777; font-size: 0.6em;">Debates, ethics, and industry moves.</small></h2>
+    <div id="section-💬 the discourse" class="section-block">
+        <div class="section-header">
+            <h2 class="section-title">💬 The Discourse <small style="font-weight: normal; color: #777; font-size: 0.6em;">Debates, ethics, and industry moves.</small></h2>
+        </div>
+
         <div class="grid">
             
             <article class="card">
                 <span class="card-meta">towardsdatascience.com</span>
                 <h3><a href="https://towardsdatascience.com/how-to-increase-coding-iteration-speed/" target="_blank">How to Increase Coding Iteration Speed</a></h3>
                 
+                <!-- Debug Overlay -->
                 <div class="debug-card">
                     <div><strong>Score:</strong> 2600.0</div>
-                    <hr>
+                    <hr style="border: 0; border-top: 1px dashed #ccc; margin: 5px 0;">
                     <div>Base: 2000</div>
                     
                     <div>content_boost: 600</div>
@@ -702,9 +841,10 @@ td { border-bottom: 1px solid var(--term-dim); padding: 1rem; color: var(--term-
                 <span class="card-meta">towardsdatascience.com</span>
                 <h3><a href="https://towardsdatascience.com/the-machine-learning-advent-calendar-day-13-lasso-and-ridge-regression-in-excel/" target="_blank">The Machine Learning “Advent Calendar” Day 13: LASSO and Ridge Regression in Excel</a></h3>
                 
+                <!-- Debug Overlay -->
                 <div class="debug-card">
                     <div><strong>Score:</strong> 2600.0</div>
-                    <hr>
+                    <hr style="border: 0; border-top: 1px dashed #ccc; margin: 5px 0;">
                     <div>Base: 2000</div>
                     
                     <div>content_boost: 600</div>
@@ -716,9 +856,10 @@ td { border-bottom: 1px solid var(--term-dim); padding: 1rem; color: var(--term-
                 <span class="card-meta">machinelearningmastery.com</span>
                 <h3><a href="https://machinelearningmastery.com/how-llms-choose-their-words-a-practical-walk-through-of-logits-softmax-and-sampling/" target="_blank">How LLMs Choose Their Words: A Practical Walk-Through of Logits, Softmax and Sampling</a></h3>
                 
+                <!-- Debug Overlay -->
                 <div class="debug-card">
                     <div><strong>Score:</strong> 2600.0</div>
-                    <hr>
+                    <hr style="border: 0; border-top: 1px dashed #ccc; margin: 5px 0;">
                     <div>Base: 2000</div>
                     
                     <div>content_boost: 600</div>
@@ -730,10 +871,11 @@ td { border-bottom: 1px solid var(--term-dim); padding: 1rem; color: var(--term-
                 <span class="card-meta">reddit.com</span>
                 <h3><a href="https://www.reddit.com/r/artificial/comments/1plnzz7/meta_is_pivoting_away_from_open_source_ai_to/" target="_blank">Meta is pivoting away from open source AI to money-making AI</a></h3>
                 
+                <!-- Debug Overlay -->
                 <div class="debug-card">
-                    <div><strong>Score:</strong> 1152.0</div>
-                    <hr>
-                    <div>Base: 152</div>
+                    <div><strong>Score:</strong> 1153.0</div>
+                    <hr style="border: 0; border-top: 1px dashed #ccc; margin: 5px 0;">
+                    <div>Base: 153</div>
                     
                     <div>keyword_boost: 1000</div>
                     
@@ -744,9 +886,10 @@ td { border-bottom: 1px solid var(--term-dim); padding: 1rem; color: var(--term-
                 <span class="card-meta">reddit.com</span>
                 <h3><a href="https://www.reddit.com/r/artificial/comments/1plkvps/whitecollar_layoffs_are_coming_at_a_scale_weve/" target="_blank">White-collar layoffs are coming at a scale we've never seen. Why is no one talking about this?</a></h3>
                 
+                <!-- Debug Overlay -->
                 <div class="debug-card">
                     <div><strong>Score:</strong> 1146.0</div>
-                    <hr>
+                    <hr style="border: 0; border-top: 1px dashed #ccc; margin: 5px 0;">
                     <div>Base: 146</div>
                     
                     <div>content_boost: 600</div>
@@ -760,10 +903,11 @@ td { border-bottom: 1px solid var(--term-dim); padding: 1rem; color: var(--term-
                 <span class="card-meta">reddit.com</span>
                 <h3><a href="https://www.reddit.com/r/artificial/comments/1plskoq/my_8_year_old_son_created_his_first_game_with/" target="_blank">My 8 year old son created his first game with Google Gemini</a></h3>
                 
+                <!-- Debug Overlay -->
                 <div class="debug-card">
-                    <div><strong>Score:</strong> 1051.0</div>
-                    <hr>
-                    <div>Base: 51</div>
+                    <div><strong>Score:</strong> 1053.0</div>
+                    <hr style="border: 0; border-top: 1px dashed #ccc; margin: 5px 0;">
+                    <div>Base: 53</div>
                     
                     <div>content_boost: 600</div>
                     
@@ -777,14 +921,6 @@ td { border-bottom: 1px solid var(--term-dim); padding: 1rem; color: var(--term-
     
 </main>
 
-<footer class="footer">
-    <p>Generated by <a href="https://github.com/maxspevack/fishwrap">Fishwrap</a>.</p>
-    <p>
-        <a href="#" onclick="document.body.classList.toggle('debug-active'); return false;">Toggle Debug Mode</a> | 
-        <a href="#" onclick="openTransparency(); return false;">Source Transparency</a>
-    </p>
-</footer>
-
 <!-- Glass Box Modal -->
 <div id="transparency-modal" class="modal-overlay">
     <div class="modal-content">
@@ -792,8 +928,8 @@ td { border-bottom: 1px solid var(--term-dim); padding: 1rem; color: var(--term-
         <div class="glass-box-container">
     <div class="audit-header">
         <h1>Source Transparency</h1>
-        <p>Audit Log for Edition: <strong>eecdff42-f106-4c7a-8138-2c0dec775378</strong></p>
-        <p>Generated: 2025-12-13 16:38:06 PST</p>
+        <p>Audit Log for Edition: <strong>d14646d2-d13f-4d1b-9293-844f329995a8</strong></p>
+        <p>Generated: 2025-12-13 16:44:48 PST</p>
     </div>
 
     <!-- The Funnel -->
@@ -926,17 +1062,17 @@ td { border-bottom: 1px solid var(--term-dim); padding: 1rem; color: var(--term-
                 <div class="bubble-header">First 3 Out (Highest Scores)</div>
                 
                 <div class="bubble-item">
-                    <span class="score-badge">972</span>
+                    <span class="score-badge">993</span>
                     <span>8x RTX Pro 6000 server complete</span>
                 </div>
                 
                 <div class="bubble-item">
-                    <span class="score-badge">958</span>
+                    <span class="score-badge">956</span>
                     <span>This is how open ai is advertising them selfs on reddit…. They are doomed</span>
                 </div>
                 
                 <div class="bubble-item">
-                    <span class="score-badge">900</span>
+                    <span class="score-badge">902</span>
                     <span>Qwen3 Next generation optimization</span>
                 </div>
                 
@@ -973,7 +1109,7 @@ td { border-bottom: 1px solid var(--term-dim); padding: 1rem; color: var(--term-
                 </div>
                 
                 <div class="bubble-item">
-                    <span class="score-badge">644</span>
+                    <span class="score-badge">645</span>
                     <span>[D] Do Some Research Areas Get an Easier Accept? The Quiet Biases Hiding in ICLR's Peer Review</span>
                 </div>
                 
@@ -1023,7 +1159,7 @@ td { border-bottom: 1px solid var(--term-dim); padding: 1rem; color: var(--term-
                 <div class="bubble-header">Last 3 In (Lowest Scores)</div>
                 
                 <div class="bubble-item">
-                    <span class="score-badge">1152</span>
+                    <span class="score-badge">1153</span>
                     <span>Meta is pivoting away from open source AI to money-making AI</span>
                 </div>
                 
@@ -1033,7 +1169,7 @@ td { border-bottom: 1px solid var(--term-dim); padding: 1rem; color: var(--term-
                 </div>
                 
                 <div class="bubble-item">
-                    <span class="score-badge">1051</span>
+                    <span class="score-badge">1053</span>
                     <span>My 8 year old son created his first game with Google Gemini</span>
                 </div>
                 
@@ -1044,17 +1180,17 @@ td { border-bottom: 1px solid var(--term-dim); padding: 1rem; color: var(--term-
                 <div class="bubble-header">First 3 Out (Highest Scores)</div>
                 
                 <div class="bubble-item">
-                    <span class="score-badge">744</span>
+                    <span class="score-badge">750</span>
                     <span>Meta AI translates peoples words into different languages and edits their mouth movements to match</span>
                 </div>
                 
                 <div class="bubble-item">
-                    <span class="score-badge">719</span>
+                    <span class="score-badge">718</span>
                     <span>Identity collapse in LLMs is an architectural problem, not a scaling one</span>
                 </div>
                 
                 <div class="bubble-item">
-                    <span class="score-badge">712</span>
+                    <span class="score-badge">711</span>
                     <span>The Unspoken Future Plan for AI</span>
                 </div>
                 
