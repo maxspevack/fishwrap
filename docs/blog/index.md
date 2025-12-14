@@ -53,6 +53,10 @@ How we stopped "Zombie Articles" from rising from the dead by decoupling **Memor
 **Topic:** Trust & Metrics
 How we built **The Auditor**, a forensic module that generates a receipt for every editorial decision. We explore the "Anti-Feed Protection" metric and the philosophy of algorithmic transparency.
 
+### [Vol 5. The Release (DevOps)](./05_release_engineering.html)
+**Topic:** Stability & Build Systems
+How we solved the "Split Brain" problem between our Engine and Product. We discuss **Calendar Versioning**, **Automated Release Runbooks**, and the architecture of "Forward Compatibility."
+
 ---
 
 ## 🎓 The Golden Rules of the Newsroom
