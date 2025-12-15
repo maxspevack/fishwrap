@@ -54,6 +54,33 @@ def generate_edition(run_sheet):
                 art['domain'] = domain
             except:
                 art['domain'] = 'web'
+
+            # Calculate Time Ago
+            try:
+                ts = art.get('timestamp', 0)
+                if ts:
+                    art_dt = datetime.fromtimestamp(float(ts), tz)
+                    delta = now - art_dt
+                    
+                    days = delta.days
+                    seconds = delta.seconds
+                    hours = seconds // 3600
+                    minutes = (seconds % 3600) // 60
+                    
+                    if days > 365:
+                         art['time_ago'] = f"{days // 365}y"
+                    elif days > 30:
+                        art['time_ago'] = f"{days // 30}mo"
+                    elif days > 0:
+                        art['time_ago'] = f"{days}d"
+                    elif hours > 0:
+                        art['time_ago'] = f"{hours}h"
+                    else:
+                        art['time_ago'] = f"{minutes}m"
+                else:
+                    art['time_ago'] = ""
+            except Exception:
+                art['time_ago'] = ""
                 
             formatted_articles.append(art)
             

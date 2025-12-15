@@ -276,7 +276,10 @@
         <div class="grid">
             {% for article in section.articles %}
             <article class="card">
-                <span class="card-meta">{{ article.domain }}</span>
+                <span class="card-meta">
+                    {{ article.domain }}
+                    {% if article.time_ago %} &bull; {{ article.time_ago }}{% endif %}
+                </span>
                 <h3><a href="{{ article.link }}" target="_blank">{{ article.title }}</a></h3>
                 
                 <!-- Debug Overlay -->
