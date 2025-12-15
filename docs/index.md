@@ -58,10 +58,6 @@ The flagship implementation of Fishwrap is **The Daily Clamour**.
 
 It runs on a strict schedule, publishing a finite edition once per day, every day at 04:00 AM Pacific.
 
----
-
----
-
 ## Try Fishwrap
 
 Experience the "Anti-Feed" for yourself. Visit our [Demos page](/demo/) to see live examples and get quick-start instructions to run your own edition.
