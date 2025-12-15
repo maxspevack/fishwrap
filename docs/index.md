@@ -56,27 +56,15 @@ The flagship implementation of Fishwrap is **The Daily Clamour**.
   <img src="https://dailyclamour.com/static/images/daily-clamour.png" alt="The Daily Clamour" width="300" style="border: 2px solid #333; border-radius: 8px; padding: 10px; background: #fdfbf7;">
 </a>
 
-It runs on a strict schedule, publishing a finite edition twice daily.
+It runs on a strict schedule, publishing a finite edition once per day, every day at 04:00 AM Pacific.
 
 ---
 
-## Get Started
+---
 
-Fishwrap is a Python application you run on your own machine.
+## Try Fishwrap
 
-1.  **Clone the Newsroom:**
-    ```bash
-    git clone https://github.com/maxspevack/fishwrap.git
-    cd fishwrap
-    ```
+Experience the "Anti-Feed" for yourself. Visit our [Demos page](/demo/) to see live examples and get quick-start instructions to run your own edition.
 
-2.  **Run the Demo:**
-    ```bash
-    make setup
-    make run-vanilla
-    ```
-
-3.  **Read:**
-    Open `demo/output/index.html` in your browser.
-
+[View Demos & Get Started](/demo/){: .btn .btn-primary .fs-5 .mb-4 .mb-md-0 .mr-2 }
 [View Source on GitHub](https://github.com/maxspevack/fishwrap){: .btn .btn-primary .fs-5 .mb-4 .mb-md-0 .mr-2 }
