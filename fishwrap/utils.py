@@ -27,6 +27,14 @@ RATE_LIMITS = {
     'hacker-news.firebaseio.com': 0.5, # HN is usually faster/permissive
 }
 
+def get_domain(url):
+    """Returns the netloc (domain) from a URL string."""
+    try:
+        parsed = urllib.parse.urlparse(url)
+        return parsed.netloc
+    except:
+        return ""
+
 def get_ssl_context():
     """Returns the shared permissive SSL context."""
     return _ssl_context
@@ -38,24 +46,15 @@ def _get_domain_lock(domain):
             _domain_locks[domain] = threading.Lock()
         return _domain_locks[domain]
 
-def fetch_url(url, headers=None, timeout=15, max_size=5 * 1024 * 1024):
+def rate_limit(domain):
     """
-    Robust URL fetcher with default headers, timeout, DOMAIN RATE LIMITING,
-    and size/time enforcement via chunked reads.
-    Returns decoded UTF-8 string or None on failure.
+    Enforces rate limits for a given domain.
     """
-    if not headers:
-        headers = {'User-Agent': _config.USER_AGENT}
-    
-    # 1. Rate Limiting Logic
-    parsed = urllib.parse.urlparse(url)
-    domain = parsed.netloc
-    
-    # Check parent domain for reddit (e.g. old.reddit.com -> reddit.com) matches
-    # Simple check for now: exact match or contains
     limit_delay = 0
     target_domain = None
     
+    # Check parent domain for reddit (e.g. old.reddit.com -> reddit.com) matches
+    # Simple check for now: exact match or contains
     for d, delay in RATE_LIMITS.items():
         if d in domain:
             limit_delay = delay
@@ -76,6 +75,20 @@ def fetch_url(url, headers=None, timeout=15, max_size=5 * 1024 * 1024):
                 time.sleep(sleep_time)
             
             _last_request_time[target_domain] = time.time()
+
+def fetch_url(url, headers=None, timeout=15, max_size=5 * 1024 * 1024):
+    """
+    Robust URL fetcher with default headers, timeout, DOMAIN RATE LIMITING,
+    and size/time enforcement via chunked reads.
+    Returns decoded UTF-8 string or None on failure.
+    """
+    if not headers:
+        headers = {'User-Agent': _config.USER_AGENT}
+    
+    # 1. Rate Limiting Logic
+    parsed = urllib.parse.urlparse(url)
+    domain = parsed.netloc
+    rate_limit(domain)
 
     # 2. Fetch Logic
     try:
