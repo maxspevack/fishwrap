@@ -30,7 +30,7 @@ def fetch_reddit_json(url):
     """Fetches Reddit JSON and standardizes to match our article format."""
     articles = []
     try:
-        data_str = utils.fetch_url(url)
+        data_str = utils.fetch_url(url, timeout=30)
         if not data_str:
             return []
             
@@ -75,7 +75,7 @@ def process_feed(url, cutoff):
             scoring_profile_key = get_scoring_profile_for_url(url)
             profile = _config.SCORING_PROFILES[scoring_profile_key]
 
-            raw_data = utils.fetch_url(url)
+            raw_data = utils.fetch_url(url, timeout=30)
             if raw_data:
                 # Basic XML parsing
                 try:
@@ -188,7 +188,7 @@ def update_database():
     cutoff_ts = current_ts - (cutoff_hours * 3600)
 
     # Use ThreadPoolExecutor for I/O bound tasks
-    MAX_WORKERS = 10 
+    MAX_WORKERS = 30 
     
     with ThreadPoolExecutor(max_workers=MAX_WORKERS) as executor:
         # Submit all tasks

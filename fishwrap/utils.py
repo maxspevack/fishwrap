@@ -38,9 +38,10 @@ def _get_domain_lock(domain):
             _domain_locks[domain] = threading.Lock()
         return _domain_locks[domain]
 
-def fetch_url(url, headers=None, timeout=15):
+def fetch_url(url, headers=None, timeout=15, max_size=5 * 1024 * 1024):
     """
-    Robust URL fetcher with default headers, timeout, and DOMAIN RATE LIMITING.
+    Robust URL fetcher with default headers, timeout, DOMAIN RATE LIMITING,
+    and size/time enforcement via chunked reads.
     Returns decoded UTF-8 string or None on failure.
     """
     if not headers:
@@ -96,8 +97,31 @@ def fetch_url(url, headers=None, timeout=15):
         ))
 
         req = urllib.request.Request(encoded_url, headers=headers)
+        
+        # Start Clock
+        start_time = time.time()
+        
         with urllib.request.urlopen(req, context=_ssl_context, timeout=timeout) as response:
-            return response.read().decode('utf-8')
+            content = b""
+            while True:
+                # Check Time
+                if time.time() - start_time > timeout:
+                    # print(f"Timeout fetching {url}")
+                    return None
+                
+                chunk = response.read(1024 * 64) # 64KB chunks
+                if not chunk:
+                    break
+                    
+                content += chunk
+                
+                # Check Size
+                if len(content) > max_size:
+                    # print(f"Oversize fetching {url}")
+                    return None
+            
+            return content.decode('utf-8')
+
     except Exception as e:
         # print(f"Error fetching {url}: {e}")
         return None

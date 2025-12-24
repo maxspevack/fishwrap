@@ -34,7 +34,7 @@ def enhance_article(article_data):
         return True, text, [] # Comments scraping is future work
         
     except Exception as e:
-        # print(f"Error scraping {url}: {e}")
+        print(f"Error scraping {url}: {e}")
         return False, None, None
 
 def run_enhancer():
@@ -75,7 +75,7 @@ def run_enhancer():
     
     # 3. Fetch Missing
     if to_fetch:
-        MAX_WORKERS = 10
+        MAX_WORKERS = 20
         with ThreadPoolExecutor(max_workers=MAX_WORKERS) as executor:
             future_to_art = {executor.submit(enhance_article, art): art for art in to_fetch}
             

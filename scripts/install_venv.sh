@@ -8,4 +8,5 @@ echo "Setting up Python virtual environment and installing dependencies..."
 python3 -m venv "$VENV_PATH"
 "$VENV_PATH/bin/pip" install --upgrade pip
 "$VENV_PATH/bin/pip" install -r "$REQUIREMENTS_TXT"
+"$VENV_PATH/bin/python3" -m nltk.downloader punkt
 echo "Setup complete."
