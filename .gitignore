@@ -29,3 +29,5 @@ demo/data/*
 demo/output/*
 !demo/output/.gitkeep
 demo/secrets.json
+# NLTK Data (Downloaded by install_venv.sh)
+nltk_data/
