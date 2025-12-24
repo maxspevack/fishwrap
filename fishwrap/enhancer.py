@@ -7,6 +7,8 @@ from fishwrap.db import repository
 from fishwrap import _config
 from fishwrap import utils
 
+import traceback
+
 def enhance_article(article_data):
     """
     Scrapes full text for a single article dict.
@@ -92,7 +94,9 @@ def run_enhancer():
                             stats['fetches'] += 1
                         else:
                             stats['errors'] += 1
-                    except:
+                    except Exception:
+                        print(f"CRITICAL ERROR processing {art.get('link')}:")
+                        traceback.print_exc()
                         stats['errors'] += 1
                     pbar.update(1)
     
