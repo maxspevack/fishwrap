@@ -85,6 +85,7 @@ def generate_edition(run_sheet):
             formatted_articles.append(art)
             
         sections_data.append({
+            'id': sid,
             'title': section_def['title'],
             'description': section_def['description'],
             'articles': formatted_articles

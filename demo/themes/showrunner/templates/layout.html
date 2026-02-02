@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>THE SHOWRUNNER | {{ date_str }}</title>
+    <link rel="stylesheet" href="static/css/style.css">
+</head>
+<body class="showrunner-theme">
+
+<div class="layout-container">
+    <nav class="sidebar">
+        <div class="brand-logo-container">
+            <img src="static/images/logo_header.png" alt="THE SHOWRUNNER" class="brand-logo-img">
+        </div>
+        
+        <div class="meta-info">
+            <div class="date">{{ date_str }}</div>
+            {% if time_str %}<div class="time">{{ time_str }}</div>{% endif %}
+            <div class="issue">{{ vol_issue_str }}</div>
+        </div>
+        
+        <ul class="nav-list">
+            {% for section in sections %}
+            <li class="nav-item">
+                <a href="#section-{{ section.id }}" class="nav-link">
+                    {{ section.title }}
+                </a>
+            </li>
+            {% endfor %}
+        </ul>
+
+        <div class="sidebar-footer">
+            <div class="glass-box-menu">
+                <div class="glass-box-header" style="text-transform: uppercase; font-size: 0.75rem; color: #666; margin-bottom: 5px;">Glass Box</div>
+                <a href="#" onclick="openTransparency(); return false;" class="glass-link">Source Transparency</a>
+                <a href="#" onclick="document.body.classList.toggle('debug-active'); return false;" class="glass-link">Scoring Debugger</a>
+            </div>
+            <div style="margin-top: 20px;">
+                <div class="version-tag">ENGINE: {{ engine_version }}</div>
+            </div>
+        </div>
+    </nav>
+
+    <main class="main-content">
+        {% for section in sections %}
+        <section id="section-{{ section.id }}" class="section-block">
+            <div class="section-hero" style="background-image: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.7)), url('static/images/section_{% if section.id == 'procedural' %}procedural{% else %}gossip{% endif %}.png');">
+                <div class="hero-content">
+                    <h2 class="section-title">{{ section.title }}</h2>
+                    <p class="section-description">{{ section.description }}</p>
+                </div>
+            </div>
+
+            <div class="article-grid">
+                {% for article in section.articles %}
+                <article class="article-card">
+                    <div class="card-meta">
+                        <span class="source">{{ article.domain }}</span>
+                        <span class="timestamp">{{ article.time_ago }}</span>
+                    </div>
+                    <h3 class="article-title">
+                        <a href="{{ article.link | replace('www.reddit.com', 'old.reddit.com') }}" target="_blank">{{ article.title }}</a>
+                    </h3>
+                    <div class="article-summary">
+                        {{ article.summary | truncate(200) }}
+                    </div>
+                    <!-- Debug Overlay -->
+                    <div class="debug-card" style="display:none; margin-top: 15px; padding: 10px; background: #eee; font-family: monospace; font-size: 0.7rem;">
+                        <div><strong>Score:</strong> {{ article.impact_score }}</div>
+                        <div>Base: {{ article.score_breakdown.base_score }}</div>
+                        {% for p in article.score_breakdown.policies %}
+                        <div>{{ p.type }}: {{ p.score }}</div>
+                        {% endfor %}
+                    </div>
+                </article>
+                {% endfor %}
+            </div>
+        </section>
+        {% endfor %}
+    </main>
+</div>
+
+<!-- Glass Box Modal -->
+<div id="transparency-modal" class="modal-overlay">
+    <div class="modal-content">
+        <button class="modal-close" onclick="closeTransparency()">&times;</button>
+        {{ transparency_report | safe }}
+    </div>
+</div>
+
+<style>
+    /* Add local override for debug active state */
+    body.debug-active .debug-card { display: block !important; }
+</style>
+
+<script>
+    function openTransparency() {
+        document.getElementById('transparency-modal').style.display = 'flex';
+        document.body.style.overflow = 'hidden';
+    }
+    function closeTransparency() {
+        document.getElementById('transparency-modal').style.display = 'none';
+        document.body.style.overflow = 'auto';
+    }
+    document.getElementById('transparency-modal').addEventListener('click', function(e) {
+        if (e.target === this) closeTransparency();
+    });
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') closeTransparency();
+    });
+</script>
+
+</body>
+</html>
