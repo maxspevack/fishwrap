@@ -53,8 +53,11 @@ run-ai:
 	@echo "--- Building AI Demo ---"
 	@$(MAKE) build-core CONFIG=demo/ai_config.py
 
-# --- Production Target (Daily Clamour Hook) ---
-# Kept for backward compatibility with dailyclamour.com/deploy.sh logic
+run-showrunner:
+	@echo "--- Building ShowRunner Demo ---"
+	@$(MAKE) build-core CONFIG=demo/showrunner_config.py
+
+# --- Production Target (Daily Clamour Hook) ---# Kept for backward compatibility with dailyclamour.com/deploy.sh logic
 # But ideally, DC should use its own Makefile that calls into this if needed
 run-clamour:
 	@echo "Running The Daily Clamour (Legacy Hook)..."
@@ -69,9 +72,12 @@ publish:
 	@./publish_demo.sh vanilla
 	@./publish_demo.sh cyber
 	@./publish_demo.sh ai
+	@./publish_demo.sh showrunner
 
 # --- The "One Button" ---
-ship: setup test run-vanilla run-cyber run-ai publish
+
+ship: setup test run-vanilla run-cyber run-ai run-showrunner publish
+
 	@echo "✅ Ship Complete. Verify in docs/ and commit."
 
 # --- Cleanup ---

@@ -14,12 +14,13 @@ It is designed to be the "Anti-Feed" for the Diamond Age.
 *   [The Daily Clamour](https://dailyclamour.com) (Live Production Instance)
 *   [The Zero Day](https://fishwrap.org/demo/cyber/) (Cybersecurity Demo)
 *   [The Hallucination](https://fishwrap.org/demo/ai/) (AI Research Demo)
+*   [The ShowRunner](https://fishwrap.org/demo/showrunner/) (Entertainment Demo)
 
 ---
 
 ## 🗞️ Stop the Presses! (Quick Start)
 
-Fishwrap ships with three reference "Verticals" to demonstrate its flexibility.
+Fishwrap ships with reference "Verticals" to demonstrate its flexibility.
 
 ### 1. Hire the Staff
 Clone the repo and install dependencies:
@@ -48,6 +49,12 @@ Run the pipeline for the edition you want to print:
     ```bash
     make run-ai
     open demo/output/ai_index.html
+    ```
+
+*   **The ShowRunner (Entertainment):**
+    ```bash
+    make run-showrunner
+    open demo/output/showrunner_edition.html
     ```
 
 ---

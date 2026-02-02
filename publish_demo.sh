@@ -27,6 +27,10 @@ case "$VERTICAL" in
         OUTPUT_FILE="$REPO_ROOT/demo/output/ai_index.html"
         THEME_STATIC="$REPO_ROOT/demo/themes/basic/static"
         ;;
+    "showrunner")
+        OUTPUT_FILE="$REPO_ROOT/demo/output/showrunner_edition.html"
+        THEME_STATIC="$REPO_ROOT/demo/themes/showrunner/static"
+        ;;
     *)
         echo "Unknown vertical: $VERTICAL"
         exit 1
