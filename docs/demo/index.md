@@ -29,6 +29,7 @@ These three "Reference Verticals" demonstrate how the same engine can be tuned f
 | **The Vanilla** | General News | A standard mix of RSS feeds (NYT, BBC, The Verge). Shows the baseline capability. | [**Read Vanilla**](vanilla/) |
 | **The Zero Day** | Cybersecurity | Prioritizes CVEs and exploits. Filters out vendor marketing fluff. | [**Read Zero Day**](cyber/) |
 | **The Hallucination** | AI Research | Separates Arxiv papers and Github repos from the "AGI is coming" opinion pieces. | [**Read AI**](ai/) |
+| **The ShowRunner** | Entertainment | Tracks industry gossip, production schedules, and box office numbers. | [**Read ShowRunner**](showrunner/) |
 
 ---
 
@@ -62,4 +63,10 @@ make run-cyber
 ```bash
 make run-ai
 # output is at demo/output/ai_index.html
+```
+
+**The ShowRunner (Entertainment):**
+```bash
+make run-showrunner
+# output is at demo/output/showrunner_edition.html
 ```
