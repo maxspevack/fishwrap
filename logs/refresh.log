@@ -102,3 +102,266 @@ Publishing 'showrunner' to /Users/max/gemini/fishwrap/docs/demo/showrunner...
   -> Copied static assets from /Users/max/gemini/fishwrap/demo/themes/showrunner/static
 ✅ Published 'showrunner' demo successfully.
 [Mon Feb  2 16:07:32 PST 2026] Refresh Complete. Success.
+[Mon Feb  2 22:45:35 PST 2026] Starting Fishwrap Demo Refresh...
+--- Building Vanilla Demo ---
+
+[FETCHER] Starting Parallel Fetch... (DB: 709 -> Pruned: 20)
+Fetching Feeds:   0%|          | 0/26 [00:00<?, ?feed/s]Fetching Feeds:   4%|▍         | 1/26 [00:00<00:10,  2.33feed/s]Fetching Feeds:  15%|█▌        | 4/26 [00:00<00:02,  9.00feed/s]Fetching Feeds:  35%|███▍      | 9/26 [00:00<00:00, 17.56feed/s]Fetching Feeds:  50%|█████     | 13/26 [00:00<00:00, 19.65feed/s]Fetching Feeds:  62%|██████▏   | 16/26 [00:01<00:00, 12.16feed/s]Fetching Feeds:  69%|██████▉   | 18/26 [00:01<00:00, 12.91feed/s]Fetching Feeds:  77%|███████▋  | 20/26 [00:01<00:00, 10.44feed/s]Fetching Feeds:  85%|████████▍ | 22/26 [00:02<00:00,  4.30feed/s]Fetching Feeds:  88%|████████▊ | 23/26 [00:05<00:01,  1.83feed/s]Fetching Feeds:  92%|█████████▏| 24/26 [00:07<00:01,  1.27feed/s]Fetching Feeds:  96%|█████████▌| 25/26 [00:09<00:01,  1.14s/feed]Fetching Feeds: 100%|██████████| 26/26 [00:11<00:00,  1.31s/feed]Fetching Feeds: 100%|██████████| 26/26 [00:11<00:00,  2.28feed/s]
+
+[FETCHER] Processed 26/26 feeds in 11.45s. 194 new, 466 updated. DB Size: 883.
+
+[EDITOR] Starting... (Fetching recent articles from DB)
+[EDITOR] Loaded 782 candidates.
+
+[EDITOR] Published 36 articles (0 reclassified) in 3.21s.
+
+[AUDITOR] Run recorded: c2fa5da4-da7f-4a98-8da3-13c33862830b. Audit logs saved: 782.
+
+[ENHANCER] Starting Parallel Enhancement... (Run Sheet: 36 items)
+Enhancing:   0%|          | 0/14 [00:00<?, ?article/s]Enhancing:   7%|▋         | 1/14 [00:00<00:03,  3.90article/s]Enhancing:  43%|████▎     | 6/14 [00:00<00:00, 11.14article/s]Enhancing:  57%|█████▋    | 8/14 [00:04<00:04,  1.38article/s]Enhancing:  64%|██████▍   | 9/14 [00:06<00:04,  1.01article/s]Enhancing:  71%|███████▏  | 10/14 [00:08<00:04,  1.22s/article]Enhancing:  79%|███████▊  | 11/14 [00:10<00:04,  1.43s/article]Enhancing:  86%|████████▌ | 12/14 [00:12<00:03,  1.56s/article]Enhancing:  93%|█████████▎| 13/14 [00:15<00:01,  1.78s/article]Enhancing: 100%|██████████| 14/14 [00:17<00:00,  1.84s/article]Enhancing: 100%|██████████| 14/14 [00:17<00:00,  1.23s/article]
+Error scraping https://www.nytimes.com/2026/02/02/us/ostarine-olympics-doping.html: Article `download()` failed with 403 Client Error: Forbidden for url: https://www.nytimes.com/2026/02/02/us/ostarine-olympics-doping.html on URL https://www.nytimes.com/2026/02/02/us/ostarine-olympics-doping.html
+Error scraping https://www.nytimes.com/2026/02/02/us/haitians-temporary-protected-status-trump.html: Article `download()` failed with 403 Client Error: Forbidden for url: https://www.nytimes.com/2026/02/02/us/haitians-temporary-protected-status-trump.html on URL https://www.nytimes.com/2026/02/02/us/haitians-temporary-protected-status-trump.html
+Error scraping https://www.nytimes.com/2026/02/02/style/will-the-spirit-of-1976-come-to-2026.html: Article `download()` failed with 403 Client Error: Forbidden for url: https://www.nytimes.com/2026/02/02/style/will-the-spirit-of-1976-come-to-2026.html on URL https://www.nytimes.com/2026/02/02/style/will-the-spirit-of-1976-come-to-2026.html
+
+[ENHANCER] Finished in 17.21s. Hits: 22, Fetches: 11, Errors: 3
+
+[PRINTER] Edition Published: demo/output/index.html
+[PRINTER] PDF Generated: demo/output/edition.pdf
+--- Building Cyber Demo ---
+
+[FETCHER] Starting Parallel Fetch... (DB: 114 -> Pruned: 2)
+Fetching Feeds:   0%|          | 0/22 [00:00<?, ?feed/s]Fetching Feeds:   5%|▍         | 1/22 [00:00<00:06,  3.12feed/s]Fetching Feeds:  14%|█▎        | 3/22 [00:00<00:02,  7.76feed/s]Fetching Feeds:  23%|██▎       | 5/22 [00:00<00:01, 11.04feed/s]Fetching Feeds:  32%|███▏      | 7/22 [00:00<00:01,  9.71feed/s]Fetching Feeds:  64%|██████▎   | 14/22 [00:01<00:00, 16.52feed/s]Fetching Feeds:  73%|███████▎  | 16/22 [00:01<00:00, 11.58feed/s]Fetching Feeds:  82%|████████▏ | 18/22 [00:01<00:00,  8.83feed/s]Fetching Feeds:  91%|█████████ | 20/22 [00:02<00:00,  9.09feed/s]Fetching Feeds: 100%|██████████| 22/22 [00:02<00:00,  4.87feed/s]Fetching Feeds: 100%|██████████| 22/22 [00:02<00:00,  7.40feed/s]
+
+[FETCHER] Processed 22/22 feeds in 3.01s. 15 new, 100 updated. DB Size: 127.
+
+[EDITOR] Starting... (Fetching recent articles from DB)
+[EDITOR] Loaded 96 candidates.
+
+[EDITOR] Published 27 articles (0 reclassified) in 0.04s.
+
+[AUDITOR] Run recorded: cc516456-433e-4cd8-b520-3641f678c99d. Audit logs saved: 96.
+
+[ENHANCER] Starting Parallel Enhancement... (Run Sheet: 27 items)
+Enhancing:   0%|          | 0/3 [00:00<?, ?article/s]Enhancing:  33%|███▎      | 1/3 [00:00<00:00,  4.98article/s]Enhancing:  67%|██████▋   | 2/3 [00:00<00:00,  6.15article/s]Enhancing: 100%|██████████| 3/3 [00:01<00:00,  1.97article/s]Enhancing: 100%|██████████| 3/3 [00:01<00:00,  2.39article/s]
+
+[ENHANCER] Finished in 1.30s. Hits: 24, Fetches: 3, Errors: 0
+
+[PRINTER] Edition Published: demo/output/cyber_index.html
+[PRINTER] PDF Generated: demo/output/cyber_edition.pdf
+--- Building AI Demo ---
+
+[FETCHER] Starting Parallel Fetch... (DB: 821 -> Pruned: 2)
+Fetching Feeds:   0%|          | 0/24 [00:00<?, ?feed/s]Fetching Feeds:   4%|▍         | 1/24 [00:00<00:08,  2.63feed/s]Fetching Feeds:  25%|██▌       | 6/24 [00:00<00:01, 13.68feed/s]Fetching Feeds:  46%|████▌     | 11/24 [00:00<00:00, 14.34feed/s]Fetching Feeds:  62%|██████▎   | 15/24 [00:02<00:01,  5.70feed/s]Fetching Feeds:  71%|███████   | 17/24 [00:03<00:02,  3.36feed/s]Fetching Feeds:  75%|███████▌  | 18/24 [00:04<00:01,  3.01feed/s]Fetching Feeds: 100%|██████████| 24/24 [00:04<00:00,  4.65feed/s]Fetching Feeds: 100%|██████████| 24/24 [00:04<00:00,  4.86feed/s]
+
+[FETCHER] Processed 24/24 feeds in 4.99s. 1658 new, 829 updated. DB Size: 2477.
+
+[EDITOR] Starting... (Fetching recent articles from DB)
+[EDITOR] Loaded 1720 candidates.
+
+[EDITOR] Published 25 articles (5 reclassified) in 25.93s.
+
+[AUDITOR] Run recorded: 8df96b15-7fef-41f6-a88e-98c570db6cc7. Audit logs saved: 1720.
+
+[ENHANCER] Starting Parallel Enhancement... (Run Sheet: 25 items)
+Enhancing:   0%|          | 0/14 [00:00<?, ?article/s]Enhancing:   7%|▋         | 1/14 [00:00<00:05,  2.36article/s]Enhancing:  71%|███████▏  | 10/14 [00:00<00:00, 22.77article/s]Enhancing: 100%|██████████| 14/14 [00:06<00:00,  2.09article/s]
+
+[ENHANCER] Finished in 6.74s. Hits: 11, Fetches: 14, Errors: 0
+
+[PRINTER] Edition Published: demo/output/ai_index.html
+[PRINTER] PDF Generated: demo/output/ai_edition.pdf
+--- Building ShowRunner Demo ---
+
+[FETCHER] Starting Parallel Fetch... (DB: 246 -> Pruned: 0)
+Fetching Feeds:   0%|          | 0/20 [00:00<?, ?feed/s]Fetching Feeds:   5%|▌         | 1/20 [00:00<00:03,  4.87feed/s]Fetching Feeds:  10%|█         | 2/20 [00:00<00:03,  5.43feed/s]Fetching Feeds:  40%|████      | 8/20 [00:00<00:00, 21.93feed/s]Fetching Feeds:  55%|█████▌    | 11/20 [00:00<00:00, 15.91feed/s]Fetching Feeds:  70%|███████   | 14/20 [00:01<00:00,  7.65feed/s]Fetching Feeds:  80%|████████  | 16/20 [00:05<00:02,  1.81feed/s]Fetching Feeds:  90%|█████████ | 18/20 [00:08<00:01,  1.11feed/s]Fetching Feeds:  95%|█████████▌| 19/20 [00:10<00:01,  1.00s/feed]Fetching Feeds: 100%|██████████| 20/20 [00:13<00:00,  1.32s/feed]Fetching Feeds: 100%|██████████| 20/20 [00:13<00:00,  1.51feed/s]
+
+[FETCHER] Processed 20/20 feeds in 13.28s. 45 new, 143 updated. DB Size: 291.
+
+[EDITOR] Starting... (Fetching recent articles from DB)
+[EDITOR] Loaded 283 candidates.
+
+[EDITOR] Published 38 articles (0 reclassified) in 0.28s.
+
+[AUDITOR] Run recorded: e08271be-f52a-4b61-828a-9308bf98db32. Audit logs saved: 283.
+
+[ENHANCER] Starting Parallel Enhancement... (Run Sheet: 38 items)
+
+[ENHANCER] Finished in 0.04s. Hits: 38, Fetches: 0, Errors: 0
+
+[PRINTER] Edition Published: demo/output/showrunner_edition.html
+[PRINTER] PDF Generated: demo/output/showrunner_edition.pdf
+Publishing 'vanilla' to /Users/max/gemini/fishwrap/docs/demo/vanilla...
+  -> Copied index.html
+  -> Copied static assets from /Users/max/gemini/fishwrap/demo/themes/basic/static
+✅ Published 'vanilla' demo successfully.
+Publishing 'cyber' to /Users/max/gemini/fishwrap/docs/demo/cyber...
+  -> Copied index.html
+  -> Copied static assets from /Users/max/gemini/fishwrap/demo/themes/basic/static
+✅ Published 'cyber' demo successfully.
+Publishing 'ai' to /Users/max/gemini/fishwrap/docs/demo/ai...
+  -> Copied index.html
+  -> Copied static assets from /Users/max/gemini/fishwrap/demo/themes/basic/static
+✅ Published 'ai' demo successfully.
+Publishing 'showrunner' to /Users/max/gemini/fishwrap/docs/demo/showrunner...
+  -> Copied index.html
+  -> Copied static assets from /Users/max/gemini/fishwrap/demo/themes/showrunner/static
+✅ Published 'showrunner' demo successfully.
+[Mon Feb  2 22:47:19 PST 2026] Refresh Complete. Success.
+[Tue Feb  3 08:14:41 PST 2026] Starting Fishwrap Demo Refresh...
+--- Building Vanilla Demo ---
+
+[FETCHER] Starting Parallel Fetch... (DB: 883 -> Pruned: 22)
+Fetching Feeds:   0%|          | 0/26 [00:00<?, ?feed/s]Fetching Feeds:   4%|▍         | 1/26 [00:00<00:14,  1.75feed/s]Fetching Feeds:  12%|█▏        | 3/26 [00:00<00:04,  5.26feed/s]Fetching Feeds:  23%|██▎       | 6/26 [00:00<00:01, 10.04feed/s]Fetching Feeds:  31%|███       | 8/26 [00:00<00:01, 12.12feed/s]Fetching Feeds:  38%|███▊      | 10/26 [00:01<00:01, 10.69feed/s]Fetching Feeds:  50%|█████     | 13/26 [00:01<00:01, 11.25feed/s]Fetching Feeds:  62%|██████▏   | 16/26 [00:01<00:00, 13.33feed/s]Fetching Feeds:  73%|███████▎  | 19/26 [00:01<00:00, 15.15feed/s]Fetching Feeds:  81%|████████  | 21/26 [00:03<00:01,  4.55feed/s]Fetching Feeds:  88%|████████▊ | 23/26 [00:05<00:01,  2.27feed/s]Fetching Feeds:  92%|█████████▏| 24/26 [00:06<00:01,  1.52feed/s]Fetching Feeds:  96%|█████████▌| 25/26 [00:09<00:00,  1.07feed/s]Fetching Feeds: 100%|██████████| 26/26 [00:11<00:00,  1.23s/feed]Fetching Feeds: 100%|██████████| 26/26 [00:11<00:00,  2.26feed/s]
+
+[FETCHER] Processed 26/26 feeds in 11.58s. 394 new, 312 updated. DB Size: 1255.
+
+[EDITOR] Starting... (Fetching recent articles from DB)
+[EDITOR] Loaded 1034 candidates.
+
+[EDITOR] Published 36 articles (0 reclassified) in 5.82s.
+
+[AUDITOR] Run recorded: 6c594ba6-dda1-4c97-9bc8-da42518cbcf4. Audit logs saved: 1034.
+
+[ENHANCER] Starting Parallel Enhancement... (Run Sheet: 36 items)
+Enhancing:   0%|          | 0/21 [00:00<?, ?article/s]Enhancing:   5%|▍         | 1/21 [00:00<00:16,  1.24article/s]Enhancing:  14%|█▍        | 3/21 [00:00<00:04,  3.87article/s]Enhancing:  48%|████▊     | 10/21 [00:02<00:02,  4.37article/s]Enhancing:  52%|█████▏    | 11/21 [00:04<00:04,  2.19article/s]Enhancing:  57%|█████▋    | 12/21 [00:04<00:04,  2.24article/s]Enhancing:  67%|██████▋   | 14/21 [00:06<00:04,  1.66article/s]Enhancing:  71%|███████▏  | 15/21 [00:08<00:05,  1.16article/s]Enhancing:  76%|███████▌  | 16/21 [00:10<00:05,  1.13s/article]Enhancing:  81%|████████  | 17/21 [00:12<00:05,  1.36s/article]Enhancing:  86%|████████▌ | 18/21 [00:14<00:04,  1.54s/article]Enhancing:  90%|█████████ | 19/21 [00:17<00:03,  1.68s/article]Enhancing:  95%|█████████▌| 20/21 [00:19<00:01,  1.83s/article]Enhancing: 100%|██████████| 21/21 [00:21<00:00,  1.88s/article]Enhancing: 100%|██████████| 21/21 [00:21<00:00,  1.01s/article]
+Error scraping https://www.nytimes.com/2026/02/02/us/haitians-temporary-protected-status-trump.html: Article `download()` failed with 403 Client Error: Forbidden for url: https://www.nytimes.com/2026/02/02/us/haitians-temporary-protected-status-trump.html on URL https://www.nytimes.com/2026/02/02/us/haitians-temporary-protected-status-trump.html
+
+[ENHANCER] Finished in 21.38s. Hits: 15, Fetches: 20, Errors: 1
+
+[PRINTER] Edition Published: demo/output/index.html
+[PRINTER] PDF Generated: demo/output/edition.pdf
+--- Building Cyber Demo ---
+
+[FETCHER] Starting Parallel Fetch... (DB: 127 -> Pruned: 13)
+Fetching Feeds:   0%|          | 0/22 [00:00<?, ?feed/s]Fetching Feeds:   5%|▍         | 1/22 [00:00<00:08,  2.42feed/s]Fetching Feeds:  32%|███▏      | 7/22 [00:00<00:01, 14.75feed/s]Fetching Feeds:  45%|████▌     | 10/22 [00:00<00:00, 17.01feed/s]Fetching Feeds:  59%|█████▉    | 13/22 [00:00<00:00, 17.37feed/s]Fetching Feeds:  73%|███████▎  | 16/22 [00:01<00:00, 19.10feed/s]Fetching Feeds:  86%|████████▋ | 19/22 [00:01<00:00,  9.18feed/s]Fetching Feeds:  95%|█████████▌| 21/22 [00:02<00:00,  5.32feed/s]Fetching Feeds: 100%|██████████| 22/22 [00:03<00:00,  7.20feed/s]
+
+[FETCHER] Processed 22/22 feeds in 3.11s. 39 new, 74 updated. DB Size: 153.
+
+[EDITOR] Starting... (Fetching recent articles from DB)
+[EDITOR] Loaded 132 candidates.
+
+[EDITOR] Published 29 articles (0 reclassified) in 0.08s.
+
+[AUDITOR] Run recorded: 0e382efa-cbef-4934-9566-b76523497c5d. Audit logs saved: 132.
+
+[ENHANCER] Starting Parallel Enhancement... (Run Sheet: 29 items)
+Enhancing:   0%|          | 0/9 [00:00<?, ?article/s]Enhancing:  11%|█         | 1/9 [00:00<00:03,  2.46article/s]Enhancing:  22%|██▏       | 2/9 [00:00<00:01,  4.16article/s]Enhancing:  33%|███▎      | 3/9 [00:00<00:01,  3.98article/s]Enhancing:  56%|█████▌    | 5/9 [00:00<00:00,  6.48article/s]Enhancing:  67%|██████▋   | 6/9 [00:01<00:00,  7.14article/s]Enhancing: 100%|██████████| 9/9 [00:01<00:00, 11.86article/s]Enhancing: 100%|██████████| 9/9 [00:01<00:00,  7.64article/s]
+
+[ENHANCER] Finished in 1.25s. Hits: 20, Fetches: 9, Errors: 0
+
+[PRINTER] Edition Published: demo/output/cyber_index.html
+[PRINTER] PDF Generated: demo/output/cyber_edition.pdf
+--- Building AI Demo ---
+
+[FETCHER] Starting Parallel Fetch... (DB: 2477 -> Pruned: 5)
+Fetching Feeds:   0%|          | 0/24 [00:00<?, ?feed/s]Fetching Feeds:   4%|▍         | 1/24 [00:00<00:08,  2.75feed/s]Fetching Feeds:  25%|██▌       | 6/24 [00:00<00:01, 14.27feed/s]Fetching Feeds:  46%|████▌     | 11/24 [00:00<00:00, 23.39feed/s]Fetching Feeds:  67%|██████▋   | 16/24 [00:02<00:01,  4.67feed/s]Fetching Feeds:  79%|███████▉  | 19/24 [00:06<00:02,  2.21feed/s]Fetching Feeds: 100%|██████████| 24/24 [00:06<00:00,  3.52feed/s]Fetching Feeds: 100%|██████████| 24/24 [00:06<00:00,  3.91feed/s]
+
+[FETCHER] Processed 24/24 feeds in 6.59s. 31 new, 2464 updated. DB Size: 2503.
+
+[EDITOR] Starting... (Fetching recent articles from DB)
+[EDITOR] Loaded 1733 candidates.
+
+[EDITOR] Published 24 articles (5 reclassified) in 27.98s.
+
+[AUDITOR] Run recorded: d02b964d-3497-44e9-af0a-fbf07e5df0d8. Audit logs saved: 1733.
+
+[ENHANCER] Starting Parallel Enhancement... (Run Sheet: 24 items)
+Enhancing:   0%|          | 0/6 [00:00<?, ?article/s]Enhancing:  17%|█▋        | 1/6 [00:00<00:01,  2.56article/s]Enhancing:  67%|██████▋   | 4/6 [00:00<00:00,  9.23article/s]Enhancing: 100%|██████████| 6/6 [00:00<00:00,  8.88article/s]Enhancing: 100%|██████████| 6/6 [00:00<00:00,  7.96article/s]
+
+[ENHANCER] Finished in 0.81s. Hits: 18, Fetches: 6, Errors: 0
+
+[PRINTER] Edition Published: demo/output/ai_index.html
+[PRINTER] PDF Generated: demo/output/ai_edition.pdf
+--- Building ShowRunner Demo ---
+
+[FETCHER] Starting Parallel Fetch... (DB: 291 -> Pruned: 0)
+Fetching Feeds:   0%|          | 0/20 [00:00<?, ?feed/s]Fetching Feeds:   5%|▌         | 1/20 [00:00<00:07,  2.57feed/s]Fetching Feeds:  15%|█▌        | 3/20 [00:00<00:03,  5.36feed/s]Fetching Feeds:  25%|██▌       | 5/20 [00:00<00:01,  8.13feed/s]Fetching Feeds:  35%|███▌      | 7/20 [00:01<00:02,  6.10feed/s]Fetching Feeds:  40%|████      | 8/20 [00:01<00:02,  4.54feed/s]Fetching Feeds:  55%|█████▌    | 11/20 [00:02<00:01,  5.42feed/s]Fetching Feeds:  60%|██████    | 12/20 [00:02<00:01,  4.80feed/s]Fetching Feeds:  65%|██████▌   | 13/20 [00:02<00:01,  4.02feed/s]Fetching Feeds:  70%|███████   | 14/20 [00:02<00:01,  4.11feed/s]Fetching Feeds:  80%|████████  | 16/20 [00:05<00:02,  1.66feed/s]Fetching Feeds:  85%|████████▌ | 17/20 [00:06<00:02,  1.17feed/s]Fetching Feeds:  90%|█████████ | 18/20 [00:09<00:02,  1.16s/feed]Fetching Feeds:  95%|█████████▌| 19/20 [00:10<00:01,  1.21s/feed]Fetching Feeds: 100%|██████████| 20/20 [00:13<00:00,  1.65s/feed]Fetching Feeds: 100%|██████████| 20/20 [00:13<00:00,  1.50feed/s]
+
+[FETCHER] Processed 20/20 feeds in 13.34s. 51 new, 138 updated. DB Size: 342.
+
+[EDITOR] Starting... (Fetching recent articles from DB)
+[EDITOR] Loaded 333 candidates.
+
+[EDITOR] Published 38 articles (0 reclassified) in 0.38s.
+
+[AUDITOR] Run recorded: c98d8cfd-c05c-4e61-aab1-b2f777b30508. Audit logs saved: 333.
+
+[ENHANCER] Starting Parallel Enhancement... (Run Sheet: 38 items)
+Enhancing:   0%|          | 0/6 [00:00<?, ?article/s]Enhancing:  17%|█▋        | 1/6 [00:00<00:01,  2.75article/s]Enhancing:  67%|██████▋   | 4/6 [00:02<00:01,  1.54article/s]Enhancing:  83%|████████▎ | 5/6 [00:04<00:01,  1.01s/article]Enhancing: 100%|██████████| 6/6 [00:04<00:00,  1.23article/s]Enhancing: 100%|██████████| 6/6 [00:04<00:00,  1.26article/s]
+
+[ENHANCER] Finished in 4.83s. Hits: 32, Fetches: 6, Errors: 0
+
+[PRINTER] Edition Published: demo/output/showrunner_edition.html
+[PRINTER] PDF Generated: demo/output/showrunner_edition.pdf
+Publishing 'vanilla' to /Users/max/gemini/fishwrap/docs/demo/vanilla...
+  -> Copied index.html
+  -> Copied static assets from /Users/max/gemini/fishwrap/demo/themes/basic/static
+✅ Published 'vanilla' demo successfully.
+Publishing 'cyber' to /Users/max/gemini/fishwrap/docs/demo/cyber...
+  -> Copied index.html
+  -> Copied static assets from /Users/max/gemini/fishwrap/demo/themes/basic/static
+✅ Published 'cyber' demo successfully.
+Publishing 'ai' to /Users/max/gemini/fishwrap/docs/demo/ai...
+  -> Copied index.html
+  -> Copied static assets from /Users/max/gemini/fishwrap/demo/themes/basic/static
+✅ Published 'ai' demo successfully.
+Publishing 'showrunner' to /Users/max/gemini/fishwrap/docs/demo/showrunner...
+  -> Copied index.html
+  -> Copied static assets from /Users/max/gemini/fishwrap/demo/themes/showrunner/static
+✅ Published 'showrunner' demo successfully.
+[Tue Feb  3 08:16:41 PST 2026] Refresh Complete. Success.
+[Tue Feb  3 14:18:29 PST 2026] Starting Fishwrap Demo Refresh...
+--- Building Vanilla Demo ---
+
+[FETCHER] Starting Parallel Fetch... (DB: 1255 -> Pruned: 20)
+Fetching Feeds:   0%|          | 0/26 [00:00<?, ?feed/s]Fetching Feeds:   4%|▍         | 1/26 [00:00<00:14,  1.78feed/s]Fetching Feeds:  15%|█▌        | 4/26 [00:00<00:03,  6.90feed/s]Fetching Feeds:  27%|██▋       | 7/26 [00:00<00:01, 11.12feed/s]Fetching Feeds:  38%|███▊      | 10/26 [00:01<00:01, 12.19feed/s]Fetching Feeds:  50%|█████     | 13/26 [00:01<00:00, 13.82feed/s]Fetching Feeds:  58%|█████▊    | 15/26 [00:01<00:00, 12.72feed/s]Fetching Feeds:  65%|██████▌   | 17/26 [00:01<00:00, 14.10feed/s]Fetching Feeds:  77%|███████▋  | 20/26 [00:01<00:00, 17.48feed/s]Fetching Feeds:  88%|████████▊ | 23/26 [00:05<00:01,  2.32feed/s]Fetching Feeds:  96%|█████████▌| 25/26 [00:09<00:00,  1.19feed/s]Fetching Feeds: 100%|██████████| 26/26 [00:11<00:00,  2.31feed/s]
+
+[FETCHER] Processed 26/26 feeds in 11.34s. 369 new, 355 updated. DB Size: 1604.
+
+[EDITOR] Starting... (Fetching recent articles from DB)
+[EDITOR] Loaded 1146 candidates.
+
+[EDITOR] Published 36 articles (0 reclassified) in 7.34s.
+
+[AUDITOR] Run recorded: a66d2bc7-c0c1-4ebf-a1b7-e974d29d7f48. Audit logs saved: 1146.
+
+[ENHANCER] Starting Parallel Enhancement... (Run Sheet: 36 items)
+Enhancing:   0%|          | 0/22 [00:00<?, ?article/s]Enhancing:   5%|▍         | 1/22 [00:00<00:05,  4.03article/s]Enhancing:  36%|███▋      | 8/22 [00:00<00:00, 15.72article/s]Enhancing:  50%|█████     | 11/22 [00:00<00:00, 17.01article/s]Enhancing:  59%|█████▉    | 13/22 [00:02<00:02,  3.68article/s]Enhancing:  68%|██████▊   | 15/22 [00:06<00:05,  1.38article/s]Enhancing:  73%|███████▎  | 16/22 [00:08<00:05,  1.06article/s]Enhancing:  77%|███████▋  | 17/22 [00:10<00:05,  1.18s/article]Enhancing:  82%|████████▏ | 18/22 [00:12<00:05,  1.34s/article]Enhancing:  86%|████████▋ | 19/22 [00:14<00:04,  1.50s/article]Enhancing:  91%|█████████ | 20/22 [00:16<00:03,  1.65s/article]Enhancing:  95%|█████████▌| 21/22 [00:18<00:01,  1.76s/article]Enhancing: 100%|██████████| 22/22 [00:21<00:00,  1.89s/article]Enhancing: 100%|██████████| 22/22 [00:21<00:00,  1.04article/s]
+Error scraping https://www.nytimes.com/2026/02/02/opinion/silicon-valley-trump-minneapolis.html: Article `download()` failed with 403 Client Error: Forbidden for url: https://www.nytimes.com/2026/02/02/opinion/silicon-valley-trump-minneapolis.html on URL https://www.nytimes.com/2026/02/02/opinion/silicon-valley-trump-minneapolis.html
+Error scraping https://www.nytimes.com/2026/02/02/us/politics/trump-tariffs-india-trade-deal.html: Article `download()` failed with 403 Client Error: Forbidden for url: https://www.nytimes.com/2026/02/02/us/politics/trump-tariffs-india-trade-deal.html on URL https://www.nytimes.com/2026/02/02/us/politics/trump-tariffs-india-trade-deal.html
+Error scraping https://www.nytimes.com/2026/02/02/nyregion/duran-duprey-bronx-trial.html: Article `download()` failed with 403 Client Error: Forbidden for url: https://www.nytimes.com/2026/02/02/nyregion/duran-duprey-bronx-trial.html on URL https://www.nytimes.com/2026/02/02/nyregion/duran-duprey-bronx-trial.html
+Error scraping https://www.nytimes.com/2026/02/02/arts/music/grammy-awards-ice-trump.html: Article `download()` failed with 403 Client Error: Forbidden for url: https://www.nytimes.com/2026/02/02/arts/music/grammy-awards-ice-trump.html on URL https://www.nytimes.com/2026/02/02/arts/music/grammy-awards-ice-trump.html
+Error scraping https://www.nytimes.com/2026/02/03/business/disney-damaro-ceo.html: Article `download()` failed with 403 Client Error: Forbidden for url: https://www.nytimes.com/2026/02/03/business/disney-damaro-ceo.html on URL https://www.nytimes.com/2026/02/03/business/disney-damaro-ceo.html
+Error scraping https://www.nytimes.com/2026/02/02/us/haitians-temporary-protected-status-trump.html: Article `download()` failed with 403 Client Error: Forbidden for url: https://www.nytimes.com/2026/02/02/us/haitians-temporary-protected-status-trump.html on URL https://www.nytimes.com/2026/02/02/us/haitians-temporary-protected-status-trump.html
+Error scraping https://www.nytimes.com/2026/02/02/opinion/columnists/trump-america-identity.html: Article `download()` failed with 403 Client Error: Forbidden for url: https://www.nytimes.com/2026/02/02/opinion/columnists/trump-america-identity.html on URL https://www.nytimes.com/2026/02/02/opinion/columnists/trump-america-identity.html
+
+[ENHANCER] Finished in 21.26s. Hits: 14, Fetches: 15, Errors: 7
+
+[PRINTER] Edition Published: demo/output/index.html
+[PRINTER] PDF Generated: demo/output/edition.pdf
+--- Building Cyber Demo ---
+
+[FETCHER] Starting Parallel Fetch... (DB: 153 -> Pruned: 7)
+Fetching Feeds:   0%|          | 0/22 [00:00<?, ?feed/s]Fetching Feeds:   5%|▍         | 1/22 [00:00<00:07,  2.87feed/s]Fetching Feeds:   9%|▉         | 2/22 [00:00<00:04,  4.76feed/s]Fetching Feeds:  23%|██▎       | 5/22 [00:00<00:01, 11.60feed/s]Fetching Feeds:  32%|███▏      | 7/22 [00:00<00:01, 13.98feed/s]Fetching Feeds:  41%|████      | 9/22 [00:00<00:00, 14.71feed/s]Fetching Feeds:  68%|██████▊   | 15/22 [00:01<00:00, 18.56feed/s]Fetching Feeds:  77%|███████▋  | 17/22 [00:01<00:00, 10.88feed/s]Fetching Feeds:  86%|████████▋ | 19/22 [00:02<00:00,  7.72feed/s]Fetching Feeds:  95%|█████████▌| 21/22 [00:02<00:00,  4.49feed/s]Fetching Feeds: 100%|██████████| 22/22 [00:04<00:00,  2.23feed/s]Fetching Feeds: 100%|██████████| 22/22 [00:04<00:00,  4.72feed/s]
+
+[FETCHER] Processed 22/22 feeds in 4.70s. 33 new, 82 updated. DB Size: 179.
+
+[EDITOR] Starting... (Fetching recent articles from DB)
+[EDITOR] Loaded 162 candidates.
+
+[EDITOR] Published 30 articles (0 reclassified) in 0.11s.
+
+[AUDITOR] Run recorded: 79cc44d8-9173-4d87-8b57-7a4941944dc0. Audit logs saved: 162.
+
+[ENHANCER] Starting Parallel Enhancement... (Run Sheet: 30 items)
+Enhancing:   0%|          | 0/7 [00:00<?, ?article/s]Enhancing:  14%|█▍        | 1/7 [00:00<00:01,  3.08article/s]Enhancing:  57%|█████▋    | 4/7 [00:00<00:00,  9.50article/s]Enhancing: 100%|██████████| 7/7 [00:00<00:00, 12.92article/s]
+
+[ENHANCER] Finished in 0.61s. Hits: 23, Fetches: 7, Errors: 0
+
+[PRINTER] Edition Published: demo/output/cyber_index.html
+[PRINTER] PDF Generated: demo/output/cyber_edition.pdf
+--- Building AI Demo ---
+
+[FETCHER] Starting Parallel Fetch... (DB: 2503 -> Pruned: 2)
+Fetching Feeds:   0%|          | 0/24 [00:00<?, ?feed/s]Fetching Feeds:   4%|▍         | 1/24 [00:00<00:10,  2.18feed/s]Fetching Feeds:  38%|███▊      | 9/24 [00:00<00:00, 19.13feed/s]Fetching Feeds:  58%|█████▊    | 14/24 [00:00<00:00, 25.48feed/s]Fetching Feeds:  75%|███████▌  | 18/24 [00:01<00:00,  9.86feed/s]Fetching Feeds:  88%|████████▊ | 21/24 [00:04<00:00,  3.04feed/s]Fetching Feeds: 100%|██████████| 24/24 [00:05<00:00,  3.40feed/s]Fetching Feeds: 100%|██████████| 24/24 [00:05<00:00,  4.73feed/s]
+
+[FETCHER] Processed 24/24 feeds in 5.12s. 29 new, 2480 updated. DB Size: 2530.
