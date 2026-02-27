@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 # Smoke Test for fw-db utility
 # Ensures it can load a config and query the database without crashing.

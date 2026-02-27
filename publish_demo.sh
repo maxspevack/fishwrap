@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 # usage: ./publish_demo.sh [vertical]
 # example: ./publish_demo.sh vanilla

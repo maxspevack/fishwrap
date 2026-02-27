@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 # refresh_demos.sh
 # Automates the refresh of all Fishwrap demos.
 # Called by launchd.

@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 set -euo pipefail # Exit on error, unset variables, pipefail
 
 VENV_PATH=$(dirname "$0")/../venv # Relative to script location (fishwrap/scripts/ -> fishwrap/venv)

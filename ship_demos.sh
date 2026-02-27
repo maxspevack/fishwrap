@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 # Fishwrap Demos Automation
 # This script rebuilds all demos (Vanilla, Cyber, AI, ShowRunner)
 # and commits the changes to the repository.
