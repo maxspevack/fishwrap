@@ -18,20 +18,29 @@ on:
   push:
     tags:
       - 'v*'
+  # Manual escape hatch — re-run a publish without retagging if needed.
+  workflow_dispatch:
 
 permissions:
   contents: read
   packages: write
+
+# Serialize releases per ref so two near-simultaneous tag pushes don't
+# race for the same GHCR namespace. cancel-in-progress: false because we
+# never want to abort a publish midway.
+concurrency:
+  group: release-${{ github.ref }}
+  cancel-in-progress: false
 
 jobs:
   build-and-push:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout source at the tagged commit
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       - name: Log in to GHCR
-        uses: docker/login-action@v3
+        uses: docker/login-action@v4
         with:
           registry: ghcr.io
           username: ${{ github.actor }}
@@ -39,7 +48,7 @@ jobs:
 
       - name: Determine image tags from the git tag
         id: meta
-        uses: docker/metadata-action@v5
+        uses: docker/metadata-action@v6
         with:
           images: ghcr.io/${{ github.repository_owner }}/fishwrap
           tags: |
@@ -49,10 +58,10 @@ jobs:
             latest=false
 
       - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v3
+        uses: docker/setup-buildx-action@v4
 
       - name: Build and push image
-        uses: docker/build-push-action@v6
+        uses: docker/build-push-action@v7
         with:
           context: .
           platforms: linux/amd64
