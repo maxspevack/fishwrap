@@ -57,9 +57,8 @@ COPY fishwrap /app/fishwrap
 # only succeed when CWD happens to contain a fishwrap/ package on disk.
 ENV PYTHONPATH=/app
 
-# Entrypoint dispatcher and schema-init helper.
+# Entrypoint dispatcher.
 COPY docker/entrypoint.sh /usr/local/bin/entrypoint.sh
-COPY docker/init_db.py /usr/local/bin/init_db.py
 RUN chmod +x /usr/local/bin/entrypoint.sh
 
 # Documented mount points.

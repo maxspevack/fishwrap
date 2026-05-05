@@ -2,7 +2,7 @@ from datetime import datetime, timedelta
 import time
 from sqlalchemy import create_engine, select, delete, func
 from sqlalchemy.orm import sessionmaker
-from fishwrap.db.models import Article, Run, RunArticle, AuditLog
+from fishwrap.db.models import Article, Run, RunArticle, AuditLog, Base
 from fishwrap import _config
 import os
 
@@ -34,6 +34,10 @@ def _initialize_engine():
     if _current_engine is None or str(_current_engine.url) != current_config_url:
         _current_engine = create_engine(current_config_url)
         _SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=_current_engine)
+        # Ensure schema exists. Idempotent: no-op if tables are already present.
+        # Lets fresh checkouts and ephemeral container DBs Just Work without
+        # requiring a separate alembic-upgrade or init step.
+        Base.metadata.create_all(_current_engine)
         # print(f"[DB] Initialized engine for: {_current_engine.url}") # Debugging
 
 # --- Context Manager ---

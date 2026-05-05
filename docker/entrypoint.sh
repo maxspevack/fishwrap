@@ -5,7 +5,11 @@
 # Implements the documented CLI surface from docs/adr/001-release-artifact.md:
 #   fishwrap-build [--config <path>]   run the full pipeline
 #   fishwrap-version                   print __version__ to stdout
-#   fishwrap-validate-config <path>    validate a config (full impl in #4)
+#
+# fishwrap-validate-config is a future feature (issue #4) and is intentionally
+# not dispatched here yet; running it falls through to the generic exec branch
+# and produces a "command not found" error, which is more honest than a stub
+# that pretends to be a real validator.
 #
 # Falls through to `exec "$@"` so other invocations (debugging shells,
 # diagnostic commands) work too. The generic-Python invocation pattern
@@ -20,7 +24,6 @@ fishwrap container entrypoint
 Usage:
   fishwrap-build --config <path>      Run the full pipeline against <path>
   fishwrap-version                    Print the running version (semver)
-  fishwrap-validate-config <path>     Validate <path> against the schema
 
 Other commands are exec'd directly (e.g. \`bash\` for a debugging shell).
 EOF
@@ -69,9 +72,8 @@ EOF
         fi
 
         export FISHWRAP_CONFIG="${config_path}"
-        # Ensure schema exists. The newsroom DB is ephemeral per the ADR;
-        # every container run starts from an empty (or absent) database.
-        python /usr/local/bin/init_db.py
+        # The engine bootstraps its own schema during _initialize_engine
+        # (see fishwrap/db/repository.py); no separate init step needed.
         python -m fishwrap.fetcher
         python -m fishwrap.editor
         python -m fishwrap.enhancer
@@ -81,15 +83,6 @@ EOF
     fishwrap-version)
         # Stable contract: stdout is exactly one semver line, no banner, no whitespace.
         python -c 'import fishwrap; print(fishwrap.__version__)'
-        ;;
-
-    fishwrap-validate-config)
-        # Dispatch slot only — full implementation lands in issue #4 (A5).
-        # Exit 2 (not 0, not 1) signals "this command is recognized but not yet implemented",
-        # distinct from "command failed validation" (which #4 will use exit 1 for).
-        echo "fishwrap-validate-config: not yet implemented." >&2
-        echo "Tracked in https://github.com/maxspevack/fishwrap/issues/4" >&2
-        exit 2
         ;;
 
     ""|-h|--help)
