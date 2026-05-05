@@ -26,6 +26,7 @@ test:
 	@$(PYTHON) scripts/test_schema_integrity.py
 	@$(PYTHON) scripts/test_scoring_determinism.py
 	@$(PYTHON) scripts/test_templates.py
+	@$(PYTHON) scripts/test_validate_config.py
 	@# test_fw_db.sh is a shell script, run it if it exists and is executable
 	@if [ -x scripts/test_fw_db.sh ]; then ./scripts/test_fw_db.sh; fi
 	@echo "✅ All Tests Passed."
