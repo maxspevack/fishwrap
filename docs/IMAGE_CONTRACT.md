@@ -17,8 +17,7 @@ ghcr.io/maxspevack/fishwrap:<tag>
 ```
 
 - **Architectures:** `linux/amd64`. (arm64 is not currently published.)
-- **Build provenance:** SLSA Level 3 attestation attached at publish time. Verifiable with `cosign verify-attestation`.
-- **SBOM:** CycloneDX SBOM attached as a release asset on each [GitHub Release](https://github.com/maxspevack/fishwrap/releases).
+- **Where it's built:** images are built and published exclusively by the release workflow at https://github.com/maxspevack/fishwrap/blob/main/.github/workflows/release.yml on tag pushes. The image's source is whatever commit the corresponding git tag points at.
 
 Every release publishes **two** tags:
 
@@ -220,4 +219,4 @@ To start your own fishwrap-powered publication, fork the Daily Clamour repositor
 - [`docs/CONFIG_SCHEMA.md`](CONFIG_SCHEMA.md) — full config schema (companion document)
 - [`docs/RELEASING.md`](RELEASING.md) — release process used to produce these images
 - [Daily Clamour](https://github.com/maxspevack/dailyclamour.com) — canonical consumer
-- [GitHub Releases](https://github.com/maxspevack/fishwrap/releases) — image SBOMs and release notes
+- [GitHub Releases](https://github.com/maxspevack/fishwrap/releases) — release notes for each version
