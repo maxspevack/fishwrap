@@ -1,0 +1,181 @@
+# Fishwrap demos refresh workflow.
+#
+# Runs daily, builds the four reference demos (vanilla, cyber, ai,
+# showrunner) against the published image, validates each output's
+# size, and deploys the result to fishwrap.org via GitHub Pages.
+#
+# Two jobs, run sequentially:
+#
+#   build   matrix per vertical, fail-fast: false. Each pulls the
+#           pinned image, runs fishwrap-build, validates the output
+#           is at least MIN_OUTPUT_BYTES, uploads the HTML as an
+#           artifact. One vertical failing does not cancel the others.
+#
+#   deploy  needs: build. If ALL build legs succeeded, downloads each
+#           HTML artifact, slots it into docs/demo/<vertical>/, copies
+#           theme static assets from the source tree, runs Jekyll on
+#           docs/, and deploys via actions/deploy-pages.
+#
+# Failure modes the 2 AM operator should know about:
+#
+#   "manifest unknown" on docker pull
+#       The pinned image tag (FISHWRAP_IMAGE below) doesn't exist on
+#       GHCR. Either v2.0.0 hasn't cut yet, or someone renamed the
+#       package. Cut the release or fix the tag.
+#
+#   "<file> is N bytes, expected at least 10240"
+#       The pipeline ran but produced near-empty output. Usually means
+#       all feeds for that vertical 404'd or the printer crashed mid-
+#       render. Check the build job's logs for that vertical.
+#
+#   build matrix shows three green and one red
+#       fail-fast: false working correctly. Deploy job didn't fire
+#       because needs: build requires the WHOLE build job green.
+#       Live site stays at last-good. Fix the failing vertical, re-run.
+#
+#   Pages deploy step failed
+#       Either the Pages source isn't set to "GitHub Actions" in repo
+#       settings, or Jekyll choked on a file in docs/. Check the deploy
+#       job's logs.
+
+name: demos
+
+on:
+  schedule:
+    # Daily at 12:00 UTC. Aligns roughly with The Daily Clamour's
+    # 04:00 Pacific cadence (will drift one hour during DST; harmless).
+    - cron: '0 12 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# Serialize: never two demo refreshes at once. cancel-in-progress: false
+# because we never want to abort a publish midway.
+concurrency:
+  group: demos
+  cancel-in-progress: false
+
+env:
+  FISHWRAP_IMAGE: ghcr.io/maxspevack/fishwrap:2.0
+  # Smallest plausible size for a healthy demo HTML file. Files smaller
+  # than this almost always mean the pipeline produced empty/error output.
+  MIN_OUTPUT_BYTES: 10240
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - name: vanilla
+            config: config.py
+            output: index.html
+            theme: basic
+          - name: cyber
+            config: cyber_config.py
+            output: cyber_index.html
+            theme: basic
+          - name: ai
+            config: ai_config.py
+            output: ai_index.html
+            theme: basic
+          - name: showrunner
+            config: showrunner_config.py
+            output: showrunner_edition.html
+            theme: showrunner
+    steps:
+      - name: Checkout source (configs and themes)
+        uses: actions/checkout@v6
+
+      - name: Pull pinned fishwrap image
+        run: docker pull "$FISHWRAP_IMAGE"
+
+      - name: Run fishwrap-build for ${{ matrix.name }}
+        run: |
+          mkdir -p demo/output demo/data
+          docker run --rm \
+            -v "${PWD}:/workspace" \
+            --workdir /workspace \
+            "$FISHWRAP_IMAGE" \
+            fishwrap-build --config "/workspace/demo/${{ matrix.config }}"
+
+      - name: Validate output (size gate)
+        run: |
+          out="demo/output/${{ matrix.output }}"
+          if [ ! -f "$out" ]; then
+            echo "::error::$out was not produced"
+            exit 1
+          fi
+          size=$(stat -c%s "$out")
+          if [ "$size" -lt "$MIN_OUTPUT_BYTES" ]; then
+            echo "::error::$out is $size bytes, expected at least $MIN_OUTPUT_BYTES"
+            exit 1
+          fi
+          echo "$out: $size bytes — OK"
+
+      - name: Upload demo HTML
+        uses: actions/upload-artifact@v4
+        with:
+          name: demo-${{ matrix.name }}
+          path: demo/output/${{ matrix.output }}
+          if-no-files-found: error
+          retention-days: 7
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Checkout source (for docs/ and demo/themes/)
+        uses: actions/checkout@v6
+
+      - name: Download all demo artifacts
+        uses: actions/download-artifact@v4
+        with:
+          pattern: demo-*
+          path: artifacts
+
+      - name: Assemble demo pages into docs/demo/<vertical>/
+        run: |
+          set -e
+          for vertical in vanilla cyber ai showrunner; do
+            artifact_dir="artifacts/demo-${vertical}"
+            if [ ! -d "$artifact_dir" ]; then
+              echo "::error::missing artifact for $vertical (build job problem)"
+              exit 1
+            fi
+            mkdir -p "docs/demo/${vertical}"
+            # Each artifact contains exactly one HTML file (named per matrix.output).
+            # Copy it as index.html so consumers hit /demo/<vertical>/ cleanly.
+            find "$artifact_dir" -name '*.html' -print -exec cp {} "docs/demo/${vertical}/index.html" \;
+          done
+          # Theme static assets travel with the demos. Three demos use the
+          # 'basic' theme; showrunner uses its own. Match what the launchd-
+          # era publish_demo.sh did so URLs already in the wild keep working.
+          for vertical in vanilla cyber ai; do
+            mkdir -p "docs/demo/${vertical}/static"
+            cp -r demo/themes/basic/static/. "docs/demo/${vertical}/static/"
+          done
+          mkdir -p docs/demo/showrunner/static
+          cp -r demo/themes/showrunner/static/. docs/demo/showrunner/static/
+
+      - name: Build Jekyll site
+        uses: actions/jekyll-build-pages@v1
+        with:
+          source: docs
+          destination: _site
+
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
