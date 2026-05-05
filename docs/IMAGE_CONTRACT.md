@@ -112,9 +112,31 @@ $ podman run --rm ghcr.io/maxspevack/fishwrap:2.0.0 fishwrap-version
 
 This is the **only** supported way to read the version. Do not import the Python package and read `__version__`; the Python module layout is implementation detail.
 
-### `fishwrap-validate-config <path>` *(future feature)*
+### `fishwrap-validate-config <path>`
 
-A config-validation command is planned for a future release (tracked in [#4](https://github.com/maxspevack/fishwrap/issues/4)). It will accept a config file path and exit 0 / 1 based on whether the config matches the schema documented in `docs/CONFIG_SCHEMA.md`. Until that lands, validate config correctness by running `fishwrap-build` against it and observing whether the pipeline completes; bad configs will surface as engine errors at the relevant pipeline stage.
+Schema-checks a config file before you commit to a build. Use this in CI
+and in pre-commit hooks to fail in 100 ms instead of 4 minutes when a
+typo or missing key would otherwise crash mid-fetch.
+
+```bash
+podman run --rm \
+    -v $(pwd):/cfg \
+    ghcr.io/maxspevack/fishwrap:2.0.0 \
+    fishwrap-validate-config /cfg/config.py
+```
+
+Validates that required keys are present (`FEEDS`, `SECTIONS`) and that
+all defined keys have the right top-level type and shape. Does not
+validate semantics — URLs are not probed, timezones are not checked
+against IANA, file paths are not required to exist.
+
+Exit codes:
+
+| Code | Meaning |
+|---|---|
+| 0 | Config is valid. |
+| 1 | Config is invalid; stderr lists each problem prefixed `error:` (one per line). |
+| 2 | Usage error (wrong args, file not found, parse failure). |
 
 ### Generic Python via `--entrypoint python`
 
@@ -164,7 +186,7 @@ Daily Clamour's pinning setup (Dockerfile-tracked pin + Dependabot + production-
 The following are part of the contract. Changes to any of them require at minimum a minor version bump (or a major bump if the change is breaking):
 
 - The two mount points: `/cfg` and `/output`.
-- The invocations described in §4 (`fishwrap-build`, `fishwrap-version`, generic Python entrypoint). `fishwrap-validate-config` is a future addition tracked in [#4](https://github.com/maxspevack/fishwrap/issues/4); when it lands it will be added to this stability list.
+- The four invocations described in §4 (`fishwrap-build`, `fishwrap-version`, `fishwrap-validate-config`, generic Python entrypoint).
 - The output file paths and formats described in §3.
 - The image's identifier (`ghcr.io/maxspevack/fishwrap`).
 - The image running as a non-root user. (UID is currently 1000; the *non-rootness* is contract, the specific UID is implementation detail.)
