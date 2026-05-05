@@ -28,6 +28,7 @@ Welcome to the newsroom! Fishwrap is an open-source "Glass Box" news engine. We 
 *   **Modules:** Keep `fetcher`, `editor`, `auditor`, and `printer` decoupled.
 *   **State:** The SQLite database (`newsroom.db`) is the single source of truth for history.
 *   **No Magic:** We prefer explicit logic over implicit framework magic. Use `Makefile` for tasks.
+*   **Decisions:** Significant architectural decisions are recorded as ADRs in [`docs/adr/`](docs/adr/). Read them to understand *why* fishwrap is structured the way it is. Start with [ADR-001 — Release Artifact Contract](docs/adr/001-release-artifact.md).
 
 ### 2. Code Style
 *   **Python:** We target modern Python (3.12+).
