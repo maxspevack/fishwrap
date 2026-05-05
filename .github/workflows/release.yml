@@ -1,0 +1,59 @@
+# Fishwrap release workflow.
+#
+# Fires on git tag pushes matching v*. Builds the OCI image per the
+# release artifact contract (docs/adr/001-release-artifact.md and
+# docs/IMAGE_CONTRACT.md) and publishes it to GHCR.
+#
+# Stable tags (v2.0.0, v2.0.1, ...): publish both the exact tag and the
+# floating minor (v2.0). Pre-release tags (v2.0.0-rc1, -alpha.1, etc.):
+# publish only the exact tag.
+#
+# GitHub Releases stay human-curated per the existing two-track
+# convention (RELEASE_NOTES.md canonical; Release body Keep-a-Changelog
+# digest). This workflow does NOT create or modify Releases.
+
+name: release
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+permissions:
+  contents: read
+  packages: write
+
+jobs:
+  build-and-push:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout source at the tagged commit
+        uses: actions/checkout@v4
+
+      - name: Log in to GHCR
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Determine image tags from the git tag
+        id: meta
+        uses: docker/metadata-action@v5
+        with:
+          images: ghcr.io/${{ github.repository_owner }}/fishwrap
+          tags: |
+            type=semver,pattern=v{{version}}
+            type=semver,pattern=v{{major}}.{{minor}},enable=${{ !contains(github.ref_name, '-') }}
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Build and push image
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          platforms: linux/amd64
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
