@@ -23,8 +23,8 @@ Every release publishes **two** tags:
 
 | Tag form | Example | Mutability |
 |---|---|---|
-| Exact | `v2.0.2` | Immutable. Recommended for production pinning. |
-| Floating minor | `v2.0` | Republished on every patch within the minor line. Useful for development. **Do not pin production deploys to floating tags** — see §6 (Pinning). |
+| Exact | `2.0.2` | Immutable. Recommended for production pinning. |
+| Floating minor | `2.0` | Republished on every patch within the minor line. Useful for development. **Do not pin production deploys to floating tags** — see §6 (Pinning). |
 
 Pre-release tags (`-rc1`, `-alpha.1`, etc.) publish only the exact tag and do **not** update floating tags.
 
@@ -89,7 +89,7 @@ Runs the full editorial pipeline (fetch → edit → enhance → print) against 
 podman run --rm \
     -v $(pwd)/my-config-dir:/cfg \
     -v $(pwd)/my-output-dir:/output \
-    ghcr.io/maxspevack/fishwrap:v2.0.0 \
+    ghcr.io/maxspevack/fishwrap:2.0.0 \
     fishwrap-build --config /cfg/config.py
 ```
 
@@ -106,7 +106,7 @@ Exit codes:
 Prints the running image's version to stdout, as a single line, parseable as a semver string. Nothing else — no banner, no whitespace surprises.
 
 ```bash
-$ podman run --rm ghcr.io/maxspevack/fishwrap:v2.0.0 fishwrap-version
+$ podman run --rm ghcr.io/maxspevack/fishwrap:2.0.0 fishwrap-version
 2.0.0
 ```
 
@@ -124,7 +124,7 @@ For downstream scripts that need to call into the fishwrap library, override the
 podman run --rm \
     --entrypoint python \
     -v $(pwd):/cfg \
-    ghcr.io/maxspevack/fishwrap:v2.0.0 \
+    ghcr.io/maxspevack/fishwrap:2.0.0 \
     /cfg/your-script.py
 ```
 
@@ -138,8 +138,8 @@ Fishwrap follows [Semantic Versioning 2.0.0](https://semver.org/) per [`docs/VER
 
 | Bump type | Example | What changes | What you should do |
 |---|---|---|---|
-| **Patch** | `v2.0.1` → `v2.0.2` | Bug fixes only. Output is stable on identical input. | Adopt automatically (e.g., via Dependabot PRs that pass CI). |
-| **Minor** | `v2.0.x` → `v2.1.0` | New features. Output may change in non-breaking ways (e.g., new fields in `run_sheet.json`, new optional config keys). | Review release notes before adopting. Run your own validation. |
+| **Patch** | `2.0.1` → `2.0.2` | Bug fixes only. Output is stable on identical input. | Adopt automatically (e.g., via Dependabot PRs that pass CI). |
+| **Minor** | `2.0.x` → `2.1.0` | New features. Output may change in non-breaking ways (e.g., new fields in `run_sheet.json`, new optional config keys). | Review release notes before adopting. Run your own validation. |
 | **Major** | `vX.x.x` → `v(X+1).0.0` | Breaking changes to the image contract: input/output paths, file formats, entrypoints, or invocation. | Read the migration notes. Expect to modify your config, scripts, or CI. |
 
 **Pre-release identifiers** (`-rc1`, `-alpha.1`, `-beta`) are unstable and do not move floating tags. Treat them as preview-only.
@@ -148,7 +148,7 @@ Fishwrap follows [Semantic Versioning 2.0.0](https://semver.org/) per [`docs/VER
 
 ## 6. Pinning Recommendation
 
-**Pin to exact tags** (e.g., `v2.0.2`), not floating minors (e.g., `v2.0`).
+**Pin to exact tags** (e.g., `2.0.2`), not floating minors (e.g., `2.0`).
 
 Reasoning:
 
