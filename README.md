@@ -111,6 +111,7 @@ We document our journey in building a high-performance news engine.
 
 We are actively developing Fishwrap to be the engine of the "Anti-Feed" movement.
 
+*   [**Image Contract:**](docs/IMAGE_CONTRACT.md) The public contract for consumers of the fishwrap container image — inputs, outputs, entrypoints, versioning, and pinning recommendations. Read this if you want to use fishwrap as the engine for your own publication.
 *   [**Roadmap (2026):**](ROADMAP.md) See our plan for Observability, The Chronicle, and the PDF Engine.
 *   [**Contributing:**](CONTRIBUTING.md) How to add feeds, fix bugs, and tune the algorithm.
 *   [**Release Notes:**](docs/RELEASE_NOTES.md) History of changes.
