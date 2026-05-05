@@ -3,9 +3,12 @@ import os
 from datetime import datetime
 from zoneinfo import ZoneInfo
 from jinja2 import Environment, FileSystemLoader
-from weasyprint import HTML
 from fishwrap import _config
 from fishwrap import __version__
+
+# weasyprint is only required when PDF output is requested. It is imported
+# lazily inside the PDF code path below so the engine can ship without it
+# when PDF generation is out of scope (see issue #2 / A2 cleanup pass).
 
 def generate_edition(run_sheet):
     """
@@ -146,8 +149,11 @@ def generate_edition(run_sheet):
     # 4. Generate PDF (Optional/Bonus)
     if _config.LATEST_PDF_FILE:
         try:
+            from weasyprint import HTML  # lazy: optional dependency
             HTML(string=html_out, base_url=os.path.dirname(output_path)).write_pdf(_config.LATEST_PDF_FILE)
             print(f"[PRINTER] PDF Generated: {_config.LATEST_PDF_FILE}")
+        except ImportError:
+            print("[PRINTER] PDF generation skipped: weasyprint not installed.")
         except Exception as e:
             print(f"[PRINTER] PDF Generation Failed: {e}")
 
