@@ -11,7 +11,7 @@ Fishwrap adheres to **Semantic Versioning 2.0.0**, using a `MAJOR.MINOR.PATCH` f
 *   **When to increment:**
     *   **Incompatible API changes:** If a core module's (e.g., `fetcher.py`, `editor.py`, `printer.py`) public interface changes in a way that *requires users to modify their code or configurations* to continue using the engine.
     *   **Fundamental architectural shifts:** A complete overhaul of how themes are loaded, how configuration is structured (e.g., abandoning `exec()` for `importlib` if it changes user interaction).
-    *   **Major data model changes:** If `articles_db.json` schema changes in a non-backward-compatible way, requiring migration tools or data loss.
+    *   **Major data model changes:** If the SQLite schema in `newsroom.db` changes in a non-backward-compatible way, requiring migration tools or data loss.
 *   **Reset:** Increments `MAJOR` version. Resets `MINOR` and `PATCH` to `0`.
 
 ---
