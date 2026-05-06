@@ -45,9 +45,19 @@ Your configuration directory. The engine looks for these files inside it:
 
 Beyond these two, anything else you place under `/cfg` is yours — typically your theme directory, About-page content, or other consumer-specific assets your config references.
 
-### `/output` (required, writable)
+### `/output` (recommended, writable)
 
-The directory the engine writes to. Mount this writable. The engine produces the files described in §3.
+The engine writes outputs to paths your `config.py` specifies (see §3). The canonical pattern is to point those config paths under `/output/...` and mount this directory writable from the host:
+
+```bash
+podman run --rm \
+    -v $(pwd)/my-config-dir:/cfg \
+    -v $(pwd)/my-output-dir:/output \
+    ghcr.io/maxspevack/fishwrap:2.0.0 \
+    fishwrap-build --config /cfg/config.py
+```
+
+If your config instead writes outputs under `/cfg/` (using a `CONFIG_BASE_DIR`-relative pattern), the `/cfg` mount alone suffices and a separate `/output` mount is unnecessary. Daily Clamour uses this latter pattern — its config sets `LATEST_HTML_FILE = os.path.join(CONFIG_BASE_DIR, 'output/index.html')`, which resolves to `/cfg/output/index.html` inside the container and lands at the host's project-root `output/` via the `/cfg` bind. Either layout is supported.
 
 ### What is **not** part of the input contract
 
@@ -59,14 +69,16 @@ The directory the engine writes to. Mount this writable. The engine produces the
 
 ## 3. Outputs — What You Get Back
 
-After `fishwrap-build` completes successfully, `/output` contains the following files at stable paths:
+After `fishwrap-build` completes successfully, the engine writes outputs to the paths your `config.py` specifies. The four output artifacts and the config keys that control them are:
 
-| Path | Format | Stability |
-|---|---|---|
-| `/output/index.html` | UTF-8 HTML (rendered Jinja2 against your theme) | Stable across patch and minor versions. |
-| `/output/transparency_fragment.html` | UTF-8 HTML fragment (the audit/transparency report block) | Stable across patch and minor versions. Designed to be embedded in an "About" or "Methodology" page. |
-| `/output/run_sheet.json` | UTF-8 JSON (machine-readable record of the published edition) | Stable across patch and minor versions. The schema may grow (additive fields), never shrink. |
-| `/output/edition.pdf` | PDF | **Currently not produced** in v2.0.x. PDF generation is out of scope until a future release; configs may declare `LATEST_PDF_FILE` but the file will not be written. Setting the path is harmless. |
+| Logical artifact | Config key | Format | Stability |
+|---|---|---|---|
+| Edition HTML | `LATEST_HTML_FILE` | UTF-8 HTML (rendered Jinja2 against your theme) | Stable across patch and minor versions. |
+| Transparency fragment | written alongside `RUN_SHEET_FILE` as `transparency_fragment.html` | UTF-8 HTML fragment (the audit/transparency report block) | Stable across patch and minor versions. Designed to be embedded in an "About" or "Methodology" page. |
+| Run sheet | `RUN_SHEET_FILE` | UTF-8 JSON (machine-readable record of the published edition) | Stable across patch and minor versions. The schema may grow (additive fields), never shrink. |
+| Edition PDF | `LATEST_PDF_FILE` | PDF | **Currently not produced** in v2.0.x. PDF generation is out of scope until a future release; configs may declare the path but the file will not be written. Setting the path is harmless. |
+
+The canonical pattern points these config keys under `/output/` (see §2) so they land at predictable container paths regardless of how `/cfg` is laid out. Configs that use `CONFIG_BASE_DIR`-relative paths and write outputs under `/cfg/output/` are equally supported — Daily Clamour's reference config does this.
 
 ### What is **not** part of the output contract
 
@@ -150,7 +162,7 @@ podman run --rm \
     /cfg/your-script.py
 ```
 
-This is how Daily Clamour runs its `publish_about.py` glue script. The library surface inside the image (e.g., `from fishwrap.db.repository import ...`) is **not** part of the public contract — it may change between minor versions. If you find yourself relying on a specific internal API, file an issue: that is a signal we should be exposing a CLI for it instead.
+This is how Daily Clamour runs its `publish_about.py` glue script. In addition to the standard library, downstream scripts may rely on `jinja2` being importable inside the image — see §7 for the full list of runtime guarantees. The library surface of fishwrap itself (e.g., `from fishwrap.db.repository import ...`) is **not** part of the public contract — it may change between minor versions. If you find yourself relying on a specific internal API, file an issue: that is a signal we should be exposing a CLI for it instead.
 
 ---
 
@@ -185,11 +197,12 @@ Daily Clamour's pinning setup (Dockerfile-tracked pin + Dependabot + production-
 
 The following are part of the contract. Changes to any of them require at minimum a minor version bump (or a major bump if the change is breaking):
 
-- The two mount points: `/cfg` and `/output`.
+- The mount points: `/cfg` (required) and `/output` (recommended; see §2).
 - The four invocations described in §4 (`fishwrap-build`, `fishwrap-version`, `fishwrap-validate-config`, generic Python entrypoint).
-- The output file paths and formats described in §3.
+- The output formats described in §3. Output *paths* are determined by your config; the engine writes wherever your config points.
 - The image's identifier (`ghcr.io/maxspevack/fishwrap`).
 - The image running as a non-root user. (UID is currently 1000; the *non-rootness* is contract, the specific UID is implementation detail.)
+- The image's Python interpreter has `jinja2` available on `PYTHONPATH` for downstream scripts invoked via the generic Python entrypoint (§4). Other third-party Python packages are not part of the contract.
 
 The following are **not** part of the contract. They may change at any time, including in patch releases, with no notice:
 
