@@ -12,6 +12,8 @@ A release moves a new version through three places:
 
 A fourth, optional step is creating a curated GitHub Release for stable versions only.
 
+**Note on what `release.yml` does and does not update:** the release workflow publishes the OCI image to GHCR. It does **not** update `fishwrap.org`. The site is updated by `.github/workflows/demos.yml`, which runs on a daily cron (12:00 UTC) and publishes via `actions/deploy-pages`. Step 7 below covers triggering a manual demos refresh after a release so the new `RELEASE_NOTES.html` is live promptly instead of waiting up to 24 hours for the next cron.
+
 ---
 
 ## Before You Touch Anything
@@ -19,7 +21,7 @@ A fourth, optional step is creating a curated GitHub Release for stable versions
 Pause. Confirm the following with Max in the conversation, *before any tags fly*:
 
 - Which version is this — patch, minor, major, or pre-release? (Consult [VERSIONING.md](VERSIONING.md) if uncertain.)
-- What's the codename? Past examples: *The Foundation*, *The Glass Box*, *The Synchronization*. Pick something that anchors "what release was that, again?"
+- What's the codename? Past examples: *The Foundation*, *The Glass Box*, *The Synchronization*, *The Newsstand*. Pick something that anchors "what release was that, again?"
 - Are there any final code changes that need to land first?
 - Is this stable (`v2.1.0`) or pre-release (`v2.1.0-rc1`)?
 
@@ -32,7 +34,7 @@ Do not proceed without explicit "yes, cut it" from Max.
 Edit `docs/RELEASE_NOTES.md`. Add a new section at the **top**, following the existing convention:
 
 ```markdown
-## vX.Y.Z (Codename) - YYYY-MM-DD
+## vX.Y.Z (Codename) - Mon DD, YYYY
 
 One-paragraph summary of what this release does and why someone would want it.
 
@@ -46,7 +48,7 @@ One-paragraph summary of what this release does and why someone would want it.
 *   ...
 ```
 
-The date is absolute (Klausner discipline: no "today" or "this week"). Pick subsection headers that match what's actually in this release; not every release has all three categories.
+The date is absolute and matches existing convention: `Mon DD, YYYY` (e.g., `May 5, 2026` — not `2026-05-05`). Pick subsection headers that match what's actually in this release; not every release has all three categories.
 
 **Show Max the proposed entry before committing.**
 
@@ -95,7 +97,28 @@ If it fails, see *Recovery* below.
 
 ---
 
-## Step 5 — Verify the Published Image
+## Step 5 — Verify the Image (Visibility and Content)
+
+Two checks: visibility (downstream consumers can pull) and content (the image runs correctly).
+
+### 5a. Verify the package is publicly readable
+
+The GHCR package may default to private on a fresh publish, may inherit visibility from prior history, or may follow a user-level default. Verify directly rather than assume:
+
+```bash
+TOKEN=$(curl -s "https://ghcr.io/token?service=ghcr.io&scope=repository:maxspevack/fishwrap:pull" | jq -r .token)
+curl -sI -H "Authorization: Bearer $TOKEN" \
+    -H "Accept: application/vnd.oci.image.index.v1+json" \
+    "https://ghcr.io/v2/maxspevack/fishwrap/manifests/X.Y.Z" | head -1
+```
+
+A `HTTP/2 200` means the package is public. Anything else (commonly `401`) means it isn't, and you need to ask Max to flip it. Tell Max:
+
+> The image is published but the GHCR package is private. Visit https://github.com/users/maxspevack/packages/container/fishwrap/settings → "Danger Zone" → "Change package visibility" → set to Public. Without this, downstream consumers can't `docker pull` it.
+
+Wait for Max to confirm the flip is done before continuing.
+
+### 5b. Verify the image runs correctly
 
 ```bash
 podman pull ghcr.io/maxspevack/fishwrap:X.Y.Z
@@ -103,29 +126,15 @@ podman run --rm ghcr.io/maxspevack/fishwrap:X.Y.Z fishwrap-version
 # expected stdout: X.Y.Z (or X.Y.Z-rc1, etc.)
 ```
 
-If `fishwrap-version` doesn't match the tag, the workflow lied: the build claimed success but the image is wrong. Diagnose via `podman inspect` and the workflow logs. Don't proceed to Step 7.
+If `fishwrap-version` doesn't match the tag, the workflow lied: the build claimed success but the image is wrong. Diagnose via `podman inspect` and the workflow logs. Don't proceed.
 
 ---
 
-## Step 6 — First Release of the Package? Ask Max to Flip Visibility
-
-This applies *only the first time* the package is created on GHCR. Once flipped, it persists. After the first release, skip this step.
-
-If this is the first release ever (or the first since the package was deleted), the package is created as **private**. CI cannot change this.
-
-Tell Max, verbatim:
-
-> The image is published. The GHCR package is currently private. Visit https://github.com/users/maxspevack/packages/container/fishwrap/settings → "Danger Zone" → "Change package visibility" → set to Public. Without this, downstream consumers can't `docker pull` it.
-
-Wait for Max to confirm the flip is done before continuing.
-
----
-
-## Step 7 — Stable Release? Curate the GitHub Release
+## Step 6 — Stable Release? Curate the GitHub Release
 
 Pre-releases (anything matching `-rc`, `-alpha`, `-beta`) historically do not receive GitHub Releases. **Skip this step for them.**
 
-For stable releases, the GitHub Release body is a Keep-a-Changelog-style digest of the `RELEASE_NOTES.md` entry, suitable for the GitHub UI's "Releases" panel. Translate the emoji-headed sections in `RELEASE_NOTES.md` into `Added` / `Changed` / `Fixed`.
+For stable releases, the GitHub Release body is a Keep-a-Changelog-style digest of the `RELEASE_NOTES.md` entry, suitable for the GitHub UI's "Releases" panel. Translate the emoji-headed sections in `RELEASE_NOTES.md` into `Added` / `Changed` / `Fixed` / `Removed`.
 
 ```bash
 gh release create vX.Y.Z \
@@ -156,11 +165,33 @@ EOF
 
 ---
 
-## Step 8 — Close the Loop
+## Step 7 — Close the Loop
 
-Tell Max:
+Two things happen in this step: push the new release notes to fishwrap.org, then summarize for Max.
 
-> Release vX.Y.Z (Codename) is published. Image at `ghcr.io/maxspevack/fishwrap:X.Y.Z` and `:X.Y` (floating). GitHub Release at https://github.com/maxspevack/fishwrap/releases/tag/vX.Y.Z.
+### 7a. Trigger demos.yml so fishwrap.org reflects the new release
+
+GitHub Pages is in "GitHub Actions" mode; the only thing that updates the live site is `.github/workflows/demos.yml`. To get the new `RELEASE_NOTES.html` (and any other docs/ changes from the release commit) live without waiting for the next 12:00 UTC cron, trigger demos.yml manually:
+
+```bash
+gh workflow run demos.yml --repo maxspevack/fishwrap
+sleep 5
+RUN_ID=$(gh run list --repo maxspevack/fishwrap --workflow=demos.yml --limit 1 --json databaseId --jq '.[0].databaseId')
+gh run watch "$RUN_ID" --repo maxspevack/fishwrap --exit-status
+```
+
+After the run completes, verify:
+
+```bash
+curl -s "https://fishwrap.org/RELEASE_NOTES.html?$(date +%s)" | grep -oE "v[0-9]+\.[0-9]+\.[0-9]+ \([^)]+\)" | head -1
+# expected: vX.Y.Z (Codename)
+```
+
+If the demos workflow fails or the site doesn't show the new version, see *Recovery* below.
+
+### 7b. Tell Max
+
+> Release vX.Y.Z (Codename) is published. Image at `ghcr.io/maxspevack/fishwrap:X.Y.Z` and `:X.Y` (floating). GitHub Release at https://github.com/maxspevack/fishwrap/releases/tag/vX.Y.Z. fishwrap.org/RELEASE_NOTES.html is current.
 
 If anything notable happened during the release (had to re-run a step, manual fix, etc.), call it out so it lands in his memory of the release.
 
@@ -168,7 +199,7 @@ If anything notable happened during the release (had to re-run a step, manual fi
 
 ## Recovery
 
-### The workflow failed after the tag was pushed
+### The release workflow failed after the tag was pushed
 
 The tag is on the repo but no image was published. Common causes: Dockerfile regression, action version glitch, GHCR transient.
 
@@ -189,3 +220,12 @@ The second option is usually preferable. Suggest it to Max first.
 ### The git tag was pushed, the workflow failed, and the workflow was fixed in a later commit on `main`
 
 The tag doesn't move automatically. You have to choose: force-update the tag to the new SHA (visible in `git log`) or bump to the next patch version (cleaner). Suggest the bump to Max.
+
+### demos.yml failed during step 7a
+
+If the demos workflow failed, the site stays at last-good (the previous successful demos.yml deploy). The release itself is still complete — the image is live, the GitHub Release exists. Only fishwrap.org is stale.
+
+Common causes:
+- One of the four demos failed to build (a feed went 404, an error in fetching). With `fail-fast: false`, this blocks the deploy step (deploy is all-or-nothing). Diagnose the specific vertical's logs, fix, re-run via `gh workflow run demos.yml`.
+- The Pages source isn't set to "GitHub Actions" mode. Check repo settings → Pages → Source. Should be "GitHub Actions" not "Deploy from a branch."
+- `actions/deploy-pages` permissions issue. The workflow needs `pages: write` and `id-token: write` (already in the workflow file).
