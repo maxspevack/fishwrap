@@ -1,5 +1,5 @@
 SHELL := /bin/bash
-.PHONY: setup update test build-core run-vanilla run-cyber run-ai publish ship clean-output clean-venv run-clamour
+.PHONY: setup update test build-core run-vanilla run-cyber run-ai run-showrunner clean-output clean-venv clean-all
 
 # Paths
 VENV := venv
@@ -41,7 +41,10 @@ build-core:
 	$(PYTHON) -m fishwrap.enhancer && \
 	$(PYTHON) -m fishwrap.printer
 
-# --- Demo Targets ---
+# --- Demo Targets (local development) ---
+# Production demos refresh via .github/workflows/demos.yml against the
+# published image, not from these targets. These targets are for local
+# engine development only.
 run-vanilla:
 	@echo "--- Building Vanilla Demo ---"
 	@$(MAKE) build-core CONFIG=demo/config.py
@@ -57,29 +60,6 @@ run-ai:
 run-showrunner:
 	@echo "--- Building ShowRunner Demo ---"
 	@$(MAKE) build-core CONFIG=demo/showrunner_config.py
-
-# --- Production Target (Daily Clamour Hook) ---# Kept for backward compatibility with dailyclamour.com/deploy.sh logic
-# But ideally, DC should use its own Makefile that calls into this if needed
-run-clamour:
-	@echo "Running The Daily Clamour (Legacy Hook)..."
-	@if [ -z "$(FISHWRAP_CONFIG)" ]; then echo "Error: FISHWRAP_CONFIG env var required for run-clamour"; exit 1; fi
-	@$(PYTHON) -m fishwrap.fetcher && \
-	$(PYTHON) -m fishwrap.editor && \
-	$(PYTHON) -m fishwrap.enhancer && \
-	$(PYTHON) -m fishwrap.printer
-
-# --- Publishing ---
-publish:
-	@./publish_demo.sh vanilla
-	@./publish_demo.sh cyber
-	@./publish_demo.sh ai
-	@./publish_demo.sh showrunner
-
-# --- The "One Button" ---
-
-ship: setup test run-vanilla run-cyber run-ai run-showrunner publish
-
-	@echo "✅ Ship Complete. Verify in docs/ and commit."
 
 # --- Cleanup ---
 clean-output:
