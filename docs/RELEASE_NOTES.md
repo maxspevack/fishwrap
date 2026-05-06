@@ -4,6 +4,45 @@ Fishwrap is evolving from a personal script into a robust "Anti-Feed" platform. 
 
 ---
 
+## v2.0.0 (The Newsstand) - May 5, 2026
+
+This release marks the transition from "code you clone" to "image you pull." Fishwrap now ships as a signed OCI image at `ghcr.io/maxspevack/fishwrap`. Downstream products pull the pinned image, mount a config, and run it.
+
+**This is a major version bump** per `docs/VERSIONING.md`'s "fundamental architectural shifts" criterion. The way consumers integrate with fishwrap changes structurally. If you were cloning fishwrap into a `vendor/` directory and running its venv install, that path no longer works — switch to `docker pull ghcr.io/maxspevack/fishwrap:2.0` and run via `docker run`. See [`docs/IMAGE_CONTRACT.md`](IMAGE_CONTRACT.md) for the full new integration shape, and [Daily Clamour](https://github.com/maxspevack/dailyclamour.com) for a worked example.
+
+### 📦 The Artifact
+*   **OCI image release:** every `v*` tag push triggers `.github/workflows/release.yml`, which builds and publishes the image to GHCR. Stable tags publish both the exact tag (`:2.0.0`) and the floating minor (`:2.0`); pre-release tags (`-rc1`, `-alpha.1`, etc.) publish only the exact tag.
+*   **Documented consumer contract:** `docs/IMAGE_CONTRACT.md` describes inputs, outputs, entrypoints, versioning policy, and pinning recommendations. The contract surface is the only thing consumers should depend on.
+
+### ✨ New CLI Surface
+*   **`fishwrap-build --config <path>`:** runs the full pipeline. Replaces the four-step `python -m fishwrap.{fetcher,editor,enhancer,printer}` sequence.
+*   **`fishwrap-version`:** prints the running image's semver to stdout. The only supported way for downstream consumers to read the version.
+*   **`fishwrap-validate-config <path>`:** schema-checks a config file in ~100 ms before the pipeline runs. Catches missing keys and wrong types up-front instead of mid-fetch crashes.
+
+### 🤖 Production CI
+*   **Daily demo refresh:** `.github/workflows/demos.yml` runs at 12:00 UTC daily, rebuilds all four reference demos against the published image, validates output size (≥10 KB), and deploys to fishwrap.org via `actions/deploy-pages`. Per-vertical isolation: one bad feed does not block other demos.
+
+### 🏗️ Engine Improvements
+*   **Self-bootstrapping schema:** the engine now self-initializes its SQLite schema via `Base.metadata.create_all` in `_initialize_engine`. Ephemeral DBs in CI just work; fresh local clones no longer crash with "no such table: articles."
+*   **Lazy weasyprint:** PDF generation is optional. `printer.py` lazy-imports weasyprint inside the PDF code path, gated by `ImportError`. The v2.0 image ships without weasyprint and its ~80 MB native dependency stack; PDF returns when a real consumer asks.
+
+### 🧹 Decommissioned
+*   **The launchd ship pipeline retired:** `ship_demos.sh`, `publish_demo.sh`, `scripts/refresh_demos.sh`, the launchd plist, and the `make ship` / `make publish` / `make run-clamour` Makefile targets all removed. CI replaces them.
+*   **`ROADMAP.md` removed:** roadmap state lives in [GitHub Issues](https://github.com/maxspevack/fishwrap/issues) and [Milestones](https://github.com/maxspevack/fishwrap/milestones) to prevent drift between the file and reality.
+
+### 📚 Documentation
+*   **`docs/CONFIG_SCHEMA.md`:** every config key the engine recognizes, mirrored from the validator.
+*   **`docs/adr/001-release-artifact.md`:** internal decision record for the image-based release artifact.
+*   **`docs/RELEASING.md`:** rewritten as a procedural runbook for cutting future releases.
+*   **`README.md`:** rewritten around the image-based quick-start (`docker run …` instead of `make setup`).
+*   **`CONTRIBUTING.md`:** updated with a Two Audiences framing — engine contributors vs. image consumers.
+
+### 🛠️ Release Engineering
+*   **Action versions current:** release and demo workflows use the latest major versions of `actions/checkout`, `docker/build-push-action`, `docker/login-action`, `docker/metadata-action`, and `docker/setup-buildx-action` — Node 24-compatible ahead of GitHub's June 2026 deprecation.
+*   **No `:latest` tag:** `flavor: latest=false` suppresses the auto-generated `:latest` tag that would otherwise be a footgun for consumers who pin loosely.
+
+---
+
 ## v1.3.3 (The Synchronization) - Dec 14, 2025
 
 A maintenance release to synchronize documentation updates and ensure all downstream artifacts are built from the latest stable baseline.
