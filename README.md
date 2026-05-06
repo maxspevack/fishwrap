@@ -6,117 +6,106 @@
 
 <br>
 
-**Fishwrap** is a "Glass-Box" daily briefing engine. It transforms the chaos of the internet (RSS feeds, Reddit threads, Hacker News) into finite, auditable **Artifacts**—beautiful, distraction-free HTML or PDF editions.
+**Fishwrap** is a Glass-Box news engine. It transforms RSS feeds, Reddit threads, and Hacker News into finite, auditable HTML editions and stops. No infinite scroll. No black-box ranking. Every editorial decision lands in an audit log a human can read.
 
-It is designed to be the "Anti-Feed" for the Diamond Age.
+The engine ships as a signed OCI image at `ghcr.io/maxspevack/fishwrap`. Downstream products — newsletters, intranets, personal news pages — pull the image, mount a config, and run it.
 
 👀 **See it in action:**
-*   [The Daily Clamour](https://dailyclamour.com) (Live Production Instance)
-*   [The Zero Day](https://fishwrap.org/demo/cyber/) (Cybersecurity Demo)
-*   [The Hallucination](https://fishwrap.org/demo/ai/) (AI Research Demo)
-*   [The ShowRunner](https://fishwrap.org/demo/showrunner/) (Entertainment Demo)
+*   [The Daily Clamour](https://dailyclamour.com) — Live production instance, refreshes daily at 04:00 Pacific
+*   [The Zero Day](https://fishwrap.org/demo/cyber/) — Cybersecurity demo
+*   [The Hallucination](https://fishwrap.org/demo/ai/) — AI research demo
+*   [The ShowRunner](https://fishwrap.org/demo/showrunner/) — Entertainment demo
 
 ---
 
-## 🗞️ Stop the Presses! (Quick Start)
+## 🗞️ Quick Start
 
-Fishwrap ships with reference "Verticals" to demonstrate its flexibility.
+You need: Docker or Podman. That's it.
 
-### 1. Hire the Staff
-Clone the repo and install dependencies:
 ```bash
 git clone https://github.com/maxspevack/fishwrap.git
 cd fishwrap
-make setup
+mkdir -p output
+docker run --rm \
+    -v $(pwd)/demo:/cfg \
+    -v $(pwd)/output:/output \
+    ghcr.io/maxspevack/fishwrap:2.0 \
+    fishwrap-build --config /cfg/config.py
 ```
 
-### 2. Choose Your Vertical
-Run the pipeline for the edition you want to print:
+The rendered edition lands at `output/index.html`. Open it.
 
-*   **The Vanilla Edition (General News):**
-    ```bash
-    make run-vanilla
-    open demo/output/index.html
-    ```
-
-*   **The Zero Day (Cybersecurity):**
-    ```bash
-    make run-cyber
-    open demo/output/cyber_index.html
-    ```
-
-*   **The Hallucination (AI Research):**
-    ```bash
-    make run-ai
-    open demo/output/ai_index.html
-    ```
-
-*   **The ShowRunner (Entertainment):**
-    ```bash
-    make run-showrunner
-    open demo/output/showrunner_edition.html
-    ```
-
----
-
-## 🧐 The Glass Box (How It Works)
-
-Fishwrap is built on the philosophy of **Transparency** and **Auditability**.
-
-*   **The Fetcher:** Scours your defined feeds (RSS, JSON) using **Concurrent I/O** (10x faster than sequential).
-*   **The Editor:** Dynamically buckets articles into Sections based on `config.py`. It applies your transparent **Editorial Policies** (Boosts/Penalties) to calculate an Impact Score.
-*   **The Auditor:** A forensic accountant that runs after every edition. It generates a **Transparency Report** (`transparency.html`) proving exactly how much noise was filtered and which sources won.
-*   **The Enhancer:** Scrapes full text so you don't have to click away, utilizing intelligent caching and **Rate Limiting** to be a good citizen.
-*   **The Printer:** Generates a static HTML/PDF file.
-
-Everything is backed by a robust **SQLite** database ("The Newsroom") for high performance and historical analysis.
-
-[**Read the Full Documentation**](https://fishwrap.org)
-
----
-
-## 🧰 Database Management (`fw-db`)
-
-Fishwrap uses a local SQLite database ("The Newsroom") to track articles and runs. You can manage this using the `fw-db` utility.
-
-**Note:** You must provide the configuration file *before* the command so the tool knows which database to target.
+To run a different vertical, swap the config path:
 
 ```bash
-# Check status (Article count, DB size)
-python3 scripts/fw-db.py --config demo/config.py status
-
-# List recent editions (Runs)
-python3 scripts/fw-db.py --config demo/config.py runs
+docker run --rm -v $(pwd)/demo:/cfg -v $(pwd)/output:/output \
+    ghcr.io/maxspevack/fishwrap:2.0 \
+    fishwrap-build --config /cfg/cyber_config.py
 ```
+
+For the full consumer contract — every input, every output path, every CLI surface, the versioning policy, the pinning recommendation — read [**`docs/IMAGE_CONTRACT.md`**](docs/IMAGE_CONTRACT.md).
 
 ---
 
-## 📚 Engineering Blog
+## 🧐 The Glass Box
 
-We document our journey in building a high-performance news engine.
+Fishwrap is built on transparency over magic. Every editorial decision is visible.
 
-*   [**Scaling the School**](https://fishwrap.org/engineering/): A 3-part case study on how we gutted O(N²) logic, parallelized the pipeline, and fixed "Zombie" data bugs.
+*   **The Fetcher** scours your defined feeds (RSS, JSON, Reddit) using concurrent I/O. Failed feeds are logged, not hidden.
+*   **The Editor** classifies each article into a section using your `KEYWORDS` table and applies your `EDITORIAL_POLICIES` (boosts and penalties) to compute an Impact Score. Every score is recorded, every policy that fired is named.
+*   **The Auditor** runs after every edition and emits a Transparency Report (`transparency_fragment.html`) showing how much noise was filtered, which sources won, which articles barely made it, and which barely missed.
+*   **The Enhancer** scrapes full text where possible so consumers don't click out. Rate-limited.
+*   **The Printer** renders the final HTML against a Jinja2 theme of your choosing.
+
+Behind the scenes is a SQLite "Newsroom" database that stores the article corpus during a run. In containerized contexts the database is ephemeral — every run starts fresh.
+
+[**Read the engineering blog →**](https://fishwrap.org/engineering/)
+
+---
+
+## 🤝 Build Your Own
+
+Fishwrap is the engine. Your publication is the config and the theme. To start your own fishwrap-powered news page:
+
+1. Read [`docs/IMAGE_CONTRACT.md`](docs/IMAGE_CONTRACT.md) — what the image expects and produces.
+2. Read [`docs/CONFIG_SCHEMA.md`](docs/CONFIG_SCHEMA.md) — every key the engine looks for.
+3. Fork [Daily Clamour](https://github.com/maxspevack/dailyclamour.com) — the canonical example consumer, set up to refresh daily on GitHub Actions with Dependabot version pinning. Replace the config and theme; you're done.
 
 ---
 
 ## 📂 Repository Structure
 
-*   **`fishwrap/`**: The core stateless engine.
-*   **`demo/`**: Reference configurations (`config.py`, `cyber_config.py`, `ai_config.py`) and themes.
-*   **`docs/`**: The source for [fishwrap.org](https://fishwrap.org).
+*   **`fishwrap/`** — the stateless engine.
+*   **`demo/`** — four reference configurations and themes (`vanilla`, `cyber`, `ai`, `showrunner`).
+*   **`docs/`** — the source for [fishwrap.org](https://fishwrap.org), plus the consumer contract, ADRs, schema reference, and release notes.
+*   **`Dockerfile`** — the release artifact recipe.
+*   **`.github/workflows/`** — release and demo refresh workflows.
 
 ---
 
-## 🤝 Join the Newsroom
+## 📚 Documentation
 
-We are actively developing Fishwrap to be the engine of the "Anti-Feed" movement.
+| | |
+|---|---|
+| [**Image Contract**](docs/IMAGE_CONTRACT.md) | Public contract for image consumers |
+| [**Config Schema**](docs/CONFIG_SCHEMA.md) | Every key the engine recognizes |
+| [**Release Notes**](docs/RELEASE_NOTES.md) | Version history |
+| [**Releasing**](docs/RELEASING.md) | Runbook for cutting new versions |
+| [**Contributing**](CONTRIBUTING.md) | How to contribute to the engine itself |
+| [**Architecture Decisions**](docs/adr/) | ADRs for significant decisions |
+| [**Versioning Policy**](docs/VERSIONING.md) | What patch / minor / major mean |
 
-*   [**Image Contract:**](docs/IMAGE_CONTRACT.md) The public contract for consumers of the fishwrap container image — inputs, outputs, entrypoints, versioning, and pinning recommendations. Read this if you want to use fishwrap as the engine for your own publication.
-*   [**Roadmap (2026):**](ROADMAP.md) See our plan for Observability, The Chronicle, and the PDF Engine.
-*   [**Contributing:**](CONTRIBUTING.md) How to add feeds, fix bugs, and tune the algorithm.
-*   [**Release Notes:**](docs/RELEASE_NOTES.md) History of changes.
+## 🗺️ What's Planned
+
+The roadmap lives in GitHub. There is no separate roadmap document to keep in sync.
+
+| | |
+|---|---|
+| [**Issues**](https://github.com/maxspevack/fishwrap/issues) | Everything open, in progress, and recently closed |
+| [**Milestones**](https://github.com/maxspevack/fishwrap/milestones) | Versioned groupings of issues currently being worked on |
 
 ---
 
 ## 📜 License
+
 Apache License 2.0.
