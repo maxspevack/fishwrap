@@ -97,7 +97,15 @@ jobs:
       - name: Run fishwrap-build for ${{ matrix.name }}
         run: |
           mkdir -p demo/output demo/data
+          # --user $(id -u):$(id -g) makes the container process run as the
+          # runner's user (typically uid 1001 on ubuntu-latest), not the
+          # image's default fishwrap user (uid 1000). Without this, the
+          # bind-mounted /workspace is owned by the runner uid and the
+          # container's fishwrap uid can't write to it — sqlite3 fails
+          # with "unable to open database file" the moment the engine tries
+          # to create demo/data/<vertical>.db.
           docker run --rm \
+            --user "$(id -u):$(id -g)" \
             -v "${PWD}:/workspace" \
             --workdir /workspace \
             "$FISHWRAP_IMAGE" \
