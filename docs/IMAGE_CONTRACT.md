@@ -219,14 +219,23 @@ The following are **not** part of the contract. They may change at any time, inc
 
 ## 8. Canonical Consumer Template
 
-[Daily Clamour](https://github.com/maxspevack/dailyclamour.com) is the reference implementation for "consume fishwrap as an image." It demonstrates:
+[Daily Clamour](https://github.com/maxspevack/dailyclamour.com) is the reference implementation for "consume fishwrap as an image." Specific files worth reading before you fork:
+
+- [`Dockerfile`](https://github.com/maxspevack/dailyclamour.com/blob/main/Dockerfile) — single-line image pin tracked by Dependabot. The file's only purpose is to be a Dependabot manifest; the Makefile and workflow both `awk` its `FROM` line at run time.
+- [`docs/VERSION_POLICY.md`](https://github.com/maxspevack/dailyclamour.com/blob/main/docs/VERSION_POLICY.md) — exact-pin reasoning, Dependabot procedure, Dependabot-vs-Renovate trade-offs, manual override path.
+- [`.github/workflows/refresh.yml`](https://github.com/maxspevack/dailyclamour.com/blob/main/.github/workflows/refresh.yml) — daily cron that pulls the image, validates config, builds, gates on size + structural assertions, deploys via `actions/deploy-pages`. Includes the canonical secrets-injection pattern (GH secret → temp file → bind mount).
+- [`scripts/structural_test.py`](https://github.com/maxspevack/dailyclamour.com/blob/main/scripts/structural_test.py) — example of post-build assertions that catch silent regressions the size gate misses (section disappearance, Jinja leaks, scoring collapse).
+- [`OPERATIONS.md`](https://github.com/maxspevack/dailyclamour.com/blob/main/OPERATIONS.md) — operator manual covering daily flow, version bumps, cookie rotation, manual triggers, and troubleshooting.
+- [`Makefile`](https://github.com/maxspevack/dailyclamour.com/blob/main/Makefile) — runtime-agnostic Make wrapper. Auto-detects `docker` vs `podman`, handles rootless podman user-namespace remap (`--userns=keep-id`) and SELinux relabeling (`:z`), invokes the documented CLI surface.
+
+DC demonstrates:
 
 - Pinning the image version in a `Dockerfile` so Dependabot can track upgrades.
-- Mounting a config directory at `/cfg` and an output directory at `/output`.
+- Mounting a config directory at `/cfg`. (DC's `config.py` uses `CONFIG_BASE_DIR`-relative paths, so a separate `/output` mount is unnecessary — see §2 for both supported layouts.)
 - Running `fishwrap-build` from GitHub Actions on a daily cron.
-- Capturing `fishwrap-version` for downstream metadata injection (no Python imports of fishwrap).
-- Output validation as a deploy gate.
-- Secrets travel via GitHub Actions secrets, written to a temp file and mounted at `/cfg/secrets.json`.
+- Capturing `fishwrap-version` for downstream metadata injection — no Python imports of fishwrap anywhere in the consumer's source.
+- Pre-build (`fishwrap-validate-config`) and post-build (size gate + structural assertions) validation as deploy gates. The Dependabot PR's required check is the full production refresh against the candidate image.
+- Secrets travel via GitHub Actions secrets, written to a temp file at workflow runtime, mounted at `/cfg/secrets.json`.
 
 To start your own fishwrap-powered publication, fork the Daily Clamour repository and replace the config, theme, and content. You should not need to read fishwrap source code at any point.
 
