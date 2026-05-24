@@ -4,6 +4,36 @@ Fishwrap is evolving from a personal script into a robust "Anti-Feed" platform. 
 
 ---
 
+## v2.0.1 (The Audit Pass) — May 24, 2026
+
+Point release driven by a top-to-bottom code and bandwidth review of the deployed fishwrap.org site. Every change traces to a GitHub issue (#17–#26) so the audit lineage stays visible in `git log`.
+
+### 🔒 Security
+*   **Re-enable TLS certificate verification (#20).** `utils.fetch_url` was disabling `check_hostname` and forcing `verify_mode = CERT_NONE` on the shared SSL context. Every HTTPS fetch accepted any peer certificate. Restored to `ssl.create_default_context()` defaults.
+*   **Parse RSS/Atom via defusedxml (#21).** `xml.etree.ElementTree` is documented as vulnerable to entity-expansion attacks; RSS feeds are untrusted by definition. Swapped to `defusedxml.ElementTree`. Regression test `scripts/test_xml_safety.py` feeds a billion-laughs payload and asserts the fetcher refuses it.
+
+### 📡 Engine Reliability
+*   **Wire a real logger across the engine (#19).** Seven `except: pass` and silent `return []`/`return None` sites across `fetcher.py`, `utils.py`, `auditor.py`, `editor.py`, `printer.py`, and `db/repository.py` were swallowing errors against the README's "Failed feeds are logged, not hidden" claim. New `fishwrap/log.py` (stdlib `logging`, level via `FISHWRAP_LOG_LEVEL`, stderr) replaces them. Bare `except:` clauses narrowed to specific exception types so `KeyboardInterrupt` and `SystemExit` no longer get eaten mid-build.
+*   **Configurable fetcher concurrency + per-host rate limit default (#23).** Hardcoded `MAX_WORKERS = 30` becomes config-driven `FETCH_WORKERS` (default 10). New `FETCH_DEFAULT_RATE_LIMIT_SECONDS` (default 0.0) provides a global floor for hosts not enumerated in `utils.RATE_LIMITS`.
+*   **Code hygiene sweep (#26).** Every `open()` that handles text now specifies `encoding='utf-8'` explicitly. `editor.py` and `printer.py` switched from `str.replace`-based fragment path math to `os.path.join` + `os.path.dirname`.
+*   **Delete dead renderer code (#18).** `fishwrap/renderers/{html,pdf}.py` (412 lines) was unreachable in the production pipeline. The HTML renderer used `random.choice` at render time (non-reproducible, manifesto violation) and unsafe `str.format` on raw template strings.
+
+### 🌐 fishwrap.org Bandwidth
+*   **Showrunner image weight: 4.5 MB → ~18 KB on AVIF-capable browsers (#17).** Three 1024×1024 PNGs (~4.5 MB total) replaced with AVIF + WebP + JPEG/PNG fallback via `<picture>` (logo) and CSS `image-set()` (section heroes). Source PNGs preserved in `static/images/sources/`. `scripts/optimize-theme-images.sh` regenerates derivatives from sources.
+*   **Externalize basic-theme CSS (#22).** The basic theme inlined 21 KB of CSS in `layout.html` plus appended a dark-theme override from a separate file. Consolidated into one external `static/css/style.css`. Per-page HTML drops from ~24 KB to ~3 KB, and the three demos that share the theme (vanilla/cyber/ai) now hit a single cached file.
+
+### 📦 Supply Chain
+*   **SLSA build provenance + CycloneDX SBOM on every release (#24).** Closes the gap that #5 (A3) left open. `release.yml` now uses `actions/attest-build-provenance@v3` to attest the image digest and `anchore/sbom-action@v0` + `actions/attest-sbom@v3` to ship a verifiable SBOM. `docs/IMAGE_CONTRACT.md` documents `gh attestation verify`.
+
+### 📝 Documented (Not Implemented)
+*   **#25 — fishwrap.org security response headers.** HSTS, CSP, `X-Content-Type-Options`, `Referrer-Policy`, `Permissions-Policy` are missing. Issue captures the recommended header set and Cloudflare Transform Rules path; no code change was the right vehicle.
+
+### 🧪 Tests
+*   `scripts/test_logging_wiring.py` — asserts garbage XML and unparseable Reddit JSON produce WARNING log entries.
+*   `scripts/test_xml_safety.py` — asserts a billion-laughs payload is rejected by defusedxml and logged.
+
+---
+
 ## v2.0.0 (The Newsstand) - May 5, 2026
 
 This release marks the transition from "code you clone" to "image you pull." Fishwrap now ships as a signed OCI image at `ghcr.io/maxspevack/fishwrap`. Downstream products pull the pinned image, mount a config, and run it.
