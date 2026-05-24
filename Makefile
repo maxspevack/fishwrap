@@ -24,6 +24,7 @@ test:
 	@$(PYTHON) scripts/test_enhancer_db.py
 	@$(PYTHON) scripts/test_fetcher_resilience.py
 	@$(PYTHON) scripts/test_logging_wiring.py
+	@$(PYTHON) scripts/test_xml_safety.py
 	@$(PYTHON) scripts/test_schema_integrity.py
 	@$(PYTHON) scripts/test_scoring_determinism.py
 	@$(PYTHON) scripts/test_templates.py

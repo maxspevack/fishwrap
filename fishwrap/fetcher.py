@@ -1,6 +1,6 @@
 import json
 import urllib.request
-import xml.etree.ElementTree as ET
+import defusedxml.ElementTree as ET
 import time
 from datetime import datetime
 import os
