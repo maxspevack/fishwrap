@@ -8,6 +8,9 @@ from fishwrap import scoring
 from fishwrap import auditor
 from fishwrap.db import repository
 from fishwrap import utils
+from fishwrap.log import get_logger
+
+log = get_logger(__name__)
 
 def classify_article(article):
     """
@@ -245,10 +248,10 @@ def run_editor():
         source_counts = {}
         for item in selected:
             try:
-                # simple domain parse
                 domain = item.get('source_url', '').split('/')[2]
-            except:
+            except IndexError:
                 domain = 'unknown'
+                log.debug("could not parse domain from %r", item.get('source_url'))
             source_counts[domain] = source_counts.get(domain, 0) + 1
         
         # Convert to list of (domain, count) sorted by count

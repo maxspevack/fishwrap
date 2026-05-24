@@ -5,6 +5,9 @@ from zoneinfo import ZoneInfo
 from jinja2 import Environment, FileSystemLoader
 from fishwrap import _config
 from fishwrap import __version__
+from fishwrap.log import get_logger
+
+log = get_logger(__name__)
 
 # weasyprint is only required when PDF output is requested. It is imported
 # lazily inside the PDF code path below so the engine can ship without it
@@ -51,14 +54,13 @@ def generate_edition(run_sheet):
                 
             art['visual_class'] = art_type
             
-            # Clean domain for display
             try:
                 domain = art.get('source_url', '').split('/')[2].replace('www.', '')
                 art['domain'] = domain
-            except:
+            except IndexError:
                 art['domain'] = 'web'
+                log.debug("could not parse domain from %r", art.get('source_url'))
 
-            # Calculate Time Ago
             try:
                 ts = art.get('timestamp', 0)
                 if ts:
@@ -82,8 +84,9 @@ def generate_edition(run_sheet):
                         art['time_ago'] = f"{minutes}m"
                 else:
                     art['time_ago'] = ""
-            except Exception:
+            except (ValueError, TypeError, OSError) as e:
                 art['time_ago'] = ""
+                log.debug("time_ago computation failed for ts=%r: %s", art.get('timestamp'), e)
                 
             formatted_articles.append(art)
             

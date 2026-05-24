@@ -8,6 +8,9 @@ import threading
 import urllib.parse
 from datetime import datetime
 from fishwrap import _config
+from fishwrap.log import get_logger
+
+log = get_logger(__name__)
 
 # Shared SSL context for scraping (permissive)
 _ssl_context = ssl.create_default_context()
@@ -32,7 +35,7 @@ def get_domain(url):
     try:
         parsed = urllib.parse.urlparse(url)
         return parsed.netloc
-    except:
+    except (ValueError, AttributeError):
         return ""
 
 def get_ssl_context():
@@ -117,26 +120,27 @@ def fetch_url(url, headers=None, timeout=15, max_size=5 * 1024 * 1024):
         with urllib.request.urlopen(req, context=_ssl_context, timeout=timeout) as response:
             content = b""
             while True:
-                # Check Time
                 if time.time() - start_time > timeout:
-                    # print(f"Timeout fetching {url}")
+                    log.warning("timeout fetching %s after %ss", url, timeout)
                     return None
-                
-                chunk = response.read(1024 * 64) # 64KB chunks
+
+                chunk = response.read(1024 * 64)
                 if not chunk:
                     break
-                    
+
                 content += chunk
-                
-                # Check Size
+
                 if len(content) > max_size:
-                    # print(f"Oversize fetching {url}")
+                    log.warning("oversize response from %s (>%dB)", url, max_size)
                     return None
-            
+
             return content.decode('utf-8')
 
-    except Exception as e:
-        # print(f"Error fetching {url}: {e}")
+    except UnicodeDecodeError as e:
+        log.warning("non-utf8 response from %s: %s", url, e)
+        return None
+    except Exception:
+        log.exception("fetch failed for %s", url)
         return None
 
 def clean_html(raw_html):

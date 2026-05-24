@@ -5,6 +5,9 @@ from zoneinfo import ZoneInfo
 from jinja2 import Environment, FileSystemLoader
 from fishwrap.db import repository
 from fishwrap import _config
+from fishwrap.log import get_logger
+
+log = get_logger(__name__)
 
 def audit_run(run_sheet, candidates, stats_context):
     """
@@ -38,24 +41,22 @@ def audit_run(run_sheet, candidates, stats_context):
             })
             selected_ids.add(art.get('id'))
             
-            # Output Source Counting
             try:
                 domain = art.get('source_url', '').split('/')[2]
                 output_source_counts[domain] = output_source_counts.get(domain, 0) + 1
-            except:
-                pass
+            except IndexError:
+                log.debug("could not parse domain from %r", art.get('source_url'))
             
     # Track Input Counts (Pool) & Build Audit Log
     input_source_counts = {}
     audit_logs = []
     
     for art in candidates:
-        # Source Counting
         try:
             domain = art.get('source_url', '').split('/')[2]
             input_source_counts[domain] = input_source_counts.get(domain, 0) + 1
-        except:
-            pass
+        except IndexError:
+            log.debug("could not parse domain from %r", art.get('source_url'))
             
         # Build Audit Log Entry
         # Decision Logic:
@@ -162,7 +163,7 @@ def generate_report(context):
     template_dir = os.path.join(theme_dir, 'templates')
     
     if not os.path.exists(template_dir):
-        pass
+        log.warning("template_dir does not exist: %s", template_dir)
 
     env = Environment(loader=FileSystemLoader(template_dir))
     template = env.get_template('transparency.html')

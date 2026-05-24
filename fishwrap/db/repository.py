@@ -202,8 +202,8 @@ def get_source_dominance():
             try:
                 domain = url.split('/')[2]
                 counts[domain] = counts.get(domain, 0) + 1
-            except:
-                pass
+            except IndexError:
+                continue
                 
         return sorted(counts.items(), key=lambda x: x[1], reverse=True)[:5]
 

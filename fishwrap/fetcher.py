@@ -12,6 +12,9 @@ from fishwrap import utils
 from fishwrap import editor
 from fishwrap import scoring
 from fishwrap.db import repository
+from fishwrap.log import get_logger
+
+log = get_logger(__name__)
 
 NAMESPACES = {
     'atom': 'http://www.w3.org/2005/Atom',
@@ -57,9 +60,11 @@ def fetch_reddit_json(url):
             }
             article['categories'] = [c for c in article['categories'] if c]
             articles.append(article)
-    except Exception as e:
-        pass 
-        
+    except (json.JSONDecodeError, KeyError, TypeError) as e:
+        log.warning("reddit json parse failed for %s: %s", url, e)
+    except Exception:
+        log.exception("unexpected error fetching reddit json %s", url)
+
     return articles
 
 def process_feed(url, cutoff):
@@ -77,11 +82,11 @@ def process_feed(url, cutoff):
 
             raw_data = utils.fetch_url(url, timeout=30)
             if raw_data:
-                # Basic XML parsing
                 try:
                     root = ET.fromstring(raw_data)
-                except ET.ParseError:
-                    return [] # Skip malformed XML
+                except ET.ParseError as e:
+                    log.warning("xml parse failed for %s: %s", url, e)
+                    return []
 
                 is_atom = 'feed' in root.tag
                 
@@ -158,9 +163,13 @@ def process_feed(url, cutoff):
                         if comments_match: article['stats_comments'] = int(comments_match.group(1))
                     
                     items.append(article)
-    except Exception as e:
-        return [] 
-        
+    except ET.ParseError as e:
+        log.warning("xml parse failed for %s: %s", url, e)
+        return []
+    except Exception:
+        log.exception("unexpected error parsing feed %s", url)
+        return []
+
     return items
 
 def update_database():
