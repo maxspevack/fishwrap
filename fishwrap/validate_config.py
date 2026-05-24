@@ -199,7 +199,7 @@ def load_config_namespace(config_path: str) -> dict:
     Raises whatever exception exec() raises if the config is unparseable.
     """
     config_globals: dict = {"__file__": config_path}
-    with open(config_path, "r") as f:
+    with open(config_path, "r", encoding="utf-8") as f:
         exec(f.read(), config_globals)
     return {k: v for k, v in config_globals.items() if not k.startswith("__")}
 

@@ -72,7 +72,7 @@ if config_path:
             # Create a namespace for execution and inject __file__
             config_globals = {'__file__': config_path}
             
-            with open(config_path, 'r') as f:
+            with open(config_path, 'r', encoding='utf-8') as f:
                 exec(f.read(), config_globals)
             
             # Update local globals with values from the config

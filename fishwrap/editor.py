@@ -1,4 +1,5 @@
 import json
+import os
 from urllib.parse import urlparse
 import difflib
 import time
@@ -271,7 +272,7 @@ def run_editor():
     duration = timer.stop()
     print(f"\n[EDITOR] Published {total_selected} articles ({drift_count} reclassified) in {duration:.2f}s.")
     
-    with open(_config.RUN_SHEET_FILE, 'w') as f:
+    with open(_config.RUN_SHEET_FILE, 'w', encoding='utf-8') as f:
         json.dump(run_sheet, f, indent=2)
 
     # --- Phase 4: The Auditor ---
@@ -286,9 +287,11 @@ def run_editor():
         'perf_metrics': {'editor_duration': duration}
     })
     
-    # Save Transparency Fragment for Printer
-    frag_path = _config.RUN_SHEET_FILE.replace('run_sheet.json', 'transparency_fragment.html')
-    with open(frag_path, 'w') as f:
+    frag_path = os.path.join(
+        os.path.dirname(_config.RUN_SHEET_FILE) or '.',
+        'transparency_fragment.html',
+    )
+    with open(frag_path, 'w', encoding='utf-8') as f:
         f.write(transparency_html)
 
 if __name__ == "__main__":

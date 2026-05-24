@@ -97,11 +97,13 @@ def generate_edition(run_sheet):
             'articles': formatted_articles
         })
 
-    # Load Transparency Fragment
     transparency_frag = ""
-    frag_path = _config.RUN_SHEET_FILE.replace('run_sheet.json', 'transparency_fragment.html')
+    frag_path = os.path.join(
+        os.path.dirname(_config.RUN_SHEET_FILE) or '.',
+        'transparency_fragment.html',
+    )
     if os.path.exists(frag_path):
-        with open(frag_path, 'r') as f:
+        with open(frag_path, 'r', encoding='utf-8') as f:
             transparency_frag = f.read()
 
     # 2. Render HTML
@@ -136,7 +138,7 @@ def generate_edition(run_sheet):
     # Ensure directory exists
     os.makedirs(os.path.dirname(output_path), exist_ok=True)
     
-    with open(output_path, 'w') as f:
+    with open(output_path, 'w', encoding='utf-8') as f:
         f.write(html_out)
         
     print(f"\n[PRINTER] Edition Published: {output_path}")
@@ -153,6 +155,6 @@ def generate_edition(run_sheet):
             print(f"[PRINTER] PDF Generation Failed: {e}")
 
 if __name__ == "__main__":
-    with open(_config.RUN_SHEET_FILE, 'r') as f:
+    with open(_config.RUN_SHEET_FILE, 'r', encoding='utf-8') as f:
         data = json.load(f)
     generate_edition(data)

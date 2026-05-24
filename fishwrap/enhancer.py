@@ -47,7 +47,7 @@ def run_enhancer():
     timer = utils.Stopwatch().start()
     
     # 1. Load Run Sheet
-    with open(_config.RUN_SHEET_FILE, 'r') as f:
+    with open(_config.RUN_SHEET_FILE, 'r', encoding='utf-8') as f:
         run_sheet = json.load(f)
         
     # Flatten
@@ -101,7 +101,7 @@ def run_enhancer():
                     pbar.update(1)
     
     # 4. Save Updated Run Sheet (Now with Text)
-    with open(_config.RUN_SHEET_FILE, 'w') as f:
+    with open(_config.RUN_SHEET_FILE, 'w', encoding='utf-8') as f:
         json.dump(run_sheet, f, indent=2)
         
     duration = timer.stop()
