@@ -32,3 +32,13 @@ demo/secrets.json
 # NLTK Data (Downloaded by install_venv.sh)
 nltk_data/
 com.maxspevack.fishwrap.demos.plist
+
+# Local venv variants (canonical name is venv/, above)
+.venv/
+
+# Deploy-time artifacts assembled by .github/workflows/demos.yml.
+# Each demos.yml run rebuilds these into docs/demo/<vertical>/ from the
+# theme tree before Jekyll. Tracking them in git creates stale state
+# (files removed in source linger in the deployed tree forever).
+docs/demo/*/index.html
+docs/demo/*/static/
