@@ -1,9 +1,10 @@
 #!/usr/bin/env bash
 #
-# Regenerate AVIF + WebP + downscaled PNG fallbacks from source images.
+# Regenerate AVIF + WebP + downscaled PNG/JPG fallbacks from source images.
 #
-# Reads sources from each theme's static/images/sources/ and writes
-# derivatives next to them in static/images/.
+# Reads sources from each theme's sources/ directory (deliberately outside
+# static/ so demos.yml's cp -r static/. does not deploy them) and writes
+# derivatives into static/images/.
 #
 # Required tools: cwebp, avifenc, sips (macOS) or magick (Linux fallback).
 # All three available via Homebrew on macOS; libwebp + libavif + imagemagick
@@ -35,9 +36,7 @@ WEBP_Q=80
 size() { stat -f%z "$1" 2>/dev/null || stat -c%s "$1"; }
 
 emit_variants() {
-    local src="$1" stem="$2" vector_width="$3" fallback_width="$4" fallback_kind="$5"
-    local out_dir
-    out_dir="$(dirname "$src")/.."
+    local src="$1" stem="$2" vector_width="$3" fallback_width="$4" fallback_kind="$5" out_dir="$6"
 
     local out_fallback
     if [ "$fallback_kind" = "jpg" ]; then
@@ -64,13 +63,15 @@ emit_variants() {
 }
 
 echo "showrunner theme:"
-sr_src="demo/themes/showrunner/static/images/sources"
+# Sources live outside static/ deliberately — demos.yml copies static/.
+# recursively, so anything under static/ ends up on fishwrap.org.
+sr_src="demo/themes/showrunner/sources"
+sr_out="demo/themes/showrunner/static/images"
 # Hero images are photographic — JPEG fallback compresses far better than PNG.
-emit_variants "${sr_src}/section_procedural.png" "section_procedural" "$HERO_VECTOR_WIDTH" "$HERO_PNG_WIDTH" jpg
-emit_variants "${sr_src}/section_gossip.png"     "section_gossip"     "$HERO_VECTOR_WIDTH" "$HERO_PNG_WIDTH" jpg
+emit_variants "${sr_src}/section_procedural.png" "section_procedural" "$HERO_VECTOR_WIDTH" "$HERO_PNG_WIDTH" jpg "$sr_out"
+emit_variants "${sr_src}/section_gossip.png"     "section_gossip"     "$HERO_VECTOR_WIDTH" "$HERO_PNG_WIDTH" jpg "$sr_out"
 # Logo has transparency / hard edges — keep PNG fallback.
-emit_variants "${sr_src}/logo_header.png"        "logo_header"        "$LOGO_VECTOR_WIDTH" "$LOGO_PNG_WIDTH" png
+emit_variants "${sr_src}/logo_header.png"        "logo_header"        "$LOGO_VECTOR_WIDTH" "$LOGO_PNG_WIDTH" png "$sr_out"
 
 # Clean up old upscaled PNG outputs from prior runs of this script.
-rm -f demo/themes/showrunner/static/images/section_procedural.png \
-      demo/themes/showrunner/static/images/section_gossip.png
+rm -f "${sr_out}/section_procedural.png" "${sr_out}/section_gossip.png"
