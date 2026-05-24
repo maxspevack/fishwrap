@@ -118,6 +118,29 @@ body {
     margin-bottom: 40px;
 }
 
+/* Hero backgrounds via image-set() so the browser pulls AVIF where
+   supported and falls back through WebP to JPEG. The linear-gradient
+   layer keeps the dark overlay that lets white type stay legible. */
+.section-hero--gossip {
+    background-image:
+        linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.7)),
+        image-set(
+            url('../images/section_gossip.avif') type('image/avif'),
+            url('../images/section_gossip.webp') type('image/webp'),
+            url('../images/section_gossip.jpg') type('image/jpeg')
+        );
+}
+
+.section-hero--procedural {
+    background-image:
+        linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.7)),
+        image-set(
+            url('../images/section_procedural.avif') type('image/avif'),
+            url('../images/section_procedural.webp') type('image/webp'),
+            url('../images/section_procedural.jpg') type('image/jpeg')
+        );
+}
+
 .hero-content {
     color: white;
 }

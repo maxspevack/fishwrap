@@ -11,7 +11,11 @@
 <div class="layout-container">
     <nav class="sidebar">
         <div class="brand-logo-container">
-            <img src="static/images/logo_header.png" alt="THE SHOWRUNNER" class="brand-logo-img">
+            <picture>
+                <source srcset="static/images/logo_header.avif" type="image/avif">
+                <source srcset="static/images/logo_header.webp" type="image/webp">
+                <img src="static/images/logo_header.png" alt="THE SHOWRUNNER" class="brand-logo-img" width="180" height="180">
+            </picture>
         </div>
         
         <div class="meta-info">
@@ -45,7 +49,7 @@
     <main class="main-content">
         {% for section in sections %}
         <section id="section-{{ section.id }}" class="section-block">
-            <div class="section-hero" style="background-image: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.7)), url('static/images/section_{% if section.id == 'procedural' %}procedural{% else %}gossip{% endif %}.png');">
+            <div class="section-hero section-hero--{% if section.id == 'procedural' %}procedural{% else %}gossip{% endif %}">
                 <div class="hero-content">
                     <h2 class="section-title">{{ section.title }}</h2>
                     <p class="section-description">{{ section.description }}</p>
