@@ -10,7 +10,7 @@ The canonical example consumer is [Daily Clamour](https://github.com/maxspevack/
 
 ## 1. The Artifact
 
-Every fishwrap release publishes one signed OCI container image to GitHub Container Registry:
+Every fishwrap release publishes one OCI container image to GitHub Container Registry, with SLSA build provenance and a CycloneDX SBOM attached as Sigstore attestations.
 
 ```
 ghcr.io/maxspevack/fishwrap:<tag>
@@ -18,6 +18,13 @@ ghcr.io/maxspevack/fishwrap:<tag>
 
 - **Architectures:** `linux/amd64`. (arm64 is not currently published.)
 - **Where it's built:** images are built and published exclusively by the release workflow at https://github.com/maxspevack/fishwrap/blob/main/.github/workflows/release.yml on tag pushes. The image's source is whatever commit the corresponding git tag points at.
+- **Verifying provenance:**
+  ```bash
+  gh attestation verify oci://ghcr.io/maxspevack/fishwrap:<tag> \
+      --owner maxspevack
+  ```
+  Confirms the image digest was produced by the named release workflow at the tagged commit. SLSA Build Level 2.
+- **Retrieving the SBOM:** the CycloneDX JSON is uploaded as a workflow artifact (`fishwrap-sbom.cdx.json`, 90-day retention) and attached to the image as a Sigstore SBOM attestation. Pull via `cosign download attestation` or via the GitHub release artifact list.
 
 Every release publishes **two** tags:
 

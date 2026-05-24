@@ -2,7 +2,10 @@
 #
 # Fires on git tag pushes matching v*. Builds the OCI image per the
 # release artifact contract (docs/adr/001-release-artifact.md and
-# docs/IMAGE_CONTRACT.md) and publishes it to GHCR.
+# docs/IMAGE_CONTRACT.md) and publishes it to GHCR with:
+#
+#   - SLSA build provenance attestation (actions/attest-build-provenance)
+#   - CycloneDX SBOM (anchore/sbom-action) attached to the image
 #
 # Stable tags (v2.0.0, v2.0.1, ...): publish both the exact tag and the
 # floating minor (v2.0). Pre-release tags (v2.0.0-rc1, -alpha.1, etc.):
@@ -24,6 +27,12 @@ on:
 permissions:
   contents: read
   packages: write
+  # Required by actions/attest-build-provenance to mint an OIDC token
+  # that Sigstore Fulcio verifies before issuing the signing cert.
+  id-token: write
+  # Required to write the attestation entry into the repository's
+  # attestation store.
+  attestations: write
 
 # Serialize releases per ref so two near-simultaneous tag pushes don't
 # race for the same GHCR namespace. cancel-in-progress: false because we
@@ -61,6 +70,7 @@ jobs:
         uses: docker/setup-buildx-action@v4
 
       - name: Build and push image
+        id: build
         uses: docker/build-push-action@v7
         with:
           context: .
@@ -68,3 +78,36 @@ jobs:
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
+
+      # SLSA build provenance — attests that this digest came from this
+      # workflow at this commit on this runner. Verifiable via:
+      #   gh attestation verify oci://ghcr.io/maxspevack/fishwrap:<tag> \
+      #     --owner maxspevack
+      - name: Attest build provenance
+        uses: actions/attest-build-provenance@v3
+        with:
+          subject-name: ghcr.io/${{ github.repository_owner }}/fishwrap
+          subject-digest: ${{ steps.build.outputs.digest }}
+          push-to-registry: true
+
+      # CycloneDX SBOM (syft under the hood). Generated against the
+      # published image so the SBOM reflects exactly what shipped.
+      - name: Generate SBOM
+        id: sbom
+        uses: anchore/sbom-action@v0
+        with:
+          image: ghcr.io/${{ github.repository_owner }}/fishwrap@${{ steps.build.outputs.digest }}
+          format: cyclonedx-json
+          output-file: fishwrap-sbom.cdx.json
+          upload-artifact: true
+          upload-artifact-retention: 90
+
+      # Attest the SBOM so consumers can verify which SBOM corresponds
+      # to which image digest.
+      - name: Attest SBOM
+        uses: actions/attest-sbom@v3
+        with:
+          subject-name: ghcr.io/${{ github.repository_owner }}/fishwrap
+          subject-digest: ${{ steps.build.outputs.digest }}
+          sbom-path: fishwrap-sbom.cdx.json
+          push-to-registry: true
