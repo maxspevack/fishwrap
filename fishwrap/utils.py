@@ -12,10 +12,10 @@ from fishwrap.log import get_logger
 
 log = get_logger(__name__)
 
-# Shared SSL context for scraping (permissive)
+# Shared SSL context. Uses system trust roots + hostname verification.
+# If a specific feed has a broken certificate, document and override
+# per-host in config — never globally.
 _ssl_context = ssl.create_default_context()
-_ssl_context.check_hostname = False
-_ssl_context.verify_mode = ssl.CERT_NONE
 
 # Rate Limiting State
 _rate_limit_lock = threading.Lock()
