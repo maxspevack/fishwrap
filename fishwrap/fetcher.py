@@ -196,10 +196,9 @@ def update_database():
     current_ts = time.time()
     cutoff_ts = current_ts - (cutoff_hours * 3600)
 
-    # Use ThreadPoolExecutor for I/O bound tasks
-    MAX_WORKERS = 30 
-    
-    with ThreadPoolExecutor(max_workers=MAX_WORKERS) as executor:
+    max_workers = getattr(_config, 'FETCH_WORKERS', 10)
+
+    with ThreadPoolExecutor(max_workers=max_workers) as executor:
         # Submit all tasks
         future_to_url = {executor.submit(process_feed, url, cutoff_ts): url for url in urls}
         

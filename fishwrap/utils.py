@@ -50,33 +50,37 @@ def _get_domain_lock(domain):
         return _domain_locks[domain]
 
 def rate_limit(domain):
-    """
-    Enforces rate limits for a given domain.
+    """Enforce rate limits for a given domain.
+
+    First check RATE_LIMITS for an explicit per-host entry. If none
+    matches, fall back to _config.FETCH_DEFAULT_RATE_LIMIT_SECONDS so
+    deployers can set a global floor across every host.
     """
     limit_delay = 0
     target_domain = None
-    
-    # Check parent domain for reddit (e.g. old.reddit.com -> reddit.com) matches
-    # Simple check for now: exact match or contains
+
     for d, delay in RATE_LIMITS.items():
         if d in domain:
             limit_delay = delay
             target_domain = d
             break
-            
+
+    if target_domain is None:
+        default = getattr(_config, 'FETCH_DEFAULT_RATE_LIMIT_SECONDS', 0.0)
+        if default > 0:
+            limit_delay = default
+            target_domain = domain
+
     if limit_delay > 0:
-        # Acquire lock for this domain to serialize requests
         lock = _get_domain_lock(target_domain)
         with lock:
             last_time = _last_request_time.get(target_domain, 0)
             now = time.time()
             elapsed = now - last_time
-            
+
             if elapsed < limit_delay:
-                sleep_time = limit_delay - elapsed
-                # print(f"[RATE LIMIT] Sleeping {sleep_time:.2f}s for {domain}")
-                time.sleep(sleep_time)
-            
+                time.sleep(limit_delay - elapsed)
+
             _last_request_time[target_domain] = time.time()
 
 def fetch_url(url, headers=None, timeout=15, max_size=5 * 1024 * 1024):

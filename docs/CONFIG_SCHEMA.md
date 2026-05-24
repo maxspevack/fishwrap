@@ -186,6 +186,8 @@ Per-section thresholds that the printer uses to decide visual emphasis ("lead" v
 | `FUZZY_BOOST_MULTIPLIER` | number | `1.5` | When deduplication merges two articles, the surviving article's score is incremented by this factor of `BOOST_UNIT_VALUE` to reflect the duplicate's signal |
 | `EXPIRATION_HOURS` | number | `24` | Articles older than this are not considered for the published edition |
 | `MAX_ARTICLE_LENGTH` | number | `10000` | Truncation cap for content fields |
+| `FETCH_WORKERS` | number | `10` | ThreadPoolExecutor cap for the fetcher. Lower if the feed set hits a small number of hosts; raising past ~20 becomes a thundering herd unless `FETCH_DEFAULT_RATE_LIMIT_SECONDS` provides a floor |
+| `FETCH_DEFAULT_RATE_LIMIT_SECONDS` | number | `0.0` | Minimum seconds between requests to a single host when no explicit per-host rule applies. `0` allows unthrottled concurrency for unlisted hosts |
 
 ---
 

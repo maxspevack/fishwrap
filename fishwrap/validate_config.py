@@ -114,6 +114,8 @@ OPTIONAL_KEYS: dict[str, Callable[[Any], Optional[str]]] = {
     "FUZZY_BOOST_MULTIPLIER": _is_number,
     "EXPIRATION_HOURS": _is_number,
     "MAX_ARTICLE_LENGTH": _is_number,
+    "FETCH_WORKERS": _is_number,
+    "FETCH_DEFAULT_RATE_LIMIT_SECONDS": _is_number,
 }
 
 

@@ -19,10 +19,21 @@ LATEST_PDF_FILE = 'edition.pdf'
 # --- 3. Pipeline Settings ---
 TIMEZONE = "UTC"
 FOUNDING_DATE = "2024-01-01"
-THEME = "basic" 
+THEME = "basic"
 MAX_ARTICLE_LENGTH = 10000
 EXPIRATION_HOURS = 24
 USER_AGENT = 'Fishwrap/1.0 (+https://github.com/maxspevack/fishwrap)'
+
+# Concurrency cap for the fetcher's ThreadPoolExecutor. Lower this
+# if the configured feed set hits a small number of hosts (a high
+# value becomes a thundering herd against one origin).
+FETCH_WORKERS = 10
+
+# Minimum seconds between requests to a single host when no explicit
+# RATE_LIMITS entry applies in fishwrap/utils.py. Set to 0 to allow
+# unthrottled concurrency for unlisted hosts; raise to apply a global
+# floor across every host.
+FETCH_DEFAULT_RATE_LIMIT_SECONDS = 0.0
 
 # --- 4. Editor Settings ---
 EDITION_SIZE = {}
