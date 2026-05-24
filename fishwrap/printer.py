@@ -118,22 +118,14 @@ def generate_edition(run_sheet):
              template_name = 'index.html'
     
     template = env.get_template(template_name)
-    
-    # Inject CSS for inline email/single-file portability if needed
-    css_path = os.path.join(theme_dir, 'css', 'style.css')
-    css_content = ""
-    if os.path.exists(css_path):
-        with open(css_path, 'r') as f:
-            css_content = f.read()
-            
+
     html_out = template.render(
         issue_number=issue_num,
         volume_number=vol_num,
         date_str=now.strftime("%A, %B %d, %Y"),
-        time_str=now.strftime("%I:%M %p %Z"), # New: 08:00 AM PST
+        time_str=now.strftime("%I:%M %p %Z"),
         vol_issue_str=f"Vol. {vol_num}, No. {issue_num}",
         sections=sections_data,
-        css_block=css_content,
         transparency_report=transparency_frag,
         engine_version=f"v{__version__}"
     )
