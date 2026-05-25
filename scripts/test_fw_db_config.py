@@ -19,8 +19,8 @@ def test_cli_config():
             f.write("RUN_SHEET_FILE = 'dummy'\n")
             f.write("SECRETS_FILE = 'dummy'\n") # Minimal config
             
-        # 2. Init DB (Manual SQLite to be fast, or alembic?)
-        # fw-db status checks file existence.
+        # 2. Init DB — fw-db status checks file existence only, so a
+        # bare sqlite file is enough; no schema needed.
         conn = sqlite3.connect(db_path)
         conn.close()
         

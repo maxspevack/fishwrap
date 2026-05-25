@@ -36,7 +36,7 @@ def _initialize_engine():
         _SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=_current_engine)
         # Ensure schema exists. Idempotent: no-op if tables are already present.
         # Lets fresh checkouts and ephemeral container DBs Just Work without
-        # requiring a separate alembic-upgrade or init step.
+        # a separate init step. Schema is defined by db/models.py.
         Base.metadata.create_all(_current_engine)
         # print(f"[DB] Initialized engine for: {_current_engine.url}") # Debugging
 

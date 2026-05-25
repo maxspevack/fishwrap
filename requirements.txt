@@ -2,9 +2,9 @@
 #
 # Audited 2026-05-25 per #15. Three packages dropped from the runtime image:
 # alembic, Mako, Markdown (see #15 close-out comment for the verdict matrix).
-#
-# To run schema migrations or any alembic operation, install separately:
-#   pip install alembic Mako
+# The engine bootstraps its schema via SQLAlchemy's Base.metadata.create_all
+# (fishwrap/db/repository.py); alembic migrations were removed as dead code
+# in the follow-up commit to #15.
 #
 # Conventions:
 #   - All packages below are either directly imported by fishwrap/* or
