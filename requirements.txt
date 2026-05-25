@@ -1,42 +1,55 @@
-alembic==1.17.2
-beautifulsoup4==4.14.3
-certifi==2025.11.12
-cffi==2.0.0
-charset-normalizer==3.4.4
-click==8.3.1
-cssselect==1.3.0
-defusedxml==0.7.1
-feedfinder2==0.0.4
-feedparser==6.0.12
-filelock==3.20.0
-idna==3.11
-jieba3k==0.35.1
-Jinja2==3.1.6
-joblib==1.5.2
-lxml==6.0.2
-lxml_html_clean==0.4.3
-Mako==1.3.10
-Markdown==3.10
-markdown-it-py==4.0.0
-MarkupSafe==3.0.3
-mdurl==0.1.2
-newspaper3k==0.2.8
-nltk==3.9.2
-pillow==12.0.0
-pycparser==2.23
-Pygments==2.19.2
-python-dateutil==2.9.0.post0
-PyYAML==6.0.3
-regex==2025.11.3
-requests==2.32.5
-requests-file==3.0.1
-rich==14.2.0
-sgmllib3k==1.0.0
-six==1.17.0
-soupsieve==2.8
-SQLAlchemy==2.0.45
-tinysegmenter==0.3
-tldextract==5.3.0
-tqdm==4.67.1
-typing_extensions==4.15.0
-urllib3==2.6.2
+# Fishwrap runtime requirements.
+#
+# Audited 2026-05-25 per #15. Three packages dropped from the runtime image:
+# alembic, Mako, Markdown (see #15 close-out comment for the verdict matrix).
+#
+# To run schema migrations or any alembic operation, install separately:
+#   pip install alembic Mako
+#
+# Conventions:
+#   - All packages below are either directly imported by fishwrap/* or
+#     transitively required by a directly-imported package. The line comments
+#     name the consumer ("dep of X") to make the next audit cheaper.
+#   - "newspaper3k transitive" means the package is a hard dep of newspaper3k
+#     but is not directly imported by fishwrap code. Listed here for pin
+#     determinism; cannot be removed without replacing newspaper3k itself.
+
+beautifulsoup4==4.14.3        # HTML parsing — newspaper3k dep
+certifi==2025.11.12           # CA bundle — requests dep
+cffi==2.0.0                   # C FFI shim — transitive
+charset-normalizer==3.4.4     # encoding detection — requests dep
+click==8.3.1                  # CLI framework — fishwrap-build entrypoint
+cssselect==1.3.0              # CSS selectors over lxml — newspaper3k dep
+defusedxml==0.7.1             # hardened XML — fetcher uses (billion-laughs defense)
+feedfinder2==0.0.4            # newspaper3k transitive — not directly imported
+feedparser==6.0.12            # RSS/Atom parsing — fishwrap.fetcher imports
+filelock==3.20.0              # cache lock — tldextract dep
+idna==3.11                    # internationalized domain names — requests dep
+jieba3k==0.35.1               # newspaper3k transitive (Chinese tokenizer) — not directly imported
+Jinja2==3.1.6                 # template engine — fishwrap.printer imports
+joblib==1.5.2                 # parallel processing — nltk dep
+lxml==6.0.2                   # XML/HTML parser — newspaper3k dep + direct use
+lxml_html_clean==0.4.3        # HTML sanitization — lxml/newspaper3k dep
+markdown-it-py==4.0.0         # markdown parser — rich dep (CLI formatting)
+MarkupSafe==3.0.3             # string escaping — Jinja2 dep
+mdurl==0.1.2                  # URL handling — markdown-it-py dep
+newspaper3k==0.2.8            # article fetching + extraction — fishwrap.fetcher backbone
+nltk==3.9.2                   # NLP toolkit — newspaper3k uses for keyword extraction
+pillow==12.0.0                # image handling — newspaper3k dep
+pycparser==2.23               # C header parser — cffi dep
+Pygments==2.19.2              # syntax highlighting — rich dep
+python-dateutil==2.9.0.post0  # date parsing — common transitive
+PyYAML==6.0.3                 # YAML — config-load
+regex==2025.11.3              # enhanced regex — nltk dep
+requests==2.32.5              # HTTP client — fishwrap.fetcher imports
+requests-file==3.0.1          # newspaper3k transitive (via tldextract) — not directly imported
+rich==14.2.0                  # CLI rendering — fishwrap.log uses for terminal output
+sgmllib3k==1.0.0              # SGML parser — feedparser dep
+six==1.17.0                   # Py2/3 compat — transitive (legacy)
+soupsieve==2.8                # CSS selectors — beautifulsoup4 dep
+SQLAlchemy==2.0.45            # ORM — fishwrap.db imports
+tinysegmenter==0.3            # newspaper3k transitive (Japanese tokenizer) — not directly imported
+tldextract==5.3.0             # domain extraction — newspaper3k dep
+tqdm==4.67.1                  # progress bars — nltk dep
+typing_extensions==4.15.0     # typing backports — transitive
+urllib3==2.6.2                # HTTP transport — requests dep
