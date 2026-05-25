@@ -46,7 +46,7 @@ LATEST_HTML_FILE = 'demo/output/cyber_index.html'
 LATEST_PDF_FILE = 'demo/output/cyber_edition.pdf'
 
 # --- 3. Pipeline Settings ---
-TIMEZONE = "US/Pacific"
+TIMEZONE = "America/Los_Angeles"
 FOUNDING_DATE = "2025-12-07"
 THEME = "demo/themes/basic"
 MAX_ARTICLE_LENGTH = 15000
