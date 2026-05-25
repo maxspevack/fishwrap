@@ -24,7 +24,6 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
         libjpeg62-turbo \
         zlib1g \
         tzdata \
-        tzdata-legacy \
         tini \
     && rm -rf /var/lib/apt/lists/*
 
