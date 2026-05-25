@@ -52,7 +52,8 @@ def compute_score(article, section='general'):
             text_blob = text_blob.lower()
             
             for phrase in (policy.get('phrases') or []):
-                if f" {phrase.lower()} " in f" {text_blob} ": # Simple word boundary check
+                # \b word boundaries so punctuation-adjacent matches count. See #29.
+                if re.search(rf"\b{re.escape(phrase.lower())}\b", text_blob):
                     triggered = True
                     break # Trigger once per policy
         

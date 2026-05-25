@@ -1,5 +1,6 @@
 import json
 import os
+import re
 from urllib.parse import urlparse
 import difflib
 import time
@@ -33,7 +34,12 @@ def classify_article(article):
     # 2. Keyword Scoring (Content Analysis)
     text_blob = f"{title} {' '.join(cats)} {content}"
     def score_keywords(keywords):
-        return sum(1 for k in keywords if f" {k} " in f" {text_blob} ")
+        # Lowercase the keyword and use \b word boundaries so punctuation-adjacent
+        # matches (e.g. "NCIS:", "Bridgerton,") count. See issues #28 and #29.
+        return sum(
+            1 for k in keywords
+            if re.search(rf"\b{re.escape(k.lower())}\b", text_blob)
+        )
 
     # Calculate scores for ALL defined keyword categories
     scores = {k: score_keywords(v) for k, v in _config.KEYWORDS.items()}
