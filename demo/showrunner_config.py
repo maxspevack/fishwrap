@@ -111,7 +111,7 @@ EDITORIAL_POLICIES = [
 ]
 
 # Standard overrides
-TIMEZONE = "US/Pacific"
+TIMEZONE = "America/Los_Angeles"
 FOUNDING_DATE = "2026-02-02"
 MAX_ARTICLE_LENGTH = 15000
 EXPIRATION_HOURS = 168 # 1 Week lookback to ensure content
