@@ -1,20 +1,22 @@
-# Fishwrap — Brand Bible
+# Fishwrap Brand Bible
 
-**Scope:** fishwrap.org — the engine's storefront. Consumer publications (Daily Clamour, fishwrap.me, third-party forks) inherit the engine's capabilities, not its aesthetic.
+**Scope:** the engine's storefront at fishwrap.org. Consumer publications (Daily Clamour, fishwrap.me, third-party forks) inherit the engine's capabilities, not its aesthetic.
 
 ---
 
 ## Preamble
 
-The synthesis is one brand, two voice registers, one visual home. **REFUSAL** is the posture — the broadsheet front page, the editor's mark built into the brand name, the membership line *the peasants scroll, the elite read*. **EDITOR** is the practice — the chair at the desk, the red pencil, the margin note that stays in effect. The reader walks in through REFUSAL because that is the only door an exhausted nervous system has the energy to walk through. Once inside, the reader discovers EDITOR on the working surfaces — the surfaces they only reach by participating. The brand contains both.
+One brand, two voice registers, one visual home.
+
+**REFUSAL** is the posture: the broadsheet front page, the editor's mark built into the brand name, the membership line *the peasants scroll, the elite read*. **EDITOR** is the practice: the chair at the desk, the red pencil, the margin note that stays in effect. The reader walks in through REFUSAL because REFUSAL is the only door open. Once inside, the reader discovers EDITOR on the working surfaces. Those surfaces are reached by participating. The brand contains both.
 
 Four locked calls:
 
-**The wordmark is `Fishwra¶`.** The pilcrow is not a flanker, not an ornament. It IS the P. The pilcrow's morphology is a P with a doubled vertical stem — the medieval scribal mark for a new paragraph. The substitution rewards close looking the way the FedEx arrow does. Every appearance of the brand name carries the editor's mark literally embedded in it.
+**The wordmark is `Fishwra¶`.** The pilcrow is not a flanker, not an ornament. It IS the P. The pilcrow's morphology is a P with a doubled vertical stem, the medieval scribal mark for a new paragraph. The substitution rewards close looking the way the FedEx arrow does. Every appearance of the brand name carries the editor's mark literally embedded in it.
 
 **The face is Libre Baskerville.** Free under SIL OFL, no procurement, no foundry license. Drawn for screen reading from the Baskerville lineage that anchors magazine mastheads. Variable weight axis; the wordmark sits at weight 700. The face's pilcrow has the closed-counter, double-stemmed shape the substitution requires.
 
-**The mono face is iA Writer Mono.** Free under SIL OFL. Warmer than IBM Plex Mono and slightly humanist; reads as *typewriter at the editor's desk*, not as *terminal*. Used only for engine output — audit-log fragments, score deltas, edition metadata.
+**The mono face is iA Writer Mono.** Free under SIL OFL. Warmer than IBM Plex Mono and slightly humanist; reads as *typewriter at the editor's desk*, not as *terminal*. Used only for engine output: audit-log fragments, score deltas, edition metadata.
 
 **No third face.** No sans. The voice differentiation between REFUSAL acquisition surfaces and EDITOR working surfaces comes from prose, not from a second body face. Libre Baskerville Regular sets the body on every register; iA Writer Mono sets engine output. Two faces, both free, no paid foundry.
 
@@ -66,11 +68,11 @@ Three things the reader does, what stays in effect, and what the engine commits 
 
 Fishwrap speaks in two registers under one visual home. The registers are not a tonal range; they are two different voices firing on two different surfaces, and the rule is mechanical.
 
-**REFUSAL register** — broadsheet, declarative, slightly aristocratic without irony. It fires on acquisition surfaces: the home page, the README first viewport, social-share cards, the press kit, the masthead under the wordmark. Its job is to give the exhausted reader permission to leave the feed they already wanted to leave. The hill-defense sentence: *The peasants scroll. The elite read.* That sentence is the membership card. Any string in this register names a stance, not a feature. If a sentence in this register can be pasted into a Mailchimp template without modification, the sentence is wrong.
+**REFUSAL register.** Broadsheet, declarative, slightly aristocratic without irony. It fires on acquisition surfaces: the home page, the README first viewport, social-share cards, the press kit, the masthead under the wordmark. Its job is to give the exhausted reader permission to leave the feed they already wanted to leave. The hill-defense sentence: *The peasants scroll. The elite read.* That sentence is the membership card. Any string in this register names a stance, not a feature. If a sentence in this register can be pasted into a Mailchimp template without modification, the sentence is wrong.
 
-**EDITOR register** — magazine-warm, second-person, instructive without being pedagogical. It fires on working surfaces: the audit log, the score breakdown, the policy editor, the Editor's Note composer, the edition metadata, the daily proof preview. Its job is to make the reader feel the chair they have just been promoted into. The hill-defense sentence: *Mark it up. The edition obeys.* Any string in this register addresses the reader as someone who has authority over the artifact in front of them. If a sentence in this register could be pasted into Linear's marketing site, the sentence is wrong.
+**EDITOR register.** Magazine-warm, second-person, instructive without being pedagogical. It fires on working surfaces: the audit log, the score breakdown, the policy editor, the Editor's Note composer, the edition metadata, the daily proof preview. Its job is to make the reader feel the chair they have just been promoted into. The hill-defense sentence: *Mark it up. The edition obeys.* Any string in this register addresses the reader as someone who has authority over the artifact in front of them. If a sentence in this register could be pasted into Linear's marketing site, the sentence is wrong.
 
-Look up any string in the codebase. If it sits on a surface the reader has not yet earned, it is REFUSAL. If it sits on a surface the reader has reached by participating, it is EDITOR. The hand-off between the two is the conversion event, and §2 performs it as prose.
+Look up any string in the codebase. If it sits on a surface the reader has not yet earned, it is REFUSAL. If it sits on a surface the reader has reached by participating, it is EDITOR. The conversion event is §2.
 
 What the brand does not do, in either register: it does not wink, it does not hedge, it does not narrate its own intentions, and it does not promise transformation. It states. It shows the working. It signs the masthead.
 
@@ -91,7 +93,7 @@ Eight lines survive. The home for each is fixed; the rotation is not free.
 
 - *Become your own Editor-in-Chief. We built the presses for you.* The onboarding page, the first-edition welcome. Identity claim and capability claim in one line.
 - *Edited by you.* The signature line under the wordmark on every edition page. The lockup mate.
-- *Sign the masthead. Run the press.* The call-to-action on the policy editor — the surface where the reader writes their first margin note.
+- *Sign the masthead. Run the press.* The call-to-action on the policy editor, the surface where the reader writes their first margin note.
 - *We don't take thumbs. We take margin notes.* The header of the §2 explainer on the home page, and the empty-state of the Editor's Note composer.
 
 Retired and not to return: *Finiteness is the new luxury* (X-is-the-new-Y tell), *Your news. Your rules. No more algorithmic anxiety.* (three commodity phrases stapled), *It's not magic, it's engineering.* (the category trap in one sentence), *The internet is a firehose of noise. We built a very precise nozzle.* (machinery-as-metaphor, off-register), *Stop scrolling. Start reading. Start thinking.* (imperatives in triplicate; reads as a wellness app).
@@ -100,21 +102,21 @@ Retired and not to return: *Finiteness is the new luxury* (X-is-the-new-Y tell),
 
 ## 6. Visual Language
 
-The visual home is one. It does not change between REFUSAL surfaces and EDITOR surfaces. What changes between registers is the voice; the wordmark, the glyph, the palette, the type stack, and the layout grammar are constant across the whole property.
+The visual home is one. The wordmark, the glyph, the palette, the type stack, and the layout grammar are constant across the property; only the voice shifts between registers.
 
 ### 6.1 Wordmark
 
-The wordmark is **`Fishwra¶`** — the word *Fishwrap* with the pilcrow taking the place of the closing P. The substitution is not decorative. The pilcrow is the editor's mark for a new paragraph; the brand name carries that mark literally embedded in it. Reading the wordmark out loud, the reader still says *Fishwrap*. Reading it on the page, the reader sees the editor at work.
+The wordmark is **`Fishwra¶`**: the word *Fishwrap* with the pilcrow taking the place of the closing P. The substitution is not decorative. The pilcrow is the editor's mark for a new paragraph; the brand name carries that mark literally embedded in it. Reading the wordmark out loud, the reader still says *Fishwrap*. Reading it on the page, the reader sees the editor at work.
 
 The wordmark is set in **Libre Baskerville Bold** (variable weight axis at 700), mixed case, no brackets, no monospace, no all-caps, no flanking ornament. Optical kerning. Tracking at the default. The pilcrow renders at the same weight, color, and baseline as the surrounding letters; its descender sits below the baseline by approximately one quarter of the cap height.
 
-The wordmark is rendered as a path-only SVG at `docs/static/images/fishwrap_logo.svg`. The SVG embeds the glyph outlines directly — no `@font-face`, no font dependency, no client-side text rendering. The file scales infinitely and renders identically in browsers, ImageMagick, librsvg, and OS previewers.
+The wordmark is rendered as a path-only SVG at `docs/static/images/fishwrap_logo.svg`. The SVG embeds the glyph outlines directly: no `@font-face`, no font dependency, no client-side text rendering. The file scales infinitely and renders identically in browsers, ImageMagick, librsvg, and OS previewers.
 
 On the home page and the Open Graph card, the wordmark lockup carries a second line beneath it: a 1px Margin Ink rule the width of the wordmark, and under the rule, in **Libre Baskerville Italic** at 22% the cap height of the wordmark, the literal phrase *The peasants scroll. The elite read.* On every edition page, the same lockup carries the phrase *Edited by you.* under the rule instead. The rule between wordmark and phrase is the masthead bar; it is not a decorative element.
 
-The bare `Fishwrap` (with a normal P, no pilcrow, no rule, no phrase) is permitted in **running prose only** — body copy, link text, sentence-internal references. It is not permitted as a logo on any surface.
+The bare `Fishwrap` (with a normal P, no pilcrow, no rule, no phrase) is permitted in **running prose only**: body copy, link text, sentence-internal references. It is not permitted as a logo on any surface.
 
-The retired marks: `— Fishwrap —` (em-dash-flanked, retired before ship — the em-dash has become the typographic tell of AI-generated text), `[FISHWRAP]` in IBM Plex Mono (GLASS BOX, retired), and the earlier grey monospace with orange cursor-block (Digital Origami, retired before that). None return.
+The retired marks: `— Fishwrap —` (em-dash-flanked; retired before ship because the em-dash has become the typographic tell of AI-generated text), `[FISHWRAP]` in IBM Plex Mono (GLASS BOX, retired), and the earlier grey monospace with orange cursor-block (Digital Origami, retired before that). None return.
 
 ### 6.2 Glyph and favicon
 
@@ -122,11 +124,11 @@ The glyph is a bare **pilcrow `¶`** set in Libre Baskerville Bold, centered in 
 
 Asset set (under `docs/static/images/`):
 
-- `favicon.svg` — path-only SVG, the canonical glyph. Modern browsers prefer this.
-- `favicon-180.png` — Apple touch icon (iOS).
-- `favicon-192.png` — Android Chrome / manifest.
-- `favicon-512.png` — large manifest icon.
-- `/favicon.ico` (at site root) — multi-resolution ICO containing 16, 32, and 48 pixel bitmaps. Legacy-browser fallback only; modern browsers ignore this when the SVG is declared.
+- `favicon.svg`: path-only SVG, the canonical glyph. Modern browsers prefer this.
+- `favicon-180.png`: Apple touch icon (iOS).
+- `favicon-192.png`: Android Chrome and manifest.
+- `favicon-512.png`: large manifest icon.
+- `/favicon.ico` (at site root): multi-resolution ICO containing 16, 32, and 48 pixel bitmaps. Legacy-browser fallback only; modern browsers ignore this when the SVG is declared.
 
 At 16×16 the pilcrow's internal detail compresses. The bitmap is readable as the editorial mark but loses the double-stem character that's visible at 32+. This is acceptable; the favicon is a recognition aid, not a first-impression generator.
 
@@ -144,7 +146,7 @@ Seven colors. Five inherit from REFUSAL; two cross over from the EDITOR draft fo
 | Folio Gold | `#A8884A` | Section heads and edition number on EDITOR surfaces; the masthead bar when the edition number is printed beside it. One element per page maximum. |
 | Margin Ink | `#5C5247` | Audit-log metadata, the masthead bar on non-edition surfaces, the rule beneath the wordmark, the pencil-grey that wrote the margin note before the red one. |
 
-Cardinal Red is the only red. There is no second red, no Boost Red, no Penalty Red — the red codes for *added* in the editor's pencil convention; the absence of red codes for *struck*. A struck phrase is rendered with a Refusal Black strikethrough at body weight; no green appears anywhere on the brand. Green was a financial-ticker convention and the brand is not a financial ticker.
+Cardinal Red is the only red. There is no second red, no Boost Red, no Penalty Red. The red codes for *added* in the editor's pencil convention; the absence of red codes for *struck*. A struck phrase is rendered with a Refusal Black strikethrough at body weight; no green appears anywhere on the brand. Green was a financial-ticker convention and the brand is not a financial ticker.
 
 Banned: any near-white background colder than Smoke Cream; any blue; any green; any neon; any orange; any salmon or coral; any vibrant accent. Cold whites read as software. The newsroom is warm because paper is warm. Off-palette colors require explicit justification and are not permitted on storefront surfaces.
 
@@ -152,8 +154,8 @@ Banned: any near-white background colder than Smoke Cream; any blue; any green; 
 
 Two faces, no third.
 
-- **Libre Baskerville** — variable weight axis. Weight 700 for the wordmark and section heads; weight 400 (Regular) for body copy on every surface; Italic at weight 400 for tagline lockups and editorial emphasis. SIL OFL, free, self-hosted from `/docs/static/fonts/`.
-- **iA Writer Mono** — Regular and Italic for audit-log fragments, score deltas, edition metadata, policy file paths, and any string the engine emitted. SIL OFL, free, self-hosted.
+- **Libre Baskerville.** Variable weight axis. Weight 700 for the wordmark and section heads; weight 400 (Regular) for body copy on every surface; Italic at weight 400 for tagline lockups and editorial emphasis. SIL OFL, free, self-hosted from `/docs/static/fonts/`.
+- **iA Writer Mono.** Regular and Italic for audit-log fragments, score deltas, edition metadata, policy file paths, and any string the engine emitted. SIL OFL, free, self-hosted.
 
 No sans. No second serif. No Inter, no IBM Plex Mono, no GT Sectra, no Söhne, no monospace face other than iA Writer Mono. The voice differentiation between REFUSAL and EDITOR registers comes from prose, not from a body face.
 
@@ -161,7 +163,7 @@ System-stack fallbacks are permitted only where the licensed face cannot load: `
 
 ### 6.5 Layout grammar
 
-The page is a broadsheet grid on REFUSAL surfaces and a magazine spread on EDITOR surfaces. The grid is constant — twelve columns, a generous outer margin, a vertical rhythm tied to the Libre Baskerville body cap height — but the column allocation differs by register. REFUSAL surfaces give the headline six to eight columns and the deck two to three; EDITOR surfaces give the working content seven to nine columns and reserve the right rail for audit-log fragments at three columns.
+The page is a broadsheet grid on REFUSAL surfaces and a magazine spread on EDITOR surfaces. The grid is constant: twelve columns, a generous outer margin, a vertical rhythm tied to the Libre Baskerville body cap height. The column allocation differs by register. REFUSAL surfaces give the headline six to eight columns and the deck two to three; EDITOR surfaces give the working content seven to nine columns and reserve the right rail for audit-log fragments at three columns.
 
 Rules: a 1px Margin Ink rule at column-1 of every content block on EDITOR surfaces. A 1px Refusal Black rule under every REFUSAL headline at the width of the headline. Audit-log fragments are rendered in iA Writer Mono at 13/20 in a Margin Ink-bordered well. Score deltas appear inline using Cardinal Red for positive values and Refusal Black strikethrough for struck values; the integer sign (+/−) is always shown. Edition timestamps are absolute (ISO-8601 UTC with a localized parenthetical), never relative.
 
@@ -169,15 +171,15 @@ Folio Gold fires on the section head and the edition number, and on the masthead
 
 ### 6.6 What this brand is not
 
-Fishwrap's brand is the engine's brand and the reader's chair. It is not the brand of any publication built on the engine. Daily Clamour and any third-party fork each select their own visual identity and inherit only the engine's capabilities — exposing the score breakdown, reading the audit log, persisting the reader's notes — not its aesthetic. A publication built on Fishwrap that adopts Fishwrap's wordmark, palette, or type stack is not endorsed by Fishwrap and is asked to change.
+Fishwrap's brand is the engine's brand and the reader's chair. It is not the brand of any publication built on the engine. Daily Clamour and any third-party fork each select their own visual identity and inherit only the engine's capabilities: exposing the score breakdown, reading the audit log, persisting the reader's notes. Not the aesthetic. A publication built on Fishwrap that adopts Fishwrap's wordmark, palette, or type stack is not endorsed by Fishwrap and is asked to change.
 
 ---
 
 ## 7. Asset Production
 
-Brand assets are produced from the live font using `fontTools` and ImageMagick. The production script lives in the repo at `docs/static/brand/generate-assets.py` and is reproducible from source. No generative AI is used in the brand production pipeline. A brand whose thesis is *the algorithm you can read* does not have its mark rendered by an opaque model.
+Brand assets are produced from the live font using `fontTools` and ImageMagick. The production script lives in the repo at `docs/static/brand/generate-assets.py` and is reproducible from source.
 
-### 7.1 Wordmark — `Fishwra¶`
+### 7.1 Wordmark: `Fishwra¶`
 
 Source font: `LibreBaskerville-variable.ttf` (committed under `docs/static/fonts/`), weight axis instanced at 700.
 
@@ -185,7 +187,7 @@ Method: open the variable font with `fontTools.ttLib.TTFont`, instance at weight
 
 Output: `docs/static/images/fishwrap_logo.svg`. Path-only, no `@font-face`, no font dependency at render time. The SVG renders identically in any conforming renderer.
 
-### 7.2 Glyph and favicon — bare `¶`
+### 7.2 Glyph and favicon: bare `¶`
 
 Source font: same.
 
@@ -213,7 +215,7 @@ The numbers in the edition line are placeholders. Templating real per-share valu
 
 ---
 
-## Appendix A — Voice-register surface map
+## Appendix A: Voice-register surface map
 
 A future contributor looking at any string in the codebase should be able to determine its register from this table. The rule is mechanical: surface determines register.
 
