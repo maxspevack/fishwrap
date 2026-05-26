@@ -12,15 +12,25 @@ nav_order: 1
 
 ---
 
+> *"One of the insights of the Victorian Revival was that it was not necessarily a good thing for everyone to read a completely different newspaper in the morning; so the higher one rose in the society, the more similar one's Times became to one's peers'."*
+>
+> — Neal Stephenson, *The Diamond Age*
+
+> *"The only criterion for a news item... was that it still had to seem interesting."*
+>
+> — Neal Stephenson, *Anathem*
+
+---
+
 ## Mission and Vision
 
 Fishwrap is for the readers who have already left.
 
-The feed is not a medium; it is a posture, and the posture is over. The reader who arrives at this page has spent enough mornings staring at a thumb-shaped rectangle that scrolls without floor, and they are tired in a way no app has a remedy for. We do not propose moderation. We propose departure.
+You know who you are. You underlined that first Stephenson passage when you read it, or you marked the page, or you have just read it twice now and felt the small click of recognition that means you were the audience all along. You have spent enough mornings staring at a thumb-shaped rectangle that scrolls without floor. You are tired in a way no app has a remedy for. You do not need another feed. You need a paper.
 
 Our mission is to print the morning paper for the reader who has unplugged the wall. One edition a day. Eleven pages. A back page that says *the end*. The reader sets the policy in plain language; the engine sets the type. There is no recommendation surface. There is no inferred preference. There is no notification.
 
-Our vision is a web in which the people who read are no longer confused with the people who scroll. Fishwrap is the receipt for the exit, and the exit is real.
+Our vision is a web in which the people who read are no longer confused with the people who scroll. Fishwrap is the receipt for the exit.
 
 We do not measure your time on this page. We are not paid to. When the edition ends, go outside.
 
@@ -28,15 +38,15 @@ We do not measure your time on this page. We are not paid to. When the edition e
 
 ## The Anxiety of the Thumbs Down
 
-Every news aggregator has a thumbs-down button. Every news aggregator has a black box behind the button. The reader presses the thumbs-down on a celebrity divorce story and does not know whether they have just suppressed the celebrity, the divorce, the publication that ran the piece, the political coverage of the same celebrity in next week's edition, or the entire section the story sat under. The cost of feedback is opaque. The cost of opacity is silence. The reader stops pressing the button. The feed gets worse. The reader scrolls anyway.
+Every news aggregator has a thumbs-down button. Every news aggregator has a black box behind the button. You press the thumbs-down on a celebrity divorce and you do not know whether you have just suppressed the celebrity, the divorce, the publication that ran the piece, the political coverage of the same celebrity next week, or the entire section the story sat under. The cost of feedback is opaque. The cost of opacity is silence. You stop pressing the button. The feed gets worse. You scroll anyway.
 
-The political-golf trap is the moat in plain speech. A reader who downvotes a Donald Trump golf story does not want to lose policy coverage of the Donald Trump administration. The algorithm does not distinguish between the two; the reader cannot ask it to. The thumbs-down is the half-gesture of a reader who has not been permitted to write a margin note. So the reader does not press the button. So the algorithm does not learn. So the feed circles back to the same celebrity and the same divorce and the same opaque consequence. This is not a UX problem. This is a category problem. Every aggregator on the open web operates this way because exposing the policy would expose the absence of one.
+The political-golf trap is the moat in plain speech. A reader who downvotes a Donald Trump golf story does not want to lose policy coverage of the Donald Trump administration. The algorithm does not distinguish between the two; the reader cannot ask it to. The thumbs-down is the half-gesture of a reader who has not been permitted to write a margin note. So the reader does not press the button. So the algorithm does not learn. So the feed circles back. This is not a UX problem. This is a category problem. Every aggregator on the open web operates this way because exposing the policy would expose the absence of one.
 
 Fishwrap exposes the policy.
 
 The Editor's Note replaces the thumbs-down because that is what editors write. *Penalty: Golf, −20.* *Boost: Executive Order, +20.* The note is a sentence, not a vote. The sentence is yours. It is named, dated, signed, and persisted; it stays in effect across editions until you strike it; and every story that fires it shows you which sentence fired and by how much. Mark it up. The edition obeys.
 
-There is no recommendation surface because there is no anonymous editor. There is no inferred preference because every preference is a sentence the reader wrote. The thumbs-down is not redesigned; it is fired. The chair is yours.
+There is no recommendation surface because there is no anonymous editor. There is no inferred preference because every preference is a sentence the reader wrote. The chair is yours.
 
 ---
 
