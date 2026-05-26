@@ -37,6 +37,11 @@ WEIGHT_BOLD = 700
 INK = "#0E0D0C"        # Refusal Black
 PAPER = "#EBE6DC"      # Smoke Cream
 MARGIN = "#5C5247"     # Margin Ink
+PENCIL = "#9C1B14"     # Cardinal Red — the editor's pencil
+
+# Per-character color overrides for the wordmark. Default (any character not
+# named here) is INK. Indices match WORDMARK_TEXT character positions.
+WORDMARK_COLORS = {7: PENCIL}  # index 7 = the pilcrow
 
 FAVICON_SIZES = [16, 32, 48, 64, 96, 128, 180, 192, 256, 512]
 ICO_SIZES = [16, 32, 48]
@@ -66,13 +71,14 @@ def generate_wordmark():
 
     paths = []
     x_cursor = 0
-    for ch in WORDMARK_TEXT:
+    for idx, ch in enumerate(WORDMARK_TEXT):
         gname = cmap.get(ord(ch))
         if gname is None:
             sys.exit(f"No glyph for {ch!r} (U+{ord(ch):04X}) in {LIBRE_BASKERVILLE.name}")
         path_d, advance = glyph_path_d(glyph_set, gname)
+        color = WORDMARK_COLORS.get(idx, INK)
         if path_d:
-            paths.append((x_cursor, path_d, gname))
+            paths.append((x_cursor, path_d, gname, color))
         x_cursor += advance
 
     wm_width = x_cursor
@@ -80,10 +86,10 @@ def generate_wordmark():
 
     svg_lines = [
         f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 {-ascent} {wm_width} {wm_height}" preserveAspectRatio="xMidYMid meet">',
-        f'  <g transform="scale(1,-1)" fill="{INK}">',
+        '  <g transform="scale(1,-1)">',
     ]
-    for x, d, gname in paths:
-        svg_lines.append(f'    <path transform="translate({x},0)" d="{d}"/>  <!-- {gname} -->')
+    for x, d, gname, color in paths:
+        svg_lines.append(f'    <path transform="translate({x},0)" d="{d}" fill="{color}"/>  <!-- {gname} -->')
     svg_lines.append("  </g>")
     svg_lines.append("</svg>\n")
 

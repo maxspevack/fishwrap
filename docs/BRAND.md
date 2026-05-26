@@ -108,7 +108,9 @@ The visual home is one. The wordmark, the glyph, the palette, the type stack, an
 
 The wordmark is **`Fishwra¶`**: the word *Fishwrap* with the pilcrow taking the place of the closing P. The substitution is not decorative. The pilcrow is the editor's mark for a new paragraph; the brand name carries that mark literally embedded in it. Reading the wordmark out loud, the reader still says *Fishwrap*. Reading it on the page, the reader sees the editor at work.
 
-The wordmark is set in **Libre Baskerville Bold** (variable weight axis at 700), mixed case, no brackets, no monospace, no all-caps, no flanking ornament. Optical kerning. Tracking at the default. The pilcrow renders at the same weight, color, and baseline as the surrounding letters; its descender sits below the baseline by approximately one quarter of the cap height.
+The wordmark is set in **Libre Baskerville Bold** (variable weight axis at 700), mixed case, no brackets, no monospace, no all-caps, no flanking ornament. Optical kerning. Tracking at the default. The letters `Fishwra` render in Refusal Black; the pilcrow renders in **Cardinal Red** (`#9C1B14`), the editor's pencil. The substitution is announced typographically (the editor's mark replaces the letter) and chromatically (the editor's mark wears the editor's color). The pilcrow sits at the same weight and baseline as the surrounding letters; its descender drops below the baseline by approximately one quarter of the cap height.
+
+The favicon glyph remains monochrome Refusal Black on Smoke Cream. At 16×16, red reads as a notification badge rather than as an editor's mark; the bare bitmap relies on shape alone, not color.
 
 The wordmark is rendered as a path-only SVG at `docs/static/images/fishwrap_logo.svg`. The SVG embeds the glyph outlines directly: no `@font-face`, no font dependency, no client-side text rendering. The file scales infinitely and renders identically in browsers, ImageMagick, librsvg, and OS previewers.
 
@@ -139,8 +141,8 @@ Seven colors. Five inherit from REFUSAL; two cross over from the EDITOR draft fo
 | Token | Hex | Role |
 |---|---|---|
 | Smoke Cream | `#EBE6DC` | Field. Page background, the paper the broadsheet is printed on. |
-| Refusal Black | `#0E0D0C` | Body, wordmark, pilcrow, rules at full weight. Near-true black; broadsheet contrast against Smoke Cream. |
-| Cardinal Red | `#9C1B14` | The editor's pencil. Positive score deltas, the dateline, the page-end ornament, the *added* mark when the reader has imposed emphasis. Used inline at body weight; permitted at masthead size on the dateline and the page-end ornament only. |
+| Refusal Black | `#0E0D0C` | Body, the wordmark's letterforms (`Fishwra`), the bare favicon pilcrow, rules at full weight. Near-true black; broadsheet contrast against Smoke Cream. |
+| Cardinal Red | `#9C1B14` | The editor's pencil. The wordmark's pilcrow. Positive score deltas, the dateline, the page-end ornament, the *added* mark when the reader has imposed emphasis. Used inline at body weight; permitted at masthead size on the wordmark pilcrow, the dateline, and the page-end ornament only. |
 | Lead | `#3B3A39` | Secondary text on REFUSAL surfaces. The lead in a No. 2 pencil. |
 | Bone | `#D9D2C2` | Section dividers, the back-page mark. |
 | Folio Gold | `#A8884A` | Section heads and edition number on EDITOR surfaces; the masthead bar when the edition number is printed beside it. One element per page maximum. |
