@@ -1,6 +1,43 @@
 # Release Notes
 
-Release history. Newest first.
+## v2.0.2 (The Masthead) - May 25, 2026
+
+Patch release. The headline correctness story is the classifier bug fix; the broader story is the brand redesign that aligns fishwrap.org with its own thesis. No engine API changes; no breaking changes; the v2.0 image contract holds.
+
+### 🐛 Engine Correctness
+*   **Classifier silently dropped every mixed-case keyword (#28).** `editor.py:classify_article` lowercased the article text but compared keywords as-given. Every demo config's proper-case keyword list was dead code; section routing was carried entirely by `SOURCE_SECTIONS` and the last-section fallback.
+*   **Classifier word-boundary check missed punctuation-adjacent matches (#29).** `editor.py:score_keywords` and the parallel keyword-policy loop in `scoring.py` used `f" {k} " in f" {text_blob} "`, which only treats the literal space character as a boundary. Headlines like `NCIS: Origins`, `'Bridgerton,' Netflix renews`, and `The Pitt. Noah Wyle interview` failed to match show-name keywords.
+*   **Unified fix:** `re.search(rf"\b{re.escape(k.lower())}\b", text_blob)` applied to both `editor.py` and `scoring.py`. Lowercases the keyword and uses regex `\b` word boundaries that match at any `\w`/`\W` transition. New regression test at `scripts/test_classifier_matching.py` covers case-mismatch, colon/comma/period boundaries, apostrophe-bearing keywords (`grey's anatomy`), embedded-substring negatives, and the parallel `scoring.py` policy boundary.
+
+### 🧹 Architecture Cleanup
+*   **Alembic infrastructure removed (follow-up to #15).** Issue #15 dropped alembic from runtime requirements, but the `alembic/` directory, migrations, and `alembic.ini` were left in tree. The runtime path (`fishwrap/db/repository.py:_initialize_engine`) bootstraps via `Base.metadata.create_all` and never invokes alembic. The migrations were dead code. The old `scripts/test_schema_integrity.py` pointed at a gitignored local SQLite file and could not pass on a fresh clone. Replaced with a self-contained test that creates a tempfile SQLite, runs `Base.metadata.create_all`, and verifies the expected tables, columns, and foreign keys via `sqlalchemy.inspect`.
+
+### 🎨 Brand Redesign
+*   **`docs/BRAND.md` rewritten wholesale.** The Digital Origami direction (origami fish, Deep Ocean Blue + Newsprint Cream + Salmon/Coral, "Enlightened Architect" voice) is retired. The new architecture is one brand with two voice registers under one visual home: REFUSAL (acquisition surfaces, broadsheet declarative) and EDITOR (working surfaces, magazine-warm second-person). Appendix A maps every engine surface to its required register.
+*   **Wordmark: `Fishwra¶`** in Libre Baskerville Bold. The pilcrow takes the place of the closing P; the pilcrow's morphology is a P with a doubled vertical stem, the medieval scribal mark for a new paragraph. The pilcrow renders in Cardinal Red (`#9C1B14`), the editor's pencil; the rest of the letterforms in Refusal Black (`#0E0D0C`). The substitution is announced typographically and chromatically.
+*   **Glyph and favicon:** bare pilcrow in Libre Baskerville Bold, Refusal Black on Smoke Cream. Path-only SVG plus PNG raster set (16/32/48/64/96/128/180/192/256/512) plus multi-resolution ICO at site root.
+*   **Type stack:** Libre Baskerville + iA Writer Mono. Both SIL OFL, free, self-hosted under `docs/static/fonts/`. No paid foundry. No third face. The voice differentiation between registers comes from prose, not from a second body face.
+*   **Asset production pipeline:** `docs/static/brand/generate-assets.py` produces wordmark SVG, favicon SVG, PNG raster set, multi-resolution ICO, and Open Graph card from the live fonts via `fontTools` and ImageMagick. No generative AI in the pipeline; the brand thesis (*the algorithm you can read*) is preserved by producing the brand's own marks through extant, auditable tooling.
+*   **Open Graph card:** 1200×630 PNG with the wordmark, the masthead phrase (*The peasants scroll. The elite read.*), a placeholder edition line in iA Writer Mono, and the `fishwrap.org` URL.
+*   **Jekyll wire-up:** `docs/_includes/head_custom.html` adds favicon links, og:image meta, and twitter:card meta. `docs/_config.yml` got `url: https://fishwrap.org` so absolute URLs resolve in social-share meta.
+
+### 📚 Documentation
+*   **`docs/index.md` rewritten.** The Stephenson epigraphs from *The Diamond Age* and *Anathem* survive as the page's literary frame; the REFUSAL-register §1 / HYBRID §2 / EDITOR §3 prose is lifted from BRAND.md with home-page warmth. Second-person warmth ("you know who you are") replaces the bible's clinical third person.
+*   **`README.md` rewritten** in REFUSAL register. The Mailchimp opener (`Fishwrap is a Glass-Box news engine. It transforms RSS feeds, Reddit threads, and Hacker News into finite, auditable HTML editions`) is gone. Section emojis stripped. The brand bible added to the documentation table.
+*   **Engineering blog retired.** Five posts and the index (`docs/blog/01_algorithms.md` through `05_release_engineering.md` and `docs/blog/index.md`) deleted. The bulk of the corpus's off-register prose — Blade Runner / Memento / fish-judging metaphors — lived there. Engineering content lives in the code; the manifesto work the blog tried to do is now in BRAND.md §2.
+*   **`docs/RELEASE_NOTES.md`** v1.x and v0.x entries rewritten to strip Digital-Origami-era lyrical voice while preserving every codename, date, and feature.
+*   **`docs/RELEASING.md`** runbook surgery (path bug fixes, anthropomorphism cleanup, em-dash flanker removal).
+*   **`docs/VERSIONING.md`, `docs/IMAGE_CONTRACT.md`, `docs/CONFIG_SCHEMA.md`, `docs/adr/001-release-artifact.md`** light surgery against the Klausner bar.
+
+### 🧹 Project Ops
+*   **`CONTRIBUTING.md` deleted.** 250 of 250 commits in the project's lifetime are from a single author. Zero external PRs, issues, forks, stars, or watchers. The file documented a contribution workflow that has not run. The README's documentation-table reference was also removed. Reintroduce when an external contributor first earns one.
+
+### 🛠️ Release Engineering
+*   **`docs/RELEASING.md` step 3 path bug.** `cd ~/gemini/fishwrap` was a stale path from a different machine setup. Corrected to `cd ~/dev/fishwrap`.
+
+### 🧪 Tests
+*   `scripts/test_classifier_matching.py` — 10 cases covering #28 and #29 across both `editor.py` and `scoring.py`.
+*   `scripts/test_schema_integrity.py` — rewritten to test the actual runtime bootstrap path (`Base.metadata.create_all`) via a tempfile, replacing the prior test that depended on a gitignored local artifact.
 
 ---
 
