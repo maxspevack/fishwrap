@@ -18,10 +18,10 @@ A fourth, optional step is creating a curated GitHub Release for stable versions
 
 ## Before You Touch Anything
 
-Pause. Confirm the following with Max in the conversation, *before any tags fly*:
+Pause. Confirm the following with Max before tagging:
 
 - Which version is this — patch, minor, major, or pre-release? (Consult [VERSIONING.md](VERSIONING.md) if uncertain.)
-- What's the codename? Past examples: *The Foundation*, *The Glass Box*, *The Synchronization*, *The Newsstand*. Pick something that anchors "what release was that, again?"
+- What's the codename? Past examples: *The Foundation*, *The Glass Box*, *The Synchronization*, *The Newsstand*. Pick a codename memorable enough to anchor "what was in 2.0.1?" six months out.
 - Are there any final code changes that need to land first?
 - Is this stable (`v2.1.0`) or pre-release (`v2.1.0-rc1`)?
 
@@ -70,7 +70,7 @@ The string here is exactly what `fishwrap-version` (the CLI inside the published
 ## Step 3 — Commit, Tag, Push (Single Pass)
 
 ```bash
-cd ~/gemini/fishwrap
+cd ~/dev/fishwrap
 git add docs/RELEASE_NOTES.md fishwrap/__init__.py
 git commit -m "release: vX.Y.Z (Codename)"
 git tag -a vX.Y.Z -m "vX.Y.Z (Codename)"
@@ -126,7 +126,7 @@ podman run --rm ghcr.io/maxspevack/fishwrap:X.Y.Z fishwrap-version
 # expected stdout: X.Y.Z (or X.Y.Z-rc1, etc.)
 ```
 
-If `fishwrap-version` doesn't match the tag, the workflow lied: the build claimed success but the image is wrong. Diagnose via `podman inspect` and the workflow logs. Don't proceed.
+If `fishwrap-version` does not match the tag, the build succeeded but the image is wrong. Diagnose via `podman inspect` and the workflow logs before continuing.
 
 ---
 
@@ -223,7 +223,7 @@ The tag doesn't move automatically. You have to choose: force-update the tag to 
 
 ### demos.yml failed during step 7a
 
-If the demos workflow failed, the site stays at last-good (the previous successful demos.yml deploy). The release itself is still complete — the image is live, the GitHub Release exists. Only fishwrap.org is stale.
+If the demos workflow failed, the site stays at last-good (the previous successful demos.yml deploy). The release itself is still complete. The image is live, the GitHub Release exists. Only fishwrap.org is stale.
 
 Common causes:
 - One of the four demos failed to build (a feed went 404, an error in fetching). With `fail-fast: false`, this blocks the deploy step (deploy is all-or-nothing). Diagnose the specific vertical's logs, fix, re-run via `gh workflow run demos.yml`.

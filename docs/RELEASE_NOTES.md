@@ -1,10 +1,10 @@
 # Release Notes
 
-Fishwrap is evolving from a personal script into a robust "Anti-Feed" platform. Here is the history of that evolution.
+Release history. Newest first.
 
 ---
 
-## v2.0.1 (The Audit Pass) — May 24, 2026
+## v2.0.1 (The Audit Pass) - May 24, 2026
 
 Point release driven by a top-to-bottom code and bandwidth review of the deployed fishwrap.org site. Every change traces to a GitHub issue (#17–#26) so the audit lineage stays visible in `git log`.
 
@@ -38,7 +38,7 @@ Point release driven by a top-to-bottom code and bandwidth review of the deploye
 
 This release marks the transition from "code you clone" to "image you pull." Fishwrap now ships as a signed OCI image at `ghcr.io/maxspevack/fishwrap`. Downstream products pull the pinned image, mount a config, and run it.
 
-**This is a major version bump** per `docs/VERSIONING.md`'s "fundamental architectural shifts" criterion. The way consumers integrate with fishwrap changes structurally. If you were cloning fishwrap into a `vendor/` directory and running its venv install, that path no longer works — switch to `docker pull ghcr.io/maxspevack/fishwrap:2.0` and run via `docker run`. See [`docs/IMAGE_CONTRACT.md`](IMAGE_CONTRACT.md) for the full new integration shape, and [Daily Clamour](https://github.com/maxspevack/dailyclamour.com) for a worked example.
+**This is a major version bump** per `docs/VERSIONING.md`'s "fundamental architectural shifts" criterion. The way consumers integrate with fishwrap changes structurally. If you were cloning fishwrap into a `vendor/` directory and running its venv install, that path no longer works. Switch to `docker pull ghcr.io/maxspevack/fishwrap:2.0` and run via `docker run`. See [`docs/IMAGE_CONTRACT.md`](IMAGE_CONTRACT.md) for the full new integration shape, and [Daily Clamour](https://github.com/maxspevack/dailyclamour.com) for a worked example.
 
 ### 📦 The Artifact
 *   **OCI image release:** every `v*` tag push triggers `.github/workflows/release.yml`, which builds and publishes the image to GHCR. Stable tags publish both the exact tag (`:2.0.0`) and the floating minor (`:2.0`); pre-release tags (`-rc1`, `-alpha.1`, etc.) publish only the exact tag.
@@ -68,133 +68,106 @@ This release marks the transition from "code you clone" to "image you pull." Fis
 *   **`CONTRIBUTING.md`:** updated with a Two Audiences framing — engine contributors vs. image consumers.
 
 ### 🛠️ Release Engineering
-*   **Action versions current:** release and demo workflows use the latest major versions of `actions/checkout`, `docker/build-push-action`, `docker/login-action`, `docker/metadata-action`, and `docker/setup-buildx-action` — Node 24-compatible ahead of GitHub's June 2026 deprecation.
+*   **Action versions current:** release and demo workflows use the latest major versions of `actions/checkout`, `docker/build-push-action`, `docker/login-action`, `docker/metadata-action`, and `docker/setup-buildx-action`. Node 24-compatible ahead of GitHub's June 2026 deprecation.
 *   **No `:latest` tag:** `flavor: latest=false` suppresses the auto-generated `:latest` tag that would otherwise be a footgun for consumers who pin loosely.
 
 ---
 
 ## v1.3.3 (The Synchronization) - Dec 14, 2025
 
-A maintenance release to synchronize documentation updates and ensure all downstream artifacts are built from the latest stable baseline.
+Maintenance release to synchronize documentation updates and ensure all downstream artifacts build from the latest stable baseline.
 
-### 📚 Documentation
-*   **Blog Vol 5:** Added "The Release" (Release Engineering Case Study).
-*   **Runbook Refinements:** Clarified the separation of concerns between Engine and Product in deployment documentation.
+*   Documentation refinements clarifying the separation of concerns between Engine and Product in deployment documentation.
 
 ---
 
 ## v1.3.2 (The Chronos Update) - Dec 13, 2025
 
-A feature release enabling high-precision publication metadata.
+Added precise publication-time metadata to the template context.
 
-### 🚀 New Features
-*   **Publication Timestamp:** The engine now injects the precise generation time (e.g., `08:00 AM PST`) into the template context (`time_str`). This reinforces the "Snapshot in Time" philosophy of the Anti-Feed.
-*   **Forward Compatibility:** Themes have been updated to conditionally render this timestamp, ensuring smooth upgrades.
+*   **Publication timestamp:** the engine now injects the precise generation time into the template context as `time_str` (e.g., `08:00 AM PST`).
+*   **Forward compatibility:** themes updated to conditionally render the timestamp.
 
 ---
 
 ## v1.3.1 (The Polish) - Dec 13, 2025
 
-A maintenance release focused on UI refinement, build stability, and release engineering.
+Maintenance release covering UI refinement, build stability, and release engineering.
 
-### 🐛 Bug Fixes & Polish
-*   **Transparency UI:** Fixed the "Tab Flashing" bug in the Glass Box modal and enforced high-contrast text colors for readability.
-*   **Visuals:** Updated the "Bubble" score badges to have fixed widths for better alignment.
-*   **Data Clarity:** Renamed "Signal Delta" to "Delta" and reordered the "Source Efficiency" table (Input → Output → Delta) for better logical flow.
-*   **Footer:** Replaced the text-based version string with a clean GitHub icon + version badge (e.g., `v1.3.1`).
+### Bug fixes and polish
+*   Fixed the tab-flashing bug in the transparency modal and enforced high-contrast text colors.
+*   Updated the score badges to fixed widths for alignment.
+*   Renamed "Signal Delta" to "Delta" and reordered the Source Efficiency table (Input → Output → Delta) for logical flow.
+*   Replaced the text-based version string in the footer with a GitHub icon + version badge.
 
-### 🛠️ Release Engineering
-*   **Automated Release Script:** Introduced `scripts/release.sh` to automate the version bump, build verification, and tagging process.
-*   **Test Gate:** The release pipeline now enforces a `make test` pass, running the full unit test suite before allowing a release.
-*   **Build Hardening:** Updated `Makefile` to suppress legacy `SyntaxWarning` noise and use a robust `install_venv.sh` script for environment setup.
-*   **Runbook:** Published `docs/RELEASING.md` as the definitive guide for shipping new versions.
+### Release engineering
+*   Introduced `scripts/release.sh` to automate the version bump, build verification, and tagging process.
+*   The release pipeline now enforces a `make test` pass before allowing a release.
+*   Updated `Makefile` to suppress legacy `SyntaxWarning` noise and use `install_venv.sh` for environment setup.
+*   Published `docs/RELEASING.md` as the runbook for shipping new versions.
 
 ---
 
 ## v1.3.0 (Digital Origami) - Dec 13, 2025
 
-This release focuses on **Experience and Stability**. We polished the "Glass Box" UI, overhauled the documentation identity, and hardened the build system to survive bleeding-edge environments (Python 3.14).
+Tabbed Transparency UI, a brand identity that has since been retired, and build hardening against Python 3.14. The brand work this release introduced (the original "Digital Origami" direction) has been superseded by the bible at `docs/BRAND.md`; see the README and §6 of the bible for the current visual identity.
 
-### 🎨 UX & Branding
-*   **Tabbed Transparency UI:** The "Glass Box" modal now features a clean, tabbed interface separating "Vitals" (The Funnel), "Sources" (Efficiency), and "The Bubble" (Cut-Line).
-*   **Digital Origami:** Rolled out the new brand identity across the documentation.
-*   **Sidebar Restoration:** Fixed a regression in the demo themes where the sidebar navigation was lost.
+### Engineering
+*   Tabbed transparency modal separating Vitals (The Funnel), Sources (Efficiency), and The Bubble (Cut-Line).
+*   Sidebar navigation regression fixed in the demo themes.
+*   `Makefile` updated to handle shell environments explicitly (`bash`); `install_venv.sh` simplifies dependency installation.
+*   Dependencies cleaned up; the experimental Pydantic refactor was reverted to maintain Python 3.14 compatibility.
 
-### 📚 Documentation
-*   **The Architect's Log:** Reorganized the engineering docs into a proper blog structure.
-*   **Brand Bible:** Added comprehensive brand guidelines and GenAI prompts for assets.
-
-### 🛡️ Engineering
-*   **Robust Build System:** Updated `Makefile` to explicitly handle shell environments (`bash`) and simplify dependency installation (`install_venv.sh`), fixing deployment issues on modern macOS.
-*   **Dependencies:** Cleaned up the dependency tree, reverting the experimental Pydantic refactor to maintain compatibility with Python 3.14.
+### Documentation (now superseded)
+*   Reorganized the engineering documentation into a blog structure. The blog was retired in May 2026; engineering content now lives alongside the code.
+*   Added the first version of the brand bible. This bible was rewritten in May 2026 and replaced with the current `docs/BRAND.md`.
 
 ---
 
 ## v1.2.0 (The Glass Box) - Dec 12, 2025
 
-This release marks the transition from "Script" to "System." We realized that speed wasn't enough; we needed **Trust**. We rebuilt the engine to be auditable, persistent, and transparent.
+v1.2 added an audit log so the reader could check the engine's working. The previous file-based store (JSON) was replaced with SQLite, and the Auditor module was introduced.
 
-### 🏛️ The Architecture
-*   **SQLite Migration:** We moved from atomic JSON files to a robust **SQLite** backend (`fishwrap.db`). This enables long-term history ("The Chronicle") and prevents data corruption during concurrent fetches.
-*   **The Auditor:** A new forensic module that runs after every edition. It generates a **Transparency Report** (`transparency.html`) that proves the algorithm isn't just a mirror of the most popular links.
-*   **Anti-Feed Metrics:** We introduced the "Anti-Feed Protection" score (Yield Rate) and "Source Efficiency" metrics to quantify how much noise we filter out.
+### Architecture
+*   **SQLite migration:** moved from atomic JSON files to a SQLite backend (`fishwrap.db`). Enables long-term history and prevents corruption during concurrent fetches.
+*   **The Auditor:** new module that runs after every edition, generates a Transparency Report (`transparency.html`), and records what the engine considered, scored, and cut.
+*   **Funnel metrics:** introduced Anti-Feed Protection (yield rate) and Source Efficiency metrics to quantify what the engine filtered out.
 
-### 🔭 Observability
-*   **The HUD:** New console reporting for "Cut-Line" stories (what almost made it) and "Drift" (when a story is forced into a different section).
-*   **Database CLI:** Introduced `fw-db`, a command-line tool for managing the newsroom database (`status`, `prune`, `vacuum`).
-
-### 📚 Documentation
-*   **The Architect's Log:** Launched the engineering blog with case studies on Algorithms, Concurrency, and Consistency.
-*   **Brand Identity:** Established the "Digital Origami" design language.
+### Observability
+*   Console reporting for cut-line stories (what almost made the edition) and drift (when a story was reclassified into a different section).
+*   `fw-db` command-line tool for managing the newsroom database (`status`, `prune`, `vacuum`).
 
 ---
 
 ## v1.1.0 (The Parallel Press) - Dec 12, 2025
 
-The "Speed" update. We realized our sequential processing was too slow for the scale of the web. We broke the single-lane highway and built a ten-lane freeway.
+v1.1 added concurrent fetching and per-domain rate limiting after the unthrottled fetcher tripped Reddit's 429.
 
-### ⚡ Performance
-*   **Concurrency:** Implemented `ThreadPoolExecutor` for the Fetcher and Enhancer. Pipeline runtime dropped from **~51s** to **~15s** (3.5x speedup).
-*   **Rate Limiting:** We flew too close to the sun and DDoS'd Reddit. We implemented **Token Bucket** rate limiting to be polite citizens of the open web.
+### Performance
+*   **Concurrency:** `ThreadPoolExecutor` for the Fetcher and Enhancer. Pipeline runtime dropped from ~51s to ~15s (3.5x speedup).
+*   **Rate limiting:** token-bucket rate limiting introduced after the concurrent fetcher exceeded Reddit's per-host limit. Per-host rate limits are now configurable via `utils.RATE_LIMITS`.
 
-### 🧠 Logic
-*   **The "Memento" Fix:** Solved a critical bug where the engine would forget scraped text every hour. We now merge new data with existing cache, ensuring 100% cache hit rates on subsequent runs.
-*   **The Jaccard Hatchet:** Optimized deduplication from O(N²) to effective O(N) by pre-filtering candidates with Set Intersection before running expensive fuzzy matching.
+### Logic
+*   v1.1 fixed a regression where the Fetcher overwrote scraped text with raw RSS data on each cycle. Subsequent runs now hit the cache for previously-enhanced articles.
+*   Deduplication optimized from O(N²) to effective O(N) by pre-filtering candidates with set intersection before running fuzzy matching.
 
 ---
 
 ## v1.0.0 (The Foundation) - Dec 11, 2025
 
-The initial release. A proof-of-concept that a Python script could replace a doomscroll.
+The initial release.
 
-*   **Core Engine:** The four-stage pipeline (Fetcher -> Editor -> Enhancer -> Printer).
-*   **JSON Storage:** Simple file-based persistence (`articles_db.json`).
-*   **Basic Output:** Generation of a static HTML edition and a rudimentary PDF.
+*   Four-stage pipeline: Fetcher → Editor → Enhancer → Printer.
+*   JSON-file persistence (`articles_db.json`).
+*   Static HTML and rudimentary PDF output.
 
 ---
 
-## Pre-History (The Prototype Era)
+## Pre-history
 
-Before v1.0, we were figuring out what we were actually building.
+Single-line entries. Pre-v1 work was prototype territory.
 
-### v0.9.0 (The Fleet) - Dec 10, 2025
-**Theme:** "Verticalization." We proved the platform thesis by launching specific verticals.
-*   **The Zero Day:** A cybersecurity-focused briefing.
-*   **The Hallucination:** An AI research briefing.
-*   This proved Fishwrap wasn't just a news reader; it was a generic engine for *any* stream of information.
-
-### v0.3.0 (The Schism) - Dec 9, 2025
-**Theme:** "Separation of Concerns."
-*   We extracted the "Engine" (`fishwrap`) from the "Product" (`dailyclamour.com`).
-*   This architecture allowed us to treat the Daily Clamour as just one *instance* of the Fishwrap technology.
-
-### v0.2.0 (The Identity) - Dec 8, 2025
-**Theme:** "Ink & Grit."
-*   Established the "Vintage" aesthetic.
-*   Introduced "Scoop the Pearl" as the mascot.
-*   Moved from a generic HTML list to the "Bento Grid" layout.
-
-### v0.1.0 (The Seed) - Dec 07, 2025
-**Theme:** "The Genesis."
-*   The very first commit of the Fishwrap project. A simple script to fetch, process, and print basic news headlines.
-*   This was the day the "Anti-Feed" began.
+*   **v0.9.0** — 2025-12-10. Added per-vertical configurations: cybersecurity (The Zero Day) and AI research (The Hallucination). Proved the engine was not bound to a single publication.
+*   **v0.3.0** — 2025-12-09. Extracted the engine (`fishwrap`) from the consumer publication (`dailyclamour.com`). Established the architectural separation that makes Fishwrap a substrate, not a product.
+*   **v0.2.0** — 2025-12-08. First publication-side visual identity for Daily Clamour, including the bento-grid layout. Engine-side branding came later and was rewritten in May 2026.
+*   **v0.1.0** — 2025-12-07. First commit. A script to fetch, process, and print headlines.

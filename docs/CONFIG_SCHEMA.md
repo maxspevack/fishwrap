@@ -171,7 +171,7 @@ Per-section thresholds that the printer uses to decide visual emphasis ("lead" v
 | `STATS_FILE` | string | `'publication_stats.json'` | Aggregate publication statistics, appended on each run |
 | `SECRETS_FILE` | string | `'secrets.json'` | JSON file mapping source-specific keys to auth material (cookies, API tokens). Absent = sources requiring auth fetch in degraded mode |
 | `ARTICLES_DB_FILE` | string | `'articles_db.json'` | Deprecated; kept for backward compatibility. Has no effect when `DATABASE_URL` is a SQLite URL (default since v1.2) |
-| `USER_AGENT` | string | engine default | HTTP User-Agent for the fetcher and enhancer. Be a polite citizen |
+| `USER_AGENT` | string | engine default | HTTP User-Agent for the fetcher and enhancer. Override to identify your downstream publication |
 | `FOUNDING_DATE` | string | `'2024-01-01'` | ISO date the publication started; used to compute issue numbers (days since founding + 1) |
 | `TIMEZONE` | string | `'UTC'` | Display timezone for timestamps in the rendered edition. Accepts IANA names (`'America/Los_Angeles'`); legacy aliases (`'US/Pacific'`) work in v2.0.x because the image ships `tzdata-legacy`, but a future release may drop the legacy package and require IANA-canonical names |
 | `THEME` | string | `'basic'` | Path to the theme directory (templates + static). Relative paths resolve against process CWD |

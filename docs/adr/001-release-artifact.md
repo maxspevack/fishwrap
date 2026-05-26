@@ -8,7 +8,7 @@
 
 Today, a fishwrap release is a git tag with nothing shippable attached. Downstream consumers — most notably [Daily Clamour](https://github.com/maxspevack/dailyclamour.com) — clone `fishwrap.git`, check out a tag into `vendor/fishwrap`, run the engine's own venv install, and invoke Python modules directly. The contract is held together by convention: install scripts, Python module names, the existence of a `__version__` attribute on the package, filesystem layout assumptions. Six implicit contracts pretending to be one.
 
-For fishwrap to be consumable by anyone other than its author, the contract must be explicit, documented, and stable. This ADR establishes what a fishwrap release *is* and what guarantees it makes to downstream consumers. It is the foundation that the rest of milestone v2.0 builds on.
+For fishwrap to be consumable by anyone other than its author, the contract must be explicit, documented, and stable. This ADR establishes what a fishwrap release *is* and what guarantees it makes to downstream consumers. Milestone v2.0 builds on this contract.
 
 This is the first ADR in the project. Future significant architectural decisions follow the same numbered-record pattern — see [`docs/adr/`](.).
 

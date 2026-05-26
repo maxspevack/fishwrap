@@ -1,5 +1,7 @@
 # Versioning Taxonomy
 
+Consumers of the published image read [IMAGE_CONTRACT.md §5](IMAGE_CONTRACT.md#5-versioning-policy). This document is the project-side rule the workflow enforces.
+
 Fishwrap adheres to **Semantic Versioning 2.0.0**, using a `MAJOR.MINOR.PATCH` format (e.g., `v1.2.3`). This document defines what criteria trigger an increment in each part of the version number.
 
 ## Format: `vMAJOR.MINOR.PATCH`

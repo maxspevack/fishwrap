@@ -1,8 +1,8 @@
 # Fishwrap Image Contract
 
-This document is the public contract for consumers of the fishwrap engine. If you depend on fishwrap, you depend on this contract — and only this contract. Anything not described here is an implementation detail that may change at any time.
+This document is the public contract for consumers of the fishwrap engine. If you depend on fishwrap, you depend on this contract, and only this contract. Anything not described here is an implementation detail that may change at any time.
 
-If you are looking for the *internal* decision record of why fishwrap publishes as a container image, see [ADR-001](adr/001-release-artifact.md). This document is the *external* face of that decision.
+If you are looking for the internal decision record of why fishwrap publishes as a container image, see [ADR-001](adr/001-release-artifact.md).
 
 The canonical example consumer is [Daily Clamour](https://github.com/maxspevack/dailyclamour.com). Fork it as a starting template.
 
