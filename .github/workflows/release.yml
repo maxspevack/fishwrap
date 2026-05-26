@@ -66,6 +66,12 @@ jobs:
           flavor: |
             latest=false
 
+      # QEMU lets the amd64 GitHub runner build arm64 layers via emulation.
+      # Required for the linux/arm64 leg of the multi-arch manifest below.
+      # Build time roughly doubles; the arm64 leg is the slower one.
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v3
+
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v4
 
@@ -74,7 +80,10 @@ jobs:
         uses: docker/build-push-action@v7
         with:
           context: .
-          platforms: linux/amd64
+          # Multi-arch per ADR-001 §2 and docs/IMAGE_CONTRACT.md.
+          # arm64 was claimed in the contract since v2.0.0 but missing
+          # from this workflow until #31; landed on 2026-05-25.
+          platforms: linux/amd64,linux/arm64
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
