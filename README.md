@@ -91,7 +91,6 @@ The two contracts that govern a fork:
 | [Config Schema](docs/CONFIG_SCHEMA.md) | Every key the engine recognizes |
 | [Release Notes](docs/RELEASE_NOTES.md) | Version history |
 | [Releasing](docs/RELEASING.md) | Runbook for cutting new versions |
-| [Contributing](CONTRIBUTING.md) | How to contribute to the engine itself |
 | [Architecture Decisions](docs/adr/) | ADRs for significant decisions |
 | [Versioning Policy](docs/VERSIONING.md) | What patch / minor / major mean |
 
