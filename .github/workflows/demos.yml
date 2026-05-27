@@ -1,8 +1,13 @@
 # Fishwrap demos refresh workflow.
 #
-# Runs daily, builds the vanilla reference demo against the published
-# image, validates the output's size, and deploys the result to
-# fishwrap.org via GitHub Pages.
+# MANUAL ONLY. The scheduled cron is disabled while the demo is under
+# active redevelopment. The image pinned below is the published v2.0
+# engine; the demo's source-tree config and engine are being rewritten
+# and would not render correctly through the pinned image while the
+# rewrite is in flight. Re-enable the cron only after a new engine
+# image has been cut and FISHWRAP_IMAGE is updated to point at it.
+#
+# To run manually: GitHub UI → Actions → demos → Run workflow.
 #
 # Two jobs, run sequentially:
 #
@@ -15,11 +20,11 @@
 #           source tree, runs Jekyll on docs/, and deploys via
 #           actions/deploy-pages.
 #
-# Failure modes the 2 AM operator should know about:
+# Failure modes the operator should know about:
 #
 #   "manifest unknown" on docker pull
 #       The pinned image tag (FISHWRAP_IMAGE below) doesn't exist on
-#       GHCR. Either v2.0.0 hasn't cut yet, or someone renamed the
+#       GHCR. Either the release hasn't cut yet, or someone renamed the
 #       package. Cut the release or fix the tag.
 #
 #   "<file> is N bytes, expected at least 10240"
@@ -35,10 +40,6 @@
 name: demos
 
 on:
-  schedule:
-    # Daily at 12:00 UTC. Aligns roughly with The Daily Clamour's
-    # 04:00 Pacific cadence (will drift one hour during DST; harmless).
-    - cron: '0 12 * * *'
   workflow_dispatch:
 
 permissions:
