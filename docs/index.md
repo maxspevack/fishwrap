@@ -62,12 +62,10 @@ Three things the reader does, what stays in effect, and what the engine commits 
 
 ---
 
-## Four editions are live. Read one.
+## One edition is live. A second is in beta.
 
 - [**The Daily Clamour**](https://dailyclamour.com). The flagship instance. One edition a day at 04:00 Pacific.
-- [**The Zero Day**](/demo/cyber/). Cybersecurity briefing.
-- [**The Hallucination**](/demo/ai/). AI research briefing.
-- [**The ShowRunner**](/demo/showrunner/). Entertainment briefing.
+- [**The Vanilla**](/demo/vanilla/). The reference demo — a general-purpose paper showing what the engine produces with a minimal config.
 
 Source: [github.com/maxspevack/fishwrap](https://github.com/maxspevack/fishwrap). The engine is the config file and the theme. Daily Clamour is the worked example; everything else is yours.
 

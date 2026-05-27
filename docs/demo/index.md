@@ -10,7 +10,7 @@ See the Fishwrap engine in action.
 
 ## 🌟 Live Production
 
-**[The Daily Clamour](https://dailyclamour.com)**  
+**[The Daily Clamour](https://dailyclamour.com)**
 *The Flagship Edition.* A general-purpose news, sports, tech, and culture newspaper running on the `vintage` theme.
 
 It demonstrates the full power of the "Glass-Box" engine:
@@ -20,16 +20,13 @@ It demonstrates the full power of the "Glass-Box" engine:
 
 ---
 
-## 🧪 Reference Demos
+## 🧪 Reference Demo
 
-These three "Reference Verticals" demonstrate how the same engine can be tuned for completely different audiences just by changing `config.py`.
+The reference demo shows what the engine produces with a minimal config and the `basic` theme. It is the starting point for building your own paper.
 
-| Edition | Vertical | Description | Link |
-| :--- | :--- | :--- | :--- |
-| **The Vanilla** | General News | A standard mix of RSS feeds (NYT, BBC, The Verge). Shows the baseline capability. | [**Read Vanilla**](vanilla/) |
-| **The Zero Day** | Cybersecurity | Prioritizes CVEs and exploits. Filters out vendor marketing fluff. | [**Read Zero Day**](cyber/) |
-| **The Hallucination** | AI Research | Separates Arxiv papers and Github repos from the "AGI is coming" opinion pieces. | [**Read AI**](ai/) |
-| **The ShowRunner** | Entertainment | Tracks industry gossip, production schedules, and box office numbers. | [**Read ShowRunner**](showrunner/) |
+| Edition | Description | Link |
+| :--- | :--- | :--- |
+| **The Vanilla** | A general mix of RSS feeds. The engine's baseline capability. | [**Read Vanilla**](vanilla/) |
 
 ---
 
@@ -45,28 +42,7 @@ make setup
 ```
 
 ### 2. Print an Edition
-Run the pipeline for the vertical you want to generate:
-
-**The Vanilla (General News):**
 ```bash
 make run-vanilla
 # output is at demo/output/index.html
-```
-
-**The Zero Day (Cybersecurity):**
-```bash
-make run-cyber
-# output is at demo/output/cyber_index.html
-```
-
-**The Hallucination (AI Research):**
-```bash
-make run-ai
-# output is at demo/output/ai_index.html
-```
-
-**The ShowRunner (Entertainment):**
-```bash
-make run-showrunner
-# output is at demo/output/showrunner_edition.html
 ```

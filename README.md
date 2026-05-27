@@ -10,11 +10,9 @@ Fishwrap is the engine for the morning paper. RSS feeds, Reddit threads, and Hac
 
 The engine is a signed OCI image at `ghcr.io/maxspevack/fishwrap`. A publication is a config file and a theme. [Daily Clamour](https://dailyclamour.com) is the worked example; everything else is yours.
 
-**Four editions are live:**
+**One edition is live. One reference demo runs alongside it:**
 *   [The Daily Clamour](https://dailyclamour.com). The flagship instance. One edition a day at 04:00 Pacific.
-*   [The Zero Day](https://fishwrap.org/demo/cyber/). Cybersecurity briefing.
-*   [The Hallucination](https://fishwrap.org/demo/ai/). AI research briefing.
-*   [The ShowRunner](https://fishwrap.org/demo/showrunner/). Entertainment briefing.
+*   [The Vanilla](https://fishwrap.org/demo/vanilla/). The reference demo — a general paper produced from a minimal config and the `basic` theme.
 
 ---
 
@@ -34,14 +32,6 @@ docker run --rm \
 ```
 
 The rendered edition lands at `output/index.html`. Open it.
-
-To run a different vertical, swap the config path:
-
-```bash
-docker run --rm -v $(pwd)/demo:/cfg -v $(pwd)/output:/output \
-    ghcr.io/maxspevack/fishwrap:2.0 \
-    fishwrap-build --config /cfg/cyber_config.py
-```
 
 The full consumer contract (every input, every output path, every CLI surface, the versioning policy, the pinning recommendation) is in [`docs/IMAGE_CONTRACT.md`](docs/IMAGE_CONTRACT.md).
 
@@ -75,7 +65,7 @@ The two contracts that govern a fork:
 ## Repository structure
 
 *   `fishwrap/`. The stateless engine.
-*   `demo/`. Four reference configurations and themes (`vanilla`, `cyber`, `ai`, `showrunner`).
+*   `demo/`. The reference configuration (`config.py`) and the `basic` theme.
 *   `docs/`. The source for [fishwrap.org](https://fishwrap.org), plus the consumer contract, ADRs, schema reference, and release notes.
 *   `Dockerfile`. The release artifact recipe.
 *   `.github/workflows/`. Release and demo refresh workflows.

@@ -165,12 +165,12 @@ class CollectAllAndPermissivenessTests(unittest.TestCase):
 
 
 class DemoConfigsIntegration(unittest.TestCase):
-    """The shipped demo configs must validate. Catches regressions in the schema."""
+    """The shipped demo config must validate. Catches regressions in the schema."""
 
     def test_all_demo_configs_validate(self):
         repo_root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
         demo_dir = os.path.join(repo_root, "demo")
-        for cfg in ("config.py", "cyber_config.py", "ai_config.py", "showrunner_config.py"):
+        for cfg in ("config.py",):
             cfg_path = os.path.join(demo_dir, cfg)
             if not os.path.exists(cfg_path):
                 self.skipTest(f"{cfg_path} not found")

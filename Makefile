@@ -1,5 +1,5 @@
 SHELL := /bin/bash
-.PHONY: setup update test build-core run-vanilla run-cyber run-ai run-showrunner clean-output clean-venv clean-all
+.PHONY: setup update test build-core run-vanilla clean-output clean-venv clean-all
 
 # Paths
 VENV := venv
@@ -29,6 +29,8 @@ test:
 	@$(PYTHON) scripts/test_scoring_determinism.py
 	@$(PYTHON) scripts/test_templates.py
 	@$(PYTHON) scripts/test_validate_config.py
+	@$(PYTHON) scripts/test_classifier_matching.py
+	@$(PYTHON) scripts/test_fw_db_config.py
 	@# test_fw_db.sh is a shell script, run it if it exists and is executable
 	@if [ -x scripts/test_fw_db.sh ]; then ./scripts/test_fw_db.sh; fi
 	@echo "✅ All Tests Passed."
@@ -43,29 +45,17 @@ build-core:
 	$(PYTHON) -m fishwrap.enhancer && \
 	$(PYTHON) -m fishwrap.printer
 
-# --- Demo Targets (local development) ---
+# --- Demo Target (local development) ---
 # Production demos refresh via .github/workflows/demos.yml against the
-# published image, not from these targets. These targets are for local
+# published image, not from this target. This target is for local
 # engine development only.
 run-vanilla:
 	@echo "--- Building Vanilla Demo ---"
 	@$(MAKE) build-core CONFIG=demo/config.py
 
-run-cyber:
-	@echo "--- Building Cyber Demo ---"
-	@$(MAKE) build-core CONFIG=demo/cyber_config.py
-
-run-ai:
-	@echo "--- Building AI Demo ---"
-	@$(MAKE) build-core CONFIG=demo/ai_config.py
-
-run-showrunner:
-	@echo "--- Building ShowRunner Demo ---"
-	@$(MAKE) build-core CONFIG=demo/showrunner_config.py
-
 # --- Cleanup ---
 clean-output:
-	rm -rf demo/output/* fishwrap/logs/*
+	rm -rf demo/output/* logs/*
 
 clean-venv:
 	rm -rf venv
