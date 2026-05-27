@@ -7,8 +7,11 @@ import time
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
 from fishwrap.db import repository
-# Ensure we use a test config/db
-os.environ['FISHWRAP_CONFIG'] = 'demo/test_config.py'
+# Ensure we use a test config/db (the new shape — an instance directory
+# containing masthead.toml. The masthead loader writes a per-instance DB
+# at sqlite:///demo/data/<dirname>.db so this test doesn't write to the
+# main demo's DB.)
+os.environ['FISHWRAP_CONFIG'] = 'demo/test_config'
 import importlib
 import fishwrap._config
 importlib.reload(fishwrap._config)

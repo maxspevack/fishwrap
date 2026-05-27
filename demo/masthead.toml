@@ -1,0 +1,582 @@
+# Masthead — first-principles edition.
+# No boosts, no penalties, no minimum scores. The editor will
+# add policies as they emerge from reading actual editions.
+
+[identity]
+name = "The Daily Clamour"
+founding_date = "2025-12-07"
+timezone = "America/Los_Angeles"
+user_agent = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.114 Safari/537.36"
+
+[engine]
+expiration_hours = 24
+max_article_length = 15000
+# fuzzy dedup similarity threshold (0.0–1.0). The one piece of
+# algorithmic value that survives the strip: don't run the same
+# story twice.
+dedup_similarity_threshold = 0.70
+
+[[section]]
+id = "news"
+title = "Beat"
+description = "Scoops, Scandals, & Scoundrels"
+edition_size = 25
+lead_count = 2
+feature_count = 5
+max_per_source = 3
+keywords = [
+  "government",
+  "policy",
+  "law",
+  "court",
+  "crime",
+  "police",
+  "protest",
+  "scandal",
+  "biden",
+  "trump",
+  "congress",
+  "senate",
+  "house",
+  "democrat",
+  "republican",
+  "gop",
+  "election",
+  "vote",
+  "campaign",
+  "poll",
+  "candidate",
+  "ballot",
+  "debate",
+  "war",
+  "military",
+  "ukraine",
+  "russia",
+  "israel",
+  "gaza",
+  "china",
+  "iran",
+  "conflict",
+  "economy",
+  "inflation",
+  "market",
+  "stock",
+  "bank",
+  "finance",
+  "trade",
+  "tariff",
+  "tax",
+  "border",
+  "immigration",
+  "migrant",
+  "illegal",
+  "alien",
+  "deported",
+  "arrested",
+  "judge",
+  "ruling",
+  "scotus",
+  "doj",
+  "fbi",
+  "cia",
+  "investigation",
+  "mayor",
+  "mayoral",
+  "governor",
+  "state",
+]
+
+[[section]]
+id = "sports"
+title = "Turf"
+description = "The Toy Department"
+edition_size = 25
+lead_count = 2
+feature_count = 5
+max_per_source = 3
+keywords = [
+  "nfl",
+  "nba",
+  "mlb",
+  "nhl",
+  "cfb",
+  "football",
+  "basketball",
+  "baseball",
+  "hockey",
+  "soccer",
+  "team",
+  "coach",
+  "player",
+  "athlete",
+  "roster",
+  "standings",
+  "rankings",
+  "stats",
+  "championship",
+  "tournament",
+  "playoff",
+  "final",
+  "medal",
+  "trophy",
+  "cup",
+  "draft",
+  "trade",
+  "contract",
+  "signing",
+  "transfer",
+  "portal",
+  "formula 1",
+  "racing",
+  "driver",
+  "grand prix",
+  "f1",
+  "olympic",
+  "wrestle",
+  "ufc",
+  "boxing",
+  "fifa",
+  "uefa",
+]
+
+[[section]]
+id = "tech"
+title = "Atom"
+description = "Indistinguishable From Magic"
+edition_size = 15
+lead_count = 2
+feature_count = 5
+max_per_source = 3
+keywords = [
+  "technology",
+  "tech",
+  "software",
+  "hardware",
+  "code",
+  "programming",
+  "developer",
+  "ai",
+  "artificial intelligence",
+  "chatgpt",
+  "llm",
+  "model",
+  "machine learning",
+  "crypto",
+  "bitcoin",
+  "ethereum",
+  "blockchain",
+  "wallet",
+  "gemini",
+  "fedora",
+  "security",
+  "hacker",
+  "exploit",
+  "vulnerability",
+  "breach",
+  "privacy",
+  "cyber",
+  "startup",
+  "venture",
+  "funding",
+  "ipo",
+  "acquisition",
+  "merger",
+  "google",
+  "apple",
+  "microsoft",
+  "amazon",
+  "meta",
+  "facebook",
+  "twitter",
+  "x.com",
+  "tesla",
+  "linux",
+  "open source",
+  "kernel",
+  "browser",
+  "app",
+  "device",
+  "chip",
+  "semiconductor",
+]
+
+[[section]]
+id = "culture"
+title = "Gala"
+description = "Bread & Circuses"
+edition_size = 15
+lead_count = 2
+feature_count = 5
+max_per_source = 3
+keywords = [
+  "movie",
+  "film",
+  "cinema",
+  "theatre",
+  "director",
+  "actor",
+  "actress",
+  "cast",
+  "tv",
+  "series",
+  "show",
+  "episode",
+  "streaming",
+  "netflix",
+  "hbo",
+  "disney",
+  "hulu",
+  "music",
+  "album",
+  "song",
+  "artist",
+  "band",
+  "concert",
+  "tour",
+  "grammy",
+  "celebrity",
+  "fame",
+  "gossip",
+  "rumor",
+  "scandal",
+  "fashion",
+  "trend",
+  "style",
+  "book",
+  "novel",
+  "author",
+  "writing",
+  "publishing",
+  "review",
+  "interview",
+  "opinion",
+  "commentary",
+  "culture",
+  "society",
+]
+
+# Domain -> default section. Routing only, no scoring.
+[source_sections]
+"9to5google.com" = "tech"
+"aljazeera.com" = "news"
+"americandebunk.substack.com" = "news"
+"americanthinker" = "news"
+"androidauthority.com" = "tech"
+"androidcentral.com" = "tech"
+"androidpolice.com" = "tech"
+"apnews.com" = "news"
+"arstechnica.com" = "tech"
+"avclub.com" = "culture"
+"aws.amazon.com" = "tech"
+"axios" = "news"
+"babylonbee" = "news"
+"bair.berkeley.edu" = "tech"
+"bbc.co.uk" = "news"
+"bleepingcomputer.com" = "tech"
+"blog.google" = "tech"
+"blog.tensorflow.org" = "tech"
+"blogs.microsoft.com" = "tech"
+"blogs.nvidia.com" = "tech"
+"breitbart" = "news"
+"cbssports.com" = "sports"
+"checkpoint.com" = "tech"
+"cisa.gov" = "tech"
+"crowdstrike.com" = "tech"
+"dailycaller" = "news"
+"darkreading.com" = "tech"
+"deadline.com" = "culture"
+"deepmind.google" = "tech"
+"defector.com" = "sports"
+"drudgereportfeed" = "news"
+"engadget.com" = "tech"
+"espn.com" = "sports"
+"fedoraplanet.org" = "tech"
+"feeds.feedburner.com/TheRinger" = "sports"
+"foxnews" = "news"
+"freebeacon" = "news"
+"frontpagemag" = "news"
+"gamingonlinux.com" = "tech"
+"gatewaypundit" = "news"
+"gizmodo.com" = "culture"
+"googleprojectzero" = "tech"
+"greenwald.substack.com" = "news"
+"helpnetsecurity.com" = "tech"
+"hnrss" = "tech"
+"hollywoodreporter.com" = "culture"
+"hotair" = "news"
+"huggingface.co" = "tech"
+"instapundit" = "news"
+"justthenews" = "news"
+"kdnuggets.com" = "tech"
+"krebsonsecurity.com" = "tech"
+"lastweekin.ai" = "tech"
+"legalinsurrection" = "news"
+"lifehacker.com" = "culture"
+"lilianweng.github.io" = "tech"
+"lwn.net" = "tech"
+"machinelearningmastery.com" = "tech"
+"mandiant.com" = "tech"
+"mashable.com" = "culture"
+"natesilver.net" = "news"
+"nealstephenson.substack.com" = "culture"
+"newsbusters" = "news"
+"newsmax" = "news"
+"notthebee" = "news"
+"npr" = "news"
+"nypost" = "news"
+"nytimes.com" = "news"
+"oann" = "news"
+"old.reddit.com/r/Anarcho_Capitalism" = "news"
+"old.reddit.com/r/Android" = "tech"
+"old.reddit.com/r/artificial" = "tech"
+"old.reddit.com/r/ArtificialInteligence" = "tech"
+"old.reddit.com/r/AskReddit" = "culture"
+"old.reddit.com/r/Bard" = "tech"
+"old.reddit.com/r/books" = "culture"
+"old.reddit.com/r/cfb" = "sports"
+"old.reddit.com/r/ChatGPT" = "tech"
+"old.reddit.com/r/claude" = "tech"
+"old.reddit.com/r/ClaudeCode" = "tech"
+"old.reddit.com/r/Conservative" = "news"
+"old.reddit.com/r/cooking" = "culture"
+"old.reddit.com/r/cybersecurity" = "tech"
+"old.reddit.com/r/deadwood" = "culture"
+"old.reddit.com/r/GeminiAI" = "tech"
+"old.reddit.com/r/google_antigravity" = "tech"
+"old.reddit.com/r/GoogleGeminiAI" = "tech"
+"old.reddit.com/r/GooglePixel" = "tech"
+"old.reddit.com/r/jimrome" = "sports"
+"old.reddit.com/r/KitchenConfidential" = "culture"
+"old.reddit.com/r/LateStageCapitalism" = "news"
+"old.reddit.com/r/Libertarian" = "news"
+"old.reddit.com/r/LocalLLaMA" = "tech"
+"old.reddit.com/r/MachineLearning" = "tech"
+"old.reddit.com/r/moderatepolitics" = "news"
+"old.reddit.com/r/movies" = "culture"
+"old.reddit.com/r/nba" = "sports"
+"old.reddit.com/r/netsec" = "tech"
+"old.reddit.com/r/NeutralPolitics" = "news"
+"old.reddit.com/r/news" = "news"
+"old.reddit.com/r/nfl" = "sports"
+"old.reddit.com/r/OpenAI" = "tech"
+"old.reddit.com/r/PoliticalDiscussion" = "news"
+"old.reddit.com/r/Politics" = "news"
+"old.reddit.com/r/rant" = "culture"
+"old.reddit.com/r/singularity" = "tech"
+"old.reddit.com/r/soccer" = "sports"
+"old.reddit.com/r/sports" = "sports"
+"old.reddit.com/r/technology" = "tech"
+"old.reddit.com/r/television" = "culture"
+"old.reddit.com/r/thesopranos" = "culture"
+"old.reddit.com/r/vent" = "culture"
+"old.reddit.com/r/worldnews" = "news"
+"openai.com" = "tech"
+"pagesix.com" = "culture"
+"paloaltonetworks.com" = "tech"
+"phoronix.com" = "tech"
+"pitchfork.com" = "culture"
+"pjmedia" = "news"
+"politico" = "news"
+"polygon.com" = "tech"
+"powerlineblog" = "news"
+"rantingly" = "news"
+"realclearpolitics" = "news"
+"reason.com" = "news"
+"redstate" = "news"
+"reuters.com" = "news"
+"revolver.news" = "news"
+"rollingstone.com" = "culture"
+"schneier.com" = "tech"
+"securelist.com" = "tech"
+"securityaffairs.co" = "tech"
+"simonwillison.net" = "tech"
+"spectator.org" = "news"
+"sports.yahoo.com" = "sports"
+"techcrunch.com" = "tech"
+"theconservativetreehouse" = "news"
+"thefederalist" = "news"
+"thegradient.pub" = "tech"
+"thehackernews.com" = "tech"
+"thehockeywriters.com" = "sports"
+"thepostmillennial" = "news"
+"therecord.media" = "tech"
+"theverge.com" = "tech"
+"threatpost.com" = "tech"
+"towardsdatascience.com" = "tech"
+"townhall" = "news"
+"troyhunt.com" = "tech"
+"twitchy" = "news"
+"variety.com" = "culture"
+"washingtontimes" = "news"
+"wired.com" = "tech"
+"zerohedge" = "news"
+
+# Source feeds. The publisher's source list.
+[feeds]
+urls = [
+  "http://dailycaller.com/section/politics/feed/",
+  "http://feed.androidauthority.com/",
+  "http://www.drudgereportfeed.com/rss.xml",
+  "https://9to5google.com/feed/",
+  "https://americandebunk.substack.com/feed",
+  "https://androidcentral.com/feeds/tag/news/rss",
+  "https://aws.amazon.com/blogs/machine-learning/feed/",
+  "https://babylonbee.com/feed",
+  "https://bair.berkeley.edu/blog/feed.xml",
+  "https://blog.tensorflow.org/feeds/posts/default",
+  "https://blogs.microsoft.com/ai/feed/",
+  "https://blogs.nvidia.com/feed/",
+  "https://cms.zerohedge.com/fullrss2.xml",
+  "https://deadline.com/feed",
+  "https://deepmind.google/blog/rss.xml",
+  "https://defector.com/feed",
+  "https://feeds.arstechnica.com/arstechnica/index",
+  "https://feeds.bbci.co.uk/news/world/rss.xml",
+  "https://feeds.feedburner.com/TheHackersNews",
+  "https://feeds.feedburner.com/TheRinger",
+  "https://feeds.feedburner.com/americanthinker_articles",
+  "https://feeds.feedburner.com/americanthinker_blog",
+  "https://feeds.feedburner.com/breitbart",
+  "https://feeds.feedburner.com/foxnews/latest",
+  "https://feeds.foxnews.com/foxnews/politics",
+  "https://feeds.npr.org/1001/rss.xml",
+  "https://feeds.npr.org/1014/rss.xml",
+  "https://freebeacon.com/feed/",
+  "https://gizmodo.com/rss",
+  "https://googleprojectzero.blogspot.com/feeds/posts/default",
+  "https://greenwald.substack.com/feed",
+  "https://hnrss.org/bestcomments",
+  "https://hnrss.org/frontpage",
+  "https://hnrss.org/frontpage?comments=25",
+  "https://hnrss.org/newest?q=llm+OR+gpt+OR+transformer+OR+generative+ai",
+  "https://hnrss.org/newest?q=open+source+ai",
+  "https://hnrss.org/newest?q=security+OR+vulnerability+OR+exploit+OR+breach",
+  "https://hotair.com/feed",
+  "https://huggingface.co/blog/feed.xml",
+  "https://instapundit.com/feed",
+  "https://justthenews.com/rss.xml",
+  "https://krebsonsecurity.com/feed/",
+  "https://lastweekin.ai/feed",
+  "https://legalinsurrection.com/feed/",
+  "https://lifehacker.com/rss",
+  "https://lilianweng.github.io/index.xml",
+  "https://lwn.net/headlines/full_text?key=6804e49d958d5519",
+  "https://machinelearningmastery.com/feed/",
+  "https://mashable.com/feed",
+  "https://nealstephenson.substack.com/feed",
+  "https://newsbusters.org/blog/feed",
+  "https://notthebee.com/feed",
+  "https://nypost.com/opinion/feed/",
+  "https://nypost.com/politics/feed/",
+  "https://old.reddit.com/r/Anarcho_Capitalism.json",
+  "https://old.reddit.com/r/Android.json",
+  "https://old.reddit.com/r/ArtificialInteligence.json",
+  "https://old.reddit.com/r/AskReddit.json",
+  "https://old.reddit.com/r/Bard.json",
+  "https://old.reddit.com/r/ChatGPT.json",
+  "https://old.reddit.com/r/ClaudeCode.json",
+  "https://old.reddit.com/r/Conservative.json",
+  "https://old.reddit.com/r/GeminiAI.json",
+  "https://old.reddit.com/r/GoogleGeminiAI.json",
+  "https://old.reddit.com/r/GooglePixel.json",
+  "https://old.reddit.com/r/KitchenConfidential.json",
+  "https://old.reddit.com/r/LateStageCapitalism.json",
+  "https://old.reddit.com/r/Libertarian.json",
+  "https://old.reddit.com/r/LocalLLaMA.json",
+  "https://old.reddit.com/r/MachineLearning.json",
+  "https://old.reddit.com/r/NeutralPolitics.json",
+  "https://old.reddit.com/r/OpenAI.json",
+  "https://old.reddit.com/r/PoliticalDiscussion.json",
+  "https://old.reddit.com/r/Politics.json",
+  "https://old.reddit.com/r/artificial.json",
+  "https://old.reddit.com/r/books.json",
+  "https://old.reddit.com/r/cfb.json",
+  "https://old.reddit.com/r/claude.json",
+  "https://old.reddit.com/r/cooking.json",
+  "https://old.reddit.com/r/cybersecurity.json",
+  "https://old.reddit.com/r/deadwood.json",
+  "https://old.reddit.com/r/google_antigravity.json",
+  "https://old.reddit.com/r/jimrome.json",
+  "https://old.reddit.com/r/moderatepolitics.json",
+  "https://old.reddit.com/r/movies.json",
+  "https://old.reddit.com/r/nba.json",
+  "https://old.reddit.com/r/netsec.json",
+  "https://old.reddit.com/r/news.json",
+  "https://old.reddit.com/r/nfl.json",
+  "https://old.reddit.com/r/rant.json",
+  "https://old.reddit.com/r/singularity.json",
+  "https://old.reddit.com/r/soccer.json",
+  "https://old.reddit.com/r/sports.json",
+  "https://old.reddit.com/r/technology.json",
+  "https://old.reddit.com/r/television.json",
+  "https://old.reddit.com/r/thesopranos.json",
+  "https://old.reddit.com/r/vent.json",
+  "https://old.reddit.com/r/worldnews.json",
+  "https://openai.com/blog/rss.xml",
+  "https://openai.com/news/rss.xml",
+  "https://pagesix.com/feed/",
+  "https://pitchfork.com/feed/feed-news/rss",
+  "https://pitchfork.com/feed/rss",
+  "https://pjmedia.com/feed",
+  "https://rantingly.com/feed/",
+  "https://reason.com/category/politics/feed/",
+  "https://reason.com/latest/feed/",
+  "https://redstate.com/feed/",
+  "https://research.checkpoint.com/feed/",
+  "https://rss.nytimes.com/services/xml/rss/nyt/HomePage.xml",
+  "https://securelist.com/feed/",
+  "https://securityaffairs.co/wordpress/feed",
+  "https://simonwillison.net/atom/entries/",
+  "https://spectator.org/feed",
+  "https://sports.yahoo.com/college-football/rss/",
+  "https://sports.yahoo.com/nfl/rss/",
+  "https://sports.yahoo.com/rss/",
+  "https://techcrunch.com/feed/",
+  "https://theconservativetreehouse.com/feed",
+  "https://thefederalist.com/feed",
+  "https://thegatewaypundit.com/feed",
+  "https://thegradient.pub/rss/",
+  "https://thehockeywriters.com/feed/",
+  "https://thepostmillennial.com/index.rss",
+  "https://therecord.media/feed",
+  "https://threatpost.com/feed/",
+  "https://towardsdatascience.com/feed",
+  "https://townhall.com/feed",
+  "https://twitchy.com/feed",
+  "https://unit42.paloaltonetworks.com/feed/",
+  "https://variety.com/feed",
+  "https://www.aljazeera.com/xml/rss/all.xml",
+  "https://www.androidpolice.com/feed/",
+  "https://www.axios.com/feeds/feed.rss?format=xml&categories=politics",
+  "https://www.bleepingcomputer.com/feed/",
+  "https://www.cbssports.com/rss/headlines/",
+  "https://www.cisa.gov/uscert/ncas/alerts.xml",
+  "https://www.cisa.gov/uscert/ncas/current-activity.xml",
+  "https://www.crowdstrike.com/blog/feed/",
+  "https://www.darkreading.com/rss.xml",
+  "https://www.engadget.com/rss.xml",
+  "https://www.espn.com/blog/feed?blog=nflnation",
+  "https://www.espn.com/espn/rss/news",
+  "https://www.frontpagemag.com/feed",
+  "https://www.gamingonlinux.com/article_rss.php",
+  "https://www.helpnetsecurity.com/feed/",
+  "https://www.hollywoodreporter.com/c/movies/feed/",
+  "https://www.kdnuggets.com/feed",
+  "https://www.mandiant.com/resources/blog/rss.xml",
+  "https://www.microsoft.com/security/blog/feed/",
+  "https://www.natesilver.net/feed",
+  "https://www.newsmax.com/rss/Politics/1",
+  "https://www.oann.com/feed/",
+  "https://www.phoronix.com/phoronix-rss.php",
+  "https://www.politico.com/rss/politicopicks.xml",
+  "https://www.polygon.com/rss/index.xml",
+  "https://www.powerlineblog.com/feed/rdf",
+  "https://www.realclearpolitics.com/index.xml",
+  "https://www.revolver.news/feed/",
+  "https://www.rollingstone.com/feed",
+  "https://www.schneier.com/blog/atom.xml",
+  "https://www.theverge.com/rss/index.xml",
+  "https://www.troyhunt.com/rss/",
+  "https://www.washingtontimes.com/rss/headlines/",
+  "https://www.wired.com/feed/rss",
+]

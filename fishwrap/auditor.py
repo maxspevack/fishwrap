@@ -1,173 +1,196 @@
-import json
-import os
-from datetime import datetime
-from zoneinfo import ZoneInfo
-from jinja2 import Environment, FileSystemLoader
+"""
+fishwrap.auditor — the audit data layer.
+
+Persists run-level + per-article audit records to the DB. Produces the
+per-story step-narrative (the prose-not-table audit) and the LLM editor's
+rationale block (Editor mode only).
+
+In Reader mode, the audit drawer shows the mechanical step-by-step:
+  1. Where it came from (source + how it routed to a section)
+  2. When it arrived (relative freshness)
+  3. How it competed (pool size, freshness rank, diversity check)
+  4. Where it landed (seed + tier + explanation of tier thresholds)
+  i. Bonus info (upvotes/comments — informational only, never used for ranking)
+
+In Editor mode, an additional 'editor's rationale' block sits above the
+audit drawer with a one-sentence justification grounded in specific dossier
+passages (cited by line number). In production, this is produced by a
+Sonnet batched call per section with the dossier in context. The
+substring-grounding contract verifies citations against dossier.md before
+they render. In this demo, the rationales are pre-authored.
+"""
+from __future__ import annotations
+
+from collections import Counter
+from datetime import datetime, timezone
+
 from fishwrap.db import repository
-from fishwrap import _config
 from fishwrap.log import get_logger
+from fishwrap.masthead import Masthead
 
 log = get_logger(__name__)
 
-def audit_run(run_sheet, candidates, stats_context):
+
+# ============ Editor mode rationales (hand-authored for the demo) ============
+#
+# Production: Sonnet batched call per section with dossier + candidates.
+# Demo: pre-authored rationales mapped by partial title match. Each cited
+# line is a real line in dossier.md.
+
+def editor_rationales(dossier_lines):
+    """Return a dict of {title_key: {rationale, citations}} for the demo.
+
+    Each citation is (line_number, snippet) pointing to dossier.md.
     """
-    The Auditor:
-    1. Calculates Funnel Metrics.
-    2. Persists the Run to the DB.
-    3. Generates the Transparency Report (Artifact).
-    4. Records detailed Audit Logs for Tuning.
+    def snip(n: int) -> str:
+        n = max(1, min(n, len(dossier_lines)))
+        return dossier_lines[n - 1].strip()[:120]
+
+    return {
+        "pope leo": {
+            "rationale": "Pope Leo XIV's apology for the Holy See's role in slavery is the day's biggest moral-authority story from a major institution — squarely inside Beat's identity ([cite:1]). The r/worldnews provenance gives us conversation, not just wire copy ([cite:2]). I'm leading with it.",
+            "citations": [(22, snip(22)), (52, snip(52))],
+        },
+        "anti-abortion": {
+            "rationale": "Politico filed original reporting on a fault line inside the conservative coalition; this is the kind of named-source policy reporting Beat is for ([cite:1]). The Trump-administration angle and the Supreme Court frame both fire ([cite:2]). Feature, not lead — too narrow for the lead slot today.",
+            "citations": [(23, snip(23)), (95, snip(95))],
+        },
+        "stanley cup": {
+            "rationale": "Conference Finals are live; this is exactly the Turf seasonal-lead window I defined ([cite:1]). Stanley Cup + bracket = the most evergreen NHL-playoff frame available today.",
+            "citations": [(37, snip(37))],
+        },
+        "knicks": {
+            "rationale": "Knicks-Pacers Conference Finals; the dossier's calendar names this matchup family as the NBA lead slot through mid-June ([cite:1]). Pairs naturally with the Stanley Cup story for the two Turf leads.",
+            "citations": [(37, snip(37))],
+        },
+        "wembanyama": {
+            "rationale": "Defector + Wembanyama. The single highest-conviction byline+subject combination in the masthead — Drew Magary-adjacent voice on a current NBA story. Whitelisted; cap-bypass.",
+            "citations": [(31, snip(31)), (66, snip(66))],
+        },
+        "openai": {
+            "rationale": "OpenAI industry-drama story with named principals. Atom's AI-industry-drama lane ([cite:1]); the named-principal frame is what distinguishes this from a corporate-blog rewrite ([cite:2]).",
+            "citations": [(41, snip(41)), (45, snip(45))],
+        },
+        "lwn": {
+            "rationale": "LWN was hand-boosted in the founding masthead and remains a Tier-A source for the open-source substrate lane ([cite:1]). This kernel/distro piece is exactly what Atom's identity asks for.",
+            "citations": [(67, snip(67))],
+        },
+        "krebs": {
+            "rationale": "Original investigation under Krebs's byline — the named-researcher cybersec criterion fires ([cite:1]). This is what Atom wants; the wire-rewrites and corporate threat-intel get filtered out.",
+            "citations": [(43, snip(43))],
+        },
+        "stephenson": {
+            "rationale": "Neal Stephenson's substack. The author whose Diamond Age + Anathem epigraphs founded fishwrap itself — culture-of-ideas, not entertainment industry. Gala's prestige-thinking lane.",
+            "citations": [(51, snip(51))],
+        },
+        "greenwald": {
+            "rationale": "Greenwald's substack — the named-byline investigative-journalism criterion fires ([cite:1]). Beat lead candidate when his piece is the day's substantive story; otherwise feature.",
+            "citations": [(23, snip(23))],
+        },
+        "magary": {
+            "rationale": "Drew Magary at Defector. +1 content_boost in the founding masthead AND +3 source boost on the domain. The single highest-conviction byline in the configuration ([cite:1]).",
+            "citations": [(31, snip(31))],
+        },
+        "dog accidentally": {
+            "rationale": "Weird-news that earns the headline — belongs in Gala, not Beat ([cite:1]). The masthead's source_default routed this to news; the editorial judgment overrides on classification because the story shape fits Gala's identity.",
+            "citations": [(51, snip(51))],
+        },
+    }
+
+
+def attach_rationales(edition, rationales):
+    """Mutate edition: attach _editor_rationale to each article that matches a key."""
+    for arts in edition.values():
+        for art in arts:
+            t = (art.get("title") or "").lower()
+            for key, payload in rationales.items():
+                if key in t:
+                    art["_editor_rationale"] = payload
+                    break
+
+
+# ============ run-level audit persistence ============
+
+def audit_run(edition, rejects, funnel, candidates, masthead: Masthead):
+    """Persist the run + audit logs to the DB.
+
+    The DB schema is unchanged from v2 (runs, run_articles, audit_logs tables).
+    What changed is the SHAPE of the audit data: no boosts/scores, just the
+    per-step classification + dedup + diversify decisions.
     """
-    
-    # 1. Calculate Metrics
-    input_count = stats_context.get('input_count', 0) # Total DB size / items seen
-    pool_count = len(candidates) # Candidates considered (freshness)
-    
-    selected_articles_flat = []
-    selected_ids = set() # For fast lookup
-    selected_count = 0
-    
-    # Track Output Counts
-    output_source_counts = {}
-    
-    for section, articles in run_sheet.items():
-        selected_count += len(articles)
-        for idx, art in enumerate(articles):
-            # Flat list for DB (RunArticle)
-            selected_articles_flat.append({
-                'article_id': art.get('id'), # UUID
-                'rank': idx + 1,
-                'score': art.get('computed_score'),
-                'section': section
+    selected_ids: set[str] = set()
+    flat_selected: list[dict] = []
+    for sid, arts in edition.items():
+        for i, art in enumerate(arts):
+            flat_selected.append({
+                "article_id": art.get("id"),
+                "rank": i + 1,
+                "score": None,  # no numeric score in the new engine
+                "section": sid,
             })
-            selected_ids.add(art.get('id'))
-            
-            try:
-                domain = art.get('source_url', '').split('/')[2]
-                output_source_counts[domain] = output_source_counts.get(domain, 0) + 1
-            except IndexError:
-                log.debug("could not parse domain from %r", art.get('source_url'))
-            
-    # Track Input Counts (Pool) & Build Audit Log
-    input_source_counts = {}
-    audit_logs = []
-    
+            selected_ids.add(art.get("id"))
+
+    audit_logs: list[dict] = []
     for art in candidates:
-        try:
-            domain = art.get('source_url', '').split('/')[2]
-            input_source_counts[domain] = input_source_counts.get(domain, 0) + 1
-        except IndexError:
-            log.debug("could not parse domain from %r", art.get('source_url'))
-            
-        # Build Audit Log Entry
-        # Decision Logic:
-        decision = 'SELECTED' if art.get('id') in selected_ids else 'REJECTED'
-        
-        # Check if Buried (Negative Score)
-        score = art.get('computed_score', 0)
-        if score < 0:
-            decision = 'BURIED'
-            
-        # Parse Breakdown for Scores
-        breakdown = art.get('computed_breakdown', {})
-        
-        audit_entry = {
-            'article_id': art.get('id'),
-            'original_section': art.get('computed_category'),
-            'final_section': art.get('computed_category'),
-            'base_score': 0,
-            'modifier_score': 0,
-            'final_score': score,
-            'decision': decision,
-            'trace': breakdown
+        decision = "SELECTED" if art.get("id") in selected_ids else "REJECTED"
+        trace = {
+            "section": art.get("_section"),
+            "class_reason": art.get("_class_reason"),
+            "tier": art.get("_tier"),
+            "seed": art.get("_seed"),
+            "whitelist_policy_id": (art.get("_whitelist_policy") or {}).get("policy_id"),
+            "lead_promoted_by_policy_id": (art.get("_lead_promoted_by") or {}).get("policy_id"),
         }
-        audit_logs.append(audit_entry)
-    
-    # Top 10 Input Sources (Snapshot for DB)
-    dominance_snapshot = sorted(input_source_counts.items(), key=lambda x: x[1], reverse=True)[:10]
-    
-    # 2. Persist Run
-    run_data = {
-        'run_type': 'daily',
-        'stats_input': input_count,
-        'stats_pool': pool_count,
-        'stats_selected': selected_count,
-        'source_dominance': dominance_snapshot,
-        'perf_metrics': stats_context.get('perf_metrics', {})
-    }
-    
-    run_id = repository.save_run(run_data, selected_articles_flat)
-    
-    # 2.5 Persist Audit Logs
-    repository.save_audit_logs(run_id, audit_logs)
-    
-    print(f"\n[AUDITOR] Run recorded: {run_id}. Audit logs saved: {len(audit_logs)}.")
-    
-    # 3. Generate Artifact (Transparency Report)
-    # Calculate Velocity Data for Report
-    velocity_data = []
-    all_domains = set(input_source_counts.keys()) | set(output_source_counts.keys())
-    
-    for d in all_domains:
-        in_c = input_source_counts.get(d, 0)
-        out_c = output_source_counts.get(d, 0)
-        
-        in_pct = (in_c / pool_count * 100) if pool_count else 0
-        out_pct = (out_c / selected_count * 100) if selected_count else 0
-        
-        velocity_data.append({
-            'domain': d,
-            'input_count': in_c,
-            'output_count': out_c,
-            'input_pct': in_pct,
-            'output_pct': out_pct,
-            'delta': out_pct - in_pct,
-            'sort_metric': out_pct - in_pct # Sort by Delta (Signal Strength)
+        audit_logs.append({
+            "article_id": art.get("id"),
+            "original_section": art.get("_section"),
+            "final_section": art.get("_section"),
+            "base_score": 0,
+            "modifier_score": 0,
+            "final_score": 0,
+            "decision": decision,
+            "trace": trace,
         })
-        
-    # Sort by Delta descending (High Signal top, High Noise bottom)
-    velocity_data.sort(key=lambda x: x['sort_metric'], reverse=True)
-    
-    bubble_data = stats_context.get('bubble', {})
-    
-    # Timezone handling
-    tz = ZoneInfo(_config.TIMEZONE)
-    now = datetime.now(tz)
 
-    # Map Section IDs to Titles (e.g., 'news' -> 'Beat')
-    section_map = {s['id']: s['title'] for s in _config.SECTIONS} if hasattr(_config, 'SECTIONS') else {}
-
-    render_context = {
-        'run_id': run_id,
-        'timestamp': now.strftime("%Y-%m-%d %H:%M:%S %Z"),
-        'date_str': now.strftime("%Y-%m-%d"),
-        'stats_input': input_count,
-        'stats_pool': pool_count,
-        'stats_selected': selected_count,
-        'anti_feed_protection': ((input_count - selected_count) / input_count * 100) if input_count else 0,
-        'filtered_count': input_count - selected_count,
-        'source_velocity': velocity_data,
-        'bubble': bubble_data,
-        'section_map': section_map
+    run_data = {
+        "run_type": "daily",
+        "stats_input": len(candidates),
+        "stats_pool": funnel.get("after_dedup", 0),
+        "stats_selected": len(selected_ids),
+        "source_dominance": [],  # computed by printer.render_stats now
+        "perf_metrics": {},
     }
-    
-    # 3. Generate Artifact (Transparency Report HTML)
-    transparency_html = generate_report(render_context)
-    
-    return run_id, transparency_html
+    run_id = repository.save_run(run_data, flat_selected)
+    repository.save_audit_logs(run_id, audit_logs)
+    print(f"[AUDITOR] Run recorded: {run_id}. Audit logs saved: {len(audit_logs)}.")
+    return run_id
 
-def generate_report(context):
-    """
-    Renders the Jinja2 template and returns HTML string.
-    """
-    theme_dir = _config.THEME
-    template_dir = os.path.join(theme_dir, 'templates')
-    
-    if not os.path.exists(template_dir):
-        log.warning("template_dir does not exist: %s", template_dir)
 
-    env = Environment(loader=FileSystemLoader(template_dir))
-    template = env.get_template('transparency.html')
-    
-    output = template.render(**context)
-    
-    return output
+# ============ funnel summary helpers (used by printer) ============
+
+def funnel_summary(funnel: dict) -> dict:
+    """Coerce the funnel dict into a stable shape for the printer."""
+    return {
+        "intake": funnel.get("intake", 0),
+        "after_exclusion_policies": funnel.get("after_exclusion_policies", funnel.get("intake", 0)),
+        "after_dedup": funnel.get("after_dedup", 0),
+        "deduped_out": funnel.get("deduped_out", 0),
+        "dropped_by_policy": funnel.get("dropped_by_policy", 0),
+        "policy_drops_by_type": dict(funnel.get("policy_drops_by_type", {})),
+        "dropped_by_policy_detail": funnel.get("dropped_by_policy_detail", []),
+        "rejected": funnel.get("rejected", 0),
+    }
+
+
+def fresh_age(ts, max_ts) -> str:
+    """Human-friendly age relative to the freshest article in the pool."""
+    if not ts:
+        return "?"
+    age = max_ts - ts
+    if age < 0:
+        return "0m"
+    if age < 3600:
+        return f"{int(age/60)}m"
+    if age < 86400:
+        return f"{age/3600:.1f}h"
+    return f"{age/86400:.1f}d"

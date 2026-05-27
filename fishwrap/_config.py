@@ -1,32 +1,38 @@
+"""
+fishwrap._config — engine-wide configuration, loaded from a Masthead.
+
+Historical (v2): _config was a Python module exec'd from the user's
+config.py at import time. The user wrote `EDITORIAL_POLICIES = [...]` and
+similar globals in their config, and the engine read them off this module.
+
+Current: the user's editorial state lives in `masthead.toml` + optional
+`dossier.md` + optional `policies.jsonl`, all in an instance directory.
+`FISHWRAP_CONFIG` now points at that directory (not a Python file). This
+module loads the masthead at import time and exposes the values the
+existing engine consumers (fetcher, enhancer, db, utils) read.
+
+Consumers should READ from this module's globals. They should not modify
+them. New code should prefer to take a `Masthead` instance as a parameter
+rather than reading globals; this module is a compatibility shim for the
+modules that pre-date that style.
+"""
 import os
 import sys
+from pathlib import Path
 
-# --- 1. Feeds (Sources) ---
-# Intentionally empty in the core engine. Must be provided by config.
-FEEDS = []
+from fishwrap.masthead import Masthead
 
-# --- 2. File Paths ---
-# Default placeholders. Should be overridden by config.
-ARTICLES_DB_FILE = 'articles_db.json' # Deprecated, kept for legacy ref
-DATABASE_URL = 'sqlite:///newsroom.db'
-RUN_SHEET_FILE = 'run_sheet.json'
-ENHANCED_ISSUE_FILE = 'enhanced_issue.json'
-SECRETS_FILE = 'secrets.json'
-STATS_FILE = 'publication_stats.json'
-LATEST_HTML_FILE = 'index.html'
-LATEST_PDF_FILE = 'edition.pdf'
 
-# --- 3. Pipeline Settings ---
-TIMEZONE = "UTC"
-FOUNDING_DATE = "2024-01-01"
-THEME = "basic"
-MAX_ARTICLE_LENGTH = 10000
-EXPIRATION_HOURS = 24
-USER_AGENT = 'Fishwrap/1.0 (+https://github.com/maxspevack/fishwrap)'
+# ============ engine-internal defaults (not in the masthead) ============
 
-# Concurrency cap for the fetcher's ThreadPoolExecutor. Lower this
-# if the configured feed set hits a small number of hosts (a high
-# value becomes a thundering herd against one origin).
+# Article-content truncation for storage. Long-form articles get cropped
+# here so a single feed item with megabytes of <content:encoded> doesn't
+# blow up the database row.
+MAX_ARTICLE_LENGTH = 15000
+
+# Concurrency cap for the fetcher's ThreadPoolExecutor. Lower this if the
+# configured feed set hits a small number of hosts (a high value becomes
+# a thundering herd against one origin).
 FETCH_WORKERS = 10
 
 # Minimum seconds between requests to a single host when no explicit
@@ -35,53 +41,83 @@ FETCH_WORKERS = 10
 # floor across every host.
 FETCH_DEFAULT_RATE_LIMIT_SECONDS = 0.0
 
-# --- 4. Editor Settings ---
-EDITION_SIZE = {}
-MIN_SECTION_SCORES = {}
-
-# --- 5. Source Affinity ---
-SOURCE_SECTIONS = {}
-
-# --- 6. Classification Keywords ---
-KEYWORDS = {}
-
-# --- 7. Editorial Policies ---
-BOOST_UNIT_VALUE = 100
-FUZZY_BOOST_MULTIPLIER = 1.5
+# Fetcher's per-article base-score profile. Retained as engine-internal
+# data so the fetcher can compute upvote/comment-derived metadata at
+# fetch time. This metadata is INFORMATIONAL — the new selector does not
+# use it for ranking — but it is shown in the audit drawer's bonus info.
 SCORING_PROFILES = {
-    'dynamic': {'base_boosts': 0,  'score_weight': 1.0, 'comment_weight': 1.0},
-    'static':  {'base_boosts': 10, 'score_weight': 0,   'comment_weight': 0},
+    "dynamic": {"base_boosts": 0,  "score_weight": 1.0, "comment_weight": 1.0},
+    "static":  {"base_boosts": 10, "score_weight": 0,   "comment_weight": 0},
 }
-EDITORIAL_POLICIES = []
 
-# --- 8. Printer Settings ---
-SECTIONS = []
 
-# --- 9. Visual Thresholds ---
-VISUAL_THRESHOLDS = {}
+# ============ engine-internal artifact paths (relative to cwd or output dir) ============
 
-# -----------------------------------------------------------------------------
-# DYNAMIC CONFIG LOADING
-# -----------------------------------------------------------------------------
-# If FISHWRAP_CONFIG is set in the environment, load it and override these values.
-config_path = os.environ.get('FISHWRAP_CONFIG')
-if config_path:
-    if os.path.exists(config_path):
-        # print(f"[CONFIG] Loading external config from: {config_path}")
+ARTICLES_DB_FILE = "articles_db.json"  # legacy
+RUN_SHEET_FILE = "demo/output/run_sheet.json"
+ENHANCED_ISSUE_FILE = "demo/output/enhanced_issue.json"
+SECRETS_FILE = "secrets.json"
+STATS_FILE = "demo/output/publication_stats.json"
+LATEST_HTML_FILE = "demo/output/index.html"
+LATEST_PDF_FILE = "demo/output/edition.pdf"
+
+
+# ============ masthead-derived values (loaded from FISHWRAP_CONFIG dir) ============
+
+MASTHEAD: Masthead | None = None
+FEEDS: list[str] = []
+TIMEZONE: str = "UTC"
+USER_AGENT: str = "Fishwrap/1.0 (+https://github.com/maxspevack/fishwrap)"
+EXPIRATION_HOURS: int = 24
+DATABASE_URL: str = "sqlite:///demo/data/vanilla.db"
+FOUNDING_DATE: str = "2024-01-01"
+THEME: str = "demo/themes/basic"
+SECTIONS: list[dict] = []
+SOURCE_SECTIONS: dict[str, str] = {}
+
+
+def _load_from_instance_dir(instance_dir: str | Path):
+    """Load a Masthead from the given directory and populate this module's globals."""
+    global MASTHEAD, FEEDS, TIMEZONE, USER_AGENT, EXPIRATION_HOURS
+    global DATABASE_URL, FOUNDING_DATE, SECTIONS, SOURCE_SECTIONS
+
+    MASTHEAD = Masthead.load(instance_dir)
+    FEEDS = MASTHEAD.feeds
+    TIMEZONE = MASTHEAD.timezone
+    USER_AGENT = MASTHEAD.user_agent
+    EXPIRATION_HOURS = MASTHEAD.expiration_hours
+    FOUNDING_DATE = MASTHEAD.identity.get("founding_date", FOUNDING_DATE)
+    SECTIONS = MASTHEAD.sections
+    SOURCE_SECTIONS = MASTHEAD.source_sections
+
+    # DATABASE_URL is engine-internal. Default to a per-instance file under demo/data/.
+    db_path = Path("demo/data") / f"{Path(instance_dir).name}.db"
+    DATABASE_URL = f"sqlite:///{db_path}"
+
+
+# ============ load at import time if FISHWRAP_CONFIG is set ============
+
+_config_path = os.environ.get("FISHWRAP_CONFIG")
+if _config_path:
+    p = Path(_config_path)
+    if not p.exists():
+        print(f"[CONFIG] Warning: FISHWRAP_CONFIG={_config_path} but path not found.")
+    elif p.is_dir():
+        # New shape: directory containing masthead.toml + dossier.md + policies.jsonl
         try:
-            # Create a namespace for execution and inject __file__
-            config_globals = {'__file__': config_path}
-            
-            with open(config_path, 'r', encoding='utf-8') as f:
-                exec(f.read(), config_globals)
-            
-            # Update local globals with values from the config
-            for k, v in config_globals.items():
-                if not k.startswith('__'):
-                    globals()[k] = v
-                    
+            _load_from_instance_dir(p)
         except Exception as e:
-            print(f"[CONFIG] Error loading {config_path}: {e}")
+            print(f"[CONFIG] Error loading masthead from {p}: {e}")
+            sys.exit(1)
+    elif p.is_file() and p.name == "masthead.toml":
+        # Convenience: user pointed at the masthead file directly; load its parent.
+        try:
+            _load_from_instance_dir(p.parent)
+        except Exception as e:
+            print(f"[CONFIG] Error loading masthead from {p.parent}: {e}")
             sys.exit(1)
     else:
-        print(f"[CONFIG] Warning: FISHWRAP_CONFIG set to {config_path} but file not found.")
+        print(f"[CONFIG] FISHWRAP_CONFIG={_config_path} is not a directory or a masthead.toml. "
+              f"The v2 Python-config format is no longer supported. "
+              f"Migrate to masthead.toml (see demo/ for an example).")
+        sys.exit(1)

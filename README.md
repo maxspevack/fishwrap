@@ -39,13 +39,15 @@ The full consumer contract (every input, every output path, every CLI surface, t
 
 ## The Glass Box
 
-The Glass Box is what we call the working surfaces. Every editorial decision is named, scored, and logged. The reader can open the log.
+The Glass Box is what we call the working surfaces. Every editorial decision is named and logged. The reader can open the log.
 
 *   **The Fetcher** scours your defined feeds (RSS, JSON, Reddit) using concurrent I/O. Failed feeds are logged, not hidden.
-*   **The Editor** classifies each article into a section using your `KEYWORDS` table and applies your `EDITORIAL_POLICIES` (boosts and penalties) to compute an Impact Score. Every score is recorded; every policy that fired is named.
-*   **The Auditor** runs after every edition and emits a Transparency Report (`transparency_fragment.html`) showing how much noise was filtered, which sources won, which articles barely made it, and which barely missed.
+*   **The Editor** classifies each article into a section (by source-default or keyword fallback), deduplicates across the corpus, applies the diversity cap per source per section, truncates to the section's edition size, and assigns each item a tier (lead / feature / standard). The signed policies in your masthead can drop articles (source/title/topic bans), bypass diversity caps (whitelist), or promote stories to the lead tier (section_lead_preference) — every policy that fires is named on the story.
+*   **The Auditor** runs after every edition and records the per-article decision trail in the audit log: where it came from, how it competed, where it landed.
 *   **The Enhancer** scrapes full text where possible so consumers don't click out. Rate-limited.
-*   **The Printer** renders the final HTML against a Jinja2 theme of your choosing.
+*   **The Printer** renders the final HTML — a paper with a Reader/Editor mode toggle on the masthead, a per-story audit drawer, a feeds-admin surface, and The Morgue (every prior version of your masthead and dossier).
+
+The user-facing config is two files: `masthead.toml` (the structured data: sections, feeds, source-section routing, signed policies) and `dossier.md` (the editor's voice in prose — read by the LLM editor in Editor mode). The same data drives both modes.
 
 Behind the scenes is a SQLite "Newsroom" database that stores the article corpus during a run. In containerized contexts the database is ephemeral; every run starts fresh.
 

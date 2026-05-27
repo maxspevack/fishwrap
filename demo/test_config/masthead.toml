@@ -1,0 +1,27 @@
+# Minimal masthead for the enhancer DB persistence test.
+# Provides a separate DB so the test does not write to the demo's DB.
+# The test does not actually exercise feeds or sections — only the
+# enhancer's article-upsert + comment-persistence path. The values
+# here are the minimum the masthead loader accepts.
+
+[identity]
+name = "Test"
+timezone = "UTC"
+founding_date = "2024-01-01"
+user_agent = "Fishwrap-Test/1.0"
+
+[engine]
+expiration_hours = 24
+
+[[section]]
+id = "test"
+title = "Test"
+description = "Test section"
+edition_size = 1
+lead_count = 1
+feature_count = 0
+max_per_source = 1
+keywords = []
+
+[feeds]
+urls = ["https://example.com/feed.xml"]

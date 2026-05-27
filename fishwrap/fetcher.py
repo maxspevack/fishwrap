@@ -9,8 +9,11 @@ from concurrent.futures import ThreadPoolExecutor, as_completed
 from tqdm import tqdm
 from fishwrap import _config
 from fishwrap import utils
-from fishwrap import editor
-from fishwrap import scoring
+# Note: classification and policy application happen at edition build time
+# in the new pipeline (see fishwrap.editor.select_edition). The fetcher
+# no longer pre-computes computed_category or computed_score; those columns
+# in the articles table are now historical no-ops, kept for DB-schema
+# backward compatibility.
 from fishwrap.db import repository
 from fishwrap.log import get_logger
 
@@ -214,22 +217,11 @@ def update_database():
                     
                     for article in items:
                         if article['timestamp'] < cutoff_ts: continue
-                        
-                        # --- PRE-COMPUTE SCORING ---
-                        if 'base_boosts' not in article:
-                             article['base_boosts'] = 0
-
-                        cat, cls_debug = editor.classify_article(article)
-                        score, breakdown = scoring.compute_score(article, section=cat)
-                        
-                        article['computed_category'] = cat
-                        article['computed_score'] = score
-                        article['computed_breakdown'] = breakdown
-                        article['computed_debug'] = cls_debug
-                        
-                        if 'base_boosts' in article: del article['base_boosts']
-                        # ---------------------------
-
+                        # The fetcher used to pre-compute classification + score
+                        # here. In the new pipeline the editor recomputes from
+                        # the masthead on every build, so we just persist the
+                        # raw article. computed_category and computed_score
+                        # are left None on the row.
                         res = repository.upsert_article(article)
                         
                         if res == "new":

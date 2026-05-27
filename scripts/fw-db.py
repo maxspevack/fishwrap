@@ -20,7 +20,7 @@ def configure_repository(config_path):
         os.environ['FISHWRAP_CONFIG'] = config_path
     else:
         print("[WARN] No configuration file specified. Using default settings (newsroom.db).")
-        print("[HINT] Use --config demo/config.py to target a specific instance.")
+        print("[HINT] Use --config demo (an instance directory containing masthead.toml) to target a specific instance.")
         # Default or clear if not specified
         if 'FISHWRAP_CONFIG' in os.environ:
             del os.environ['FISHWRAP_CONFIG']
@@ -140,7 +140,7 @@ def main():
     parser.add_argument(
         '--config',
         type=str,
-        help='Path to the Fishwrap configuration file (e.g., demo/config.py) to specify which database to operate on.'
+        help='Path to a Fishwrap instance directory (containing masthead.toml) to specify which database to operate on.'
     )
 
     # Parse KNOWN args first to get --config before subparsers might consume it confusingly
