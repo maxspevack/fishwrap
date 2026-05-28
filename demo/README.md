@@ -1,41 +1,68 @@
 # Fishwrap Demo / Starter Kit
 
-This directory contains a reference implementation of a Fishwrap publication. Use this as a template to build your own.
+This directory contains a reference implementation of a Fishwrap publication. Use it as a template to build your own.
 
 ## Structure
 
-*   **`config.py`**: The brain of your newspaper. Define your feeds, timezone, and file paths here.
-*   **`data/`**: Where your database (`newsroom.db`) and run logs live.
-*   **`output/`**: Where the generated newspaper (`index.html`) is saved.
-*   **`themes/basic/`**: A clean, unbranded theme to get you started.
+A Fishwrap instance is a directory with three editorial files plus generated state:
+
+*   **`masthead.toml`** — structured configuration. Identity (publication name, timezone), engine settings (expiration window), sections (titles, sizes, keywords), and feed URLs.
+*   **`dossier.md`** — the editor's prose. Plain Markdown. Each line is citable by the auditor as the rationale for a section's editorial point of view.
+*   **`policies.jsonl`** — append-only log of editorial decisions. One signed policy per line. Five primitives: `source_ban`, `title_pattern_ban`, `topic_ban`, `source_whitelist`, `section_lead_preference`. Strikes are events on prior policies, not deletions.
+*   **`data/`** — SQLite database. The fetcher writes here; the editor reads from here. Gitignored.
+*   **`output/`** — generated HTML. Four pages per run: `edition-reader.html`, `edition-editor.html`, `feeds-admin.html`, `morgue.html`. Gitignored.
+*   **`themes/basic/`** — brand-asset reference (CSS + logo). Currently unused by the printer (the engine renders inline HTML) and held for the next Daily Clamour migration.
 
 ## Customization
 
-### Adding Feeds
-Open `config.py` and add URLs to the `FEEDS` list:
-```python
-FEEDS = [
+### Adding feeds
+
+Edit the `[feeds]` table in `masthead.toml`:
+
+```toml
+[feeds]
+urls = [
     "https://rss.nytimes.com/services/xml/rss/nyt/HomePage.xml",
-    "https://your-favorite-blog.com/feed.xml"
+    "https://your-favorite-blog.com/feed.xml",
 ]
 ```
 
-### Setting Your Timezone
-Fishwrap uses your local timezone to calculate "Issue Date" and edition numbers. Set this in `config.py` using standard IANA timezone names.
+### Setting your timezone
 
-```python
-# config.py
-TIMEZONE = "America/New_York" # or "Europe/London", "Asia/Tokyo", etc.
+Use an IANA timezone name in the `[identity]` table:
+
+```toml
+[identity]
+name = "Your Paper"
+timezone = "America/New_York"
 ```
 
-### Changing Colors
-Edit `themes/basic/css/style.css` to change the CSS variables:
-```css
-:root {
-    --accent-color: #ff0000; /* Change brand color */
-}
+### Defining sections
+
+Each `[[section]]` block becomes a heading in the rendered edition:
+
+```toml
+[[section]]
+id = "news"
+title = "News"
+description = "What happened today."
+edition_size = 5
+lead_count = 1
+feature_count = 2
+max_per_source = 3
+keywords = ["politics", "election"]
 ```
 
-### Adding a Logo
-1.  Place your logo in `themes/basic/static/logo.png`.
-2.  Update `themes/basic/templates/layout.html` to reference it.
+### Editorial decisions
+
+Add policies by appending to `policies.jsonl`. Each line is a JSON event:
+
+```json
+{"event": "create", "policy_id": "p1", "sentence": "Ban Pitchfork — owner conflict.", "policy": {"type": "source_ban", "match": "pitchfork.com"}}
+{"event": "create", "policy_id": "p2", "sentence": "Whitelist Defector except crosswords.", "policy": {"type": "source_whitelist", "match": "defector.com"}}
+{"event": "strike", "policy_id": "p1"}
+```
+
+Active policies are the create events whose `policy_id` has not been struck.
+</content>
+</invoke>
