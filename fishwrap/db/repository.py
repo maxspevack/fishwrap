@@ -156,13 +156,27 @@ def upsert_article(article_data):
             db.commit()
             return "updated"
 
-def get_recent_articles(hours=24):
+def get_max_timestamp():
+    """Return the max article.timestamp in the DB, or None if empty."""
+    from sqlalchemy import func
+    with SessionContext() as db:
+        return db.query(func.max(Article.timestamp)).scalar()
+
+
+def get_recent_articles(hours=24, anchor_ts=None):
     """
     Fetch articles for the Editor within the time window.
-    Returns a list of Article objects (which behave like dicts if needed).
+
+    By default the window is anchored to wall-clock time — last N hours.
+    If `anchor_ts` is provided, the window is the N hours preceding that
+    timestamp instead. The editor uses this when the DB is staler than
+    the freshness window (typical in dev/snapshot mode) so the build
+    doesn't silently produce zero candidates.
     """
-    cutoff = time.time() - (hours * 3600)
-    
+    if anchor_ts is None:
+        anchor_ts = time.time()
+    cutoff = anchor_ts - (hours * 3600)
+
     with SessionContext() as db:
         articles = db.query(Article).filter(Article.timestamp >= cutoff).all()
         # Detach from session so they can be used after session closes

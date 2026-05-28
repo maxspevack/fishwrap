@@ -779,25 +779,18 @@ def run_printer():
     """
     masthead = _config.MASTHEAD
 
-    with open(_config.RUN_SHEET_FILE, "r", encoding="utf-8") as f:
-        run_sheet = json.load(f)
-    edition = {sid: arts for sid, arts in run_sheet.items()}
-
-    # Recover ancillary data the printer needs by re-loading candidates and re-running select.
-    # In production the editor would persist these; for the demo we recompute.
-    from fishwrap.db import repository
+    # Re-run the pipeline so the printer has the same view the editor did.
+    # This is cheap (~ms for 3k articles) and avoids persisting the full
+    # candidate/rejects/funnel state to disk between editor and printer.
     from fishwrap import editor as fw_editor
 
-    raw_candidates = repository.get_recent_articles(hours=masthead.expiration_hours)
-    active_feeds = set(masthead.feeds)
-    candidates = [c for c in raw_candidates if (c.get("source_url") or "") in active_feeds]
+    candidates, max_ts = fw_editor.load_pipeline_inputs(masthead, verbose=False)
     edition, rejects, funnel = fw_editor.select_edition(candidates, masthead)
 
-    # Attach editor-mode rationales
+    # Attach editor-mode rationales (pre-authored in this demo; in production
+    # this is a Sonnet batched call per section grounded in dossier.md lines).
     rationales = fw_auditor.editor_rationales(masthead.dossier_lines)
     fw_auditor.attach_rationales(edition, rationales)
-
-    max_ts = max((a.get("timestamp", 0) or 0 for a in candidates), default=datetime.now().timestamp())
 
     out_dir = Path(_config.LATEST_HTML_FILE).parent
     out_dir.mkdir(parents=True, exist_ok=True)

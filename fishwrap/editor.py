@@ -239,6 +239,42 @@ def select_edition(articles, masthead: Masthead):
 
 # ============ orchestrator (CLI entry point) ============
 
+def load_pipeline_inputs(masthead: Masthead, verbose: bool = True):
+    """Load candidates from the DB and apply the active-feed filter.
+
+    Anchor the freshness window to the DB's max timestamp when wall-clock
+    is well past it. In production (fetcher ran moments ago) this is
+    identical to wall-clock. In dev/snapshot mode (stale DB) it gives us
+    the most recent N hours of articles the DB actually has, instead of
+    silently producing zero candidates.
+
+    Returns (candidates, max_ts) where max_ts is the freshest article's
+    timestamp for the printer's "age" rendering.
+    """
+    db_max_ts = repository.get_max_timestamp()
+    now = time.time()
+    if db_max_ts is None or now - db_max_ts < masthead.expiration_hours * 3600:
+        anchor_ts = None
+        max_ts = now
+    else:
+        if verbose:
+            stale_hours = (now - db_max_ts) / 3600
+            print(f"[FISHWRAP] WARNING: DB freshest article is {stale_hours:.1f}h old. "
+                  f"Anchoring the freshness window to the DB's max timestamp instead "
+                  f"of wall clock.")
+        anchor_ts = db_max_ts
+        max_ts = db_max_ts
+
+    raw_candidates = repository.get_recent_articles(
+        hours=masthead.expiration_hours, anchor_ts=anchor_ts
+    )
+    active_feeds = set(masthead.feeds)
+    candidates = [c for c in raw_candidates if (c.get("source_url") or "") in active_feeds]
+    if verbose and len(candidates) != len(raw_candidates):
+        print(f"[FISHWRAP] Active-feed filter: {len(raw_candidates)} -> {len(candidates)}")
+    return candidates, max_ts
+
+
 def run_editor():
     """Build an edition. Reads candidates from the database, runs the pipeline,
     writes the run sheet, then hands off to the auditor.
@@ -247,14 +283,8 @@ def run_editor():
     print("\n[EDITOR] Starting...")
 
     masthead = _config.MASTHEAD
-
-    raw_candidates = repository.get_recent_articles(hours=masthead.expiration_hours)
-    print(f"[EDITOR] Loaded {len(raw_candidates)} candidates.")
-
-    active_feeds = set(masthead.feeds)
-    candidates = [c for c in raw_candidates if (c.get("source_url") or "") in active_feeds]
-    if len(candidates) != len(raw_candidates):
-        print(f"[EDITOR] Active-feed filter: {len(raw_candidates)} -> {len(candidates)}")
+    candidates, _max_ts = load_pipeline_inputs(masthead)
+    print(f"[EDITOR] Loaded {len(candidates)} candidates.")
 
     edition, rejects, funnel = select_edition(candidates, masthead)
     total = sum(len(arts) for arts in edition.values())
