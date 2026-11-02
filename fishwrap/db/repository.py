@@ -1,258 +1,151 @@
-from datetime import datetime, timedelta
-import time
-from sqlalchemy import create_engine, select, delete, func
-from sqlalchemy.orm import sessionmaker
-from fishwrap.db.models import Article, Run, RunArticle, AuditLog, Base
-from fishwrap import _config
-import os
+"""
+fishwrap.db.repository — the newsroom database.
 
-# --- Database Setup ---
+SQLite, one table (models.py), keyed by link. Bootstraps its own schema on
+first use, so fresh checkouts and ephemeral container runs need no init step.
+"""
+import os
+import time
+from datetime import datetime
+
+from sqlalchemy import create_engine
+from sqlalchemy.orm import sessionmaker
+
+from fishwrap import _config
+from fishwrap.db.models import Article, Base
+
 _current_engine = None
 _SessionLocal = None
 
+
 def _get_database_url():
-    """Determines the database URL from _config or falls back to default.
-    Resolves relative SQLite paths to absolute based on CWD.
-    """
+    """The DB URL from _config; relative SQLite paths resolve against CWD."""
     db_url = getattr(_config, 'DATABASE_URL', 'sqlite:///newsroom.db')
-    
-    # Resolve relative paths for sqlite dbs to make them absolute
     if db_url.startswith('sqlite:///'):
         db_file = db_url.replace('sqlite:///', '')
         if not os.path.isabs(db_file):
-            # This makes sqlite dbs relative to the current working directory
-            # of the process that loads _config.
             return f"sqlite:///{os.path.abspath(db_file)}"
     return db_url
 
+
 def _initialize_engine():
-    """Initializes or re-initializes the SQLAlchemy engine and session factory."""
+    """Create (or re-create, if _config changed) the engine and session factory."""
     global _current_engine, _SessionLocal
-    current_config_url = _get_database_url()
-
-    # Only re-initialize if the URL has changed or not yet initialized
-    if _current_engine is None or str(_current_engine.url) != current_config_url:
-        _current_engine = create_engine(current_config_url)
+    url = _get_database_url()
+    if _current_engine is None or str(_current_engine.url) != url:
+        _current_engine = create_engine(url)
         _SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=_current_engine)
-        # Ensure schema exists. Idempotent: no-op if tables are already present.
-        # Lets fresh checkouts and ephemeral container DBs Just Work without
-        # a separate init step. Schema is defined by db/models.py.
         Base.metadata.create_all(_current_engine)
-        # print(f"[DB] Initialized engine for: {_current_engine.url}") # Debugging
 
-# --- Context Manager ---
+
 class SessionContext:
     def __enter__(self):
-        _initialize_engine() # Ensure engine is initialized/re-initialized based on current _config
+        _initialize_engine()
         self.db = _SessionLocal()
         return self.db
+
     def __exit__(self, exc_type, exc_val, exc_tb):
         self.db.close()
 
-# --- Repository Functions ---
 
-def save_run(run_data, articles_list):
-    """
-    Saves a Run and its associated RunArticles.
-    run_data: dict of Run fields (including stats_*, source_dominance, perf_metrics).
-    articles_list: list of dicts {'article_id': ..., 'rank': ..., 'score': ..., 'section': ...}
-    """
-    with SessionContext() as db:
-        # Create Run
-        new_run = Run(**run_data)
-        db.add(new_run)
-        db.flush() # Flush to get the ID (though UUID is pre-generated, good practice)
-        
-        # Create RunArticles
-        for item in articles_list:
-            ra = RunArticle(
-                run_id=new_run.id,
-                article_id=item['article_id'],
-                final_score=item.get('score'),
-                rank=item.get('rank'),
-                section=item.get('section')
-            )
-            db.add(ra)
-            
-        db.commit()
-        return new_run.id
-
-def save_audit_logs(run_id, audit_list):
-    """
-    Bulk inserts audit logs for a run.
-    audit_list: list of dicts matching AuditLog schema.
-    """
-    if not audit_list: return
-    
-    with SessionContext() as db:
-        # We can use bulk_insert_mappings for speed if needed, but objects are fine for SQLite scale
-        logs = []
-        for item in audit_list:
-            log = AuditLog(
-                run_id=run_id,
-                article_id=item['article_id'],
-                original_section=item.get('original_section'),
-                final_section=item.get('final_section'),
-                base_score=item.get('base_score'),
-                modifier_score=item.get('modifier_score'),
-                final_score=item.get('final_score'),
-                decision=item.get('decision'),
-                trace=item.get('trace')
-            )
-            logs.append(log)
-        
-        db.add_all(logs)
-        db.commit()
+# ============ writes ============
 
 def upsert_article(article_data):
-    """
-    Insert or Update an article based on 'link' uniqueness.
-    Preserves critical fields like 'is_enhanced' and merges stats.
-    Returns: 'new' or 'updated'
+    """Insert or update by link. Returns 'new' or 'updated'.
+
+    An update takes the newer timestamp, the latest title (feeds fix typos),
+    and the latest metadata. It never touches full_content or is_enhanced.
     """
     with SessionContext() as db:
-        # Check for existence by LINK (our unique key)
-        # We use strict link matching.
         existing = db.query(Article).filter(Article.link == article_data['link']).first()
-        
         if not existing:
-            # Create New
-            new_article = Article(**article_data)
-            db.add(new_article)
+            db.add(Article(**article_data))
             db.commit()
             return "new"
-        else:
-            # Update Existing (Merge Logic)
-            
-            # 1. Update timestamp only if newer? 
-            # Actually, usually we want the latest timestamp seen in the feed
-            # But let's respect the logic: if the feed says it's newer, update it.
-            if article_data.get('timestamp', 0) > existing.timestamp:
-                existing.timestamp = article_data['timestamp']
-            
-            # 2. Update Title if provided (feeds might update typos)
-            if article_data.get('title'):
-                existing.title = article_data['title']
-            
-            # 3. Metadata
-            existing.categories = article_data.get('categories')
-            existing.source_url = article_data.get('source_url')
-            existing.comments_url = article_data.get('comments_url')
-            
-            # NOTE: We specifically DO NOT overwrite 'full_content' or 'is_enhanced' 
-            # if they exist on the DB object, unless the incoming data explicitly has them 
-            # (which usually it doesn't from the Fetcher).
-            
-            db.commit()
-            return "updated"
+        if (article_data.get('timestamp') or 0) > (existing.timestamp or 0):
+            existing.timestamp = article_data['timestamp']
+        if article_data.get('title'):
+            existing.title = article_data['title']
+        existing.categories = article_data.get('categories')
+        existing.source_url = article_data.get('source_url')
+        existing.comments_url = article_data.get('comments_url')
+        db.commit()
+        return "updated"
+
+
+def update_enhancement_by_link(link, full_content, comments_full=None):
+    """Store scraped full text for one article. Returns True if it existed."""
+    with SessionContext() as db:
+        article = db.query(Article).filter(Article.link == link).first()
+        if not article:
+            return False
+        article.full_content = full_content
+        article.comments_full = comments_full or []
+        article.is_enhanced = True
+        db.commit()
+        return True
+
+
+def prune_old_articles(hours=72):
+    """Delete articles older than `hours`. Returns the number deleted."""
+    cutoff = time.time() - (hours * 3600)
+    with SessionContext() as db:
+        n = db.query(Article).filter(Article.timestamp < cutoff).delete()
+        db.commit()
+        return n
+
+
+# ============ reads ============
 
 def get_max_timestamp():
-    """Return the max article.timestamp in the DB, or None if empty."""
     from sqlalchemy import func
     with SessionContext() as db:
         return db.query(func.max(Article.timestamp)).scalar()
 
 
 def get_recent_articles(hours=24, anchor_ts=None):
-    """
-    Fetch articles for the Editor within the time window.
-
-    By default the window is anchored to wall-clock time — last N hours.
-    If `anchor_ts` is provided, the window is the N hours preceding that
-    timestamp instead. The editor uses this when the DB is staler than
-    the freshness window (typical in dev/snapshot mode) so the build
-    doesn't silently produce zero candidates.
-    """
+    """Articles in the `hours` before `anchor_ts` (default: now), in the
+    editor's total order: newest first, ties by link."""
     if anchor_ts is None:
         anchor_ts = time.time()
     cutoff = anchor_ts - (hours * 3600)
-
     with SessionContext() as db:
-        articles = db.query(Article).filter(Article.timestamp >= cutoff).all()
-        # Detach from session so they can be used after session closes
-        # The easiest way is to expunge, but for read-only usage in Editor, 
-        # creating a list of dicts might be safer for existing code compatibility.
-        # Let's return dicts to minimize refactoring friction in Editor.
-        return [to_dict(a) for a in articles]
+        rows = (db.query(Article)
+                .filter(Article.timestamp >= cutoff)
+                .order_by(Article.timestamp.desc(), Article.link.asc())
+                .all())
+        return [to_dict(a) for a in rows]
 
-def prune_old_articles(hours=72):
-    """
-    Janitor: Delete articles older than X hours.
-    """
-    cutoff = time.time() - (hours * 3600)
-    with SessionContext() as db:
-        result = db.query(Article).filter(Article.timestamp < cutoff).delete()
-        db.commit()
-        return result
 
 def get_total_count():
     with SessionContext() as db:
         return db.query(Article).count()
 
-def get_source_dominance():
-    """
-    Returns list of (domain, count) tuples for Glass Box reporting.
-    """
-    with SessionContext() as db:
-        # This requires some Python-side processing since source_url is a full URL string
-        # SQL processing of strings is messy across different DBs.
-        # For 'newsroom.db' scale (thousands), fetching specific cols is fine.
-        results = db.query(Article.source_url).all()
-        
-        counts = {}
-        for row in results:
-            url = row[0]
-            if not url: continue
-            try:
-                domain = url.split('/')[2]
-                counts[domain] = counts.get(domain, 0) + 1
-            except IndexError:
-                continue
-                
-        return sorted(counts.items(), key=lambda x: x[1], reverse=True)[:5]
 
-def get_total_runs():
-    """Returns the total number of recorded runs."""
+def get_article_by_link(link):
     with SessionContext() as db:
-        return db.query(Run).count()
+        a = db.query(Article).filter(Article.link == link).first()
+        return to_dict(a) if a else None
 
-def get_last_run():
-    """Returns the last recorded run object."""
+
+def get_content_by_links(links):
+    """{link: {'content', 'full_content', 'is_enhanced'}} for the given links."""
+    links = list(links)
+    if not links:
+        return {}
+    out = {}
     with SessionContext() as db:
-        return db.query(Run).order_by(Run.timestamp.desc()).first()
+        for i in range(0, len(links), 500):
+            chunk = links[i:i + 500]
+            for a in db.query(Article).filter(Article.link.in_(chunk)).all():
+                out[a.link] = {"content": a.content, "full_content": a.full_content,
+                               "is_enhanced": bool(a.is_enhanced)}
+    return out
 
-def get_recent_runs(limit=10):
-    """Returns a list of recent Run objects."""
-    with SessionContext() as db:
-        runs = db.query(Run).order_by(Run.timestamp.desc()).limit(limit).all()
-        # Detach/convert to dicts to persist after session close
-        return [to_dict(r) for r in runs]
 
-def get_article_by_id(article_id):
-    """Fetches a single article by ID (UUID)."""
-    # Note: Fetcher uses RSS GUID as 'external_id' but our internal ID is UUID.
-    # The Run Sheet stores the UUID as 'id'.
-    with SessionContext() as db:
-        article = db.query(Article).filter(Article.id == article_id).first()
-        if article:
-            return to_dict(article)
-        return None
+# ============ helper ============
 
-def update_enhancement(article_id, full_content, comments_full):
-    """Updates an article with enhanced content."""
-    with SessionContext() as db:
-        article = db.query(Article).filter(Article.id == article_id).first()
-        if article:
-            article.full_content = full_content
-            article.comments_full = comments_full
-            article.is_enhanced = True
-            db.commit()
-            return True
-        return False
-
-# --- Helper ---
 def to_dict(model_instance):
-    """Converts SQLAlchemy model to dict, handling datetimes."""
     d = {}
     for c in model_instance.__table__.columns:
         value = getattr(model_instance, c.name)

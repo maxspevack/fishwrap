@@ -8,47 +8,45 @@ Fishwrap is designed as a transparent, auditable pipeline. It doesn't just show 
 
 ```mermaid
 graph TD
-    A[RSS / JSON / Reddit feeds] -->|Fetcher| B[(SQLite DB)]
-    B -->|Editor| C[Run Sheet]
-    B -->|Editor| G[Audit Logs]
-    C -->|Enhancer| D[Enhanced Content]
-    D -->|Printer| E[Reader / Editor edition HTML]
-    G -->|Auditor| E
+    A[RSS / Atom feeds] -->|Fetcher| B[(SQLite DB)]
+    B -->|Editor| C[runsheet.jsonl.gz]
+    C -->|Enhancer| B
+    C -->|Printer| E[paper · runsheet page · feeds · Morgue]
+    C -->|Replay| F[what would move under today's masthead]
 ```
 
 ### 1. `fishwrap.fetcher` (The Ingestion)
 *   **Parallel Execution:** Uses `ThreadPoolExecutor` to fetch dozens of feeds concurrently.
-*   **Smart Upserts:** Merges new data with existing records in `newsroom.db` (SQLite), preventing data loss and handling history.
-*   **Rate Limiting:** Respects `robots.txt` and implements Token Bucket rate limiting for polite scraping.
-*   **No pre-computation:** The fetcher just persists the article. Classification and policy application happen at edition build time in the editor.
+*   **Upserts by link:** New data merges into the existing row; full text and the enhanced flag are never overwritten.
+*   **Rate Limiting:** Token-bucket rate limiting per host for polite scraping.
+*   **No pre-computation:** The fetcher just persists the article. Classification and policy application happen at edition build time in the editor. RSS and Atom only; vote-ranked sources and their plumbing were removed on 2026-11-01.
 
 ### 2. `fishwrap.masthead` (The Config Loader)
 *   **Two-file user data:** `masthead.toml` (structured config) + `dossier.md` (the editor's voice in prose) + `policies.jsonl` (the append-only signed-policy log).
 *   **Validation:** Required keys are checked at load time; bad input fails with a named error rather than silent fallback.
 
 ### 3. `fishwrap.editor` (The Pipeline)
-*   **Six steps, no scoring:** intake → exclude (signed policies) → classify → dedup → diversify → truncate → tier.
+*   **Six steps, no scoring:** intake → exclude (signed policies) → classify → dedup → diversify → truncate → tier. Candidates are processed in a total order (newest first, ties by link), so two builds of the same data are the same edition.
+*   **The editor's view of a story** is its title and the first 2,000 characters of body. Keywords and topic bans see nothing deeper. That view is what the runsheet stores.
 *   **Classification:** Maps articles to sections via source-default first, keyword fallback second.
-*   **Dedup:** Global fuzzy dedup with time-windowed blocking + Jaccard pre-filter + SequenceMatcher ratio.
+*   **Dedup:** Global fuzzy dedup with time-windowed blocking + Jaccard pre-filter + SequenceMatcher ratio; the threshold is `engine.dedup_similarity_threshold` in the masthead. The newest copy leads the cluster and records its members and how many distinct sources carried the story (its coverage).
 *   **Diversity cap:** Per section, no more than `max_per_source` items from any single source — unless the source is whitelisted.
 *   **Tier:** Top `lead_count` are leads; next `feature_count` are features; the rest are standard. The `section_lead_preference` policy can promote items matching its keywords into the lead slots.
+*   **Output: the runsheet** (`fishwrap.runsheet`), `demo/output/<date>/runsheet.jsonl.gz`. Line 1 is the header (edition date, engine commit, window, config fingerprints, dedup settings, per-feed yield, the funnel); each following line is one candidate with its section, cluster, the policies that fired, its signals, and its fate.
 
 ### 4. `fishwrap.scoring` (Policy Evaluation)
 *   **No numeric score:** Articles are seeded within a section by recency, not by a magic number.
 *   **Five policy primitives** (from `policies.jsonl`): `source_ban`, `title_pattern_ban`, `topic_ban`, `source_whitelist`, `section_lead_preference`. Each is a signed, named policy.
 
-### 5. `fishwrap.auditor` (The Conscience)
-*   **Per-article audit logs:** Every candidate's decision trail (selected vs. rejected, classification reason, tier assignment) persisted to the DB.
-*   **Editor-mode rationales:** In production, a Sonnet batched call per section produces a one-sentence rationale per article, grounded in specific lines of `dossier.md`. (The demo ships pre-authored rationales for a known set of stories.)
+### 5. `fishwrap.enhancer` (The Body)
+*   **Content Extraction:** Reads the newest runsheet, scrapes full text with `newspaper3k` for the published stories the DB does not already hold, stores it on the row. Writes nothing else.
 
-### 6. `fishwrap.enhancer` (The Body)
-*   **Content Extraction:** Uses `newspaper3k` to scrape full text and authors for selected articles.
-*   **Parallel Processing:** Enhances the entire run sheet in parallel for speed.
+### 6. `fishwrap.printer` (The Face)
+*   **From the runsheet alone.** Recomputes nothing. Renders into `demo/output/<YYYY-MM-DD>/`: `index.html` (the paper), `runsheet.html` (the edition as a document), `feeds.html` (read-only), `morgue.html` plus `morgue-view-<sha>.html` per prior version; then `demo/output/index.html`, the pointer to the newest edition, written last.
+*   **The audit drawer** on each story tells the step-by-step story of how it got where it got, plus its coverage: how many sources carried it and which copies were folded in.
 
-### 7. `fishwrap.printer` (The Face)
-*   **Inline HTML:** Renders four pages into `demo/output/<YYYY-MM-DD>/` — `index.html` (the paper), `edition-editor.html`, `feeds-admin.html`, `morgue.html` — plus per-commit `morgue-view-<sha>.html` and `morgue-restore-<sha>.html` for each prior version of the masthead, and `demo/output/index.html`, a redirect to the newest edition written last.
-*   **The Reader/Editor toggle** lives on the masthead: editor's name appears in Quantic green when signed in, "No editor on duty" in gray when signed out.
-*   **The audit drawer** on each story tells the step-by-step story of how that article got where it got — no jargon, no abbreviations, just plain language with numbered steps.
+### 7. `fishwrap.replay`
+*   `python -m fishwrap.replay <runsheet>` re-runs the editor on that edition's candidates under the current masthead and prints what entered, left, changed section, or moved. `--expect-zero` exits 1 on any change; the demo workflow runs it on every build as the determinism gate.
 
 ## Configuration
 

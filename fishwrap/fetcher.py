@@ -35,6 +35,12 @@ def _text(elem):
     return elem.text if (elem is not None and elem.text) else None
 
 
+def _title(elem):
+    """Feed titles arrive with embedded newlines and indentation; collapse them."""
+    t = _text(elem)
+    return " ".join(t.split()) if t else None
+
+
 def parse_feed(raw_data, url, cutoff):
     """Parse one RSS or Atom document into article dicts.
 
@@ -56,14 +62,14 @@ def parse_feed(raw_data, url, cutoff):
     for item in xml_items:
         article = {}
         if is_atom:
-            article['title'] = _text(item.find(f"{{{atom}}}title")) or "No Title"
+            article['title'] = _title(item.find(f"{{{atom}}}title")) or "No Title"
             link_elem = item.find(f"{{{atom}}}link")
             link = link_elem.attrib.get('href') if link_elem is not None else ""
             article['external_id'] = _text(item.find(f"{{{atom}}}id")) or link or article['title']
             date_text = _text(item.find(f"{{{atom}}}updated")) or _text(item.find(f"{{{atom}}}published"))
             content_val = _text(item.find(f"{{{atom}}}content")) or ""
         else:
-            article['title'] = _text(item.find("title")) or "No Title"
+            article['title'] = _title(item.find("title")) or "No Title"
             link = _text(item.find("link")) or ""
             article['external_id'] = _text(item.find("guid")) or link or article['title']
             comments_url = _text(item.find("comments"))

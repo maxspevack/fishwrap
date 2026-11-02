@@ -81,6 +81,11 @@ class Masthead:
     def expiration_hours(self) -> int:
         return int(self.engine.get("expiration_hours", 24))
 
+    @property
+    def dedup_threshold(self) -> float:
+        """Title-similarity ratio above which two stories are one story."""
+        return float(self.engine.get("dedup_similarity_threshold", 0.70))
+
     # ---- methods ----
 
     def section_by_id(self, sid: str) -> dict | None:
@@ -169,6 +174,9 @@ def validate(raw: dict) -> list[str]:
         missing_eng = REQUIRED_ENGINE_KEYS - set(raw["engine"].keys())
         if missing_eng:
             errs.append(f"engine: missing key(s) {sorted(missing_eng)}")
+        thr = raw["engine"].get("dedup_similarity_threshold", 0.70)
+        if not isinstance(thr, (int, float)) or not (0 < thr <= 1):
+            errs.append(f"engine.dedup_similarity_threshold: must be a number in (0, 1], got {thr!r}")
 
     if not isinstance(raw["section"], list) or not raw["section"]:
         errs.append("section: must be a non-empty array of [[section]] tables")

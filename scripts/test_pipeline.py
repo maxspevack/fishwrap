@@ -38,9 +38,10 @@ def _art(aid, title, source, ts_offset=0):
     """Helper: build a candidate article dict."""
     return {
         "id": aid,
+        "link": f"https://{source}/article/{aid}",
         "title": title,
         "content": "",
-        "source_url": f"https://{source}/article/{aid}",
+        "source_url": f"https://{source}/feed",
         "timestamp": time.time() - ts_offset,
         "categories": None,
     }
@@ -199,6 +200,42 @@ class PipelineTests(unittest.TestCase):
         # NBA should be lead even though Soccer is fresher
         leads = [a for a in edition["sports"] if a["_tier"] == "lead"]
         self.assertTrue(any("NBA" in a["title"] for a in leads))
+
+    def test_total_order_breaks_timestamp_ties_by_link(self):
+        ts = time.time()
+        articles = [_art("z9", "Zebra crossing opens downtown", "alpha.example"),
+                    _art("a1", "Airport expansion approved", "beta.example")]
+        for a in articles:
+            a["timestamp"] = ts  # identical timestamps: input order must not matter
+        masthead = _FakeMasthead(SECTIONS, SOURCE_SECTIONS)
+        e1, _, _ = self.editor.select_edition(list(articles), masthead)
+        e2, _, _ = self.editor.select_edition(list(reversed(articles)), masthead)
+        self.assertEqual([a["link"] for a in e1["news"]], [a["link"] for a in e2["news"]])
+        self.assertEqual(e1["news"][0]["link"], "https://alpha.example/article/z9")  # 'alpha' < 'beta'
+
+    def test_clusters_are_recorded_on_leader_and_duplicate(self):
+        articles = [
+            _art("a1", "Pope Leo XIV apologizes for slavery role", "alpha.example", ts_offset=10),
+            _art("b1", "Pope Leo XIV apologizes for slavery role today", "beta.example", ts_offset=20),
+        ]
+        masthead = _FakeMasthead(SECTIONS, SOURCE_SECTIONS)
+        self.editor.select_edition(articles, masthead)
+        leader = next(a for a in articles if a["id"] == "a1")
+        dup = next(a for a in articles if a["id"] == "b1")
+        self.assertEqual(leader["_cluster"], {"leader": True, "size": 2, "sources": 2,
+                                              "members": ["https://beta.example/article/b1"]})
+        self.assertEqual(dup["_dup_of"], "https://alpha.example/article/a1")
+
+    def test_dedup_threshold_comes_from_the_masthead(self):
+        articles = [
+            _art("a1", "Pope Leo XIV apologizes for slavery role", "alpha.example", ts_offset=10),
+            _art("b1", "Pope Leo XIV apologizes for slavery role today", "beta.example", ts_offset=20),
+        ]
+        strict = _FakeMasthead(SECTIONS, SOURCE_SECTIONS)
+        strict.dedup_threshold = 0.99  # nothing short of identical is a duplicate
+        _, _, funnel = self.editor.select_edition(articles, strict)
+        self.assertEqual(funnel["deduped_out"], 0)
+        self.assertEqual(funnel["dedup_threshold"], 0.99)
 
 
 if __name__ == "__main__":

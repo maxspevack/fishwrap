@@ -10,7 +10,7 @@ A Fishwrap instance is a directory with three editorial files plus generated sta
 *   **`dossier.md`** — the editor's prose. Plain Markdown. Each line is citable by the auditor as the rationale for a section's editorial point of view.
 *   **`policies.jsonl`** — append-only log of editorial decisions. One signed policy per line. Five primitives: `source_ban`, `title_pattern_ban`, `topic_ban`, `source_whitelist`, `section_lead_preference`. Strikes are events on prior policies, not deletions.
 *   **`data/`** — SQLite database. The fetcher writes here; the editor reads from here. Gitignored.
-*   **`output/`** — generated HTML, one directory per edition date (`output/YYYY-MM-DD/`): `index.html` (the paper), `edition-editor.html`, `feeds-admin.html`, `morgue.html`, plus `output/index.html`, a redirect to the newest edition. Gitignored.
+*   **`output/`** — one directory per edition date (`output/YYYY-MM-DD/`): `runsheet.jsonl.gz` (the editor's record), `index.html` (the paper), `runsheet.html`, `feeds.html`, `morgue.html`; plus `output/index.html`, a redirect to the newest edition. Gitignored.
 *   **`themes/basic/`** — brand-asset reference (CSS + logo). Currently unused by the printer (the engine renders inline HTML) and held for the next Daily Clamour migration.
 
 ## Customization

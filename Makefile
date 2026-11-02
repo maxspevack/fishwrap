@@ -1,5 +1,5 @@
 SHELL := /bin/bash
-.PHONY: setup update test build-core run-vanilla demo demo-html demo-open clean-output clean-venv clean-all
+.PHONY: setup update test build-core run-vanilla demo demo-html demo-open replay clean-output clean-venv clean-all
 
 # Paths
 VENV := venv
@@ -18,11 +18,6 @@ update:
 	@$(PIP) install --upgrade -r requirements.txt
 
 # --- Testing ---
-#
-# Engine-shape tests (classify / dedup / select / morgue / etc.) belong
-# to the new pipeline and are added in the next commit. The tests run
-# here cover engine-agnostic concerns: the database schema, the fetcher,
-# the logger, the XML safety layer, the enhancer.
 test:
 	@echo "--- Running Unit Tests ---"
 	@$(PYTHON) scripts/test_enhancer_db.py
@@ -30,17 +25,32 @@ test:
 	@$(PYTHON) scripts/test_logging_wiring.py
 	@$(PYTHON) scripts/test_xml_safety.py
 	@$(PYTHON) scripts/test_schema_integrity.py
-	@$(PYTHON) scripts/test_fw_db_config.py
 	@$(PYTHON) scripts/test_masthead.py
 	@$(PYTHON) scripts/test_classify.py
 	@$(PYTHON) scripts/test_pipeline.py
+	@$(PYTHON) scripts/test_runsheet.py
+	@$(PYTHON) scripts/test_replay.py
 	@$(PYTHON) scripts/test_morgue.py
 	@$(PYTHON) scripts/test_demo_instance.py
 	@$(PYTHON) scripts/test_printer_output.py
 	@$(PYTHON) scripts/test_demo_archive.py
-	@# test_fw_db.sh is a shell script, run it if it exists and is executable
-	@if [ -x scripts/test_fw_db.sh ]; then ./scripts/test_fw_db.sh; fi
 	@echo "✅ All Tests Passed."
+
+# --- Replay ---
+# Re-run an archived edition's candidates under the masthead as it is now
+# and print what moved. Nothing is fetched or written.
+#   make replay DATE=2026-11-01        local demo/output/<DATE>/, else the archive
+#   make replay RUNSHEET=path/to/runsheet.jsonl.gz
+replay:
+	@rs="$(RUNSHEET)"; \
+	if [ -z "$$rs" ] && [ -n "$(DATE)" ]; then \
+	  if [ -f demo/output/$(DATE)/runsheet.jsonl.gz ]; then rs=demo/output/$(DATE)/runsheet.jsonl.gz; \
+	  else mkdir -p demo/output/archive && git fetch -q origin state && \
+	       git show origin/state:demo/vanilla/$(DATE)/runsheet.jsonl.gz > demo/output/archive/$(DATE).runsheet.jsonl.gz && \
+	       rs=demo/output/archive/$(DATE).runsheet.jsonl.gz; fi; \
+	fi; \
+	if [ -z "$$rs" ]; then echo "usage: make replay DATE=YYYY-MM-DD | RUNSHEET=path"; exit 2; fi; \
+	FISHWRAP_CONFIG=$(CURDIR)/demo $(PYTHON) -m fishwrap.replay "$$rs"
 
 # --- Atomic Build Unit ---
 # Usage: make build-core INSTANCE=demo

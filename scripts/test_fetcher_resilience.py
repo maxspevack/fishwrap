@@ -42,7 +42,9 @@ RSS_DOC = """<?xml version="1.0"?>
 <rss version="2.0" xmlns:content="http://purl.org/rss/1.0/modules/content/">
   <channel><title>T</title>
     <item>
-      <title>Alpha story</title>
+      <title>
+            Alpha   story
+      </title>
       <link>https://example.com/alpha</link>
       <guid>alpha-guid</guid>
       <comments>https://example.com/alpha#comments</comments>

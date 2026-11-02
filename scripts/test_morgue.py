@@ -19,6 +19,8 @@ from pathlib import Path
 
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
+from fishwrap.masthead import Masthead  # noqa: E402
+
 
 MINIMAL_TOML_V1 = """\
 [identity]
@@ -100,22 +102,20 @@ class MorgueRenderingTests(unittest.TestCase):
         out = self.printer._render_diff_html("")
         self.assertIn("No changes", out)
 
-    def test_morgue_restore_includes_change_counts(self):
-        from fishwrap.masthead import Masthead
-
+    def test_morgue_list_offers_view_but_never_restore(self):
+        from fishwrap import printer
         with tempfile.TemporaryDirectory() as tmp:
             inst = _init_instance_repo(Path(tmp))
             m = Masthead.load(inst)
-            entries = self.printer._git_log_entries(inst)
-            # Restoring entry idx=1 (founding) from current (idx=0)
-            html = self.printer.render_morgue_restore(m, entries, 1)
-            self.assertIn("Republish from", html)
-            self.assertIn("What happens when you click Republish", html)
-            self.assertIn("What does NOT happen", html)
-            # The diff has 1 line changed in masthead and 1 added in dossier;
-            # the rendering should show line counts.
-            self.assertIn("Masthead:", html)
-            self.assertIn("Dossier:", html)
+            entries = printer._git_log_entries(inst)
+            html = printer.render_morgue(m, entries)
+            self.assertIn(f'href="morgue-view-{entries[1]["short"]}.html"', html)
+            self.assertIn("CURRENT", html)
+            for gone in ("republish", "Republish", "restore", "git"):
+                self.assertNotIn(gone, html)
+            view = printer.render_morgue_view(m, entries, 1)
+            self.assertIn('class="add"', view)   # the edition_size change shows as a diff
+            self.assertNotIn("Republish", view)
 
 
 if __name__ == "__main__":

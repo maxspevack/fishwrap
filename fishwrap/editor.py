@@ -1,37 +1,41 @@
 """
 fishwrap.editor — the selection pipeline.
 
-Six deterministic steps:
+Six deterministic steps over a candidate list in total order (newest first,
+ties by link):
 
-  1. INTAKE    — load articles from the database within the freshness window
+  1. INTAKE    — load the window from the database; the editor sees each
+                 candidate as its title and the first SNAPSHOT_CHARS of body
   2. EXCLUDE   — drop articles caught by source_ban, title_pattern_ban,
-                 topic_ban (from policies.jsonl)
+                 topic_ban (signed policies)
   3. CLASSIFY  — assign each article to a section: source_default first,
                  keyword_fallback second, last-section fallback last
   4. DEDUP     — global fuzzy dedup (time-windowed, Jaccard-prefiltered,
-                 SequenceMatcher ratio)
-  5. DIVERSIFY — per section, walk in recency order and skip any article
-                 whose source has already contributed max_per_source items
+                 SequenceMatcher ratio); the leader keeps its cluster
+  5. DIVERSIFY — per section, walk in order and skip any article whose
+                 source has already contributed max_per_source items
                  (whitelisted sources bypass)
-  6. TRUNCATE+TIER — take edition_size per section; assign tiers (lead
-                    / feature / standard) using lead_count + feature_count,
+  6. TRUNCATE+TIER — take edition_size per section; assign tiers (lead /
+                    feature / standard) using lead_count + feature_count,
                     with section_lead_preference re-ordering lead slots
-                    by title keyword match
 
 No numeric scoring; ordering is recency. Editorial weight is expressed
-through the policies, not through magic numbers.
+through the policies. Every decision is recorded on the candidate dict
+(underscore fields) and written to the runsheet, which is the only thing
+anything downstream reads.
 """
 from __future__ import annotations
 
 import difflib
 import json
-import os
 import re
 import time
 from collections import Counter, defaultdict
 from datetime import datetime, timezone
+from pathlib import Path
 
 from fishwrap import _config
+from fishwrap import runsheet
 from fishwrap import scoring
 from fishwrap.db import repository
 from fishwrap.log import get_logger
@@ -40,7 +44,8 @@ from fishwrap.masthead import Masthead
 log = get_logger(__name__)
 
 DEDUP_SIMILARITY_THRESHOLD = 0.70
-DEDUP_WINDOW_SECONDS = 48 * 3600
+DEDUP_WINDOW_HOURS = 48
+DEDUP_WINDOW_SECONDS = DEDUP_WINDOW_HOURS * 3600
 
 
 # ============ classification ============
@@ -104,33 +109,48 @@ def classify(article, masthead: Masthead):
 def dedup(articles, threshold: float = DEDUP_SIMILARITY_THRESHOLD):
     """Global fuzzy dedup with time-windowed blocking + Jaccard pre-filter.
 
-    Returns (leaders, drop_map) where drop_map[duplicate_id] = leader_id.
-    Articles are assumed to be sorted recency-DESC at input.
+    Returns (leaders, drop_map) where drop_map[duplicate_link] = leader_link.
+    Articles must arrive in total order (newest first); the leader of a
+    cluster is the newest member.
     """
     leaders = []
     drop_map: dict[str, str] = {}
     token_cache = {
-        a["id"]: set(w for w in (a.get("title") or "").lower().split() if len(w) > 3)
+        a["link"]: set(w for w in (a.get("title") or "").lower().split() if len(w) > 3)
         for a in articles
     }
     for c in articles:
         c_t = (c.get("title") or "").lower()
         c_ts = c.get("timestamp", 0) or 0
-        c_w = token_cache[c["id"]]
+        c_w = token_cache[c["link"]]
         matched = None
         for L in leaders:
             if abs(c_ts - (L.get("timestamp", 0) or 0)) > DEDUP_WINDOW_SECONDS:
                 continue
-            if c_w.isdisjoint(token_cache[L["id"]]):
+            if c_w.isdisjoint(token_cache[L["link"]]):
                 continue
             if difflib.SequenceMatcher(None, c_t, (L.get("title") or "").lower()).ratio() > threshold:
                 matched = L
                 break
         if matched:
-            drop_map[c["id"]] = matched["id"]
+            drop_map[c["link"]] = matched["link"]
         else:
             leaders.append(c)
     return leaders, drop_map
+
+
+def _attach_clusters(articles, leaders, drop_map):
+    """Record each cluster on its leader and point each duplicate at it."""
+    by_link = {a["link"]: a for a in articles}
+    members = defaultdict(list)
+    for dup_link, leader_link in drop_map.items():
+        members[leader_link].append(dup_link)
+        by_link[dup_link]["_dup_of"] = leader_link
+    for L in leaders:
+        links = members.get(L["link"], [])
+        domains = {runsheet.domain_of(L.get("source_url"))}
+        domains.update(runsheet.domain_of(by_link[m].get("source_url")) for m in links)
+        L["_cluster"] = {"leader": True, "size": 1 + len(links), "sources": len(domains), "members": links}
 
 
 # ============ selection pipeline ============
@@ -141,28 +161,32 @@ def select_edition(articles, masthead: Masthead):
     Returns (edition, rejects, funnel):
       edition[section_id]   = list of selected articles in seed order
       rejects[section_id]   = list of {article, reason, detail}
-      funnel                = dict of step counts + ancillary data
+      funnel                = dict of step counts + settings
+    Every candidate dict is annotated in place with the decision trail.
     """
     sections = {s["id"]: s for s in masthead.sections}
     section_order = [s["id"] for s in masthead.sections]
     policies = masthead.policies
+    threshold = getattr(masthead, "dedup_threshold", DEDUP_SIMILARITY_THRESHOLD)
 
-    funnel = {"intake": len(articles)}
+    articles = sorted(articles, key=runsheet.total_key)
+    funnel = {"intake": len(articles), "dedup_threshold": threshold, "dedup_window_hours": DEDUP_WINDOW_HOURS}
 
     # Step 2: exclusion policies at intake
     kept, policy_drops = scoring.apply_exclusion_policies(articles, policies)
+    for art, policy in policy_drops:
+        art["_policy_drop"] = policy
     funnel["after_exclusion_policies"] = len(kept)
     funnel["dropped_by_policy"] = len(policy_drops)
     funnel["policy_drops_by_type"] = Counter(p["policy"]["type"] for _, p in policy_drops)
-    funnel["dropped_by_policy_detail"] = policy_drops
 
     # Step 3: classify
     for a in kept:
         a["_section"], a["_class_reason"] = classify(a, masthead)
 
-    # Step 4: dedup
-    kept_sorted = sorted(kept, key=lambda x: x.get("timestamp", 0) or 0, reverse=True)
-    leaders, drop_map = dedup(kept_sorted)
+    # Step 4: dedup (input already in total order)
+    leaders, drop_map = dedup(kept, threshold)
+    _attach_clusters(kept, leaders, drop_map)
     funnel["after_dedup"] = len(leaders)
     funnel["deduped_out"] = len(drop_map)
 
@@ -181,21 +205,20 @@ def select_edition(articles, masthead: Masthead):
         size = sec.get("edition_size", 10)
 
         selected, src_counts = [], Counter()
-        for art in items:
-            try:
-                domain = (art.get("source_url") or "").split("/")[2]
-            except IndexError:
-                domain = "unknown"
+        for rank, art in enumerate(items, 1):
+            domain = runsheet.domain_of(art.get("source_url"))
             art["_domain"] = domain
+            art["_pool_rank"] = rank
+            art["_pool_size"] = len(items)
             wl = scoring.is_whitelisted(art, policies)
             art["_whitelist_policy"] = wl
             if not wl and src_counts[domain] >= cap:
-                rejects[sid].append({"article": art, "reason": "diversity_cap",
-                                     "detail": f"{domain} at {cap}"})
+                art["_reject"] = {"reason": "diversity_cap", "detail": f"{domain} at {cap}"}
+                rejects[sid].append({"article": art, **art["_reject"]})
                 continue
             if len(selected) >= size:
-                rejects[sid].append({"article": art, "reason": "capacity",
-                                     "detail": f"size {size}"})
+                art["_reject"] = {"reason": "capacity", "detail": f"size {size}"}
+                rejects[sid].append({"article": art, **art["_reject"]})
                 continue
             src_counts[domain] += 1
             selected.append(art)
@@ -216,11 +239,11 @@ def select_edition(articles, masthead: Masthead):
             leads = matching[:lead_count]
             if len(leads) < lead_count:
                 leads += non_matching[: lead_count - len(leads)]
-            lead_ids = {a["id"] for a in leads}
+            lead_links = {a["link"] for a in leads}
             for a in selected:
-                if a["id"] in lead_ids:
+                if a["link"] in lead_links:
                     a["_lead_promoted_by"] = lead_pref
-            selected = leads + [a for a in selected if a["id"] not in lead_ids]
+            selected = leads + [a for a in selected if a["link"] not in lead_links]
 
         for i, a in enumerate(selected):
             if i < lead_count:
@@ -240,67 +263,53 @@ def select_edition(articles, masthead: Masthead):
 # ============ orchestrator (CLI entry point) ============
 
 def load_pipeline_inputs(masthead: Masthead, verbose: bool = True):
-    """Load candidates from the DB and apply the active-feed filter.
+    """Load the candidate window from the DB as editor snapshots, in total order.
 
-    Anchor the freshness window to the DB's max timestamp when wall-clock
-    is well past it. In production (fetcher ran moments ago) this is
-    identical to wall-clock. In dev/snapshot mode (stale DB) it gives us
-    the most recent N hours of articles the DB actually has, instead of
-    silently producing zero candidates.
+    The window is anchored to wall-clock, or to the DB's freshest article
+    when the DB is staler than the window (dev against a snapshot), so a
+    stale DB yields its most recent N hours instead of nothing.
 
-    Returns (candidates, max_ts) where max_ts is the freshest article's
-    timestamp for the printer's "age" rendering.
+    Returns (candidates, anchor_ts).
     """
     db_max_ts = repository.get_max_timestamp()
     now = time.time()
     if db_max_ts is None or now - db_max_ts < masthead.expiration_hours * 3600:
-        anchor_ts = None
-        max_ts = now
+        anchor_ts = now
     else:
         if verbose:
-            stale_hours = (now - db_max_ts) / 3600
-            print(f"[FISHWRAP] WARNING: DB freshest article is {stale_hours:.1f}h old. "
-                  f"Anchoring the freshness window to the DB's max timestamp instead "
-                  f"of wall clock.")
+            print(f"[FISHWRAP] WARNING: DB freshest article is {(now - db_max_ts) / 3600:.1f}h old. "
+                  f"Anchoring the window to the DB's max timestamp instead of wall clock.")
         anchor_ts = db_max_ts
-        max_ts = db_max_ts
 
-    raw_candidates = repository.get_recent_articles(
-        hours=masthead.expiration_hours, anchor_ts=anchor_ts
-    )
-    active_feeds = set(masthead.feeds)
-    candidates = [c for c in raw_candidates if (c.get("source_url") or "") in active_feeds]
-    if verbose and len(candidates) != len(raw_candidates):
-        print(f"[FISHWRAP] Active-feed filter: {len(raw_candidates)} -> {len(candidates)}")
-    return candidates, max_ts
+    raw = repository.get_recent_articles(hours=masthead.expiration_hours, anchor_ts=anchor_ts)
+    active = set(masthead.feeds)
+    candidates = [runsheet.snapshot(c) for c in raw if (c.get("source_url") or "") in active]
+    if verbose and len(candidates) != len(raw):
+        print(f"[FISHWRAP] Active-feed filter: {len(raw)} -> {len(candidates)}")
+    candidates.sort(key=runsheet.total_key)
+    return candidates, anchor_ts
 
 
 def run_editor():
-    """Build an edition. Reads candidates from the database, runs the pipeline,
-    writes the run sheet, then hands off to the auditor.
-    """
-    from fishwrap import auditor  # local import to avoid cycle at import time
+    """Build an edition: load the window, run the pipeline, write the runsheet."""
     print("\n[EDITOR] Starting...")
-
     masthead = _config.MASTHEAD
-    candidates, _max_ts = load_pipeline_inputs(masthead)
+    candidates, anchor_ts = load_pipeline_inputs(masthead)
     print(f"[EDITOR] Loaded {len(candidates)} candidates.")
 
     edition, rejects, funnel = select_edition(candidates, masthead)
-    total = sum(len(arts) for arts in edition.values())
     for sec in masthead.sections:
         n = len(edition.get(sec["id"], []))
         print(f"  {sec['title']:12s} ({sec['id']}): {n}/{sec['edition_size']}")
-    print(f"[EDITOR] Published {total} articles.")
 
-    # Run sheet: keep as a simple per-section list for printer/auditor handoff.
-    run_sheet = {sid: arts for sid, arts in edition.items()}
-    os.makedirs(os.path.dirname(_config.RUN_SHEET_FILE) or ".", exist_ok=True)
-    with open(_config.RUN_SHEET_FILE, "w", encoding="utf-8") as f:
-        json.dump(run_sheet, f, indent=2, default=str)
-
-    # Auditor — persists run + per-article audit logs to the DB.
-    auditor.audit_run(edition, rejects, funnel, candidates, masthead)
+    date = runsheet.edition_date(masthead, datetime.fromtimestamp(anchor_ts, tz=timezone.utc))
+    seen = Counter(c["source_url"] for c in candidates)
+    feed_counts = {u: seen.get(u, 0) for u in masthead.feeds}
+    header, records = runsheet.build(masthead, candidates, edition, rejects, funnel,
+                                     date=date, anchor_ts=anchor_ts, feed_counts=feed_counts)
+    path = runsheet.write(Path(_config.OUTPUT_DIR) / date / runsheet.FILENAME, header, records)
+    print(f"[EDITOR] Published {header['funnel']['published']} of {len(records)} candidates. "
+          f"Runsheet: {path}")
 
 
 if __name__ == "__main__":

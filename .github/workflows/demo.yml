@@ -3,7 +3,8 @@
 # This is the engine's integration environment. Every run:
 #   1. installs the engine from source at this commit (make setup),
 #   2. runs the test suite (a red suite publishes nothing),
-#   3. runs the full pipeline against demo/ (fetch -> editor -> enhancer -> printer),
+#   3. runs the full pipeline against demo/ (fetch -> editor -> enhancer -> printer)
+#      and replays the day's runsheet under the same masthead (zero diff, or red),
 #   4. archives the dated edition on the orphan `state` branch (every edition is
 #      kept; the 'today' pointer and the index are rewritten last) and pushes it,
 #   5. assembles docs/demo/vanilla/ from the newest 90 editions, builds the docs
@@ -63,6 +64,12 @@ jobs:
 
       - name: Build the edition (fetch -> editor -> enhancer -> printer)
         run: make run-vanilla
+
+      - name: Determinism gate (replay today's runsheet under the same masthead)
+        run: |
+          set -euo pipefail
+          rs=$(ls -1 demo/output/*/runsheet.jsonl.gz | sort | tail -1)
+          FISHWRAP_CONFIG="$PWD/demo" venv/bin/python3 -m fishwrap.replay "$rs" --expect-zero
 
       - name: Archive the edition (state/) and assemble /demo/vanilla/
         run: |

@@ -41,15 +41,11 @@ FETCH_WORKERS = 10
 # floor across every host.
 FETCH_DEFAULT_RATE_LIMIT_SECONDS = 0.0
 
-# ============ engine-internal artifact paths (relative to cwd or output dir) ============
+# ============ engine-internal artifact paths (relative to cwd) ============
 
-ARTICLES_DB_FILE = "articles_db.json"  # legacy
-RUN_SHEET_FILE = "demo/output/run_sheet.json"
-ENHANCED_ISSUE_FILE = "demo/output/enhanced_issue.json"
-SECRETS_FILE = "secrets.json"
-STATS_FILE = "demo/output/publication_stats.json"
-LATEST_HTML_FILE = "demo/output/index.html"
-LATEST_PDF_FILE = "demo/output/edition.pdf"
+# Every edition lands in OUTPUT_DIR/<YYYY-MM-DD>/: the runsheet (editor), the
+# pages (printer). OUTPUT_DIR/index.html is the pointer to the newest one.
+OUTPUT_DIR = "demo/output"
 
 
 # ============ masthead-derived values (loaded from FISHWRAP_CONFIG dir) ============
