@@ -295,6 +295,7 @@ def run_editor():
 
     # Run sheet: keep as a simple per-section list for printer/auditor handoff.
     run_sheet = {sid: arts for sid, arts in edition.items()}
+    os.makedirs(os.path.dirname(_config.RUN_SHEET_FILE) or ".", exist_ok=True)
     with open(_config.RUN_SHEET_FILE, "w", encoding="utf-8") as f:
         json.dump(run_sheet, f, indent=2, default=str)
 

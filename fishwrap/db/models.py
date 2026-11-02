@@ -26,24 +26,16 @@ class Article(Base):
     
     # Metadata
     categories = Column(JSON) # List of strings from feed
-    stats_score = Column(Integer, default=0)
-    stats_comments = Column(Integer, default=0)
     
     # Processing Flags
     is_enhanced = Column(Boolean, default=False)
-    
-    # The Glass Box (Computed Metrics)
-    computed_score = Column(Float, default=0.0)
-    computed_category = Column(String)
-    computed_breakdown = Column(JSON) # Detailed scoring log
-    computed_debug = Column(JSON) # Drift/Classification debug info
     
     # System Timestamps
     created_at = Column(DateTime, default=datetime.utcnow)
     updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
 
     def __repr__(self):
-        return f"<Article(title='{self.title[:30]}...', score={self.computed_score})>"
+        return f"<Article(title='{self.title[:30]}...', link={self.link})>"
 
 class Run(Base):
     """

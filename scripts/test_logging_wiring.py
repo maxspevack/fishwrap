@@ -34,14 +34,14 @@ class TestLoggingWiring(unittest.TestCase):
         print("  [PASS] Got %d warning(s); fetcher no longer silent." % len(warnings))
 
     @patch('fishwrap.utils.fetch_url')
-    def test_garbage_reddit_json_logs_warning(self, mock_fetch):
-        print("[TEST] Verifying garbage Reddit JSON emits a warning log...")
-        mock_fetch.return_value = "{not json at all"
-        result = fetcher.fetch_reddit_json('http://reddit.example/r/foo.json')
+    def test_unexpected_fetch_error_logs_and_returns_empty(self, mock_fetch):
+        print("[TEST] Verifying an unexpected fetch error is logged, not raised...")
+        mock_fetch.side_effect = RuntimeError("boom")
+        result = fetcher.process_feed('http://exploding-feed.example/', 0)
         self.assertEqual(result, [])
-        warnings = [r for r in self.handler.records if r.levelno >= logging.WARNING]
-        self.assertTrue(warnings, "expected a WARNING log entry for unparseable JSON")
-        print("  [PASS] Got %d warning(s); reddit fetcher no longer silent." % len(warnings))
+        errors = [r for r in self.handler.records if r.levelno >= logging.ERROR]
+        self.assertTrue(errors, "expected an ERROR log entry for an unexpected fetch failure")
+        print("  [PASS] Got %d error log(s); one bad feed cannot abort the run." % len(errors))
 
 
 class _CapturingHandler(logging.Handler):

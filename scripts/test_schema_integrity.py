@@ -27,9 +27,7 @@ EXPECTED_COLUMNS = {
     'articles': {
         'id', 'title', 'link', 'source_url', 'external_id', 'timestamp',
         'content', 'full_content', 'comments_url', 'comments_full',
-        'categories', 'stats_score', 'stats_comments', 'is_enhanced',
-        'computed_score', 'computed_category', 'computed_breakdown',
-        'computed_debug', 'created_at', 'updated_at',
+        'categories', 'is_enhanced', 'created_at', 'updated_at',
     },
     'runs': {
         'id', 'timestamp', 'run_type',

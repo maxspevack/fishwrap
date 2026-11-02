@@ -187,6 +187,17 @@ def validate(raw: dict) -> list[str]:
                     errs.append(f"section[{i}]: duplicate id {sid!r}")
                 section_ids.add(sid)
 
+    # Routing targets must be declared sections; a typo here would otherwise
+    # route a whole source into a section the printer never renders.
+    ss = raw.get("source_sections", {})
+    if ss and not isinstance(ss, dict):
+        errs.append("source_sections: must be a table of domain = section_id")
+    elif ss and isinstance(raw["section"], list):
+        declared = {s.get("id") for s in raw["section"] if isinstance(s, dict)}
+        for dom, sid in ss.items():
+            if sid not in declared:
+                errs.append(f"source_sections: {dom!r} routes to undeclared section {sid!r}")
+
     feeds = raw.get("feeds", {})
     if not isinstance(feeds, dict) or not isinstance(feeds.get("urls"), list) or not feeds["urls"]:
         errs.append("feeds.urls: must be a non-empty array of strings")

@@ -41,16 +41,6 @@ FETCH_WORKERS = 10
 # floor across every host.
 FETCH_DEFAULT_RATE_LIMIT_SECONDS = 0.0
 
-# Fetcher's per-article base-score profile. Retained as engine-internal
-# data so the fetcher can compute upvote/comment-derived metadata at
-# fetch time. This metadata is INFORMATIONAL — the new selector does not
-# use it for ranking — but it is shown in the audit drawer's bonus info.
-SCORING_PROFILES = {
-    "dynamic": {"base_boosts": 0,  "score_weight": 1.0, "comment_weight": 1.0},
-    "static":  {"base_boosts": 10, "score_weight": 0,   "comment_weight": 0},
-}
-
-
 # ============ engine-internal artifact paths (relative to cwd or output dir) ============
 
 ARTICLES_DB_FILE = "articles_db.json"  # legacy

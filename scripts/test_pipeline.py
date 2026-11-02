@@ -43,8 +43,6 @@ def _art(aid, title, source, ts_offset=0):
         "source_url": f"https://{source}/article/{aid}",
         "timestamp": time.time() - ts_offset,
         "categories": None,
-        "stats_score": 0,
-        "stats_comments": 0,
     }
 
 

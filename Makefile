@@ -35,6 +35,7 @@ test:
 	@$(PYTHON) scripts/test_classify.py
 	@$(PYTHON) scripts/test_pipeline.py
 	@$(PYTHON) scripts/test_morgue.py
+	@$(PYTHON) scripts/test_demo_instance.py
 	@# test_fw_db.sh is a shell script, run it if it exists and is executable
 	@if [ -x scripts/test_fw_db.sh ]; then ./scripts/test_fw_db.sh; fi
 	@echo "✅ All Tests Passed."

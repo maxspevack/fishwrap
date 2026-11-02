@@ -1,19 +1,23 @@
-import json
-import urllib.request
-import defusedxml.ElementTree as ET
+"""
+fishwrap.fetcher — intake.
+
+Fetches every feed in the masthead concurrently, parses RSS/Atom, and upserts
+each item into the newsroom database keyed by link. Nothing is classified or
+ranked here: the editor recomputes everything from the masthead on every
+build. The fetcher persists the raw article and nothing else.
+
+Vote-ranked sources (Reddit JSON, Hacker News via hnrss) were removed on
+2026-11-01 along with their score/comment plumbing. Votes are not an ordering
+input; coverage across sources is.
+"""
 import time
-from datetime import datetime
-import os
-import re
 from concurrent.futures import ThreadPoolExecutor, as_completed
+
+import defusedxml.ElementTree as ET
 from tqdm import tqdm
+
 from fishwrap import _config
 from fishwrap import utils
-# Note: classification and policy application happen at edition build time
-# in the new pipeline (see fishwrap.editor.select_edition). The fetcher
-# no longer pre-computes computed_category or computed_score; those columns
-# in the articles table are now historical no-ops, kept for DB-schema
-# backward compatibility.
 from fishwrap.db import repository
 from fishwrap.log import get_logger
 
@@ -26,146 +30,67 @@ NAMESPACES = {
     'media': 'http://search.yahoo.com/mrss/'
 }
 
-def get_scoring_profile_for_url(url):
-    """Determines the appropriate scoring profile key for a given URL."""
-    if 'hnrss.org' in url:
-        return 'dynamic' # Treat HN as dynamic to use weights
-    return 'static'
 
-def fetch_reddit_json(url):
-    """Fetches Reddit JSON and standardizes to match our article format."""
-    articles = []
-    try:
-        data_str = utils.fetch_url(url, timeout=30)
-        if not data_str:
-            return []
-            
-        data = json.loads(data_str)
-            
-        children = data['data']['children']
-        for child in children:
-            post = child['data']
-            
-            permalink = post['permalink']
-            link = f"https://www.reddit.com{permalink}"
-            
-            article = {
-                'title': post['title'],
-                'link': link,
-                'source_url': url,
-                'external_id': post['id'], # Map 'id' to 'external_id'
-                'timestamp': post['created_utc'],
-                'content': post.get('selftext', ''),
-                'categories': [post.get('subreddit', 'reddit'), post.get('link_flair_text') or ''],
-                'stats_comments': post['num_comments'],
-                'stats_score': post['score'],
-                # 'base_boosts': ... logic handled in process_feed loop
-            }
-            article['categories'] = [c for c in article['categories'] if c]
-            articles.append(article)
-    except (json.JSONDecodeError, KeyError, TypeError) as e:
-        log.warning("reddit json parse failed for %s: %s", url, e)
-    except Exception:
-        log.exception("unexpected error fetching reddit json %s", url)
+def _text(elem):
+    return elem.text if (elem is not None and elem.text) else None
 
-    return articles
+
+def parse_feed(raw_data, url, cutoff):
+    """Parse one RSS or Atom document into article dicts.
+
+    Every dict carries exactly the keys the Article model accepts
+    (scripts/test_fetcher_resilience.py holds that contract). Items older
+    than `cutoff` (epoch seconds) are dropped here to save memory.
+    """
+    root = ET.fromstring(raw_data)
+    is_atom = 'feed' in root.tag
+    atom = NAMESPACES['atom']
+
+    if is_atom:
+        xml_items = root.findall(f"{{{atom}}}entry")
+    else:
+        channel = root.find('channel')
+        xml_items = channel.findall('item') if channel is not None else []
+
+    items = []
+    for item in xml_items:
+        article = {}
+        if is_atom:
+            article['title'] = _text(item.find(f"{{{atom}}}title")) or "No Title"
+            link_elem = item.find(f"{{{atom}}}link")
+            link = link_elem.attrib.get('href') if link_elem is not None else ""
+            article['external_id'] = _text(item.find(f"{{{atom}}}id")) or link or article['title']
+            date_text = _text(item.find(f"{{{atom}}}updated")) or _text(item.find(f"{{{atom}}}published"))
+            content_val = _text(item.find(f"{{{atom}}}content")) or ""
+        else:
+            article['title'] = _text(item.find("title")) or "No Title"
+            link = _text(item.find("link")) or ""
+            article['external_id'] = _text(item.find("guid")) or link or article['title']
+            comments_url = _text(item.find("comments"))
+            if comments_url:
+                article['comments_url'] = comments_url
+            date_text = _text(item.find("pubDate"))
+            content_val = (_text(item.find(f"{{{NAMESPACES['content']}}}encoded"))
+                           or _text(item.find("description")) or "")
+
+        article['link'] = link
+        article['source_url'] = url
+        article['timestamp'] = utils.parse_date(date_text)
+        if article['timestamp'] < cutoff:
+            continue
+        article['content'] = content_val
+        items.append(article)
+    return items
+
 
 def process_feed(url, cutoff):
-    """
-    Fetches and parses a single feed (RSS/Atom/JSON).
-    Returns a list of article dicts.
-    """
-    items = []
+    """Fetch and parse a single feed. Returns a list of article dicts; an
+    unreachable or unparseable feed returns [] and is logged, never raised."""
     try:
-        if url.endswith('.json'):
-            items = fetch_reddit_json(url)
-        else:
-            scoring_profile_key = get_scoring_profile_for_url(url)
-            profile = _config.SCORING_PROFILES[scoring_profile_key]
-
-            raw_data = utils.fetch_url(url, timeout=30)
-            if raw_data:
-                try:
-                    root = ET.fromstring(raw_data)
-                except ET.ParseError as e:
-                    log.warning("xml parse failed for %s: %s", url, e)
-                    return []
-
-                is_atom = 'feed' in root.tag
-                
-                xml_items = root.findall(f"{{{NAMESPACES['atom']}}}entry") if is_atom else (root.find('channel').findall('item') if root.find('channel') is not None else [])
-                
-                for item in xml_items:
-                    article = {}
-                    # Title
-                    if is_atom:
-                        title_elem = item.find(f"{{{NAMESPACES['atom']}}}title")
-                    else:
-                        title_elem = item.find("title")
-                    
-                    article['title'] = title_elem.text if (title_elem is not None and title_elem.text) else "No Title"
-
-                    # ID/Link
-                    if is_atom:
-                        id_elem = item.find(f"{{{NAMESPACES['atom']}}}id")
-                        link_elem = item.find(f"{{{NAMESPACES['atom']}}}link")
-                        ext_id = id_elem.text if (id_elem is not None and id_elem.text) else (link_elem.attrib.get('href') if link_elem is not None else article['title'])
-                        link = link_elem.attrib.get('href') if link_elem is not None else ""
-                    else:
-                        guid = item.find("guid")
-                        link_elem = item.find("link")
-                        ext_id = guid.text if (guid is not None and guid.text) else (link_elem.text if (link_elem is not None and link_elem.text) else article['title'])
-                        link = link_elem.text if link_elem is not None else ""
-
-                        comments_elem = item.find("comments")
-                        if comments_elem is not None:
-                            article['comments_url'] = comments_elem.text
-                    
-                    article['external_id'] = ext_id
-                    article['link'] = link
-                    article['source_url'] = url
-                    
-                    # Date
-                    if is_atom:
-                        date_elem = item.find(f"{{{NAMESPACES['atom']}}}updated")
-                        if date_elem is None: date_elem = item.find(f"{{{NAMESPACES['atom']}}}published")
-                        date_text = date_elem.text if date_elem is not None else None
-                    else:
-                        date_elem = item.find("pubDate")
-                        date_text = date_elem.text if date_elem is not None else None
-                    
-                    article['timestamp'] = utils.parse_date(date_text)
-                    
-                    # Filter old immediately to save memory
-                    if article['timestamp'] < cutoff: continue
-
-                    # Content
-                    if is_atom:
-                        content_elem = item.find(f"{{{NAMESPACES['atom']}}}content")
-                        article['content'] = content_elem.text if (content_elem is not None and content_elem.text) else ""
-                    else:
-                        content_enc = item.find(f"{{{NAMESPACES['content']}}}encoded")
-                        desc = item.find("description")
-                        
-                        content_val = ""
-                        if content_enc is not None and content_enc.text:
-                            content_val = content_enc.text
-                        elif desc is not None and desc.text:
-                            content_val = desc.text
-                            
-                        article['content'] = content_val
-                    
-                    article['base_boosts'] = profile['base_boosts']
-                    article['stats_score'] = 0
-                    article['stats_comments'] = 0
-
-                    if 'hnrss.org' in url:
-                        points_match = re.search(r'Points: (\d+)', (article.get('content') or ''))
-                        comments_match = re.search(r'Comments: (\d+)', (article.get('content') or ''))
-                        if points_match: article['stats_score'] = int(points_match.group(1))
-                        if comments_match: article['stats_comments'] = int(comments_match.group(1))
-                    
-                    items.append(article)
+        raw_data = utils.fetch_url(url, timeout=30)
+        if not raw_data:
+            return []
+        return parse_feed(raw_data, url, cutoff)
     except ET.ParseError as e:
         log.warning("xml parse failed for %s: %s", url, e)
         return []
@@ -173,72 +98,47 @@ def process_feed(url, cutoff):
         log.exception("unexpected error parsing feed %s", url)
         return []
 
-    return items
 
 def update_database():
     timer = utils.Stopwatch().start()
     initial_db_count = repository.get_total_count()
-    
-    # 2. Prune Old Articles (Retention Memory)
-    # Using hardcoded 72h default or config driven
-    cutoff_hours = _config.EXPIRATION_HOURS * 2 
+
+    # Retention: keep twice the edition window so yesterday's leaders are
+    # still in the DB for dedup's 48 h window.
+    cutoff_hours = _config.EXPIRATION_HOURS * 2
     deleted_count = repository.prune_old_articles(hours=cutoff_hours)
-    
-    # 3. Fetch Feeds Concurrently
+
     urls = _config.FEEDS
-    
-    stats = {
-        'feeds_processed': 0,
-        'items_fetched': 0,
-        'new_items': 0,
-        'updated_items': 0
-    }
+    stats = {'feeds_processed': 0, 'items_fetched': 0, 'new_items': 0, 'updated_items': 0}
 
     print(f"\n[FETCHER] Starting Parallel Fetch... (DB: {initial_db_count} -> Pruned: {deleted_count})")
-    
-    current_ts = time.time()
-    cutoff_ts = current_ts - (cutoff_hours * 3600)
 
+    cutoff_ts = time.time() - (cutoff_hours * 3600)
     max_workers = getattr(_config, 'FETCH_WORKERS', 10)
 
     with ThreadPoolExecutor(max_workers=max_workers) as executor:
-        # Submit all tasks
         future_to_url = {executor.submit(process_feed, url, cutoff_ts): url for url in urls}
-        
-        # Process as they complete
         with tqdm(total=len(urls), desc="Fetching Feeds", unit="feed") as pbar:
             for future in as_completed(future_to_url):
                 url = future_to_url[future]
                 try:
                     items = future.result()
-                    
                     stats['items_fetched'] += len(items)
                     stats['feeds_processed'] += 1
-                    
                     for article in items:
-                        if article['timestamp'] < cutoff_ts: continue
-                        # The fetcher used to pre-compute classification + score
-                        # here. In the new pipeline the editor recomputes from
-                        # the masthead on every build, so we just persist the
-                        # raw article. computed_category and computed_score
-                        # are left None on the row.
-                        res = repository.upsert_article(article)
-                        
-                        if res == "new":
+                        if repository.upsert_article(article) == "new":
                             stats['new_items'] += 1
                         else:
                             stats['updated_items'] += 1
-                            
                 except Exception as e:
                     tqdm.write(f"[!] Exception fetching {url}: {e}")
-                
                 pbar.update(1)
 
     final_count = repository.get_total_count()
     duration = timer.stop()
+    print(f"\n[FETCHER] Processed {stats['feeds_processed']}/{len(urls)} feeds in {duration:.2f}s. "
+          f"{stats['new_items']} new, {stats['updated_items']} updated. DB Size: {final_count}.")
 
-    # Summary Report
-    print(f"\n[FETCHER] Processed {stats['feeds_processed']}/{len(urls)} feeds in {duration:.2f}s. {stats['new_items']} new, {stats['updated_items']} updated. DB Size: {final_count}.")
 
 if __name__ == "__main__":
     update_database()

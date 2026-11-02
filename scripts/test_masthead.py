@@ -84,6 +84,21 @@ class ValidationTests(unittest.TestCase):
         errs = validate(raw)
         self.assertTrue(any("duplicate id" in e for e in errs))
 
+    def test_source_sections_undeclared_target(self):
+        import tomllib
+        raw = tomllib.loads(MINIMAL_VALID_TOML)
+        raw["source_sections"] = {"example.com": "news", "typo.example": "nws"}
+        errs = validate(raw)
+        self.assertEqual(len(errs), 1)
+        self.assertIn("typo.example", errs[0])
+        self.assertIn("nws", errs[0])
+
+    def test_source_sections_declared_target_ok(self):
+        import tomllib
+        raw = tomllib.loads(MINIMAL_VALID_TOML)
+        raw["source_sections"] = {"example.com": "news"}
+        self.assertEqual(validate(raw), [])
+
 
 class LoaderTests(unittest.TestCase):
 

@@ -130,21 +130,11 @@ def upsert_article(article_data):
             if article_data.get('timestamp', 0) > existing.timestamp:
                 existing.timestamp = article_data['timestamp']
             
-            # 2. Merge Stats (Max Strategy)
-            existing.stats_score = max(existing.stats_score, article_data.get('stats_score', 0))
-            existing.stats_comments = max(existing.stats_comments, article_data.get('stats_comments', 0))
-            
-            # 3. Update Content/Title if provided (feeds might update typos)
+            # 2. Update Title if provided (feeds might update typos)
             if article_data.get('title'):
                 existing.title = article_data['title']
             
-            # 4. Computed Fields (Always overwrite with latest classification)
-            existing.computed_score = article_data.get('computed_score', 0.0)
-            existing.computed_category = article_data.get('computed_category')
-            existing.computed_breakdown = article_data.get('computed_breakdown')
-            existing.computed_debug = article_data.get('computed_debug')
-            
-            # 5. Metadata
+            # 3. Metadata
             existing.categories = article_data.get('categories')
             existing.source_url = article_data.get('source_url')
             existing.comments_url = article_data.get('comments_url')

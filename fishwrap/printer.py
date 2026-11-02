@@ -210,8 +210,6 @@ def _render_audit_narrative(art, section, max_ts, pool_size):
     feature_count = section.get("feature_count", 5)
     max_per_source = section.get("max_per_source", 5)
     age = fw_auditor.fresh_age(art.get("timestamp"), max_ts)
-    upvotes = art.get("stats_score") or 0
-    comments = art.get("stats_comments") or 0
     domain = art.get("_domain", "unknown")
 
     if reason.get("path") == "source_default":
@@ -272,7 +270,7 @@ def _render_audit_narrative(art, section, max_ts, pool_size):
   <div class="audit-step bonus">
     <div class="num">i</div>
     <div class="label">Bonus info (not used for ranking)</div>
-    <div class="body">Upvotes: {upvotes:,} · Comments: {comments:,} · <a href="{escape(art.get('source_url') or '')}">source feed</a></div>
+    <div class="body"><a href="{escape(art.get('source_url') or '')}">source feed</a></div>
   </div>
 </div>"""
 

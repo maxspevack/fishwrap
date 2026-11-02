@@ -3,7 +3,7 @@
 # add policies as they emerge from reading actual editions.
 
 [identity]
-name = "The Daily Clamour"
+name = "The Vanilla"
 founding_date = "2025-12-07"
 timezone = "America/Los_Angeles"
 user_agent = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.114 Safari/537.36"
@@ -301,7 +301,6 @@ keywords = [
 "googleprojectzero" = "tech"
 "greenwald.substack.com" = "news"
 "helpnetsecurity.com" = "tech"
-"hnrss" = "tech"
 "hollywoodreporter.com" = "culture"
 "hotair" = "news"
 "huggingface.co" = "tech"
@@ -326,50 +325,6 @@ keywords = [
 "nypost" = "news"
 "nytimes.com" = "news"
 "oann" = "news"
-"old.reddit.com/r/Anarcho_Capitalism" = "news"
-"old.reddit.com/r/Android" = "tech"
-"old.reddit.com/r/artificial" = "tech"
-"old.reddit.com/r/ArtificialInteligence" = "tech"
-"old.reddit.com/r/AskReddit" = "culture"
-"old.reddit.com/r/Bard" = "tech"
-"old.reddit.com/r/books" = "culture"
-"old.reddit.com/r/cfb" = "sports"
-"old.reddit.com/r/ChatGPT" = "tech"
-"old.reddit.com/r/claude" = "tech"
-"old.reddit.com/r/ClaudeCode" = "tech"
-"old.reddit.com/r/Conservative" = "news"
-"old.reddit.com/r/cooking" = "culture"
-"old.reddit.com/r/cybersecurity" = "tech"
-"old.reddit.com/r/deadwood" = "culture"
-"old.reddit.com/r/GeminiAI" = "tech"
-"old.reddit.com/r/google_antigravity" = "tech"
-"old.reddit.com/r/GoogleGeminiAI" = "tech"
-"old.reddit.com/r/GooglePixel" = "tech"
-"old.reddit.com/r/jimrome" = "sports"
-"old.reddit.com/r/KitchenConfidential" = "culture"
-"old.reddit.com/r/LateStageCapitalism" = "news"
-"old.reddit.com/r/Libertarian" = "news"
-"old.reddit.com/r/LocalLLaMA" = "tech"
-"old.reddit.com/r/MachineLearning" = "tech"
-"old.reddit.com/r/moderatepolitics" = "news"
-"old.reddit.com/r/movies" = "culture"
-"old.reddit.com/r/nba" = "sports"
-"old.reddit.com/r/netsec" = "tech"
-"old.reddit.com/r/NeutralPolitics" = "news"
-"old.reddit.com/r/news" = "news"
-"old.reddit.com/r/nfl" = "sports"
-"old.reddit.com/r/OpenAI" = "tech"
-"old.reddit.com/r/PoliticalDiscussion" = "news"
-"old.reddit.com/r/Politics" = "news"
-"old.reddit.com/r/rant" = "culture"
-"old.reddit.com/r/singularity" = "tech"
-"old.reddit.com/r/soccer" = "sports"
-"old.reddit.com/r/sports" = "sports"
-"old.reddit.com/r/technology" = "tech"
-"old.reddit.com/r/television" = "culture"
-"old.reddit.com/r/thesopranos" = "culture"
-"old.reddit.com/r/vent" = "culture"
-"old.reddit.com/r/worldnews" = "news"
 "openai.com" = "tech"
 "pagesix.com" = "culture"
 "paloaltonetworks.com" = "tech"
@@ -445,12 +400,6 @@ urls = [
   "https://gizmodo.com/rss",
   "https://googleprojectzero.blogspot.com/feeds/posts/default",
   "https://greenwald.substack.com/feed",
-  "https://hnrss.org/bestcomments",
-  "https://hnrss.org/frontpage",
-  "https://hnrss.org/frontpage?comments=25",
-  "https://hnrss.org/newest?q=llm+OR+gpt+OR+transformer+OR+generative+ai",
-  "https://hnrss.org/newest?q=open+source+ai",
-  "https://hnrss.org/newest?q=security+OR+vulnerability+OR+exploit+OR+breach",
   "https://hotair.com/feed",
   "https://huggingface.co/blog/feed.xml",
   "https://instapundit.com/feed",
@@ -468,50 +417,6 @@ urls = [
   "https://notthebee.com/feed",
   "https://nypost.com/opinion/feed/",
   "https://nypost.com/politics/feed/",
-  "https://old.reddit.com/r/Anarcho_Capitalism.json",
-  "https://old.reddit.com/r/Android.json",
-  "https://old.reddit.com/r/ArtificialInteligence.json",
-  "https://old.reddit.com/r/AskReddit.json",
-  "https://old.reddit.com/r/Bard.json",
-  "https://old.reddit.com/r/ChatGPT.json",
-  "https://old.reddit.com/r/ClaudeCode.json",
-  "https://old.reddit.com/r/Conservative.json",
-  "https://old.reddit.com/r/GeminiAI.json",
-  "https://old.reddit.com/r/GoogleGeminiAI.json",
-  "https://old.reddit.com/r/GooglePixel.json",
-  "https://old.reddit.com/r/KitchenConfidential.json",
-  "https://old.reddit.com/r/LateStageCapitalism.json",
-  "https://old.reddit.com/r/Libertarian.json",
-  "https://old.reddit.com/r/LocalLLaMA.json",
-  "https://old.reddit.com/r/MachineLearning.json",
-  "https://old.reddit.com/r/NeutralPolitics.json",
-  "https://old.reddit.com/r/OpenAI.json",
-  "https://old.reddit.com/r/PoliticalDiscussion.json",
-  "https://old.reddit.com/r/Politics.json",
-  "https://old.reddit.com/r/artificial.json",
-  "https://old.reddit.com/r/books.json",
-  "https://old.reddit.com/r/cfb.json",
-  "https://old.reddit.com/r/claude.json",
-  "https://old.reddit.com/r/cooking.json",
-  "https://old.reddit.com/r/cybersecurity.json",
-  "https://old.reddit.com/r/deadwood.json",
-  "https://old.reddit.com/r/google_antigravity.json",
-  "https://old.reddit.com/r/jimrome.json",
-  "https://old.reddit.com/r/moderatepolitics.json",
-  "https://old.reddit.com/r/movies.json",
-  "https://old.reddit.com/r/nba.json",
-  "https://old.reddit.com/r/netsec.json",
-  "https://old.reddit.com/r/news.json",
-  "https://old.reddit.com/r/nfl.json",
-  "https://old.reddit.com/r/rant.json",
-  "https://old.reddit.com/r/singularity.json",
-  "https://old.reddit.com/r/soccer.json",
-  "https://old.reddit.com/r/sports.json",
-  "https://old.reddit.com/r/technology.json",
-  "https://old.reddit.com/r/television.json",
-  "https://old.reddit.com/r/thesopranos.json",
-  "https://old.reddit.com/r/vent.json",
-  "https://old.reddit.com/r/worldnews.json",
   "https://openai.com/blog/rss.xml",
   "https://openai.com/news/rss.xml",
   "https://pagesix.com/feed/",
