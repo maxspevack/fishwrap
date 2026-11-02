@@ -4,8 +4,10 @@
 #   1. installs the engine from source at this commit (make setup),
 #   2. runs the test suite (a red suite publishes nothing),
 #   3. runs the full pipeline against demo/ (fetch -> editor -> enhancer -> printer),
-#   4. places the edition at docs/demo/vanilla/ and builds the docs site with Jekyll,
-#   5. deploys the site to GitHub Pages (fishwrap.org).
+#   4. archives the dated edition on the orphan `state` branch (every edition is
+#      kept; the 'today' pointer and the index are rewritten last) and pushes it,
+#   5. assembles docs/demo/vanilla/ from the newest 90 editions, builds the docs
+#      site with Jekyll, and deploys it to GitHub Pages (fishwrap.org).
 #
 # dailyclamour.com is NOT built here. It consumes the pinned release image
 # from its own repo and moves only when a release is cut. The demo tracks main.
@@ -23,7 +25,7 @@ on:
   workflow_dispatch:
 
 permissions:
-  contents: read
+  contents: write   # push to the state branch
   pages: write
   id-token: write
 
@@ -42,6 +44,12 @@ jobs:
         with:
           fetch-depth: 0
 
+      - name: Checkout the state branch (archived editions)
+        uses: actions/checkout@v7
+        with:
+          ref: state
+          path: state
+
       - name: Set up Python (matches the release image)
         uses: actions/setup-python@v7
         with:
@@ -56,14 +64,24 @@ jobs:
       - name: Build the edition (fetch -> editor -> enhancer -> printer)
         run: make run-vanilla
 
-      - name: Place the edition at /demo/vanilla/
+      - name: Archive the edition (state/) and assemble /demo/vanilla/
         run: |
           set -euo pipefail
-          test -s demo/output/edition-reader.html
-          mkdir -p docs/demo/vanilla
-          cp demo/output/*.html docs/demo/vanilla/
-          cp demo/output/edition-reader.html docs/demo/vanilla/index.html
-          ls -la docs/demo/vanilla/ | head -20
+          venv/bin/python3 scripts/demo_archive.py \
+            --output demo/output --state state/demo/vanilla \
+            --publish docs/demo/vanilla --keep 90 --title "The Vanilla"
+          ls docs/demo/vanilla/
+
+      - name: Commit the edition to the state branch
+        run: |
+          set -euo pipefail
+          cd state
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          edition=$(ls -1 demo/vanilla | grep -E '^[0-9]{4}-[0-9]{2}-[0-9]{2}$' | sort | tail -1)
+          git diff --cached --quiet || git commit -q -m "edition ${edition} from ${GITHUB_SHA::7}"
+          git push -q origin HEAD:state
 
       - name: Build the docs site
         uses: actions/jekyll-build-pages@v1

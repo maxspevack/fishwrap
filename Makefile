@@ -36,6 +36,8 @@ test:
 	@$(PYTHON) scripts/test_pipeline.py
 	@$(PYTHON) scripts/test_morgue.py
 	@$(PYTHON) scripts/test_demo_instance.py
+	@$(PYTHON) scripts/test_printer_output.py
+	@$(PYTHON) scripts/test_demo_archive.py
 	@# test_fw_db.sh is a shell script, run it if it exists and is executable
 	@if [ -x scripts/test_fw_db.sh ]; then ./scripts/test_fw_db.sh; fi
 	@echo "✅ All Tests Passed."
@@ -81,10 +83,10 @@ demo-html:
 	$(PYTHON) -m fishwrap.printer
 	@echo ""
 	@echo "✅ Demo rendered. Open:"
-	@echo "    open $(CURDIR)/demo/output/edition-reader.html"
+	@echo "    open $(CURDIR)/demo/output/index.html   (redirects to today's edition)"
 
 demo: demo-html
-	@open $(CURDIR)/demo/output/edition-reader.html 2>/dev/null || true
+	@xdg-open $(CURDIR)/demo/output/index.html 2>/dev/null || open $(CURDIR)/demo/output/index.html 2>/dev/null || true
 
 # --- Cleanup ---
 clean-output:

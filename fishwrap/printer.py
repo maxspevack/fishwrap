@@ -1,8 +1,9 @@
 """
 fishwrap.printer — HTML rendering.
 
-Produces four artifacts per run, all written to demo/output/ (or the
-configured output directory):
+Produces four artifacts per run, written to demo/output/<YYYY-MM-DD>/ (the
+edition date in the masthead's timezone), plus demo/output/index.html, the
+'today' pointer that redirects to the newest edition and is written last:
 
   edition-reader.html  — the paper, signed out (no editor on duty).
   edition-editor.html  — the paper, editor on duty (LLM rationales visible).
@@ -26,6 +27,7 @@ from collections import Counter, defaultdict
 from datetime import datetime, timezone
 from html import escape
 from pathlib import Path
+from zoneinfo import ZoneInfo
 
 from fishwrap import _config
 from fishwrap import auditor as fw_auditor
@@ -166,7 +168,7 @@ def _render_topnav(active):
 
 
 def _render_masthead_header(masthead: Masthead, mode: str, page_label: str):
-    today = datetime.now().strftime("%A, %B %d, %Y")
+    today = datetime.now(ZoneInfo(masthead.timezone)).strftime("%A, %B %d, %Y")
     if mode == "editor":
         editor_html = '<span class="editor-on">Editor on duty: Glenn Greenwald</span>'
         signin_html = '<a class="signin-strip signed-in" href="edition-reader.html">Signed in · sign out</a>'
@@ -767,6 +769,40 @@ def render_morgue_restore(masthead: Masthead, entries, idx):
 </html>"""
 
 
+# ============ edition date + the 'today' pointer ============
+
+def edition_date(masthead: Masthead, now: datetime | None = None) -> str:
+    """The edition's date, YYYY-MM-DD, in the masthead's timezone.
+
+    A 13:00 UTC build is the same calendar day in America/Los_Angeles; a
+    05:00 UTC build is the day before. The date names the output directory,
+    so it is decided once, here, never from the runner's clock.
+    """
+    tz = ZoneInfo(masthead.timezone)
+    if now is None:
+        now = datetime.now(tz)
+    elif now.tzinfo is None:
+        now = now.replace(tzinfo=timezone.utc)
+    return now.astimezone(tz).date().isoformat()
+
+
+def write_pointer(base: Path, date: str) -> Path:
+    """Write base/index.html, a redirect to base/<date>/.
+
+    This is the 'today' pointer. It is written last, after every page of the
+    edition exists, so a build that dies halfway leaves it pointing at the
+    previous good edition.
+    """
+    target = f"{date}/"
+    html = ('<!doctype html><html lang="en"><head><meta charset="utf-8">'
+            f'<meta http-equiv="refresh" content="0; url={target}">'
+            f'<title>{escape(date)}</title></head>'
+            f'<body><a href="{target}">{escape(date)}</a></body></html>\n')
+    p = base / "index.html"
+    p.write_text(html, encoding="utf-8")
+    return p
+
+
 # ============ CLI entry point ============
 
 def run_printer():
@@ -790,7 +826,9 @@ def run_printer():
     rationales = fw_auditor.editor_rationales(masthead.dossier_lines)
     fw_auditor.attach_rationales(edition, rationales)
 
-    out_dir = Path(_config.LATEST_HTML_FILE).parent
+    base = Path(_config.LATEST_HTML_FILE).parent
+    date = edition_date(masthead)
+    out_dir = base / date
     out_dir.mkdir(parents=True, exist_ok=True)
 
     (out_dir / "edition-reader.html").write_text(
@@ -811,7 +849,9 @@ def run_printer():
         (out_dir / f"morgue-restore-{e['short']}.html").write_text(
             render_morgue_restore(masthead, entries, i)
         )
-    print(f"[PRINTER] Wrote 4 + {2*(len(entries)-1)} HTML pages to {out_dir}")
+    write_pointer(base, date)
+    print(f"[PRINTER] Wrote 4 + {2*(len(entries)-1)} HTML pages to {out_dir}; "
+          f"{base / 'index.html'} -> {date}/")
 
 
 if __name__ == "__main__":
