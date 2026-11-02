@@ -46,7 +46,7 @@ graph TD
 *   **Parallel Processing:** Enhances the entire run sheet in parallel for speed.
 
 ### 7. `fishwrap.printer` (The Face)
-*   **Inline HTML:** Renders four pages — `edition-reader.html`, `edition-editor.html`, `feeds-admin.html`, `morgue.html` — plus per-commit `morgue-view-<sha>.html` and `morgue-restore-<sha>.html` for each prior version of the masthead.
+*   **Inline HTML:** Renders four pages into `demo/output/<YYYY-MM-DD>/` — `index.html` (the paper), `edition-editor.html`, `feeds-admin.html`, `morgue.html` — plus per-commit `morgue-view-<sha>.html` and `morgue-restore-<sha>.html` for each prior version of the masthead, and `demo/output/index.html`, a redirect to the newest edition written last.
 *   **The Reader/Editor toggle** lives on the masthead: editor's name appears in Quantic green when signed in, "No editor on duty" in gray when signed out.
 *   **The audit drawer** on each story tells the step-by-step story of how that article got where it got — no jargon, no abbreviations, just plain language with numbered steps.
 

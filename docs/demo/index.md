@@ -44,9 +44,9 @@ make setup
 
 ```bash
 make run-vanilla
-# Renders to demo/output/edition-reader.html
+# Renders to demo/output/<date>/index.html
 ```
 
-Then open `demo/output/edition-reader.html` in your browser.
+Then open `demo/output/index.html` in your browser; it redirects to today's edition.
 </content>
 </invoke>

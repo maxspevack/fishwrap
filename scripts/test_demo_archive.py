@@ -22,7 +22,7 @@ import demo_archive as da  # noqa: E402
 def _edition(root: Path, date: str, marker: str) -> Path:
     d = root / date
     d.mkdir(parents=True, exist_ok=True)
-    (d / "edition-reader.html").write_text(marker)
+    (d / "index.html").write_text(marker)
     (d / "morgue.html").write_text("morgue " + marker)
     return d
 
@@ -50,7 +50,7 @@ class DemoArchiveTests(unittest.TestCase):
             self.assertEqual(da.dated_dirs(pub), ["2026-11-02"])                  # publish keeps --keep
             self.assertIn("url=2026-11-02/", (state / "index.html").read_text())
             self.assertIn("url=2026-11-02/", (pub / "index.html").read_text())
-            self.assertEqual((pub / "2026-11-02" / "edition-reader.html").read_text(), "two")
+            self.assertEqual((pub / "2026-11-02" / "index.html").read_text(), "two")
             index = (state / "editions.html").read_text()
             self.assertLess(index.index("2026-11-02"), index.index("2026-11-01"))  # newest first
             self.assertIn("2 editions", index)
@@ -63,11 +63,21 @@ class DemoArchiveTests(unittest.TestCase):
             (d / "morgue-view-abc.html").write_text("stale")
             self._run(out, state, pub, keep=90)
             (d / "morgue-view-abc.html").unlink()
-            (d / "edition-reader.html").write_text("second build")
+            (d / "index.html").write_text("second build")
             self._run(out, state, pub, keep=90)
-            self.assertEqual((state / "2026-11-01" / "edition-reader.html").read_text(), "second build")
+            self.assertEqual((state / "2026-11-01" / "index.html").read_text(), "second build")
             self.assertFalse((state / "2026-11-01" / "morgue-view-abc.html").exists())
             self.assertEqual(da.dated_dirs(state), ["2026-11-01"])
+
+    def test_edition_without_index_is_a_hard_failure(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            tmp = Path(tmp)
+            d = tmp / "output" / "2026-11-01"
+            d.mkdir(parents=True)
+            (d / "morgue.html").write_text("pages but no index")
+            with self.assertRaises(SystemExit):
+                self._run(tmp / "output", tmp / "state", tmp / "publish", keep=90)
+            self.assertFalse((tmp / "state").exists())
 
     def test_no_edition_is_a_hard_failure(self):
         with tempfile.TemporaryDirectory() as tmp:

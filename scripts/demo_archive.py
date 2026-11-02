@@ -52,10 +52,16 @@ def dated_dirs(root: Path) -> list[str]:
 
 
 def newest_edition(output: Path) -> Path:
+    """The newest dated directory under output. It must contain index.html:
+    the dated directory is the edition's URL, and a directory without an
+    index is a 404 behind a pointer that says it exists (2026-11-01)."""
     dates = dated_dirs(output)
     if not dates:
         raise SystemExit(f"demo_archive: no dated edition under {output}")
-    return output / dates[0]
+    edition = output / dates[0]
+    if not (edition / "index.html").is_file():
+        raise SystemExit(f"demo_archive: {edition} has no index.html; refusing to archive it")
+    return edition
 
 
 def archive(state: Path, edition: Path) -> Path:

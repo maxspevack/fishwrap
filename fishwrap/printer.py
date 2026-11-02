@@ -5,7 +5,8 @@ Produces four artifacts per run, written to demo/output/<YYYY-MM-DD>/ (the
 edition date in the masthead's timezone), plus demo/output/index.html, the
 'today' pointer that redirects to the newest edition and is written last:
 
-  edition-reader.html  — the paper, signed out (no editor on duty).
+  index.html           — the paper, signed out (no editor on duty). Named
+                         index.html so the dated directory is the edition's URL.
   edition-editor.html  — the paper, editor on duty (LLM rationales visible).
   feeds-admin.html     — the per-feed admin surface (volume dial + section
                          routing dropdown + drop button). Demo-inert.
@@ -154,7 +155,7 @@ footer { margin: 3rem 0 0; padding-top: 1rem; border-top: 1px solid var(--bone);
 
 def _render_topnav(active):
     items = [
-        ("Reader",     "edition-reader.html", "reader"),
+        ("Reader",     "index.html",          "reader"),
         ("Editor",     "edition-editor.html", "editor"),
         ("Feeds",      "feeds-admin.html",    "feeds"),
         ("The Morgue", "morgue.html",         "morgue"),
@@ -171,7 +172,7 @@ def _render_masthead_header(masthead: Masthead, mode: str, page_label: str):
     today = datetime.now(ZoneInfo(masthead.timezone)).strftime("%A, %B %d, %Y")
     if mode == "editor":
         editor_html = '<span class="editor-on">Editor on duty: Glenn Greenwald</span>'
-        signin_html = '<a class="signin-strip signed-in" href="edition-reader.html">Signed in · sign out</a>'
+        signin_html = '<a class="signin-strip signed-in" href="index.html">Signed in · sign out</a>'
     else:
         editor_html = '<span class="editor-off">No editor on duty</span>'
         signin_html = '<a class="signin-strip signed-out" href="edition-editor.html">Sign in as editor</a>'
@@ -831,7 +832,7 @@ def run_printer():
     out_dir = base / date
     out_dir.mkdir(parents=True, exist_ok=True)
 
-    (out_dir / "edition-reader.html").write_text(
+    (out_dir / "index.html").write_text(
         render_edition_page(masthead, edition, rejects, funnel, candidates, max_ts, "reader")
     )
     (out_dir / "edition-editor.html").write_text(
