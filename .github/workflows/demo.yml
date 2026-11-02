@@ -1,0 +1,88 @@
+# Fishwrap demo: build HEAD every day and publish fishwrap.org.
+#
+# This is the engine's integration environment. Every run:
+#   1. installs the engine from source at this commit (make setup),
+#   2. runs the test suite (a red suite publishes nothing),
+#   3. runs the full pipeline against demo/ (fetch -> editor -> enhancer -> printer),
+#   4. places the edition at docs/demo/vanilla/ and builds the docs site with Jekyll,
+#   5. deploys the site to GitHub Pages (fishwrap.org).
+#
+# dailyclamour.com is NOT built here. It consumes the pinned release image
+# from its own repo and moves only when a release is cut. The demo tracks main.
+#
+# The repo's Pages build_type is "workflow": nothing else deploys fishwrap.org.
+# A failed run leaves the previous deploy in place.
+
+name: demo
+
+on:
+  schedule:
+    - cron: '0 13 * * *'   # daily, 13:00 UTC (05:00 PST / 06:00 PDT)
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# One Pages deploy at a time; never abort a build midway.
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - name: Checkout with full history (the Morgue reads git log of demo/)
+        uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+
+      - name: Set up Python (matches the release image)
+        uses: actions/setup-python@v7
+        with:
+          python-version: '3.12'
+
+      - name: Install engine from source
+        run: make setup
+
+      - name: Test suite
+        run: make test
+
+      - name: Build the edition (fetch -> editor -> enhancer -> printer)
+        run: make run-vanilla
+
+      - name: Place the edition at /demo/vanilla/
+        run: |
+          set -euo pipefail
+          test -s demo/output/edition-reader.html
+          mkdir -p docs/demo/vanilla
+          cp demo/output/*.html docs/demo/vanilla/
+          cp demo/output/edition-reader.html docs/demo/vanilla/index.html
+          ls -la docs/demo/vanilla/ | head -20
+
+      - name: Build the docs site
+        uses: actions/jekyll-build-pages@v1
+        with:
+          source: ./docs
+          destination: ./_site
+
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v5
+        with:
+          path: ./_site
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v5

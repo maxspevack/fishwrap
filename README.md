@@ -12,7 +12,7 @@ The engine is a signed OCI image at `ghcr.io/maxspevack/fishwrap`. A publication
 
 **One edition is live. One reference demo runs alongside it:**
 *   [The Daily Clamour](https://dailyclamour.com). The flagship instance. One edition a day at 04:00 Pacific.
-*   [The Vanilla](https://fishwrap.org/demo/vanilla/). The reference demo — a general paper produced from a minimal config and the `basic` theme.
+*   [The Vanilla](https://fishwrap.org/demo/vanilla/). The reference demo, rebuilt every day from the `main` branch. This is the engine's integration environment, not a release.
 
 ---
 
