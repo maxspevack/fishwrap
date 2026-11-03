@@ -20,7 +20,11 @@ name: demo
 
 on:
   schedule:
-    - cron: '0 13 * * *'   # daily, 13:00 UTC (05:00 PST / 06:00 PDT)
+    # Daily. Off the top of the hour: GitHub queues scheduled runs and the
+    # :00 slot runs hours late under load (the 2026-11-02 and 11-03 runs
+    # fired at 22:02 and 19:54 UTC). The edition date comes from the
+    # masthead's timezone, not from when this fires.
+    - cron: '17 13 * * *'   # 13:17 UTC (05:17 PST / 06:17 PDT)
   push:
     branches: [main]
   workflow_dispatch:

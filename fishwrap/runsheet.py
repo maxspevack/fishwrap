@@ -193,22 +193,35 @@ def build(masthead, candidates, edition, rejects, funnel, *, date: str, anchor_t
 
 # ============ read / write / locate ============
 
+# JSON leaves these unescaped, and str.splitlines() treats them as line
+# breaks. A feed shipped one inside a body on 2026-11-03 and the reader cut
+# the record in half. Escape them on write; read by "\n" alone.
+_LINE_BREAKERS = {"\u2028": "\\u2028", "\u2029": "\\u2029", "\x85": "\\u0085"}
+
+
+def _line(obj) -> str:
+    s = json.dumps(obj, ensure_ascii=False)
+    for ch, esc in _LINE_BREAKERS.items():
+        s = s.replace(ch, esc)
+    return s + "\n"
+
+
 def write(path: Path, header: dict, records: list[dict]) -> Path:
     path = Path(path)
     path.parent.mkdir(parents=True, exist_ok=True)
     opener = gzip.open if path.suffix == ".gz" else open
-    with opener(path, "wt", encoding="utf-8") as f:
-        f.write(json.dumps(header, ensure_ascii=False) + "\n")
+    with opener(path, "wt", encoding="utf-8", newline="\n") as f:
+        f.write(_line(header))
         for r in records:
-            f.write(json.dumps(r, ensure_ascii=False) + "\n")
+            f.write(_line(r))
     return path
 
 
 def read(path: Path) -> tuple[dict, list[dict]]:
     path = Path(path)
     opener = gzip.open if path.suffix == ".gz" else open
-    with opener(path, "rt", encoding="utf-8") as f:
-        lines = [ln for ln in f.read().splitlines() if ln.strip()]
+    with opener(path, "rt", encoding="utf-8", newline="\n") as f:
+        lines = [ln.rstrip("\n") for ln in f if ln.strip()]
     if not lines:
         raise ValueError(f"empty runsheet: {path}")
     header = json.loads(lines[0])

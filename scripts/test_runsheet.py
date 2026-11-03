@@ -87,6 +87,21 @@ class RunsheetBuildTests(unittest.TestCase):
             self.assertEqual(h, self.header)
             self.assertEqual(rs, self.records)
 
+    def test_unicode_line_breakers_round_trip(self):
+        # 2026-11-03: a body carried U+2028; json.dumps leaves it raw and
+        # str.splitlines() breaks on it, so the reader saw half a record.
+        nasty = {"link": "https://x.example/1", "title": "before\u2028after", "source": "s", "domain": "d",
+                 "ts": 1, "categories": [], "content_head": "nel\x85here \u2029 ps\nnewline\rcr",
+                 "section": None, "section_reason": {}, "cluster": {"leader": True, "size": 1, "sources": 1, "members": []},
+                 "policies": [], "signals": {}, "fate": {"published": False, "step": "policy", "detail": "x"}}
+        p = runsheet.write(Path(self.tmp.name) / "nasty.jsonl.gz", self.header, [nasty])
+        import gzip
+        raw = gzip.open(p, "rt", encoding="utf-8", newline="").read()
+        self.assertEqual(raw.count("\n"), 2)                      # header + one record, no stray breaks
+        self.assertEqual(len(raw.splitlines()), 2)                 # even a splitlines() reader sees two lines
+        h, rs = runsheet.read(p)
+        self.assertEqual(rs, [nasty])
+
     def test_latest_finds_the_newest_dated_runsheet(self):
         root = Path(self.tmp.name) / "out"
         self.assertIsNone(runsheet.latest(root))
