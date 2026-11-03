@@ -57,12 +57,17 @@ replay:
 # INSTANCE is an instance directory containing masthead.toml + dossier.md
 # (+ optional policies.jsonl). The old CONFIG=demo/config.py form is gone;
 # the user's editorial state is no longer a Python file.
+# The enhancer is best-effort: nothing renders scraped text yet, and
+# newspaper3k has crashed natively ("double free or corruption") under its
+# thread pool once in six runs (2026-11-03, not reproducible on rerun). A
+# scraper crash must not take the paper down, so its exit code is logged
+# and the build goes on.
 build-core:
 	@if [ -z "$(INSTANCE)" ]; then echo "Error: INSTANCE argument required"; exit 1; fi
 	@export FISHWRAP_CONFIG=$(CURDIR)/$(INSTANCE) && \
 	$(PYTHON) -m fishwrap.fetcher && \
 	$(PYTHON) -m fishwrap.editor && \
-	$(PYTHON) -m fishwrap.enhancer && \
+	( $(PYTHON) -m fishwrap.enhancer || echo "[ENHANCER] exited $$? (best-effort; the paper does not depend on scraped text), continuing" ) && \
 	$(PYTHON) -m fishwrap.printer
 
 # --- Demo Targets (local development) ---
