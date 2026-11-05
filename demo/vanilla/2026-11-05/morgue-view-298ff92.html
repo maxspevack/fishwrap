@@ -76,7 +76,7 @@ footer { margin: 3rem 0 0; padding-top: 1rem; border-top: 1px solid var(--bone);
 </style>
 </head>
 <body>
-  <nav class="top"><a class="" href="index.html">Paper</a><a class="" href="runsheet.html">Runsheet</a><a class="" href="feeds.html">Feeds</a><a class="active" href="morgue.html">The Morgue</a><span class="right">fishwrap · built 2026-11-05 20:42 UTC</span></nav>
+  <nav class="top"><a class="" href="index.html">Paper</a><a class="" href="runsheet.html">Runsheet</a><a class="" href="feeds.html">Feeds</a><a class="active" href="morgue.html">The Morgue</a><span class="right">fishwrap · built 2026-11-05 22:34 UTC</span></nav>
   <div class="shell">
 <header class="masthead"><div><h1>Viewing back issue</h1><div class="dateline">filed Wednesday, May 27, 2026 · 16:19 · <a href="morgue.html">back to The Morgue</a></div></div><div class="slot">this version vs. today</div></header>
 <section class="doc">
@@ -84,7 +84,7 @@ footer { margin: 3rem 0 0; padding-top: 1rem; border-top: 1px solid var(--bone);
   <span style="background: rgba(11, 135, 89, 0.18); padding: 0.05rem 0.3rem;">Green</span> lines were added afterward.
   <span style="background: rgba(179, 38, 30, 0.18); padding: 0.05rem 0.3rem; text-decoration: line-through;">Red</span> lines were removed afterward.</p>
   <h3>Masthead</h3><div class="morgue-diff">diff --git a/demo/masthead.toml b/demo/masthead.toml
-index df709b3..408fdd9 100644
+index df709b3..52c5524 100644
 <span class="muted">@@ -4,5 +4,5 @@</span>
  
  [identity]
@@ -92,15 +92,72 @@ index df709b3..408fdd9 100644
 <span class="add">+name = &quot;The Vanilla&quot;</span>
  founding_date = &quot;2025-12-07&quot;
  timezone = &quot;America/Los_Angeles&quot;
-<span class="muted">@@ -302,5 +302,4 @@ keywords = [</span>
+<span class="muted">@@ -263,18 +263,11 @@ keywords = [</span>
+ &quot;americanthinker&quot; = &quot;news&quot;
+ &quot;androidauthority.com&quot; = &quot;tech&quot;
+<span class="del">-&quot;androidcentral.com&quot; = &quot;tech&quot;</span>
+ &quot;androidpolice.com&quot; = &quot;tech&quot;
+<span class="del">-&quot;apnews.com&quot; = &quot;news&quot;</span>
+ &quot;arstechnica.com&quot; = &quot;tech&quot;
+<span class="del">-&quot;avclub.com&quot; = &quot;culture&quot;</span>
+ &quot;aws.amazon.com&quot; = &quot;tech&quot;
+ &quot;axios&quot; = &quot;news&quot;
+ &quot;babylonbee&quot; = &quot;news&quot;
+<span class="del">-&quot;bair.berkeley.edu&quot; = &quot;tech&quot;</span>
+<span class="del">-&quot;bbc.co.uk&quot; = &quot;news&quot;</span>
+<span class="add">+&quot;bbci.co.uk&quot; = &quot;news&quot;</span>
+ &quot;bleepingcomputer.com&quot; = &quot;tech&quot;
+<span class="del">-&quot;blog.google&quot; = &quot;tech&quot;</span>
+<span class="del">-&quot;blog.tensorflow.org&quot; = &quot;tech&quot;</span>
+<span class="del">-&quot;blogs.microsoft.com&quot; = &quot;tech&quot;</span>
+ &quot;blogs.nvidia.com&quot; = &quot;tech&quot;
+ &quot;breitbart&quot; = &quot;news&quot;
+<span class="muted">@@ -283,17 +276,11 @@ keywords = [</span>
+ &quot;cisa.gov&quot; = &quot;tech&quot;
+ &quot;crowdstrike.com&quot; = &quot;tech&quot;
+<span class="del">-&quot;dailycaller&quot; = &quot;news&quot;</span>
+ &quot;darkreading.com&quot; = &quot;tech&quot;
+ &quot;deadline.com&quot; = &quot;culture&quot;
+ &quot;deepmind.google&quot; = &quot;tech&quot;
+ &quot;defector.com&quot; = &quot;sports&quot;
+<span class="del">-&quot;drudgereportfeed&quot; = &quot;news&quot;</span>
+ &quot;engadget.com&quot; = &quot;tech&quot;
+<span class="del">-&quot;espn.com&quot; = &quot;sports&quot;</span>
+<span class="del">-&quot;fedoraplanet.org&quot; = &quot;tech&quot;</span>
+<span class="del">-&quot;feeds.feedburner.com/TheRinger&quot; = &quot;sports&quot;</span>
+ &quot;foxnews&quot; = &quot;news&quot;
+ &quot;freebeacon&quot; = &quot;news&quot;
+<span class="del">-&quot;frontpagemag&quot; = &quot;news&quot;</span>
+ &quot;gamingonlinux.com&quot; = &quot;tech&quot;
+ &quot;gatewaypundit&quot; = &quot;news&quot;
+<span class="muted">@@ -302,5 +289,4 @@ keywords = [</span>
  &quot;greenwald.substack.com&quot; = &quot;news&quot;
  &quot;helpnetsecurity.com&quot; = &quot;tech&quot;
 <span class="del">-&quot;hnrss&quot; = &quot;tech&quot;</span>
  &quot;hollywoodreporter.com&quot; = &quot;culture&quot;
  &quot;hotair&quot; = &quot;news&quot;
-<span class="muted">@@ -327,48 +326,4 @@ keywords = [</span>
+<span class="muted">@@ -308,84 +294,29 @@ keywords = [</span>
+ &quot;instapundit&quot; = &quot;news&quot;
+ &quot;justthenews&quot; = &quot;news&quot;
+<span class="del">-&quot;kdnuggets.com&quot; = &quot;tech&quot;</span>
+ &quot;krebsonsecurity.com&quot; = &quot;tech&quot;
+ &quot;lastweekin.ai&quot; = &quot;tech&quot;
+ &quot;legalinsurrection&quot; = &quot;news&quot;
+ &quot;lifehacker.com&quot; = &quot;culture&quot;
+<span class="del">-&quot;lilianweng.github.io&quot; = &quot;tech&quot;</span>
+ &quot;lwn.net&quot; = &quot;tech&quot;
+ &quot;machinelearningmastery.com&quot; = &quot;tech&quot;
+<span class="del">-&quot;mandiant.com&quot; = &quot;tech&quot;</span>
+ &quot;mashable.com&quot; = &quot;culture&quot;
+ &quot;natesilver.net&quot; = &quot;news&quot;
+ &quot;nealstephenson.substack.com&quot; = &quot;culture&quot;
+<span class="del">-&quot;newsbusters&quot; = &quot;news&quot;</span>
+<span class="del">-&quot;newsmax&quot; = &quot;news&quot;</span>
+ &quot;notthebee&quot; = &quot;news&quot;
+ &quot;npr&quot; = &quot;news&quot;
+ &quot;nypost&quot; = &quot;news&quot;
  &quot;nytimes.com&quot; = &quot;news&quot;
- &quot;oann&quot; = &quot;news&quot;
+<span class="del">-&quot;oann&quot; = &quot;news&quot;</span>
 <span class="del">-&quot;old.reddit.com/r/Anarcho_Capitalism&quot; = &quot;news&quot;</span>
 <span class="del">-&quot;old.reddit.com/r/Android&quot; = &quot;tech&quot;</span>
 <span class="del">-&quot;old.reddit.com/r/artificial&quot; = &quot;tech&quot;</span>
@@ -147,7 +204,59 @@ index df709b3..408fdd9 100644
 <span class="del">-&quot;old.reddit.com/r/worldnews&quot; = &quot;news&quot;</span>
  &quot;openai.com&quot; = &quot;tech&quot;
  &quot;pagesix.com&quot; = &quot;culture&quot;
-<span class="muted">@@ -446,10 +401,4 @@ urls = [</span>
+ &quot;paloaltonetworks.com&quot; = &quot;tech&quot;
+<span class="del">-&quot;phoronix.com&quot; = &quot;tech&quot;</span>
+ &quot;pitchfork.com&quot; = &quot;culture&quot;
+ &quot;pjmedia&quot; = &quot;news&quot;
+<span class="del">-&quot;politico&quot; = &quot;news&quot;</span>
+ &quot;polygon.com&quot; = &quot;tech&quot;
+<span class="del">-&quot;powerlineblog&quot; = &quot;news&quot;</span>
+ &quot;rantingly&quot; = &quot;news&quot;
+ &quot;realclearpolitics&quot; = &quot;news&quot;
+ &quot;reason.com&quot; = &quot;news&quot;
+ &quot;redstate&quot; = &quot;news&quot;
+<span class="del">-&quot;reuters.com&quot; = &quot;news&quot;</span>
+ &quot;revolver.news&quot; = &quot;news&quot;
+ &quot;rollingstone.com&quot; = &quot;culture&quot;
+<span class="del">-&quot;schneier.com&quot; = &quot;tech&quot;</span>
+ &quot;securelist.com&quot; = &quot;tech&quot;
+ &quot;securityaffairs.co&quot; = &quot;tech&quot;
+<span class="muted">@@ -395,12 +326,7 @@ keywords = [</span>
+ &quot;techcrunch.com&quot; = &quot;tech&quot;
+ &quot;theconservativetreehouse&quot; = &quot;news&quot;
+<span class="del">-&quot;thefederalist&quot; = &quot;news&quot;</span>
+<span class="del">-&quot;thegradient.pub&quot; = &quot;tech&quot;</span>
+<span class="del">-&quot;thehackernews.com&quot; = &quot;tech&quot;</span>
+<span class="del">-&quot;thehockeywriters.com&quot; = &quot;sports&quot;</span>
+ &quot;thepostmillennial&quot; = &quot;news&quot;
+ &quot;therecord.media&quot; = &quot;tech&quot;
+ &quot;theverge.com&quot; = &quot;tech&quot;
+<span class="del">-&quot;threatpost.com&quot; = &quot;tech&quot;</span>
+ &quot;towardsdatascience.com&quot; = &quot;tech&quot;
+ &quot;townhall&quot; = &quot;news&quot;
+<span class="muted">@@ -415,15 +341,9 @@ keywords = [</span>
+ [feeds]
+ urls = [
+<span class="del">-  &quot;http://dailycaller.com/section/politics/feed/&quot;,</span>
+   &quot;http://feed.androidauthority.com/&quot;,
+<span class="del">-  &quot;http://www.drudgereportfeed.com/rss.xml&quot;,</span>
+   &quot;https://9to5google.com/feed/&quot;,
+   &quot;https://americandebunk.substack.com/feed&quot;,
+<span class="del">-  &quot;https://androidcentral.com/feeds/tag/news/rss&quot;,</span>
+   &quot;https://aws.amazon.com/blogs/machine-learning/feed/&quot;,
+   &quot;https://babylonbee.com/feed&quot;,
+<span class="del">-  &quot;https://bair.berkeley.edu/blog/feed.xml&quot;,</span>
+<span class="del">-  &quot;https://blog.tensorflow.org/feeds/posts/default&quot;,</span>
+<span class="del">-  &quot;https://blogs.microsoft.com/ai/feed/&quot;,</span>
+   &quot;https://blogs.nvidia.com/feed/&quot;,
+   &quot;https://cms.zerohedge.com/fullrss2.xml&quot;,
+<span class="muted">@@ -434,5 +354,4 @@ urls = [</span>
+   &quot;https://feeds.bbci.co.uk/news/world/rss.xml&quot;,
+   &quot;https://feeds.feedburner.com/TheHackersNews&quot;,
+<span class="del">-  &quot;https://feeds.feedburner.com/TheRinger&quot;,</span>
+   &quot;https://feeds.feedburner.com/americanthinker_articles&quot;,
+   &quot;https://feeds.feedburner.com/americanthinker_blog&quot;,
+<span class="muted">@@ -446,10 +365,4 @@ urls = [</span>
    &quot;https://googleprojectzero.blogspot.com/feeds/posts/default&quot;,
    &quot;https://greenwald.substack.com/feed&quot;,
 <span class="del">-  &quot;https://hnrss.org/bestcomments&quot;,</span>
@@ -158,7 +267,16 @@ index df709b3..408fdd9 100644
 <span class="del">-  &quot;https://hnrss.org/newest?q=security+OR+vulnerability+OR+exploit+OR+breach&quot;,</span>
    &quot;https://hotair.com/feed&quot;,
    &quot;https://huggingface.co/blog/feed.xml&quot;,
-<span class="muted">@@ -469,48 +418,4 @@ urls = [</span>
+<span class="muted">@@ -460,61 +373,14 @@ urls = [</span>
+   &quot;https://legalinsurrection.com/feed/&quot;,
+   &quot;https://lifehacker.com/rss&quot;,
+<span class="del">-  &quot;https://lilianweng.github.io/index.xml&quot;,</span>
+   &quot;https://lwn.net/headlines/full_text?key=6804e49d958d5519&quot;,
+   &quot;https://machinelearningmastery.com/feed/&quot;,
+   &quot;https://mashable.com/feed&quot;,
+   &quot;https://nealstephenson.substack.com/feed&quot;,
+<span class="del">-  &quot;https://newsbusters.org/blog/feed&quot;,</span>
+   &quot;https://notthebee.com/feed&quot;,
    &quot;https://nypost.com/opinion/feed/&quot;,
    &quot;https://nypost.com/politics/feed/&quot;,
 <span class="del">-  &quot;https://old.reddit.com/r/Anarcho_Capitalism.json&quot;,</span>
@@ -206,7 +324,48 @@ index df709b3..408fdd9 100644
 <span class="del">-  &quot;https://old.reddit.com/r/vent.json&quot;,</span>
 <span class="del">-  &quot;https://old.reddit.com/r/worldnews.json&quot;,</span>
    &quot;https://openai.com/blog/rss.xml&quot;,
-   &quot;https://openai.com/news/rss.xml&quot;,</div>
+   &quot;https://openai.com/news/rss.xml&quot;,
+   &quot;https://pagesix.com/feed/&quot;,
+<span class="del">-  &quot;https://pitchfork.com/feed/feed-news/rss&quot;,</span>
+   &quot;https://pitchfork.com/feed/rss&quot;,
+   &quot;https://pjmedia.com/feed&quot;,
+<span class="muted">@@ -534,11 +400,7 @@ urls = [</span>
+   &quot;https://techcrunch.com/feed/&quot;,
+   &quot;https://theconservativetreehouse.com/feed&quot;,
+<span class="del">-  &quot;https://thefederalist.com/feed&quot;,</span>
+   &quot;https://thegatewaypundit.com/feed&quot;,
+<span class="del">-  &quot;https://thegradient.pub/rss/&quot;,</span>
+<span class="del">-  &quot;https://thehockeywriters.com/feed/&quot;,</span>
+   &quot;https://thepostmillennial.com/index.rss&quot;,
+   &quot;https://therecord.media/feed&quot;,
+<span class="del">-  &quot;https://threatpost.com/feed/&quot;,</span>
+   &quot;https://towardsdatascience.com/feed&quot;,
+   &quot;https://townhall.com/feed&quot;,
+<span class="muted">@@ -556,24 +418,13 @@ urls = [</span>
+   &quot;https://www.darkreading.com/rss.xml&quot;,
+   &quot;https://www.engadget.com/rss.xml&quot;,
+<span class="del">-  &quot;https://www.espn.com/blog/feed?blog=nflnation&quot;,</span>
+<span class="del">-  &quot;https://www.espn.com/espn/rss/news&quot;,</span>
+<span class="del">-  &quot;https://www.frontpagemag.com/feed&quot;,</span>
+   &quot;https://www.gamingonlinux.com/article_rss.php&quot;,
+   &quot;https://www.helpnetsecurity.com/feed/&quot;,
+   &quot;https://www.hollywoodreporter.com/c/movies/feed/&quot;,
+<span class="del">-  &quot;https://www.kdnuggets.com/feed&quot;,</span>
+<span class="del">-  &quot;https://www.mandiant.com/resources/blog/rss.xml&quot;,</span>
+   &quot;https://www.microsoft.com/security/blog/feed/&quot;,
+   &quot;https://www.natesilver.net/feed&quot;,
+<span class="del">-  &quot;https://www.newsmax.com/rss/Politics/1&quot;,</span>
+<span class="del">-  &quot;https://www.oann.com/feed/&quot;,</span>
+<span class="del">-  &quot;https://www.phoronix.com/phoronix-rss.php&quot;,</span>
+<span class="del">-  &quot;https://www.politico.com/rss/politicopicks.xml&quot;,</span>
+   &quot;https://www.polygon.com/rss/index.xml&quot;,
+<span class="del">-  &quot;https://www.powerlineblog.com/feed/rdf&quot;,</span>
+   &quot;https://www.realclearpolitics.com/index.xml&quot;,
+   &quot;https://www.revolver.news/feed/&quot;,
+   &quot;https://www.rollingstone.com/feed&quot;,
+<span class="del">-  &quot;https://www.schneier.com/blog/atom.xml&quot;,</span>
+   &quot;https://www.theverge.com/rss/index.xml&quot;,
+   &quot;https://www.troyhunt.com/rss/&quot;,</div>
   <h3>Dossier</h3><div class="muted">No changes to this file between these two versions.</div>
   <h3>Policies</h3><div class="muted">No changes to this file between these two versions.</div>
 </section>
