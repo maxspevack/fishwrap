@@ -9,7 +9,7 @@ and never read back.
 import uuid
 from datetime import datetime
 
-from sqlalchemy import Column, String, Float, Text, JSON, Boolean, DateTime
+from sqlalchemy import Column, String, Float, Text, JSON, DateTime
 from sqlalchemy.orm import declarative_base
 
 Base = declarative_base()
@@ -29,15 +29,10 @@ class Article(Base):
 
     # Content
     content = Column(Text)
-    full_content = Column(Text)
     comments_url = Column(String)
-    comments_full = Column(JSON)
 
     # Metadata
     categories = Column(JSON)
-
-    # Processing flags
-    is_enhanced = Column(Boolean, default=False)
 
     # System timestamps
     created_at = Column(DateTime, default=datetime.utcnow)

@@ -43,13 +43,13 @@ The Glass Box is what we call the working surfaces. Every editorial decision is 
 
 *   **The Fetcher** scours your defined feeds (RSS, JSON, Reddit) using concurrent I/O. Failed feeds are logged, not hidden.
 *   **The Editor** classifies each article into a section (by source-default or keyword fallback), folds duplicates into the newest copy and counts how many sources carried the story, applies the diversity cap per source per section, truncates to the section's edition size, and assigns each item a tier (lead / feature / standard). The signed policies in your masthead can drop articles (source/title/topic bans), bypass diversity caps (whitelist), or promote stories to the lead tier (section_lead_preference) — every policy that fires is named on the story. It writes **the runsheet**: one record per candidate (where it came from, how it competed, where it landed) plus a header naming the engine commit, the window, and the fingerprints of your three editorial files. Nothing downstream recomputes a decision.
-*   **The Enhancer** scrapes full text for the stories that made the paper. Rate-limited.
 *   **The Printer** renders from the runsheet alone: the paper with a per-story audit drawer, the runsheet as a readable page (what came in, what was cut and why, what led and why, every feed's yield), a read-only feeds page, and The Morgue (every prior version of your masthead, dossier, and policies).
 *   **Replay** re-runs any archived runsheet's candidates under your masthead as it is now and prints what moved. Change a dial, replay yesterday, read the consequence. `make replay DATE=YYYY-MM-DD`.
+*   **The Publisher's loop** runs in a terminal: `make show` prints the edition as text, `make policy ARGS='ban-source example.com --because "..."'` files a policy in your words, `make replay` shows what it would have done to any edition, and the next build applies it. No server, no write path but your own files.
 
-The user-facing config is two files: `masthead.toml` (the structured data: sections, feeds, source-section routing, signed policies) and `dossier.md` (the editor's voice in prose — read by the LLM editor in Editor mode). The same data drives both modes.
+The user-facing config is three files: `masthead.toml` (the structured data: sections, feeds, source-section routing), `policies.jsonl` (your signed policies, one sentence each, append-only), and `dossier.md` (the editor's voice in prose).
 
-Behind the scenes is a SQLite "Newsroom" database that stores the article corpus during a run. In containerized contexts the database is ephemeral; every run starts fresh.
+Behind the scenes is a SQLite "Newsroom" database that stores the article corpus during a run. The database is ephemeral; every run starts fresh. The durable record is the runsheet.
 
 ---
 

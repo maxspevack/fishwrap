@@ -54,7 +54,7 @@ def upsert_article(article_data):
     """Insert or update by link. Returns 'new' or 'updated'.
 
     An update takes the newer timestamp, the latest title (feeds fix typos),
-    and the latest metadata. It never touches full_content or is_enhanced.
+    and the latest metadata.
     """
     with SessionContext() as db:
         existing = db.query(Article).filter(Article.link == article_data['link']).first()
@@ -71,19 +71,6 @@ def upsert_article(article_data):
         existing.comments_url = article_data.get('comments_url')
         db.commit()
         return "updated"
-
-
-def update_enhancement_by_link(link, full_content, comments_full=None):
-    """Store scraped full text for one article. Returns True if it existed."""
-    with SessionContext() as db:
-        article = db.query(Article).filter(Article.link == link).first()
-        if not article:
-            return False
-        article.full_content = full_content
-        article.comments_full = comments_full or []
-        article.is_enhanced = True
-        db.commit()
-        return True
 
 
 def prune_old_articles(hours=72):
@@ -126,21 +113,6 @@ def get_article_by_link(link):
     with SessionContext() as db:
         a = db.query(Article).filter(Article.link == link).first()
         return to_dict(a) if a else None
-
-
-def get_content_by_links(links):
-    """{link: {'content', 'full_content', 'is_enhanced'}} for the given links."""
-    links = list(links)
-    if not links:
-        return {}
-    out = {}
-    with SessionContext() as db:
-        for i in range(0, len(links), 500):
-            chunk = links[i:i + 500]
-            for a in db.query(Article).filter(Article.link.in_(chunk)).all():
-                out[a.link] = {"content": a.content, "full_content": a.full_content,
-                               "is_enhanced": bool(a.is_enhanced)}
-    return out
 
 
 # ============ helper ============

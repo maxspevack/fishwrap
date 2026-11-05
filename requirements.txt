@@ -1,55 +1,10 @@
-# Fishwrap runtime requirements.
-#
-# Audited 2026-05-25 per #15. Three packages dropped from the runtime image:
-# alembic, Mako, Markdown (see #15 close-out comment for the verdict matrix).
-# The engine bootstraps its schema via SQLAlchemy's Base.metadata.create_all
-# (fishwrap/db/repository.py); alembic migrations were removed as dead code
-# in the follow-up commit to #15.
-#
-# Conventions:
-#   - All packages below are either directly imported by fishwrap/* or
-#     transitively required by a directly-imported package. The line comments
-#     name the consumer ("dep of X") to make the next audit cheaper.
-#   - "newspaper3k transitive" means the package is a hard dep of newspaper3k
-#     but is not directly imported by fishwrap code. Listed here for pin
-#     determinism; cannot be removed without replacing newspaper3k itself.
-
-beautifulsoup4==4.14.3        # HTML parsing — newspaper3k dep
-certifi==2025.11.12           # CA bundle — requests dep
-cffi==2.0.0                   # C FFI shim — transitive
-charset-normalizer==3.4.4     # encoding detection — requests dep
-click==8.3.1                  # CLI framework — fishwrap-build entrypoint
-cssselect==1.3.0              # CSS selectors over lxml — newspaper3k dep
-defusedxml==0.7.1             # hardened XML — fetcher uses (billion-laughs defense)
-feedfinder2==0.0.4            # newspaper3k transitive — not directly imported
-feedparser==6.0.12            # RSS/Atom parsing — fishwrap.fetcher imports
-filelock==3.20.0              # cache lock — tldextract dep
-idna==3.11                    # internationalized domain names — requests dep
-jieba3k==0.35.1               # newspaper3k transitive (Chinese tokenizer) — not directly imported
-Jinja2==3.1.6                 # template engine — fishwrap.printer imports
-joblib==1.5.2                 # parallel processing — nltk dep
-lxml==6.0.2                   # XML/HTML parser — newspaper3k dep + direct use
-lxml_html_clean==0.4.3        # HTML sanitization — lxml/newspaper3k dep
-markdown-it-py==4.0.0         # markdown parser — rich dep (CLI formatting)
-MarkupSafe==3.0.3             # string escaping — Jinja2 dep
-mdurl==0.1.2                  # URL handling — markdown-it-py dep
-newspaper3k==0.2.8            # article fetching + extraction — fishwrap.fetcher backbone
-nltk==3.9.2                   # NLP toolkit — newspaper3k uses for keyword extraction
-pillow==12.0.0                # image handling — newspaper3k dep
-pycparser==2.23               # C header parser — cffi dep
-Pygments==2.19.2              # syntax highlighting — rich dep
-python-dateutil==2.9.0.post0  # date parsing — common transitive
-PyYAML==6.0.3                 # YAML — config-load
-regex==2025.11.3              # enhanced regex — nltk dep
-requests==2.32.5              # HTTP client — fishwrap.fetcher imports
-requests-file==3.0.1          # newspaper3k transitive (via tldextract) — not directly imported
-rich==14.2.0                  # CLI rendering — fishwrap.log uses for terminal output
-sgmllib3k==1.0.0              # SGML parser — feedparser dep
-six==1.17.0                   # Py2/3 compat — transitive (legacy)
-soupsieve==2.8                # CSS selectors — beautifulsoup4 dep
-SQLAlchemy==2.0.45            # ORM — fishwrap.db imports
-tinysegmenter==0.3            # newspaper3k transitive (Japanese tokenizer) — not directly imported
-tldextract==5.3.0             # domain extraction — newspaper3k dep
-tqdm==4.67.1                  # progress bars — nltk dep
-typing_extensions==4.15.0     # typing backports — transitive
-urllib3==2.6.2                # HTTP transport — requests dep
+# The engine's whole dependency set, pinned. Regenerate with a fresh venv:
+#   python3 -m venv /tmp/req && /tmp/req/bin/pip install SQLAlchemy==X defusedxml==Y tqdm==Z && /tmp/req/bin/pip freeze
+# The scraper (newspaper3k) and its tail (lxml, nltk, pillow, requests, ...)
+# left on 2026-11-05; nothing rendered scraped text and lxml had no wheel for
+# the laptop's Python.
+defusedxml==0.7.1             # hardened XML — the fetcher parses every feed with it (entity-expansion defense)
+greenlet==3.5.6               # SQLAlchemy transitive
+SQLAlchemy==2.0.45            # ORM — fishwrap.db
+tqdm==4.67.1                  # progress bar — the fetcher's feed loop
+typing_extensions==4.16.0     # SQLAlchemy transitive

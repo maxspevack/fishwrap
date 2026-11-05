@@ -10,9 +10,9 @@ Fishwrap is designed as a transparent, auditable pipeline. It doesn't just show 
 graph TD
     A[RSS / Atom feeds] -->|Fetcher| B[(SQLite DB)]
     B -->|Editor| C[runsheet.jsonl.gz]
-    C -->|Enhancer| B
     C -->|Printer| E[paper · runsheet page · feeds · Morgue]
     C -->|Replay| F[what would move under today's masthead]
+    C -->|Show| G[the edition as text]
 ```
 
 ### 1. `fishwrap.fetcher` (The Ingestion)
@@ -38,15 +38,18 @@ graph TD
 *   **No numeric score:** Articles are seeded within a section by recency, not by a magic number.
 *   **Five policy primitives** (from `policies.jsonl`): `source_ban`, `title_pattern_ban`, `topic_ban`, `source_whitelist`, `section_lead_preference`. Each is a signed, named policy.
 
-### 5. `fishwrap.enhancer` (The Body)
-*   **Content Extraction:** Reads the newest runsheet, scrapes full text with `newspaper3k` for the published stories the DB does not already hold, stores it on the row. Writes nothing else.
-
-### 6. `fishwrap.printer` (The Face)
+### 5. `fishwrap.printer` (The Face)
 *   **From the runsheet alone.** Recomputes nothing. Renders into `demo/output/<YYYY-MM-DD>/`: `index.html` (the paper), `runsheet.html` (the edition as a document), `feeds.html` (read-only), `morgue.html` plus `morgue-view-<sha>.html` per prior version; then `demo/output/index.html`, the pointer to the newest edition, written last.
 *   **The audit drawer** on each story tells the step-by-step story of how it got where it got, plus its coverage: how many sources carried it and which copies were folded in.
 
-### 7. `fishwrap.replay`
+### 6. `fishwrap.replay`
 *   `python -m fishwrap.replay <runsheet>` re-runs the editor on that edition's candidates under the current masthead and prints what entered, left, changed section, or moved. `--expect-zero` exits 1 on any change; the demo workflow runs it on every build as the determinism gate.
+
+### 7. `fishwrap.show` and `fishwrap.policy` (The Publisher's loop)
+*   `python -m fishwrap.show [runsheet] [--cuts N]` prints the edition as text: every printed story with seed, tier, coverage, source and age; the cap and capacity cuts per section; the feeds that delivered nothing.
+*   `python -m fishwrap.policy <verb> ... --because "<sentence>"` appends a signed policy to `policies.jsonl`: `ban-source`, `ban-title`, `ban-topic`, `print-all` (optionally `--except <regex>`), `prefer-lead <section> <keywords...>`, `strike <policy_id>`, `list`. The sentence is required; it is what the drawer and the runsheet page show.
+
+The scraper (`fishwrap.enhancer`, newspaper3k) was deleted on 2026-11-05: nothing rendered its text, it crashed natively under its thread pool, and its lxml dependency had no wheel for the laptop's Python. The whole dependency set is now SQLAlchemy, defusedxml, tqdm.
 
 ## Configuration
 

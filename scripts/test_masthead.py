@@ -87,10 +87,10 @@ class ValidationTests(unittest.TestCase):
     def test_source_sections_undeclared_target(self):
         import tomllib
         raw = tomllib.loads(MINIMAL_VALID_TOML)
-        raw["source_sections"] = {"example.com": "news", "typo.example": "nws"}
+        raw["source_sections"] = {"example.com": "nws"}
         errs = validate(raw)
         self.assertEqual(len(errs), 1)
-        self.assertIn("typo.example", errs[0])
+        self.assertIn("example.com", errs[0])
         self.assertIn("nws", errs[0])
 
     def test_source_sections_declared_target_ok(self):
@@ -98,6 +98,15 @@ class ValidationTests(unittest.TestCase):
         raw = tomllib.loads(MINIMAL_VALID_TOML)
         raw["source_sections"] = {"example.com": "news"}
         self.assertEqual(validate(raw), [])
+
+    def test_source_sections_key_must_match_a_feed(self):
+        # 2026-11-05: "bbc.co.uk" had routed nothing since May; the feed is feeds.bbci.co.uk.
+        import tomllib
+        raw = tomllib.loads(MINIMAL_VALID_TOML)
+        raw["source_sections"] = {"bbc.co.uk": "news"}
+        errs = validate(raw)
+        self.assertEqual(len(errs), 1)
+        self.assertIn("never fires", errs[0])
 
 
 class LoaderTests(unittest.TestCase):

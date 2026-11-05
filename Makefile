@@ -1,14 +1,10 @@
 SHELL := /bin/bash
-.PHONY: setup update test build-core run-vanilla demo demo-html demo-open replay clean-output clean-venv clean-all
+.PHONY: setup update test build-core run-vanilla demo demo-html demo-open replay show policy clean-output clean-venv clean-all
 
 # Paths
 VENV := venv
 PYTHON := $(VENV)/bin/python3
 PIP := $(VENV)/bin/pip
-
-# Environment Variables
-# Suppress SyntaxWarnings (from legacy libs like newspaper3k)
-export PYTHONWARNINGS := ignore::SyntaxWarning
 
 # --- Environment ---
 setup:
@@ -20,7 +16,6 @@ update:
 # --- Testing ---
 test:
 	@echo "--- Running Unit Tests ---"
-	@$(PYTHON) scripts/test_enhancer_db.py
 	@$(PYTHON) scripts/test_fetcher_resilience.py
 	@$(PYTHON) scripts/test_logging_wiring.py
 	@$(PYTHON) scripts/test_xml_safety.py
@@ -30,11 +25,30 @@ test:
 	@$(PYTHON) scripts/test_pipeline.py
 	@$(PYTHON) scripts/test_runsheet.py
 	@$(PYTHON) scripts/test_replay.py
+	@$(PYTHON) scripts/test_show_policy.py
 	@$(PYTHON) scripts/test_morgue.py
 	@$(PYTHON) scripts/test_demo_instance.py
 	@$(PYTHON) scripts/test_printer_output.py
 	@$(PYTHON) scripts/test_demo_archive.py
 	@echo "✅ All Tests Passed."
+
+# --- The Publisher's loop ---
+# make show [DATE=YYYY-MM-DD] [CUTS=N]   the edition as text (newest local, or the archive)
+# make policy ARGS='ban-source example.com --because "..."'
+#   verbs: ban-source, ban-title, ban-topic, print-all, prefer-lead, strike, list
+# then: make replay DATE=... to see what moved; commit; the next build applies it.
+show:
+	@rs="$(RUNSHEET)"; \
+	if [ -z "$$rs" ] && [ -n "$(DATE)" ]; then \
+	  if [ -f demo/output/$(DATE)/runsheet.jsonl.gz ]; then rs=demo/output/$(DATE)/runsheet.jsonl.gz; \
+	  else mkdir -p demo/output/archive && git fetch -q origin state && \
+	       git show origin/state:demo/vanilla/$(DATE)/runsheet.jsonl.gz > demo/output/archive/$(DATE).runsheet.jsonl.gz && \
+	       rs=demo/output/archive/$(DATE).runsheet.jsonl.gz; fi; \
+	fi; \
+	FISHWRAP_CONFIG=$(CURDIR)/demo $(PYTHON) -m fishwrap.show $$rs $(if $(CUTS),--cuts $(CUTS),)
+
+policy:
+	@FISHWRAP_CONFIG=$(CURDIR)/demo $(PYTHON) -m fishwrap.policy $(ARGS)
 
 # --- Replay ---
 # Re-run an archived edition's candidates under the masthead as it is now
@@ -57,26 +71,19 @@ replay:
 # INSTANCE is an instance directory containing masthead.toml + dossier.md
 # (+ optional policies.jsonl). The old CONFIG=demo/config.py form is gone;
 # the user's editorial state is no longer a Python file.
-# The enhancer is best-effort: nothing renders scraped text yet, and
-# newspaper3k has crashed natively ("double free or corruption") under its
-# thread pool once in six runs (2026-11-03, not reproducible on rerun). A
-# scraper crash must not take the paper down, so its exit code is logged
-# and the build goes on.
 build-core:
 	@if [ -z "$(INSTANCE)" ]; then echo "Error: INSTANCE argument required"; exit 1; fi
 	@export FISHWRAP_CONFIG=$(CURDIR)/$(INSTANCE) && \
 	$(PYTHON) -m fishwrap.fetcher && \
 	$(PYTHON) -m fishwrap.editor && \
-	( $(PYTHON) -m fishwrap.enhancer || echo "[ENHANCER] exited $$? (best-effort; the paper does not depend on scraped text), continuing" ) && \
 	$(PYTHON) -m fishwrap.printer
 
 # --- Demo Targets (local development) ---
-# `make run-vanilla` runs the full pipeline (fetch → editor → enhancer →
-# printer). Use this against the live web; pulls feeds, slow.
+# `make run-vanilla` runs the full pipeline (fetch → editor → printer).
+# Use this against the live web; pulls feeds, ~40 s.
 #
-# `make demo-html` skips the fetcher and the enhancer — it runs editor +
-# printer against whatever is already in demo/data/demo.db. Use this when
-# you just want to re-render the HTML from a snapshot. Fast.
+# `make demo-html` skips the fetcher — it runs editor + printer against
+# whatever is already in demo/data/demo.db. Fast.
 #
 # `make demo` is the convenience target — runs demo-html and opens the
 # reader edition in the default browser.

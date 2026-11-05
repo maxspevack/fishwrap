@@ -10,6 +10,7 @@ Vote-ranked sources (Reddit JSON, Hacker News via hnrss) were removed on
 2026-11-01 along with their score/comment plumbing. Votes are not an ordering
 input; coverage across sources is.
 """
+import html
 import time
 from concurrent.futures import ThreadPoolExecutor, as_completed
 
@@ -36,9 +37,10 @@ def _text(elem):
 
 
 def _title(elem):
-    """Feed titles arrive with embedded newlines and indentation; collapse them."""
+    """Feed titles arrive with embedded newlines, indentation, and HTML
+    entities (&#39;, &amp;); collapse the whitespace and decode the entities."""
     t = _text(elem)
-    return " ".join(t.split()) if t else None
+    return " ".join(html.unescape(t).split()) if t else None
 
 
 def parse_feed(raw_data, url, cutoff):

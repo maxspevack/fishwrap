@@ -55,7 +55,7 @@ keywords = ["politics", "election"]
 
 ### Editorial decisions
 
-Add policies by appending to `policies.jsonl`. Each line is a JSON event:
+File policies with `make policy ARGS='<verb> ... --because "<your sentence>"'` (verbs: `ban-source`, `ban-title`, `ban-topic`, `print-all`, `prefer-lead`, `strike`, `list`), then `make replay DATE=<edition>` to see what the policy would have changed. Each line of `policies.jsonl` is a JSON event:
 
 ```json
 {"event": "create", "policy_id": "p1", "sentence": "Ban Pitchfork — owner conflict.", "policy": {"type": "source_ban", "match": "pitchfork.com"}}

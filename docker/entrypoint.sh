@@ -5,7 +5,6 @@
 # Implements the documented CLI surface from docs/adr/001-release-artifact.md:
 #   fishwrap-build [--config <path>]      run the full pipeline
 #   fishwrap-version                      print __version__ to stdout
-#   fishwrap-validate-config <path>       schema-check a config file
 #
 # Falls through to `exec "$@"` so other invocations (debugging shells,
 # diagnostic commands) work too. The generic-Python invocation pattern
@@ -20,7 +19,6 @@ fishwrap container entrypoint
 Usage:
   fishwrap-build --config <path>      Run the full pipeline against <path>
   fishwrap-version                    Print the running version (semver)
-  fishwrap-validate-config <path>     Schema-check a config file
 
 Other commands are exec'd directly (e.g. \`bash\` for a debugging shell).
 EOF
@@ -73,7 +71,6 @@ EOF
         # (see fishwrap/db/repository.py); no separate init step needed.
         python -m fishwrap.fetcher
         python -m fishwrap.editor
-        python -m fishwrap.enhancer
         python -m fishwrap.printer
         ;;
 
@@ -82,14 +79,6 @@ EOF
         python -c 'import fishwrap; print(fishwrap.__version__)'
         ;;
 
-    fishwrap-validate-config)
-        if [ $# -ne 1 ]; then
-            echo "fishwrap-validate-config: requires exactly one argument (path to config.py)" >&2
-            exit 2
-        fi
-        # Engine module handles arg parsing, exit codes, and error reporting.
-        exec python -m fishwrap.validate_config "$1"
-        ;;
 
     ""|-h|--help)
         usage

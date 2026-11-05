@@ -246,6 +246,36 @@ def latest(output_root: Path) -> Path | None:
     return None
 
 
+def history(root: Path, k: int = 14) -> list[dict]:
+    """Headers of the newest k archived editions under root, newest first.
+    Used for the feeds page's 'silent for N editions' column."""
+    out = []
+    for d in dated_dirs(root):
+        if len(out) >= k:
+            break
+        p = Path(root) / d / FILENAME
+        if p.is_file():
+            try:
+                out.append(read(p)[0])
+            except Exception:
+                continue
+    return out
+
+
+def silent_streaks(header: dict, past: list[dict]) -> dict[str, int]:
+    """For each feed in header: consecutive editions (today first, then the
+    past, newest first) that delivered nothing. 0 means it delivered today."""
+    streaks = {}
+    for url in header["feeds"]:
+        n = 0
+        for h in [header, *past]:
+            if h.get("feeds", {}).get(url, 0):
+                break
+            n += 1
+        streaks[url] = n
+    return streaks
+
+
 # ============ replay support ============
 
 def candidates_from(records: list[dict]) -> list[dict]:

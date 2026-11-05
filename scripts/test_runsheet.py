@@ -110,6 +110,14 @@ class RunsheetBuildTests(unittest.TestCase):
         (root / "2026-10-26").mkdir()  # newer, but no runsheet yet
         self.assertEqual(runsheet.latest(root), root / "2026-10-25" / runsheet.FILENAME)
 
+    def test_history_reads_newest_first_and_skips_missing(self):
+        root = Path(self.tmp.name) / "arch"
+        for d in ("2026-10-24", "2026-10-25", "2026-10-26"):
+            runsheet.write(root / d / runsheet.FILENAME, dict(self.header, edition=d), self.records)
+        (root / "2026-10-27").mkdir()  # no runsheet
+        hs = runsheet.history(root, 2)
+        self.assertEqual([h["edition"] for h in hs], ["2026-10-26", "2026-10-25"])
+
     def test_editor_is_deterministic_over_its_own_snapshots(self):
         cands = runsheet.candidates_from(self.records)
         edition, rejects, funnel = editor.select_edition(cands, self.masthead)

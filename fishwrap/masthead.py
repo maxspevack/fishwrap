@@ -202,9 +202,12 @@ def validate(raw: dict) -> list[str]:
         errs.append("source_sections: must be a table of domain = section_id")
     elif ss and isinstance(raw["section"], list):
         declared = {s.get("id") for s in raw["section"] if isinstance(s, dict)}
+        urls = [u.lower() for u in (raw.get("feeds") or {}).get("urls", []) if isinstance(u, str)]
         for dom, sid in ss.items():
             if sid not in declared:
                 errs.append(f"source_sections: {dom!r} routes to undeclared section {sid!r}")
+            if urls and not any(dom.lower() in u for u in urls):
+                errs.append(f"source_sections: {dom!r} matches none of the feeds, so it never fires")
 
     feeds = raw.get("feeds", {})
     if not isinstance(feeds, dict) or not isinstance(feeds.get("urls"), list) or not feeds["urls"]:

@@ -14,15 +14,9 @@
 FROM python:3.12-slim
 
 # Runtime system packages.
-# - libxml2 / libxslt1.1: lxml fallback when no wheel matches
-# - libjpeg62-turbo / zlib1g: pillow runtime
-# - tzdata: required by Python's zoneinfo (auditor + printer call ZoneInfo)
+# - tzdata: required by Python's zoneinfo (the printer and the runsheet use the masthead timezone)
 # - tini: PID 1 reaper so signals propagate cleanly to the Python process
 RUN apt-get update && apt-get install -y --no-install-recommends \
-        libxml2 \
-        libxslt1.1 \
-        libjpeg62-turbo \
-        zlib1g \
         tzdata \
         tini \
     && rm -rf /var/lib/apt/lists/*
@@ -39,13 +33,6 @@ WORKDIR /app
 COPY requirements.txt /app/requirements.txt
 RUN pip install --no-cache-dir --upgrade pip \
     && pip install --no-cache-dir -r /app/requirements.txt
-
-# Pre-download NLTK data to /app/nltk_data — the path fishwrap/__init__.py
-# already appends to nltk.data.path. Baking it in means no runtime network access.
-# Match scripts/install_venv.sh (punkt only).
-RUN mkdir -p /app/nltk_data \
-    && python -m nltk.downloader -d /app/nltk_data punkt \
-    && chmod -R a+rX /app/nltk_data
 
 # Copy the engine itself.
 COPY fishwrap /app/fishwrap

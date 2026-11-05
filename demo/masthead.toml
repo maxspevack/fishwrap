@@ -262,39 +262,26 @@ keywords = [
 "americandebunk.substack.com" = "news"
 "americanthinker" = "news"
 "androidauthority.com" = "tech"
-"androidcentral.com" = "tech"
 "androidpolice.com" = "tech"
-"apnews.com" = "news"
 "arstechnica.com" = "tech"
-"avclub.com" = "culture"
 "aws.amazon.com" = "tech"
 "axios" = "news"
 "babylonbee" = "news"
-"bair.berkeley.edu" = "tech"
-"bbc.co.uk" = "news"
+"bbci.co.uk" = "news"
 "bleepingcomputer.com" = "tech"
-"blog.google" = "tech"
-"blog.tensorflow.org" = "tech"
-"blogs.microsoft.com" = "tech"
 "blogs.nvidia.com" = "tech"
 "breitbart" = "news"
 "cbssports.com" = "sports"
 "checkpoint.com" = "tech"
 "cisa.gov" = "tech"
 "crowdstrike.com" = "tech"
-"dailycaller" = "news"
 "darkreading.com" = "tech"
 "deadline.com" = "culture"
 "deepmind.google" = "tech"
 "defector.com" = "sports"
-"drudgereportfeed" = "news"
 "engadget.com" = "tech"
-"espn.com" = "sports"
-"fedoraplanet.org" = "tech"
-"feeds.feedburner.com/TheRinger" = "sports"
 "foxnews" = "news"
 "freebeacon" = "news"
-"frontpagemag" = "news"
 "gamingonlinux.com" = "tech"
 "gatewaypundit" = "news"
 "gizmodo.com" = "culture"
@@ -306,42 +293,31 @@ keywords = [
 "huggingface.co" = "tech"
 "instapundit" = "news"
 "justthenews" = "news"
-"kdnuggets.com" = "tech"
 "krebsonsecurity.com" = "tech"
 "lastweekin.ai" = "tech"
 "legalinsurrection" = "news"
 "lifehacker.com" = "culture"
-"lilianweng.github.io" = "tech"
 "lwn.net" = "tech"
 "machinelearningmastery.com" = "tech"
-"mandiant.com" = "tech"
 "mashable.com" = "culture"
 "natesilver.net" = "news"
 "nealstephenson.substack.com" = "culture"
-"newsbusters" = "news"
-"newsmax" = "news"
 "notthebee" = "news"
 "npr" = "news"
 "nypost" = "news"
 "nytimes.com" = "news"
-"oann" = "news"
 "openai.com" = "tech"
 "pagesix.com" = "culture"
 "paloaltonetworks.com" = "tech"
-"phoronix.com" = "tech"
 "pitchfork.com" = "culture"
 "pjmedia" = "news"
-"politico" = "news"
 "polygon.com" = "tech"
-"powerlineblog" = "news"
 "rantingly" = "news"
 "realclearpolitics" = "news"
 "reason.com" = "news"
 "redstate" = "news"
-"reuters.com" = "news"
 "revolver.news" = "news"
 "rollingstone.com" = "culture"
-"schneier.com" = "tech"
 "securelist.com" = "tech"
 "securityaffairs.co" = "tech"
 "simonwillison.net" = "tech"
@@ -349,14 +325,9 @@ keywords = [
 "sports.yahoo.com" = "sports"
 "techcrunch.com" = "tech"
 "theconservativetreehouse" = "news"
-"thefederalist" = "news"
-"thegradient.pub" = "tech"
-"thehackernews.com" = "tech"
-"thehockeywriters.com" = "sports"
 "thepostmillennial" = "news"
 "therecord.media" = "tech"
 "theverge.com" = "tech"
-"threatpost.com" = "tech"
 "towardsdatascience.com" = "tech"
 "townhall" = "news"
 "troyhunt.com" = "tech"
@@ -369,17 +340,11 @@ keywords = [
 # Source feeds. The publisher's source list.
 [feeds]
 urls = [
-  "http://dailycaller.com/section/politics/feed/",
   "http://feed.androidauthority.com/",
-  "http://www.drudgereportfeed.com/rss.xml",
   "https://9to5google.com/feed/",
   "https://americandebunk.substack.com/feed",
-  "https://androidcentral.com/feeds/tag/news/rss",
   "https://aws.amazon.com/blogs/machine-learning/feed/",
   "https://babylonbee.com/feed",
-  "https://bair.berkeley.edu/blog/feed.xml",
-  "https://blog.tensorflow.org/feeds/posts/default",
-  "https://blogs.microsoft.com/ai/feed/",
   "https://blogs.nvidia.com/feed/",
   "https://cms.zerohedge.com/fullrss2.xml",
   "https://deadline.com/feed",
@@ -388,7 +353,6 @@ urls = [
   "https://feeds.arstechnica.com/arstechnica/index",
   "https://feeds.bbci.co.uk/news/world/rss.xml",
   "https://feeds.feedburner.com/TheHackersNews",
-  "https://feeds.feedburner.com/TheRinger",
   "https://feeds.feedburner.com/americanthinker_articles",
   "https://feeds.feedburner.com/americanthinker_blog",
   "https://feeds.feedburner.com/breitbart",
@@ -408,19 +372,16 @@ urls = [
   "https://lastweekin.ai/feed",
   "https://legalinsurrection.com/feed/",
   "https://lifehacker.com/rss",
-  "https://lilianweng.github.io/index.xml",
   "https://lwn.net/headlines/full_text?key=6804e49d958d5519",
   "https://machinelearningmastery.com/feed/",
   "https://mashable.com/feed",
   "https://nealstephenson.substack.com/feed",
-  "https://newsbusters.org/blog/feed",
   "https://notthebee.com/feed",
   "https://nypost.com/opinion/feed/",
   "https://nypost.com/politics/feed/",
   "https://openai.com/blog/rss.xml",
   "https://openai.com/news/rss.xml",
   "https://pagesix.com/feed/",
-  "https://pitchfork.com/feed/feed-news/rss",
   "https://pitchfork.com/feed/rss",
   "https://pjmedia.com/feed",
   "https://rantingly.com/feed/",
@@ -438,13 +399,9 @@ urls = [
   "https://sports.yahoo.com/rss/",
   "https://techcrunch.com/feed/",
   "https://theconservativetreehouse.com/feed",
-  "https://thefederalist.com/feed",
   "https://thegatewaypundit.com/feed",
-  "https://thegradient.pub/rss/",
-  "https://thehockeywriters.com/feed/",
   "https://thepostmillennial.com/index.rss",
   "https://therecord.media/feed",
-  "https://threatpost.com/feed/",
   "https://towardsdatascience.com/feed",
   "https://townhall.com/feed",
   "https://twitchy.com/feed",
@@ -460,26 +417,15 @@ urls = [
   "https://www.crowdstrike.com/blog/feed/",
   "https://www.darkreading.com/rss.xml",
   "https://www.engadget.com/rss.xml",
-  "https://www.espn.com/blog/feed?blog=nflnation",
-  "https://www.espn.com/espn/rss/news",
-  "https://www.frontpagemag.com/feed",
   "https://www.gamingonlinux.com/article_rss.php",
   "https://www.helpnetsecurity.com/feed/",
   "https://www.hollywoodreporter.com/c/movies/feed/",
-  "https://www.kdnuggets.com/feed",
-  "https://www.mandiant.com/resources/blog/rss.xml",
   "https://www.microsoft.com/security/blog/feed/",
   "https://www.natesilver.net/feed",
-  "https://www.newsmax.com/rss/Politics/1",
-  "https://www.oann.com/feed/",
-  "https://www.phoronix.com/phoronix-rss.php",
-  "https://www.politico.com/rss/politicopicks.xml",
   "https://www.polygon.com/rss/index.xml",
-  "https://www.powerlineblog.com/feed/rdf",
   "https://www.realclearpolitics.com/index.xml",
   "https://www.revolver.news/feed/",
   "https://www.rollingstone.com/feed",
-  "https://www.schneier.com/blog/atom.xml",
   "https://www.theverge.com/rss/index.xml",
   "https://www.troyhunt.com/rss/",
   "https://www.washingtontimes.com/rss/headlines/",

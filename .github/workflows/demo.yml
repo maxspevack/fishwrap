@@ -3,7 +3,7 @@
 # This is the engine's integration environment. Every run:
 #   1. installs the engine from source at this commit (make setup),
 #   2. runs the test suite (a red suite publishes nothing),
-#   3. runs the full pipeline against demo/ (fetch -> editor -> enhancer -> printer)
+#   3. runs the full pipeline against demo/ (fetch -> editor -> printer)
 #      and replays the day's runsheet under the same masthead (zero diff, or red),
 #   4. archives the dated edition on the orphan `state` branch (every edition is
 #      kept; the 'today' pointer and the index are rewritten last) and pushes it,
@@ -66,7 +66,9 @@ jobs:
       - name: Test suite
         run: make test
 
-      - name: Build the edition (fetch -> editor -> enhancer -> printer)
+      - name: Build the edition (fetch -> editor -> printer)
+        env:
+          FISHWRAP_HISTORY: state/demo/vanilla   # past editions, for the feeds page's silent streaks
         run: make run-vanilla
 
       - name: Determinism gate (replay today's runsheet under the same masthead)

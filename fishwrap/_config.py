@@ -25,11 +25,6 @@ from fishwrap.masthead import Masthead
 
 # ============ engine-internal defaults (not in the masthead) ============
 
-# Article-content truncation for storage. Long-form articles get cropped
-# here so a single feed item with megabytes of <content:encoded> doesn't
-# blow up the database row.
-MAX_ARTICLE_LENGTH = 15000
-
 # Concurrency cap for the fetcher's ThreadPoolExecutor. Lower this if the
 # configured feed set hits a small number of hosts (a high value becomes
 # a thundering herd against one origin).

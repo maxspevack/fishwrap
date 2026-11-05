@@ -93,6 +93,22 @@ class RenderTests(unittest.TestCase):
         self.assertIn("print all: Print everything gamma files.", html)
         self.assertIn("never: Never print banned.example.", html)
         self.assertIn("read-only", html)
+        self.assertIn("<td>1 edition</td>", html)        # silent.example: today only
+        self.assertNotIn("<strong>dead?</strong></td>", html)   # no row is marked dead
+
+    def test_feeds_page_silent_streaks_from_history(self):
+        from fishwrap import runsheet
+        past = [dict(self.header) for _ in range(8)]   # eight archived editions, silent.example at zero in all
+        html = printer.render_feeds(self.masthead, self.header, self.records, past)
+        self.assertIn("<td>9 editions · <strong>dead?</strong></td>", html)
+        self.assertIn("1 silent for 7+ editions", html)
+        self.assertIn("8 past editions on file", html)
+        streaks = runsheet.silent_streaks(self.header, past)
+        self.assertEqual(streaks["https://silent.example/feed"], 9)
+        self.assertEqual(streaks["https://alpha.example/feed"], 0)
+        # a feed that delivered yesterday but not today: streak 1
+        yesterday = dict(self.header, feeds=dict(self.header["feeds"], **{"https://silent.example/feed": 3}))
+        self.assertEqual(runsheet.silent_streaks(self.header, [yesterday])["https://silent.example/feed"], 1)
 
     def test_morgue_without_history_and_without_restore(self):
         html = printer.render_morgue(self.masthead, entries=[])

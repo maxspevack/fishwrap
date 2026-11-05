@@ -43,7 +43,7 @@ RSS_DOC = """<?xml version="1.0"?>
   <channel><title>T</title>
     <item>
       <title>
-            Alpha   story
+            Alpha &amp; the   story that&#39;s &quot;quoted&quot;
       </title>
       <link>https://example.com/alpha</link>
       <guid>alpha-guid</guid>
@@ -83,7 +83,7 @@ class TestParserModelContract(unittest.TestCase):
         from fishwrap.db.models import Article
         mock_fetch.return_value = RSS_DOC
         items = fetcher.process_feed('https://example.com/rss', cutoff=1_000_000_000)
-        self.assertEqual([i['title'] for i in items], ['Alpha story'])
+        self.assertEqual([i['title'] for i in items], ['Alpha & the story that\'s "quoted"'])
         a = items[0]
         self.assertEqual(a['link'], 'https://example.com/alpha')
         self.assertEqual(a['external_id'], 'alpha-guid')

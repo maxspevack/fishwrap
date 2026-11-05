@@ -18,8 +18,7 @@ from fishwrap.db.models import Base  # noqa: E402
 EXPECTED_COLUMNS = {
     'articles': {
         'id', 'title', 'link', 'source_url', 'external_id', 'timestamp',
-        'content', 'full_content', 'comments_url', 'comments_full',
-        'categories', 'is_enhanced', 'created_at', 'updated_at',
+        'content', 'comments_url', 'categories', 'created_at', 'updated_at',
     },
 }
 

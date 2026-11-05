@@ -16,6 +16,7 @@ CSS is inlined. No external assets. The word 'git' never appears in user copy.
 """
 from __future__ import annotations
 
+import os
 import subprocess
 from collections import Counter, defaultdict
 from datetime import datetime, timezone
@@ -453,25 +454,37 @@ def _policies_for_feed(url, policies):
     return out
 
 
-def render_feeds(masthead: Masthead, header: dict, records: list[dict]) -> str:
+DEAD_AFTER = 7  # consecutive silent editions before a feed is called dead on the page
+
+
+def render_feeds(masthead: Masthead, header: dict, records: list[dict], past: list[dict] | None = None) -> str:
     sections = _section_index(header)
     printed_by_source = Counter(r["source"] for r in records if r["fate"]["published"])
+    streaks = runsheet.silent_streaks(header, past or [])
     rows = ""
     for url in masthead.feeds:
         sid = next((s for key, s in masthead.source_sections.items() if key.lower() in url.lower()), None)
         routed = escape(sections.get(sid, {}).get("title", sid)) if sid else '<span class="muted">by keywords</span>'
         n = header["feeds"].get(url, 0)
+        streak = streaks.get(url, 0)
+        silent = ("" if not streak else f"{streak} edition{'s' if streak != 1 else ''}"
+                  + (" · <strong>dead?</strong>" if streak >= DEAD_AFTER else ""))
         pol = "<br>".join(escape(x) for x in _policies_for_feed(url, masthead.policies))
         rows += (f'<tr class="{"flag" if not n else ""}"><td>{escape(runsheet.domain_of(url))}<div class="url muted">{escape(url)}</div></td>'
-                 f'<td>{routed}</td><td class="num">{n}</td><td class="num">{printed_by_source.get(url, 0)}</td><td>{pol}</td></tr>')
+                 f'<td>{routed}</td><td class="num">{n}</td><td class="num">{printed_by_source.get(url, 0)}</td>'
+                 f'<td>{silent}</td><td>{pol}</td></tr>')
     zero = sum(1 for n in header["feeds"].values() if not n)
-    body = _header_block("Feeds", f"{len(masthead.feeds)} sources in your paper · {zero} delivered nothing in this window",
-                         "read-only · the masthead is the control")
+    dead = sum(1 for s in streaks.values() if s >= DEAD_AFTER)
+    known = f" · {len(past)} past editions on file" if past else ""
+    body = _header_block("Feeds", f"{len(masthead.feeds)} sources in your paper · {zero} delivered nothing in this window"
+                         + (f" · {dead} silent for {DEAD_AFTER}+ editions" if dead else ""),
+                         f"read-only · the masthead is the control{known}")
     body += f"""
 <section class="doc">
   <p class="muted">Each row is one source you read. <strong>Routed to</strong> is where its stories go unless a keyword says otherwise.
+  <strong>Silent</strong> counts consecutive editions that delivered nothing, today first; at {DEAD_AFTER} the row says <strong>dead?</strong>.
   Changing any of this means editing your masthead; every change to it is filed in The Morgue.</p>
-  <table><tr><th>source</th><th>routed to</th><th class="num">in window</th><th class="num">printed</th><th>policies</th></tr>{rows}</table>
+  <table><tr><th>source</th><th>routed to</th><th class="num">in window</th><th class="num">printed</th><th>silent</th><th>policies</th></tr>{rows}</table>
 </section>"""
     return _page(f"{masthead.name} — Feeds", "feeds", body)
 
@@ -591,7 +604,8 @@ def write_pointer(base: Path, date: str) -> Path:
 
 # ============ CLI entry point ============
 
-def write_edition(masthead: Masthead, header: dict, records: list[dict], out_dir: Path) -> list[Path]:
+def write_edition(masthead: Masthead, header: dict, records: list[dict], out_dir: Path,
+                  past: list[dict] | None = None) -> list[Path]:
     """Render every page of one edition into out_dir. Returns the paths written."""
     out_dir = Path(out_dir)
     out_dir.mkdir(parents=True, exist_ok=True)
@@ -604,7 +618,7 @@ def write_edition(masthead: Masthead, header: dict, records: list[dict], out_dir
 
     put("index.html", render_paper(masthead, header, records))
     put("runsheet.html", render_runsheet_page(masthead, header, records))
-    put("feeds.html", render_feeds(masthead, header, records))
+    put("feeds.html", render_feeds(masthead, header, records, past))
     entries = _git_log_entries(masthead.instance_dir)
     put("morgue.html", render_morgue(masthead, entries))
     for i in range(1, len(entries)):
@@ -619,7 +633,14 @@ def run_printer():
     if path is None:
         raise SystemExit(f"[PRINTER] no runsheet under {base}; run the editor first")
     header, records = runsheet.read(path)
-    written = write_edition(masthead, header, records, path.parent)
+    # FISHWRAP_HISTORY: the archive of past editions (the workflow sets it to
+    # the state checkout). Today's edition may itself be archived there already
+    # (a same-day rebuild); drop it so the streak counts today once.
+    past = []
+    hist = os.environ.get("FISHWRAP_HISTORY")
+    if hist:
+        past = [h for h in runsheet.history(Path(hist), 14) if h.get("edition") != header["edition"]]
+    written = write_edition(masthead, header, records, path.parent, past)
     write_pointer(base, header["edition"])
     print(f"[PRINTER] Wrote {len(written)} pages to {path.parent} from {path.name}; "
           f"{base / 'index.html'} -> {header['edition']}/")
