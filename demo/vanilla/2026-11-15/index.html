@@ -1,0 +1,1558 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>The Vanilla — 2026-11-15</title>
+  <style>
+:root {
+  --cream: #f6efe3; --refusal: #16110b; --cardinal: #b3261e; --lead: #4d4438;
+  --bone: #d4caba; --folio: #a8852c; --margin: #2a2520; --green: #0B8759;
+}
+* { box-sizing: border-box; }
+body { font-family: 'Libre Baskerville', Georgia, serif; background: var(--cream); color: var(--refusal); margin: 0; padding: 0; line-height: 1.5; }
+.shell { max-width: 1080px; margin: 0 auto; padding: 2rem; }
+.mono { font-family: 'iA Writer Mono', ui-monospace, monospace; }
+nav.top { background: var(--refusal); color: var(--cream); padding: 0.5rem 2rem; font-family: 'iA Writer Mono', ui-monospace, monospace; font-size: 0.78rem; }
+nav.top a { color: var(--cream); text-decoration: none; margin-right: 1.5rem; }
+nav.top a.active { color: var(--green); font-weight: bold; }
+nav.top .right { float: right; }
+header.masthead { border-bottom: 3px double var(--refusal); padding: 1.5rem 0 1rem; display: grid; grid-template-columns: 1fr auto; align-items: end; gap: 1rem; }
+header.masthead h1 { font-size: 3rem; margin: 0; letter-spacing: -0.02em; }
+header.masthead .dateline { font-style: italic; color: var(--lead); font-size: 0.95rem; }
+header.masthead .slot { font-family: 'iA Writer Mono', ui-monospace, monospace; font-size: 0.78rem; text-align: right; color: var(--margin); }
+header.masthead .slot a { color: var(--refusal); }
+section.deck { margin: 2rem 0 3rem; }
+section.deck > h2 { font-size: 1.6rem; border-bottom: 1px solid var(--refusal); padding-bottom: 0.25rem; display: flex; align-items: baseline; gap: 0.75rem; }
+section.deck > h2 .pill { font-family: 'iA Writer Mono', ui-monospace, monospace; font-size: 0.7rem; background: var(--refusal); color: var(--cream); padding: 0.15rem 0.5rem; }
+section.deck > h2 .pill.tier { background: var(--folio); }
+article { margin: 1.5rem 0; padding: 1rem 0; border-bottom: 1px solid var(--bone); display: grid; grid-template-columns: 3rem 1fr; gap: 1rem; }
+article .seed { font-family: 'iA Writer Mono', ui-monospace, monospace; font-size: 1.5rem; color: var(--margin); text-align: right; padding-top: 0.2rem; }
+article.lead .seed { color: var(--cardinal); font-weight: bold; }
+article.lead h3 { font-size: 1.5rem; }
+article.feature h3 { font-size: 1.2rem; }
+article.standard h3 { font-size: 1.0rem; }
+article h3 { margin: 0 0 0.3rem 0; }
+article h3 a { color: var(--refusal); text-decoration: none; }
+article h3 a:hover { color: var(--cardinal); }
+article .meta { font-family: 'iA Writer Mono', ui-monospace, monospace; font-size: 0.72rem; color: var(--margin); }
+.tier-label { display: inline-block; padding: 0.05rem 0.4rem; font-size: 0.66rem; font-family: 'iA Writer Mono', ui-monospace, monospace; background: var(--folio); color: var(--cream); vertical-align: middle; margin-left: 0.3rem; }
+.tier-label.lead { background: var(--cardinal); }
+.tier-label.standard { background: var(--lead); }
+details.audit { margin-top: 0.6rem; background: rgba(0,0,0,0.02); padding: 0.6rem 0.85rem; border-left: 2px solid var(--folio); }
+details.audit[open] { background: rgba(168, 133, 44, 0.08); }
+details.audit summary { cursor: pointer; color: var(--lead); font-family: 'iA Writer Mono', ui-monospace, monospace; font-size: 0.78rem; }
+details.audit summary:hover { color: var(--cardinal); }
+.audit-body { margin-top: 0.75rem; font-size: 0.88rem; line-height: 1.55; }
+.audit-step { margin: 0.5rem 0; padding-left: 2.2rem; position: relative; }
+.audit-step .num { position: absolute; left: 0; top: 0; width: 1.6rem; height: 1.6rem; text-align: center; line-height: 1.6rem; border-radius: 50%; background: var(--folio); color: var(--cream); font-family: 'iA Writer Mono', monospace; font-size: 0.75rem; font-weight: bold; }
+.audit-step .label { font-family: 'iA Writer Mono', monospace; font-size: 0.7rem; color: var(--margin); letter-spacing: 0.04em; text-transform: uppercase; }
+.audit-step .check { color: var(--green); font-weight: bold; }
+section.nerds, section.doc { margin-top: 3rem; padding-top: 1.5rem; border-top: 3px double var(--refusal); }
+section.doc:first-of-type { margin-top: 1.5rem; border-top: none; }
+section.nerds h2, section.doc h2 { font-size: 1.4rem; }
+section.nerds h3, section.doc h3 { font-size: 1rem; margin-top: 1.5rem; border-bottom: 1px dotted var(--bone); }
+table { width: 100%; font-family: 'iA Writer Mono', ui-monospace, monospace; font-size: 0.76rem; border-collapse: collapse; }
+th, td { text-align: left; padding: 0.25rem 0.5rem; border-bottom: 1px dotted var(--bone); vertical-align: top; }
+th { color: var(--margin); font-weight: normal; text-transform: uppercase; font-size: 0.66rem; letter-spacing: 0.04em; }
+td.num, th.num { text-align: right; }
+tr.flag td { color: var(--cardinal); }
+.scroll-wrap { max-height: 480px; overflow-y: auto; border: 1px solid var(--bone); }
+.muted { color: var(--margin); }
+.lede { font-size: 1.0rem; line-height: 1.6; }
+.lede strong { color: var(--cardinal); }
+details.cut { margin: 0.6rem 0; }
+details.cut summary { cursor: pointer; font-family: 'iA Writer Mono', monospace; font-size: 0.78rem; color: var(--lead); }
+details.cut summary:hover { color: var(--cardinal); }
+footer { margin: 3rem 0 0; padding-top: 1rem; border-top: 1px solid var(--bone); font-family: 'iA Writer Mono', monospace; font-size: 0.7rem; color: var(--margin); }
+.feed-row { display: grid; grid-template-columns: 1.5fr 4fr 1.5fr; gap: 0.8rem; padding: 0.55rem 0; border-bottom: 1px dotted var(--bone); align-items: center; }
+.feed-row.header { font-family: 'iA Writer Mono', monospace; font-size: 0.7rem; color: var(--margin); text-transform: uppercase; letter-spacing: 0.04em; border-bottom: 1px solid var(--refusal); padding-bottom: 0.5rem; }
+.feed-row .friendly { font-weight: bold; font-size: 0.95rem; }
+.feed-row .url { font-family: 'iA Writer Mono', monospace; font-size: 0.68rem; color: var(--margin); margin-top: 0.15rem; word-break: break-all; }
+.btn { font-family: 'iA Writer Mono', monospace; font-size: 0.72rem; border: 1px solid var(--lead); background: var(--cream); color: var(--refusal); padding: 0.2rem 0.5rem; text-decoration: none; }
+.badge { background: var(--green); color: var(--cream); font-size: 0.6rem; padding: 0.1rem 0.4rem; margin-left: 0.4rem; font-family: 'iA Writer Mono', monospace; }
+.morgue-diff { font-family: 'iA Writer Mono', monospace; font-size: 0.78rem; background: rgba(0,0,0,0.03); padding: 0.8rem 1rem; margin: 0.5rem 0; border-left: 2px solid var(--folio); white-space: pre-wrap; }
+.morgue-diff .add { background: rgba(11, 135, 89, 0.18); display: block; }
+.morgue-diff .del { background: rgba(179, 38, 30, 0.18); display: block; text-decoration: line-through; text-decoration-color: var(--cardinal); }
+</style>
+</head>
+<body>
+  <nav class="top"><a class="active" href="index.html">Paper</a><a class="" href="runsheet.html">Runsheet</a><a class="" href="feeds.html">Feeds</a><a class="" href="morgue.html">The Morgue</a><span class="right">fishwrap · built 2026-11-15 19:23 UTC</span></nav>
+  <div class="shell">
+<header class="masthead"><div><h1>The Vanilla</h1><div class="dateline">Sunday, November 15, 2026 · edition 2026-11-15</div></div><div class="slot">65 stories from 782 candidates<br><a href="runsheet.html">how this edition was made</a></div></header>
+<section class="deck" id="sec-news">
+  <h2>Beat <span class="pill">Scoops, Scandals, &amp; Scoundrels</span>
+    <span class="pill tier">2 leads · 5 features · 18 standard</span></h2>
+  
+<article class="lead">
+  <div class="seed">1</div>
+  <div>
+    <h3><a href="https://www.thegatewaypundit.com/2026/11/7-year-old-american-girl-killed-mexican-police/" target="_blank" rel="noopener">7-Year-Old American Girl Killed by Mexican Police During Cartel Pursuit Near the US Border</a> <span class="tier-label lead">lead</span></h3>
+    <div class="meta">thegatewaypundit.com · 3m old · section rank 1 of 25</div>
+    <details class="audit"><summary>How did this story end up here? (step-by-step)</summary>
+<div class="audit-body">
+  <div class="audit-step"><div class="num">1</div><div class="label">Where it came from</div>
+    <div>Pulled from <strong>thegatewaypundit.com</strong>. This source is set to route to <strong>Beat</strong> by default.</div></div>
+  <div class="audit-step"><div class="num">2</div><div class="label">When it arrived</div>
+    <div>3m before the window closed.</div></div>
+  <div class="audit-step"><div class="num">3</div><div class="label">How it competed</div>
+    <div><strong>409</strong> stories competed for the <strong>25</strong> Beat slots.<br>By freshness, this story ranked <strong>1 of 409</strong>.<br><span class='check'>✓</span> Diversity check passed (no more than <strong>3</strong> stories per source per section).</div></div>
+  <div class="audit-step"><div class="num">4</div><div class="label">Where it landed</div>
+    <div>Printed at rank <strong>1 of 25</strong> in Beat. Tier: <strong>lead</strong>. The top <strong>2</strong> stories in each section become the leads.</div></div>
+  <div class="audit-step"><div class="num">5</div><div class="label">Coverage</div>
+    <div>No other feed carried this story in the window.</div></div>
+  <div class="audit-step"><div class="num">i</div><div class="label">Source</div>
+    <div><a href="https://thegatewaypundit.com/feed">source feed</a> · <a href="runsheet.html#s-news">this section in the runsheet</a></div></div>
+</div></details>
+  </div>
+</article>
+<article class="lead">
+  <div class="seed">2</div>
+  <div>
+    <h3><a href="https://hotair.com/headlines/2026/11/15/police-probe-suspicious-illness-after-27-runners-fall-sick-at-california-race-n3820993" target="_blank" rel="noopener">Police Probe ‘Suspicious’ Illness After 27 Runners Fall Sick at California Race</a> <span class="tier-label lead">lead</span></h3>
+    <div class="meta">hotair.com · 3m old · section rank 2 of 25</div>
+    <details class="audit"><summary>How did this story end up here? (step-by-step)</summary>
+<div class="audit-body">
+  <div class="audit-step"><div class="num">1</div><div class="label">Where it came from</div>
+    <div>Pulled from <strong>hotair.com</strong>. This source is set to route to <strong>Beat</strong> by default.</div></div>
+  <div class="audit-step"><div class="num">2</div><div class="label">When it arrived</div>
+    <div>3m before the window closed.</div></div>
+  <div class="audit-step"><div class="num">3</div><div class="label">How it competed</div>
+    <div><strong>409</strong> stories competed for the <strong>25</strong> Beat slots.<br>By freshness, this story ranked <strong>2 of 409</strong>.<br><span class='check'>✓</span> Diversity check passed (no more than <strong>3</strong> stories per source per section).</div></div>
+  <div class="audit-step"><div class="num">4</div><div class="label">Where it landed</div>
+    <div>Printed at rank <strong>2 of 25</strong> in Beat. Tier: <strong>lead</strong>. The top <strong>2</strong> stories in each section become the leads.</div></div>
+  <div class="audit-step"><div class="num">5</div><div class="label">Coverage</div>
+    <div>No other feed carried this story in the window.</div></div>
+  <div class="audit-step"><div class="num">i</div><div class="label">Source</div>
+    <div><a href="https://hotair.com/feed">source feed</a> · <a href="runsheet.html#s-news">this section in the runsheet</a></div></div>
+</div></details>
+  </div>
+</article>
+<article class="feature">
+  <div class="seed">3</div>
+  <div>
+    <h3><a href="https://www.zerohedge.com/markets/nvidia-lacks-corporate-do-insurance-amid-huang-scandal" target="_blank" rel="noopener">Nvidia Lacks Corporate D&amp;O Insurance Amid Huang Scandal</a> <span class="tier-label feature">feature</span></h3>
+    <div class="meta">cms.zerohedge.com · 3m old · section rank 3 of 25</div>
+    <details class="audit"><summary>How did this story end up here? (step-by-step)</summary>
+<div class="audit-body">
+  <div class="audit-step"><div class="num">1</div><div class="label">Where it came from</div>
+    <div>Pulled from <strong>cms.zerohedge.com</strong>. This source is set to route to <strong>Beat</strong> by default.</div></div>
+  <div class="audit-step"><div class="num">2</div><div class="label">When it arrived</div>
+    <div>3m before the window closed.</div></div>
+  <div class="audit-step"><div class="num">3</div><div class="label">How it competed</div>
+    <div><strong>409</strong> stories competed for the <strong>25</strong> Beat slots.<br>By freshness, this story ranked <strong>3 of 409</strong>.<br><span class='check'>✓</span> Diversity check passed (no more than <strong>3</strong> stories per source per section).</div></div>
+  <div class="audit-step"><div class="num">4</div><div class="label">Where it landed</div>
+    <div>Printed at rank <strong>3 of 25</strong> in Beat. Tier: <strong>feature</strong>. Stories ranked 3 through 7 become features.</div></div>
+  <div class="audit-step"><div class="num">5</div><div class="label">Coverage</div>
+    <div>No other feed carried this story in the window.</div></div>
+  <div class="audit-step"><div class="num">i</div><div class="label">Source</div>
+    <div><a href="https://cms.zerohedge.com/fullrss2.xml">source feed</a> · <a href="runsheet.html#s-news">this section in the runsheet</a></div></div>
+</div></details>
+  </div>
+</article>
+<article class="feature">
+  <div class="seed">4</div>
+  <div>
+    <h3><a href="https://www.nytimes.com/2026/11/15/magazine/epstein-victims-recruiting-trafficking.html" target="_blank" rel="noopener">How Jeffrey Epstein Grew His Sex-Trafficking Ring</a> <span class="tier-label feature">feature</span></h3>
+    <div class="meta">rss.nytimes.com · 4m old · section rank 4 of 25</div>
+    <details class="audit"><summary>How did this story end up here? (step-by-step)</summary>
+<div class="audit-body">
+  <div class="audit-step"><div class="num">1</div><div class="label">Where it came from</div>
+    <div>Pulled from <strong>rss.nytimes.com</strong>. This source is set to route to <strong>Beat</strong> by default.</div></div>
+  <div class="audit-step"><div class="num">2</div><div class="label">When it arrived</div>
+    <div>4m before the window closed.</div></div>
+  <div class="audit-step"><div class="num">3</div><div class="label">How it competed</div>
+    <div><strong>409</strong> stories competed for the <strong>25</strong> Beat slots.<br>By freshness, this story ranked <strong>4 of 409</strong>.<br><span class='check'>✓</span> Diversity check passed (no more than <strong>3</strong> stories per source per section).</div></div>
+  <div class="audit-step"><div class="num">4</div><div class="label">Where it landed</div>
+    <div>Printed at rank <strong>4 of 25</strong> in Beat. Tier: <strong>feature</strong>. Stories ranked 3 through 7 become features.</div></div>
+  <div class="audit-step"><div class="num">5</div><div class="label">Coverage</div>
+    <div>No other feed carried this story in the window.</div></div>
+  <div class="audit-step"><div class="num">i</div><div class="label">Source</div>
+    <div><a href="https://rss.nytimes.com/services/xml/rss/nyt/HomePage.xml">source feed</a> · <a href="runsheet.html#s-news">this section in the runsheet</a></div></div>
+</div></details>
+  </div>
+</article>
+<article class="feature">
+  <div class="seed">5</div>
+  <div>
+    <h3><a href="https://redstate.com/nick-arama/2026/11/15/bessent-on-iran-and-media-leaking-his-address-n2209438" target="_blank" rel="noopener">Bessent Blasts Iran for Death Threats and the Media for Doxing His Home</a> <span class="tier-label feature">feature</span></h3>
+    <div class="meta">redstate.com · 18m old · section rank 5 of 25</div>
+    <details class="audit"><summary>How did this story end up here? (step-by-step)</summary>
+<div class="audit-body">
+  <div class="audit-step"><div class="num">1</div><div class="label">Where it came from</div>
+    <div>Pulled from <strong>redstate.com</strong>. This source is set to route to <strong>Beat</strong> by default.</div></div>
+  <div class="audit-step"><div class="num">2</div><div class="label">When it arrived</div>
+    <div>18m before the window closed.</div></div>
+  <div class="audit-step"><div class="num">3</div><div class="label">How it competed</div>
+    <div><strong>409</strong> stories competed for the <strong>25</strong> Beat slots.<br>By freshness, this story ranked <strong>5 of 409</strong>.<br><span class='check'>✓</span> Diversity check passed (no more than <strong>3</strong> stories per source per section).</div></div>
+  <div class="audit-step"><div class="num">4</div><div class="label">Where it landed</div>
+    <div>Printed at rank <strong>5 of 25</strong> in Beat. Tier: <strong>feature</strong>. Stories ranked 3 through 7 become features.</div></div>
+  <div class="audit-step"><div class="num">5</div><div class="label">Coverage</div>
+    <div>No other feed carried this story in the window.</div></div>
+  <div class="audit-step"><div class="num">i</div><div class="label">Source</div>
+    <div><a href="https://redstate.com/feed/">source feed</a> · <a href="runsheet.html#s-news">this section in the runsheet</a></div></div>
+</div></details>
+  </div>
+</article>
+<article class="feature">
+  <div class="seed">6</div>
+  <div>
+    <h3><a href="https://thepostmillennial.com/news/us-state-dept-weighs-in-on-heritage-american-debate-says-americans-have-a-moral-right-to-exist" target="_blank" rel="noopener">US State Dept weighs in on ‘heritage American’ debate, says ‘Americans have a moral right to exist’</a> <span class="tier-label feature">feature</span></h3>
+    <div class="meta">thepostmillennial.com · 21m old · section rank 6 of 25</div>
+    <details class="audit"><summary>How did this story end up here? (step-by-step)</summary>
+<div class="audit-body">
+  <div class="audit-step"><div class="num">1</div><div class="label">Where it came from</div>
+    <div>Pulled from <strong>thepostmillennial.com</strong>. This source is set to route to <strong>Beat</strong> by default.</div></div>
+  <div class="audit-step"><div class="num">2</div><div class="label">When it arrived</div>
+    <div>21m before the window closed.</div></div>
+  <div class="audit-step"><div class="num">3</div><div class="label">How it competed</div>
+    <div><strong>409</strong> stories competed for the <strong>25</strong> Beat slots.<br>By freshness, this story ranked <strong>6 of 409</strong>.<br><span class='check'>✓</span> Diversity check passed (no more than <strong>3</strong> stories per source per section).</div></div>
+  <div class="audit-step"><div class="num">4</div><div class="label">Where it landed</div>
+    <div>Printed at rank <strong>6 of 25</strong> in Beat. Tier: <strong>feature</strong>. Stories ranked 3 through 7 become features.</div></div>
+  <div class="audit-step"><div class="num">5</div><div class="label">Coverage</div>
+    <div>No other feed carried this story in the window.</div></div>
+  <div class="audit-step"><div class="num">i</div><div class="label">Source</div>
+    <div><a href="https://thepostmillennial.com/index.rss">source feed</a> · <a href="runsheet.html#s-news">this section in the runsheet</a></div></div>
+</div></details>
+  </div>
+</article>
+<article class="feature">
+  <div class="seed">7</div>
+  <div>
+    <h3><a href="https://www.aljazeera.com/video/newsfeed/2026/11/15/israeli-drone-filmed-flying-low-outside-homes-in-southern-lebanon?traffic_source=rss" target="_blank" rel="noopener">Israeli drone filmed flying low outside homes in southern Lebanon</a> <span class="tier-label feature">feature</span></h3>
+    <div class="meta">www.aljazeera.com · 21m old · section rank 7 of 25</div>
+    <details class="audit"><summary>How did this story end up here? (step-by-step)</summary>
+<div class="audit-body">
+  <div class="audit-step"><div class="num">1</div><div class="label">Where it came from</div>
+    <div>Pulled from <strong>www.aljazeera.com</strong>. This source is set to route to <strong>Beat</strong> by default.</div></div>
+  <div class="audit-step"><div class="num">2</div><div class="label">When it arrived</div>
+    <div>21m before the window closed.</div></div>
+  <div class="audit-step"><div class="num">3</div><div class="label">How it competed</div>
+    <div><strong>409</strong> stories competed for the <strong>25</strong> Beat slots.<br>By freshness, this story ranked <strong>7 of 409</strong>.<br><span class='check'>✓</span> Diversity check passed (no more than <strong>3</strong> stories per source per section).</div></div>
+  <div class="audit-step"><div class="num">4</div><div class="label">Where it landed</div>
+    <div>Printed at rank <strong>7 of 25</strong> in Beat. Tier: <strong>feature</strong>. Stories ranked 3 through 7 become features.</div></div>
+  <div class="audit-step"><div class="num">5</div><div class="label">Coverage</div>
+    <div>No other feed carried this story in the window.</div></div>
+  <div class="audit-step"><div class="num">i</div><div class="label">Source</div>
+    <div><a href="https://www.aljazeera.com/xml/rss/all.xml">source feed</a> · <a href="runsheet.html#s-news">this section in the runsheet</a></div></div>
+</div></details>
+  </div>
+</article>
+<article class="standard">
+  <div class="seed">8</div>
+  <div>
+    <h3><a href="https://hotair.com/david-strom/2026/11/15/sunday-smiles-n3821021" target="_blank" rel="noopener">Sunday Smiles</a> <span class="tier-label standard">standard</span></h3>
+    <div class="meta">hotair.com · 23m old · section rank 8 of 25</div>
+    <details class="audit"><summary>How did this story end up here? (step-by-step)</summary>
+<div class="audit-body">
+  <div class="audit-step"><div class="num">1</div><div class="label">Where it came from</div>
+    <div>Pulled from <strong>hotair.com</strong>. This source is set to route to <strong>Beat</strong> by default.</div></div>
+  <div class="audit-step"><div class="num">2</div><div class="label">When it arrived</div>
+    <div>23m before the window closed.</div></div>
+  <div class="audit-step"><div class="num">3</div><div class="label">How it competed</div>
+    <div><strong>409</strong> stories competed for the <strong>25</strong> Beat slots.<br>By freshness, this story ranked <strong>8 of 409</strong>.<br><span class='check'>✓</span> Diversity check passed (no more than <strong>3</strong> stories per source per section).</div></div>
+  <div class="audit-step"><div class="num">4</div><div class="label">Where it landed</div>
+    <div>Printed at rank <strong>8 of 25</strong> in Beat. Tier: <strong>standard</strong>. Stories ranked 8 through 25 are standard.</div></div>
+  <div class="audit-step"><div class="num">5</div><div class="label">Coverage</div>
+    <div>No other feed carried this story in the window.</div></div>
+  <div class="audit-step"><div class="num">i</div><div class="label">Source</div>
+    <div><a href="https://hotair.com/feed">source feed</a> · <a href="runsheet.html#s-news">this section in the runsheet</a></div></div>
+</div></details>
+  </div>
+</article>
+<article class="standard">
+  <div class="seed">9</div>
+  <div>
+    <h3><a href="https://legalinsurrection.com/2026/11/co-wa-dems-move-to-change-reject-voter-approved-measures-on-protecting-womens-sports/?utm_source=rss&amp;utm_medium=rss&amp;utm_campaign=co-wa-dems-move-to-change-reject-voter-approved-measures-on-protecting-womens-sports" target="_blank" rel="noopener">CO, WA Dems Move to Change/Reject Voter-Approved Measures on Protecting Women’s Sports</a> <span class="tier-label standard">standard</span></h3>
+    <div class="meta">legalinsurrection.com · 23m old · section rank 9 of 25</div>
+    <details class="audit"><summary>How did this story end up here? (step-by-step)</summary>
+<div class="audit-body">
+  <div class="audit-step"><div class="num">1</div><div class="label">Where it came from</div>
+    <div>Pulled from <strong>legalinsurrection.com</strong>. This source is set to route to <strong>Beat</strong> by default.</div></div>
+  <div class="audit-step"><div class="num">2</div><div class="label">When it arrived</div>
+    <div>23m before the window closed.</div></div>
+  <div class="audit-step"><div class="num">3</div><div class="label">How it competed</div>
+    <div><strong>409</strong> stories competed for the <strong>25</strong> Beat slots.<br>By freshness, this story ranked <strong>9 of 409</strong>.<br><span class='check'>✓</span> Diversity check passed (no more than <strong>3</strong> stories per source per section).</div></div>
+  <div class="audit-step"><div class="num">4</div><div class="label">Where it landed</div>
+    <div>Printed at rank <strong>9 of 25</strong> in Beat. Tier: <strong>standard</strong>. Stories ranked 8 through 25 are standard.</div></div>
+  <div class="audit-step"><div class="num">5</div><div class="label">Coverage</div>
+    <div>No other feed carried this story in the window.</div></div>
+  <div class="audit-step"><div class="num">i</div><div class="label">Source</div>
+    <div><a href="https://legalinsurrection.com/feed/">source feed</a> · <a href="runsheet.html#s-news">this section in the runsheet</a></div></div>
+</div></details>
+  </div>
+</article>
+<article class="standard">
+  <div class="seed">10</div>
+  <div>
+    <h3><a href="https://instapundit.com/836031/" target="_blank" rel="noopener">THE WAR ON CLIMATE CHANGE WAS ALWAYS A SCAM: The war on climate change has failed. Only self-loathi</a> <span class="tier-label standard">standard</span></h3>
+    <div class="meta">instapundit.com · 23m old · section rank 10 of 25</div>
+    <details class="audit"><summary>How did this story end up here? (step-by-step)</summary>
+<div class="audit-body">
+  <div class="audit-step"><div class="num">1</div><div class="label">Where it came from</div>
+    <div>Pulled from <strong>instapundit.com</strong>. This source is set to route to <strong>Beat</strong> by default.</div></div>
+  <div class="audit-step"><div class="num">2</div><div class="label">When it arrived</div>
+    <div>23m before the window closed.</div></div>
+  <div class="audit-step"><div class="num">3</div><div class="label">How it competed</div>
+    <div><strong>409</strong> stories competed for the <strong>25</strong> Beat slots.<br>By freshness, this story ranked <strong>10 of 409</strong>.<br><span class='check'>✓</span> Diversity check passed (no more than <strong>3</strong> stories per source per section).</div></div>
+  <div class="audit-step"><div class="num">4</div><div class="label">Where it landed</div>
+    <div>Printed at rank <strong>10 of 25</strong> in Beat. Tier: <strong>standard</strong>. Stories ranked 8 through 25 are standard.</div></div>
+  <div class="audit-step"><div class="num">5</div><div class="label">Coverage</div>
+    <div>No other feed carried this story in the window.</div></div>
+  <div class="audit-step"><div class="num">i</div><div class="label">Source</div>
+    <div><a href="https://instapundit.com/feed">source feed</a> · <a href="runsheet.html#s-news">this section in the runsheet</a></div></div>
+</div></details>
+  </div>
+</article>
+<article class="standard">
+  <div class="seed">11</div>
+  <div>
+    <h3><a href="https://www.thegatewaypundit.com/2026/11/whoa-treasury-secretary-scott-bessent-reveals-name-reckless/" target="_blank" rel="noopener">WHOA: Treasury Secretary Scott Bessent Reveals Name of The Reckless Wall Street Journal Editor Who DOXXED Him, Allowing Iran to Target Him and His Entire Family (VIDEO)</a> <span class="tier-label standard">standard</span></h3>
+    <div class="meta">thegatewaypundit.com · 23m old · section rank 11 of 25</div>
+    <details class="audit"><summary>How did this story end up here? (step-by-step)</summary>
+<div class="audit-body">
+  <div class="audit-step"><div class="num">1</div><div class="label">Where it came from</div>
+    <div>Pulled from <strong>thegatewaypundit.com</strong>. This source is set to route to <strong>Beat</strong> by default.</div></div>
+  <div class="audit-step"><div class="num">2</div><div class="label">When it arrived</div>
+    <div>23m before the window closed.</div></div>
+  <div class="audit-step"><div class="num">3</div><div class="label">How it competed</div>
+    <div><strong>409</strong> stories competed for the <strong>25</strong> Beat slots.<br>By freshness, this story ranked <strong>11 of 409</strong>.<br><span class='check'>✓</span> Diversity check passed (no more than <strong>3</strong> stories per source per section).</div></div>
+  <div class="audit-step"><div class="num">4</div><div class="label">Where it landed</div>
+    <div>Printed at rank <strong>11 of 25</strong> in Beat. Tier: <strong>standard</strong>. Stories ranked 8 through 25 are standard.</div></div>
+  <div class="audit-step"><div class="num">5</div><div class="label">Coverage</div>
+    <div>No other feed carried this story in the window.</div></div>
+  <div class="audit-step"><div class="num">i</div><div class="label">Source</div>
+    <div><a href="https://thegatewaypundit.com/feed">source feed</a> · <a href="runsheet.html#s-news">this section in the runsheet</a></div></div>
+</div></details>
+  </div>
+</article>
+<article class="standard">
+  <div class="seed">12</div>
+  <div>
+    <h3><a href="https://www.zerohedge.com/geopolitical/science-said-wed-all-be-crushed-death-friday-it-was-peer-reviewed" target="_blank" rel="noopener">Science Said We&#x27;d All Be Crushed To Death On Friday - It Was Peer-Reviewed</a> <span class="tier-label standard">standard</span></h3>
+    <div class="meta">cms.zerohedge.com · 23m old · section rank 12 of 25</div>
+    <details class="audit"><summary>How did this story end up here? (step-by-step)</summary>
+<div class="audit-body">
+  <div class="audit-step"><div class="num">1</div><div class="label">Where it came from</div>
+    <div>Pulled from <strong>cms.zerohedge.com</strong>. This source is set to route to <strong>Beat</strong> by default.</div></div>
+  <div class="audit-step"><div class="num">2</div><div class="label">When it arrived</div>
+    <div>23m before the window closed.</div></div>
+  <div class="audit-step"><div class="num">3</div><div class="label">How it competed</div>
+    <div><strong>409</strong> stories competed for the <strong>25</strong> Beat slots.<br>By freshness, this story ranked <strong>12 of 409</strong>.<br><span class='check'>✓</span> Diversity check passed (no more than <strong>3</strong> stories per source per section).</div></div>
+  <div class="audit-step"><div class="num">4</div><div class="label">Where it landed</div>
+    <div>Printed at rank <strong>12 of 25</strong> in Beat. Tier: <strong>standard</strong>. Stories ranked 8 through 25 are standard.</div></div>
+  <div class="audit-step"><div class="num">5</div><div class="label">Coverage</div>
+    <div>No other feed carried this story in the window.</div></div>
+  <div class="audit-step"><div class="num">i</div><div class="label">Source</div>
+    <div><a href="https://cms.zerohedge.com/fullrss2.xml">source feed</a> · <a href="runsheet.html#s-news">this section in the runsheet</a></div></div>
+</div></details>
+  </div>
+</article>
+<article class="standard">
+  <div class="seed">13</div>
+  <div>
+    <h3><a href="https://www.nytimes.com/2026/11/15/us/politics/van-hollen-schumer-democrats-majority-leader.html" target="_blank" rel="noopener">Chris Van Hollen Says His Majority Leader Challenge to Chuck Schumer Is Gaining Support</a> <span class="tier-label standard">standard</span></h3>
+    <div class="meta">rss.nytimes.com · 33m old · section rank 13 of 25</div>
+    <details class="audit"><summary>How did this story end up here? (step-by-step)</summary>
+<div class="audit-body">
+  <div class="audit-step"><div class="num">1</div><div class="label">Where it came from</div>
+    <div>Pulled from <strong>rss.nytimes.com</strong>. This source is set to route to <strong>Beat</strong> by default.</div></div>
+  <div class="audit-step"><div class="num">2</div><div class="label">When it arrived</div>
+    <div>33m before the window closed.</div></div>
+  <div class="audit-step"><div class="num">3</div><div class="label">How it competed</div>
+    <div><strong>409</strong> stories competed for the <strong>25</strong> Beat slots.<br>By freshness, this story ranked <strong>13 of 409</strong>.<br><span class='check'>✓</span> Diversity check passed (no more than <strong>3</strong> stories per source per section).</div></div>
+  <div class="audit-step"><div class="num">4</div><div class="label">Where it landed</div>
+    <div>Printed at rank <strong>13 of 25</strong> in Beat. Tier: <strong>standard</strong>. Stories ranked 8 through 25 are standard.</div></div>
+  <div class="audit-step"><div class="num">5</div><div class="label">Coverage</div>
+    <div>No other feed carried this story in the window.</div></div>
+  <div class="audit-step"><div class="num">i</div><div class="label">Source</div>
+    <div><a href="https://rss.nytimes.com/services/xml/rss/nyt/HomePage.xml">source feed</a> · <a href="runsheet.html#s-news">this section in the runsheet</a></div></div>
+</div></details>
+  </div>
+</article>
+<article class="standard">
+  <div class="seed">14</div>
+  <div>
+    <h3><a href="https://www.nytimes.com/2026/11/15/world/europe/ron-arad-missing-israel-iran-asgari-hunt.html" target="_blank" rel="noopener">Israel Kidnapped Iranian Generals in Hunt for Ron Arad</a> <span class="tier-label standard">standard</span></h3>
+    <div class="meta">rss.nytimes.com · 36m old · section rank 14 of 25</div>
+    <details class="audit"><summary>How did this story end up here? (step-by-step)</summary>
+<div class="audit-body">
+  <div class="audit-step"><div class="num">1</div><div class="label">Where it came from</div>
+    <div>Pulled from <strong>rss.nytimes.com</strong>. This source is set to route to <strong>Beat</strong> by default.</div></div>
+  <div class="audit-step"><div class="num">2</div><div class="label">When it arrived</div>
+    <div>36m before the window closed.</div></div>
+  <div class="audit-step"><div class="num">3</div><div class="label">How it competed</div>
+    <div><strong>409</strong> stories competed for the <strong>25</strong> Beat slots.<br>By freshness, this story ranked <strong>14 of 409</strong>.<br><span class='check'>✓</span> Diversity check passed (no more than <strong>3</strong> stories per source per section).</div></div>
+  <div class="audit-step"><div class="num">4</div><div class="label">Where it landed</div>
+    <div>Printed at rank <strong>14 of 25</strong> in Beat. Tier: <strong>standard</strong>. Stories ranked 8 through 25 are standard.</div></div>
+  <div class="audit-step"><div class="num">5</div><div class="label">Coverage</div>
+    <div>No other feed carried this story in the window.</div></div>
+  <div class="audit-step"><div class="num">i</div><div class="label">Source</div>
+    <div><a href="https://rss.nytimes.com/services/xml/rss/nyt/HomePage.xml">source feed</a> · <a href="runsheet.html#s-news">this section in the runsheet</a></div></div>
+</div></details>
+  </div>
+</article>
+<article class="standard">
+  <div class="seed">15</div>
+  <div>
+    <h3><a href="https://thepostmillennial.com/news/judge-orders-wa-sheriff-to-stop-sharing-jail-rosters-with-ice-and-stop-complying-with-ice" target="_blank" rel="noopener">Judge orders WA sheriff to stop complying with ICE, rules he is in violation of &#x27;sanctuary statute&#x27;</a> <span class="tier-label standard">standard</span></h3>
+    <div class="meta">thepostmillennial.com · 36m old · section rank 15 of 25</div>
+    <details class="audit"><summary>How did this story end up here? (step-by-step)</summary>
+<div class="audit-body">
+  <div class="audit-step"><div class="num">1</div><div class="label">Where it came from</div>
+    <div>Pulled from <strong>thepostmillennial.com</strong>. This source is set to route to <strong>Beat</strong> by default.</div></div>
+  <div class="audit-step"><div class="num">2</div><div class="label">When it arrived</div>
+    <div>36m before the window closed.</div></div>
+  <div class="audit-step"><div class="num">3</div><div class="label">How it competed</div>
+    <div><strong>409</strong> stories competed for the <strong>25</strong> Beat slots.<br>By freshness, this story ranked <strong>15 of 409</strong>.<br><span class='check'>✓</span> Diversity check passed (no more than <strong>3</strong> stories per source per section).</div></div>
+  <div class="audit-step"><div class="num">4</div><div class="label">Where it landed</div>
+    <div>Printed at rank <strong>15 of 25</strong> in Beat. Tier: <strong>standard</strong>. Stories ranked 8 through 25 are standard.</div></div>
+  <div class="audit-step"><div class="num">5</div><div class="label">Coverage</div>
+    <div>No other feed carried this story in the window.</div></div>
+  <div class="audit-step"><div class="num">i</div><div class="label">Source</div>
+    <div><a href="https://thepostmillennial.com/index.rss">source feed</a> · <a href="runsheet.html#s-news">this section in the runsheet</a></div></div>
+</div></details>
+  </div>
+</article>
+<article class="standard">
+  <div class="seed">16</div>
+  <div>
+    <h3><a href="https://instapundit.com/836015/" target="_blank" rel="noopener">LIFE IN THE 21ST CENTURY: https://twitter.com/esrtweet/status/2121738843451781307?s=43 https:/</a> <span class="tier-label standard">standard</span></h3>
+    <div class="meta">instapundit.com · 38m old · section rank 16 of 25</div>
+    <details class="audit"><summary>How did this story end up here? (step-by-step)</summary>
+<div class="audit-body">
+  <div class="audit-step"><div class="num">1</div><div class="label">Where it came from</div>
+    <div>Pulled from <strong>instapundit.com</strong>. This source is set to route to <strong>Beat</strong> by default.</div></div>
+  <div class="audit-step"><div class="num">2</div><div class="label">When it arrived</div>
+    <div>38m before the window closed.</div></div>
+  <div class="audit-step"><div class="num">3</div><div class="label">How it competed</div>
+    <div><strong>409</strong> stories competed for the <strong>25</strong> Beat slots.<br>By freshness, this story ranked <strong>17 of 409</strong>.<br><span class='check'>✓</span> Diversity check passed (no more than <strong>3</strong> stories per source per section).</div></div>
+  <div class="audit-step"><div class="num">4</div><div class="label">Where it landed</div>
+    <div>Printed at rank <strong>16 of 25</strong> in Beat. Tier: <strong>standard</strong>. Stories ranked 8 through 25 are standard.</div></div>
+  <div class="audit-step"><div class="num">5</div><div class="label">Coverage</div>
+    <div>No other feed carried this story in the window.</div></div>
+  <div class="audit-step"><div class="num">i</div><div class="label">Source</div>
+    <div><a href="https://instapundit.com/feed">source feed</a> · <a href="runsheet.html#s-news">this section in the runsheet</a></div></div>
+</div></details>
+  </div>
+</article>
+<article class="standard">
+  <div class="seed">17</div>
+  <div>
+    <h3><a href="https://www.thegatewaypundit.com/2026/11/how-ccp-hides-its-debt-beijing-says-hidden/" target="_blank" rel="noopener">How the CCP Hides Its Debt: Beijing Says Hidden Local Debt Is Shrinking, IMF Says LGFV Debt Hit $10.5 Trillion</a> <span class="tier-label standard">standard</span></h3>
+    <div class="meta">thegatewaypundit.com · 43m old · section rank 17 of 25</div>
+    <details class="audit"><summary>How did this story end up here? (step-by-step)</summary>
+<div class="audit-body">
+  <div class="audit-step"><div class="num">1</div><div class="label">Where it came from</div>
+    <div>Pulled from <strong>thegatewaypundit.com</strong>. This source is set to route to <strong>Beat</strong> by default.</div></div>
+  <div class="audit-step"><div class="num">2</div><div class="label">When it arrived</div>
+    <div>43m before the window closed.</div></div>
+  <div class="audit-step"><div class="num">3</div><div class="label">How it competed</div>
+    <div><strong>409</strong> stories competed for the <strong>25</strong> Beat slots.<br>By freshness, this story ranked <strong>18 of 409</strong>.<br><span class='check'>✓</span> Diversity check passed (no more than <strong>3</strong> stories per source per section).</div></div>
+  <div class="audit-step"><div class="num">4</div><div class="label">Where it landed</div>
+    <div>Printed at rank <strong>17 of 25</strong> in Beat. Tier: <strong>standard</strong>. Stories ranked 8 through 25 are standard.</div></div>
+  <div class="audit-step"><div class="num">5</div><div class="label">Coverage</div>
+    <div>No other feed carried this story in the window.</div></div>
+  <div class="audit-step"><div class="num">i</div><div class="label">Source</div>
+    <div><a href="https://thegatewaypundit.com/feed">source feed</a> · <a href="runsheet.html#s-news">this section in the runsheet</a></div></div>
+</div></details>
+  </div>
+</article>
+<article class="standard">
+  <div class="seed">18</div>
+  <div>
+    <h3><a href="https://pjmedia.com/catherinesalgado/2026/11/15/new-jihad-attack-kills-26-in-drc-and-terrorists-strike-kenya-and-nigeria-n4959370" target="_blank" rel="noopener">New Jihad Attack Kills at Least 26 in DRC, and Terrorists Strike Kenya</a> <span class="tier-label standard">standard</span></h3>
+    <div class="meta">pjmedia.com · 51m old · section rank 18 of 25</div>
+    <details class="audit"><summary>How did this story end up here? (step-by-step)</summary>
+<div class="audit-body">
+  <div class="audit-step"><div class="num">1</div><div class="label">Where it came from</div>
+    <div>Pulled from <strong>pjmedia.com</strong>. This source is set to route to <strong>Beat</strong> by default.</div></div>
+  <div class="audit-step"><div class="num">2</div><div class="label">When it arrived</div>
+    <div>51m before the window closed.</div></div>
+  <div class="audit-step"><div class="num">3</div><div class="label">How it competed</div>
+    <div><strong>409</strong> stories competed for the <strong>25</strong> Beat slots.<br>By freshness, this story ranked <strong>19 of 409</strong>.<br><span class='check'>✓</span> Diversity check passed (no more than <strong>3</strong> stories per source per section).</div></div>
+  <div class="audit-step"><div class="num">4</div><div class="label">Where it landed</div>
+    <div>Printed at rank <strong>18 of 25</strong> in Beat. Tier: <strong>standard</strong>. Stories ranked 8 through 25 are standard.</div></div>
+  <div class="audit-step"><div class="num">5</div><div class="label">Coverage</div>
+    <div>No other feed carried this story in the window.</div></div>
+  <div class="audit-step"><div class="num">i</div><div class="label">Source</div>
+    <div><a href="https://pjmedia.com/feed">source feed</a> · <a href="runsheet.html#s-news">this section in the runsheet</a></div></div>
+</div></details>
+  </div>
+</article>
+<article class="standard">
+  <div class="seed">19</div>
+  <div>
+    <h3><a href="https://www.aljazeera.com/news/2026/11/15/prince-harry-in-ukraine-meeting-invictus-2027-hopefuls?traffic_source=rss" target="_blank" rel="noopener">Prince Harry in Ukraine meeting Invictus 2027 hopefuls</a> <span class="tier-label standard">standard</span></h3>
+    <div class="meta">www.aljazeera.com · 51m old · section rank 19 of 25</div>
+    <details class="audit"><summary>How did this story end up here? (step-by-step)</summary>
+<div class="audit-body">
+  <div class="audit-step"><div class="num">1</div><div class="label">Where it came from</div>
+    <div>Pulled from <strong>www.aljazeera.com</strong>. This source is set to route to <strong>Beat</strong> by default.</div></div>
+  <div class="audit-step"><div class="num">2</div><div class="label">When it arrived</div>
+    <div>51m before the window closed.</div></div>
+  <div class="audit-step"><div class="num">3</div><div class="label">How it competed</div>
+    <div><strong>409</strong> stories competed for the <strong>25</strong> Beat slots.<br>By freshness, this story ranked <strong>20 of 409</strong>.<br><span class='check'>✓</span> Diversity check passed (no more than <strong>3</strong> stories per source per section).</div></div>
+  <div class="audit-step"><div class="num">4</div><div class="label">Where it landed</div>
+    <div>Printed at rank <strong>19 of 25</strong> in Beat. Tier: <strong>standard</strong>. Stories ranked 8 through 25 are standard.</div></div>
+  <div class="audit-step"><div class="num">5</div><div class="label">Coverage</div>
+    <div>No other feed carried this story in the window.</div></div>
+  <div class="audit-step"><div class="num">i</div><div class="label">Source</div>
+    <div><a href="https://www.aljazeera.com/xml/rss/all.xml">source feed</a> · <a href="runsheet.html#s-news">this section in the runsheet</a></div></div>
+</div></details>
+  </div>
+</article>
+<article class="standard">
+  <div class="seed">20</div>
+  <div>
+    <h3><a href="https://instapundit.com/836029/" target="_blank" rel="noopener">INTO THIN AIR: Where Does Weight Actually Go When You Lose It? Dietitians Explain.</a> <span class="tier-label standard">standard</span></h3>
+    <div class="meta">instapundit.com · 53m old · section rank 20 of 25</div>
+    <details class="audit"><summary>How did this story end up here? (step-by-step)</summary>
+<div class="audit-body">
+  <div class="audit-step"><div class="num">1</div><div class="label">Where it came from</div>
+    <div>Pulled from <strong>instapundit.com</strong>. This source is set to route to <strong>Beat</strong> by default.</div></div>
+  <div class="audit-step"><div class="num">2</div><div class="label">When it arrived</div>
+    <div>53m before the window closed.</div></div>
+  <div class="audit-step"><div class="num">3</div><div class="label">How it competed</div>
+    <div><strong>409</strong> stories competed for the <strong>25</strong> Beat slots.<br>By freshness, this story ranked <strong>21 of 409</strong>.<br><span class='check'>✓</span> Diversity check passed (no more than <strong>3</strong> stories per source per section).</div></div>
+  <div class="audit-step"><div class="num">4</div><div class="label">Where it landed</div>
+    <div>Printed at rank <strong>20 of 25</strong> in Beat. Tier: <strong>standard</strong>. Stories ranked 8 through 25 are standard.</div></div>
+  <div class="audit-step"><div class="num">5</div><div class="label">Coverage</div>
+    <div>No other feed carried this story in the window.</div></div>
+  <div class="audit-step"><div class="num">i</div><div class="label">Source</div>
+    <div><a href="https://instapundit.com/feed">source feed</a> · <a href="runsheet.html#s-news">this section in the runsheet</a></div></div>
+</div></details>
+  </div>
+</article>
+<article class="standard">
+  <div class="seed">21</div>
+  <div>
+    <h3><a href="https://thepostmillennial.com/news/nyc-man-arrested-for-killing-of-elderly-aunt-after-repeatedly-slamming-her-into-wall" target="_blank" rel="noopener">NYC man arrested for killing of elderly aunt after repeatedly slamming her into wall</a> <span class="tier-label standard">standard</span></h3>
+    <div class="meta">thepostmillennial.com · 55m old · section rank 21 of 25</div>
+    <details class="audit"><summary>How did this story end up here? (step-by-step)</summary>
+<div class="audit-body">
+  <div class="audit-step"><div class="num">1</div><div class="label">Where it came from</div>
+    <div>Pulled from <strong>thepostmillennial.com</strong>. This source is set to route to <strong>Beat</strong> by default.</div></div>
+  <div class="audit-step"><div class="num">2</div><div class="label">When it arrived</div>
+    <div>55m before the window closed.</div></div>
+  <div class="audit-step"><div class="num">3</div><div class="label">How it competed</div>
+    <div><strong>409</strong> stories competed for the <strong>25</strong> Beat slots.<br>By freshness, this story ranked <strong>22 of 409</strong>.<br><span class='check'>✓</span> Diversity check passed (no more than <strong>3</strong> stories per source per section).</div></div>
+  <div class="audit-step"><div class="num">4</div><div class="label">Where it landed</div>
+    <div>Printed at rank <strong>21 of 25</strong> in Beat. Tier: <strong>standard</strong>. Stories ranked 8 through 25 are standard.</div></div>
+  <div class="audit-step"><div class="num">5</div><div class="label">Coverage</div>
+    <div>No other feed carried this story in the window.</div></div>
+  <div class="audit-step"><div class="num">i</div><div class="label">Source</div>
+    <div><a href="https://thepostmillennial.com/index.rss">source feed</a> · <a href="runsheet.html#s-news">this section in the runsheet</a></div></div>
+</div></details>
+  </div>
+</article>
+<article class="standard">
+  <div class="seed">22</div>
+  <div>
+    <h3><a href="https://www.foxnews.com/us/duffy-investigators-examining-2-routers-nationwide-faa-ground-stop-no-signs-foreign-cyberattack" target="_blank" rel="noopener">Duffy: Investigators examining 2 routers after nationwide FAA ground stop, no signs of foreign cyberattack</a> <span class="tier-label standard">standard</span></h3>
+    <div class="meta">feeds.feedburner.com · 1.1h old · section rank 22 of 25</div>
+    <details class="audit"><summary>How did this story end up here? (step-by-step)</summary>
+<div class="audit-body">
+  <div class="audit-step"><div class="num">1</div><div class="label">Where it came from</div>
+    <div>Pulled from <strong>feeds.feedburner.com</strong>. This source is set to route to <strong>Beat</strong> by default.</div></div>
+  <div class="audit-step"><div class="num">2</div><div class="label">When it arrived</div>
+    <div>1.1h before the window closed.</div></div>
+  <div class="audit-step"><div class="num">3</div><div class="label">How it competed</div>
+    <div><strong>409</strong> stories competed for the <strong>25</strong> Beat slots.<br>By freshness, this story ranked <strong>25 of 409</strong>.<br><span class='check'>✓</span> Diversity check passed (no more than <strong>3</strong> stories per source per section).</div></div>
+  <div class="audit-step"><div class="num">4</div><div class="label">Where it landed</div>
+    <div>Printed at rank <strong>22 of 25</strong> in Beat. Tier: <strong>standard</strong>. Stories ranked 8 through 25 are standard.</div></div>
+  <div class="audit-step"><div class="num">5</div><div class="label">Coverage</div>
+    <div>No other feed carried this story in the window.</div></div>
+  <div class="audit-step"><div class="num">i</div><div class="label">Source</div>
+    <div><a href="https://feeds.feedburner.com/foxnews/latest">source feed</a> · <a href="runsheet.html#s-news">this section in the runsheet</a></div></div>
+</div></details>
+  </div>
+</article>
+<article class="standard">
+  <div class="seed">23</div>
+  <div>
+    <h3><a href="https://nypost.com/2026/11/15/us-news/treasury-secretary-scott-bessent-says-nvidia-should-look-outside-the-company-for-jensen-huangs-successor/" target="_blank" rel="noopener">Bessent urges Nvidia to look outside the company for new CEO after Jensen Huang’s resignation: ‘Dramatic shakeup’</a> <span class="tier-label standard">standard</span></h3>
+    <div class="meta">nypost.com · 1.1h old · section rank 23 of 25</div>
+    <details class="audit"><summary>How did this story end up here? (step-by-step)</summary>
+<div class="audit-body">
+  <div class="audit-step"><div class="num">1</div><div class="label">Where it came from</div>
+    <div>Pulled from <strong>nypost.com</strong>. This source is set to route to <strong>Beat</strong> by default.</div></div>
+  <div class="audit-step"><div class="num">2</div><div class="label">When it arrived</div>
+    <div>1.1h before the window closed.</div></div>
+  <div class="audit-step"><div class="num">3</div><div class="label">How it competed</div>
+    <div><strong>409</strong> stories competed for the <strong>25</strong> Beat slots.<br>By freshness, this story ranked <strong>26 of 409</strong>.<br><span class='check'>✓</span> Diversity check passed (no more than <strong>3</strong> stories per source per section).</div></div>
+  <div class="audit-step"><div class="num">4</div><div class="label">Where it landed</div>
+    <div>Printed at rank <strong>23 of 25</strong> in Beat. Tier: <strong>standard</strong>. Stories ranked 8 through 25 are standard.</div></div>
+  <div class="audit-step"><div class="num">5</div><div class="label">Coverage</div>
+    <div>No other feed carried this story in the window.</div></div>
+  <div class="audit-step"><div class="num">i</div><div class="label">Source</div>
+    <div><a href="https://nypost.com/politics/feed/">source feed</a> · <a href="runsheet.html#s-news">this section in the runsheet</a></div></div>
+</div></details>
+  </div>
+</article>
+<article class="standard">
+  <div class="seed">24</div>
+  <div>
+    <h3><a href="https://www.foxnews.com/outkick-sports/wyatt-hammond-makes-kayak-fishing-history-third-straight-national-title-kbf-record" target="_blank" rel="noopener">Wyatt Hammond makes kayak fishing history with third straight national title and KBF record</a> <span class="tier-label standard">standard</span></h3>
+    <div class="meta">feeds.feedburner.com · 1.1h old · section rank 24 of 25</div>
+    <details class="audit"><summary>How did this story end up here? (step-by-step)</summary>
+<div class="audit-body">
+  <div class="audit-step"><div class="num">1</div><div class="label">Where it came from</div>
+    <div>Pulled from <strong>feeds.feedburner.com</strong>. This source is set to route to <strong>Beat</strong> by default.</div></div>
+  <div class="audit-step"><div class="num">2</div><div class="label">When it arrived</div>
+    <div>1.1h before the window closed.</div></div>
+  <div class="audit-step"><div class="num">3</div><div class="label">How it competed</div>
+    <div><strong>409</strong> stories competed for the <strong>25</strong> Beat slots.<br>By freshness, this story ranked <strong>27 of 409</strong>.<br><span class='check'>✓</span> Diversity check passed (no more than <strong>3</strong> stories per source per section).</div></div>
+  <div class="audit-step"><div class="num">4</div><div class="label">Where it landed</div>
+    <div>Printed at rank <strong>24 of 25</strong> in Beat. Tier: <strong>standard</strong>. Stories ranked 8 through 25 are standard.</div></div>
+  <div class="audit-step"><div class="num">5</div><div class="label">Coverage</div>
+    <div>No other feed carried this story in the window.</div></div>
+  <div class="audit-step"><div class="num">i</div><div class="label">Source</div>
+    <div><a href="https://feeds.feedburner.com/foxnews/latest">source feed</a> · <a href="runsheet.html#s-news">this section in the runsheet</a></div></div>
+</div></details>
+  </div>
+</article>
+<article class="standard">
+  <div class="seed">25</div>
+  <div>
+    <h3><a href="https://townhall.com/news/frank-camp/2026/11/15/sean-duffy-pushes-for-billions-to-overhaul-faa-techbut-upgrades-could-take-a-decade-at-least-n2686493" target="_blank" rel="noopener">Sean Duffy Pushes for Billions to Overhaul FAA Tech — but Upgrades Could Take ‘a Decade at Least’</a> <span class="tier-label standard">standard</span></h3>
+    <div class="meta">townhall.com · 1.2h old · section rank 25 of 25</div>
+    <details class="audit"><summary>How did this story end up here? (step-by-step)</summary>
+<div class="audit-body">
+  <div class="audit-step"><div class="num">1</div><div class="label">Where it came from</div>
+    <div>Pulled from <strong>townhall.com</strong>. This source is set to route to <strong>Beat</strong> by default.</div></div>
+  <div class="audit-step"><div class="num">2</div><div class="label">When it arrived</div>
+    <div>1.2h before the window closed.</div></div>
+  <div class="audit-step"><div class="num">3</div><div class="label">How it competed</div>
+    <div><strong>409</strong> stories competed for the <strong>25</strong> Beat slots.<br>By freshness, this story ranked <strong>30 of 409</strong>.<br><span class='check'>✓</span> Diversity check passed (no more than <strong>3</strong> stories per source per section).</div></div>
+  <div class="audit-step"><div class="num">4</div><div class="label">Where it landed</div>
+    <div>Printed at rank <strong>25 of 25</strong> in Beat. Tier: <strong>standard</strong>. Stories ranked 8 through 25 are standard.</div></div>
+  <div class="audit-step"><div class="num">5</div><div class="label">Coverage</div>
+    <div>No other feed carried this story in the window.</div></div>
+  <div class="audit-step"><div class="num">i</div><div class="label">Source</div>
+    <div><a href="https://townhall.com/feed">source feed</a> · <a href="runsheet.html#s-news">this section in the runsheet</a></div></div>
+</div></details>
+  </div>
+</article>
+</section>
+<section class="deck" id="sec-sports">
+  <h2>Turf <span class="pill">The Toy Department</span>
+    <span class="pill tier">2 leads · 5 features · 3 standard</span></h2>
+  
+<article class="lead">
+  <div class="seed">1</div>
+  <div>
+    <h3><a href="https://defector.com/heres-the-latest-stupid-way-that-the-nhl-is-messing-with-its-broadcasts" target="_blank" rel="noopener">Here’s The Latest Stupid Way That The NHL Is Messing With Its Broadcasts</a> <span class="tier-label lead">lead</span></h3>
+    <div class="meta">defector.com · 2.0h old · section rank 1 of 25</div>
+    <details class="audit"><summary>How did this story end up here? (step-by-step)</summary>
+<div class="audit-body">
+  <div class="audit-step"><div class="num">1</div><div class="label">Where it came from</div>
+    <div>Pulled from <strong>defector.com</strong>. This source is set to route to <strong>Turf</strong> by default.</div></div>
+  <div class="audit-step"><div class="num">2</div><div class="label">When it arrived</div>
+    <div>2.0h before the window closed.</div></div>
+  <div class="audit-step"><div class="num">3</div><div class="label">How it competed</div>
+    <div><strong>171</strong> stories competed for the <strong>25</strong> Turf slots.<br>By freshness, this story ranked <strong>130 of 171</strong>.<br><span class='check'>✓</span> Diversity check skipped: this source (defector.com) is set to <strong>print all</strong> by the policy <em>Whitelist defector.com — every story makes the edition, bypassing diversity caps. Exception: titles containing &#x27;Crossword&#x27;.</em>, so it bypasses the per-source cap.<br><span class='check'>✓</span> Promoted into the lead slot because the title matched a lead-preference keyword in the masthead.</div></div>
+  <div class="audit-step"><div class="num">4</div><div class="label">Where it landed</div>
+    <div>Printed at rank <strong>1 of 25</strong> in Turf. Tier: <strong>lead</strong>. The top <strong>2</strong> stories in each section become the leads.</div></div>
+  <div class="audit-step"><div class="num">5</div><div class="label">Coverage</div>
+    <div>No other feed carried this story in the window.</div></div>
+  <div class="audit-step"><div class="num">i</div><div class="label">Source</div>
+    <div><a href="https://defector.com/feed">source feed</a> · <a href="runsheet.html#s-sports">this section in the runsheet</a></div></div>
+</div></details>
+  </div>
+</article>
+<article class="lead">
+  <div class="seed">2</div>
+  <div>
+    <h3><a href="https://sports.yahoo.com/articles/rainy-cold-reception-no-19-191945646.html" target="_blank" rel="noopener">Rainy and cold reception for No. 19 Mississippi at Oklahoma day later after travel issues</a> <span class="tier-label lead">lead</span></h3>
+    <div class="meta">sports.yahoo.com · 4m old · section rank 2 of 25</div>
+    <details class="audit"><summary>How did this story end up here? (step-by-step)</summary>
+<div class="audit-body">
+  <div class="audit-step"><div class="num">1</div><div class="label">Where it came from</div>
+    <div>Pulled from <strong>sports.yahoo.com</strong>. This source is set to route to <strong>Turf</strong> by default.</div></div>
+  <div class="audit-step"><div class="num">2</div><div class="label">When it arrived</div>
+    <div>4m before the window closed.</div></div>
+  <div class="audit-step"><div class="num">3</div><div class="label">How it competed</div>
+    <div><strong>171</strong> stories competed for the <strong>25</strong> Turf slots.<br>By freshness, this story ranked <strong>1 of 171</strong>.<br><span class='check'>✓</span> Diversity check passed (no more than <strong>3</strong> stories per source per section).<br><span class='check'>✓</span> Promoted into the lead slot because the title matched a lead-preference keyword in the masthead.</div></div>
+  <div class="audit-step"><div class="num">4</div><div class="label">Where it landed</div>
+    <div>Printed at rank <strong>2 of 25</strong> in Turf. Tier: <strong>lead</strong>. The top <strong>2</strong> stories in each section become the leads.</div></div>
+  <div class="audit-step"><div class="num">5</div><div class="label">Coverage</div>
+    <div>No other feed carried this story in the window.</div></div>
+  <div class="audit-step"><div class="num">i</div><div class="label">Source</div>
+    <div><a href="https://sports.yahoo.com/rss/">source feed</a> · <a href="runsheet.html#s-sports">this section in the runsheet</a></div></div>
+</div></details>
+  </div>
+</article>
+<article class="feature">
+  <div class="seed">3</div>
+  <div>
+    <h3><a href="
+                                                https://www.cbssports.com/betting/news/sunday-night-football-prediction-odds-time-bengals-steelers-picks/
+                    " target="_blank" rel="noopener">&#x27;Sunday Night Football&#x27; prediction, odds, time: Bengals vs. Steelers picks by expert who&#x27;s on a 34-18 roll</a> <span class="tier-label feature">feature</span></h3>
+    <div class="meta">www.cbssports.com · 7m old · section rank 3 of 25</div>
+    <details class="audit"><summary>How did this story end up here? (step-by-step)</summary>
+<div class="audit-body">
+  <div class="audit-step"><div class="num">1</div><div class="label">Where it came from</div>
+    <div>Pulled from <strong>www.cbssports.com</strong>. This source is set to route to <strong>Turf</strong> by default.</div></div>
+  <div class="audit-step"><div class="num">2</div><div class="label">When it arrived</div>
+    <div>7m before the window closed.</div></div>
+  <div class="audit-step"><div class="num">3</div><div class="label">How it competed</div>
+    <div><strong>171</strong> stories competed for the <strong>25</strong> Turf slots.<br>By freshness, this story ranked <strong>2 of 171</strong>.<br><span class='check'>✓</span> Diversity check passed (no more than <strong>3</strong> stories per source per section).</div></div>
+  <div class="audit-step"><div class="num">4</div><div class="label">Where it landed</div>
+    <div>Printed at rank <strong>3 of 25</strong> in Turf. Tier: <strong>feature</strong>. Stories ranked 3 through 7 become features.</div></div>
+  <div class="audit-step"><div class="num">5</div><div class="label">Coverage</div>
+    <div>No other feed carried this story in the window.</div></div>
+  <div class="audit-step"><div class="num">i</div><div class="label">Source</div>
+    <div><a href="https://www.cbssports.com/rss/headlines/">source feed</a> · <a href="runsheet.html#s-sports">this section in the runsheet</a></div></div>
+</div></details>
+  </div>
+</article>
+<article class="feature">
+  <div class="seed">4</div>
+  <div>
+    <h3><a href="https://sports.yahoo.com/articles/social-media-reacts-penn-state-191600010.html" target="_blank" rel="noopener">Social Media Reacts to Penn State vs. Minnesota &amp; More from Week 11</a> <span class="tier-label feature">feature</span></h3>
+    <div class="meta">sports.yahoo.com · 7m old · section rank 4 of 25</div>
+    <details class="audit"><summary>How did this story end up here? (step-by-step)</summary>
+<div class="audit-body">
+  <div class="audit-step"><div class="num">1</div><div class="label">Where it came from</div>
+    <div>Pulled from <strong>sports.yahoo.com</strong>. This source is set to route to <strong>Turf</strong> by default.</div></div>
+  <div class="audit-step"><div class="num">2</div><div class="label">When it arrived</div>
+    <div>7m before the window closed.</div></div>
+  <div class="audit-step"><div class="num">3</div><div class="label">How it competed</div>
+    <div><strong>171</strong> stories competed for the <strong>25</strong> Turf slots.<br>By freshness, this story ranked <strong>3 of 171</strong>.<br><span class='check'>✓</span> Diversity check passed (no more than <strong>3</strong> stories per source per section).</div></div>
+  <div class="audit-step"><div class="num">4</div><div class="label">Where it landed</div>
+    <div>Printed at rank <strong>4 of 25</strong> in Turf. Tier: <strong>feature</strong>. Stories ranked 3 through 7 become features.</div></div>
+  <div class="audit-step"><div class="num">5</div><div class="label">Coverage</div>
+    <div>No other feed carried this story in the window.</div></div>
+  <div class="audit-step"><div class="num">i</div><div class="label">Source</div>
+    <div><a href="https://sports.yahoo.com/rss/">source feed</a> · <a href="runsheet.html#s-sports">this section in the runsheet</a></div></div>
+</div></details>
+  </div>
+</article>
+<article class="feature">
+  <div class="seed">5</div>
+  <div>
+    <h3><a href="https://sports.yahoo.com/articles/fsu-linebacker-commit-shuts-down-191528396.html" target="_blank" rel="noopener">FSU linebacker commit shuts down his recruitment</a> <span class="tier-label feature">feature</span></h3>
+    <div class="meta">sports.yahoo.com · 8m old · section rank 5 of 25</div>
+    <details class="audit"><summary>How did this story end up here? (step-by-step)</summary>
+<div class="audit-body">
+  <div class="audit-step"><div class="num">1</div><div class="label">Where it came from</div>
+    <div>Pulled from <strong>sports.yahoo.com</strong>. This source is set to route to <strong>Turf</strong> by default.</div></div>
+  <div class="audit-step"><div class="num">2</div><div class="label">When it arrived</div>
+    <div>8m before the window closed.</div></div>
+  <div class="audit-step"><div class="num">3</div><div class="label">How it competed</div>
+    <div><strong>171</strong> stories competed for the <strong>25</strong> Turf slots.<br>By freshness, this story ranked <strong>4 of 171</strong>.<br><span class='check'>✓</span> Diversity check passed (no more than <strong>3</strong> stories per source per section).</div></div>
+  <div class="audit-step"><div class="num">4</div><div class="label">Where it landed</div>
+    <div>Printed at rank <strong>5 of 25</strong> in Turf. Tier: <strong>feature</strong>. Stories ranked 3 through 7 become features.</div></div>
+  <div class="audit-step"><div class="num">5</div><div class="label">Coverage</div>
+    <div>No other feed carried this story in the window.</div></div>
+  <div class="audit-step"><div class="num">i</div><div class="label">Source</div>
+    <div><a href="https://sports.yahoo.com/rss/">source feed</a> · <a href="runsheet.html#s-sports">this section in the runsheet</a></div></div>
+</div></details>
+  </div>
+</article>
+<article class="feature">
+  <div class="seed">6</div>
+  <div>
+    <h3><a href="
+                                                https://www.cbssports.com/nfl/news/drake-maye-aidan-hutchinson-injured-patriots-lions-stars-questionable/
+                    " target="_blank" rel="noopener">Drake Maye, Aidan Hutchinson injured on same play: Injury updates for Patriots QB, Lions DE</a> <span class="tier-label feature">feature</span></h3>
+    <div class="meta">www.cbssports.com · 29m old · section rank 6 of 25</div>
+    <details class="audit"><summary>How did this story end up here? (step-by-step)</summary>
+<div class="audit-body">
+  <div class="audit-step"><div class="num">1</div><div class="label">Where it came from</div>
+    <div>Pulled from <strong>www.cbssports.com</strong>. This source is set to route to <strong>Turf</strong> by default.</div></div>
+  <div class="audit-step"><div class="num">2</div><div class="label">When it arrived</div>
+    <div>29m before the window closed.</div></div>
+  <div class="audit-step"><div class="num">3</div><div class="label">How it competed</div>
+    <div><strong>171</strong> stories competed for the <strong>25</strong> Turf slots.<br>By freshness, this story ranked <strong>57 of 171</strong>.<br><span class='check'>✓</span> Diversity check passed (no more than <strong>3</strong> stories per source per section).</div></div>
+  <div class="audit-step"><div class="num">4</div><div class="label">Where it landed</div>
+    <div>Printed at rank <strong>6 of 25</strong> in Turf. Tier: <strong>feature</strong>. Stories ranked 3 through 7 become features.</div></div>
+  <div class="audit-step"><div class="num">5</div><div class="label">Coverage</div>
+    <div>No other feed carried this story in the window.</div></div>
+  <div class="audit-step"><div class="num">i</div><div class="label">Source</div>
+    <div><a href="https://www.cbssports.com/rss/headlines/">source feed</a> · <a href="runsheet.html#s-sports">this section in the runsheet</a></div></div>
+</div></details>
+  </div>
+</article>
+<article class="feature">
+  <div class="seed">7</div>
+  <div>
+    <h3><a href="
+                                                https://www.cbssports.com/college-basketball/news/bryce-james-son-of-lebron-tommy-lloyd-arizona-auburn/
+                    " target="_blank" rel="noopener">Bryce James sits in Arizona&#x27;s win vs. Auburn: What Tommy Lloyd said about son of LeBron James not playing</a> <span class="tier-label feature">feature</span></h3>
+    <div class="meta">www.cbssports.com · 44m old · section rank 7 of 25</div>
+    <details class="audit"><summary>How did this story end up here? (step-by-step)</summary>
+<div class="audit-body">
+  <div class="audit-step"><div class="num">1</div><div class="label">Where it came from</div>
+    <div>Pulled from <strong>www.cbssports.com</strong>. This source is set to route to <strong>Turf</strong> by default.</div></div>
+  <div class="audit-step"><div class="num">2</div><div class="label">When it arrived</div>
+    <div>44m before the window closed.</div></div>
+  <div class="audit-step"><div class="num">3</div><div class="label">How it competed</div>
+    <div><strong>171</strong> stories competed for the <strong>25</strong> Turf slots.<br>By freshness, this story ranked <strong>71 of 171</strong>.<br><span class='check'>✓</span> Diversity check passed (no more than <strong>3</strong> stories per source per section).</div></div>
+  <div class="audit-step"><div class="num">4</div><div class="label">Where it landed</div>
+    <div>Printed at rank <strong>7 of 25</strong> in Turf. Tier: <strong>feature</strong>. Stories ranked 3 through 7 become features.</div></div>
+  <div class="audit-step"><div class="num">5</div><div class="label">Coverage</div>
+    <div>No other feed carried this story in the window.</div></div>
+  <div class="audit-step"><div class="num">i</div><div class="label">Source</div>
+    <div><a href="https://www.cbssports.com/rss/headlines/">source feed</a> · <a href="runsheet.html#s-sports">this section in the runsheet</a></div></div>
+</div></details>
+  </div>
+</article>
+<article class="standard">
+  <div class="seed">8</div>
+  <div>
+    <h3><a href="https://defector.com/wake-forest-really-kicked-some-ass" target="_blank" rel="noopener">Wake Forest Really Kicked Some Ass</a> <span class="tier-label standard">standard</span></h3>
+    <div class="meta">defector.com · 1.0h old · section rank 8 of 25</div>
+    <details class="audit"><summary>How did this story end up here? (step-by-step)</summary>
+<div class="audit-body">
+  <div class="audit-step"><div class="num">1</div><div class="label">Where it came from</div>
+    <div>Pulled from <strong>defector.com</strong>. This source is set to route to <strong>Turf</strong> by default.</div></div>
+  <div class="audit-step"><div class="num">2</div><div class="label">When it arrived</div>
+    <div>1.0h before the window closed.</div></div>
+  <div class="audit-step"><div class="num">3</div><div class="label">How it competed</div>
+    <div><strong>171</strong> stories competed for the <strong>25</strong> Turf slots.<br>By freshness, this story ranked <strong>85 of 171</strong>.<br><span class='check'>✓</span> Diversity check skipped: this source (defector.com) is set to <strong>print all</strong> by the policy <em>Whitelist defector.com — every story makes the edition, bypassing diversity caps. Exception: titles containing &#x27;Crossword&#x27;.</em>, so it bypasses the per-source cap.</div></div>
+  <div class="audit-step"><div class="num">4</div><div class="label">Where it landed</div>
+    <div>Printed at rank <strong>8 of 25</strong> in Turf. Tier: <strong>standard</strong>. Stories ranked 8 through 25 are standard.</div></div>
+  <div class="audit-step"><div class="num">5</div><div class="label">Coverage</div>
+    <div>No other feed carried this story in the window.</div></div>
+  <div class="audit-step"><div class="num">i</div><div class="label">Source</div>
+    <div><a href="https://defector.com/feed">source feed</a> · <a href="runsheet.html#s-sports">this section in the runsheet</a></div></div>
+</div></details>
+  </div>
+</article>
+<article class="standard">
+  <div class="seed">9</div>
+  <div>
+    <h3><a href="https://defector.com/texas-and-lsu-had-a-barnburner-of-dumbass-football" target="_blank" rel="noopener">Texas And LSU Had A Barnburner Of Dumbass Football</a> <span class="tier-label standard">standard</span></h3>
+    <div class="meta">defector.com · 2.4h old · section rank 9 of 25</div>
+    <details class="audit"><summary>How did this story end up here? (step-by-step)</summary>
+<div class="audit-body">
+  <div class="audit-step"><div class="num">1</div><div class="label">Where it came from</div>
+    <div>Pulled from <strong>defector.com</strong>. This source is set to route to <strong>Turf</strong> by default.</div></div>
+  <div class="audit-step"><div class="num">2</div><div class="label">When it arrived</div>
+    <div>2.4h before the window closed.</div></div>
+  <div class="audit-step"><div class="num">3</div><div class="label">How it competed</div>
+    <div><strong>171</strong> stories competed for the <strong>25</strong> Turf slots.<br>By freshness, this story ranked <strong>149 of 171</strong>.<br><span class='check'>✓</span> Diversity check skipped: this source (defector.com) is set to <strong>print all</strong> by the policy <em>Whitelist defector.com — every story makes the edition, bypassing diversity caps. Exception: titles containing &#x27;Crossword&#x27;.</em>, so it bypasses the per-source cap.</div></div>
+  <div class="audit-step"><div class="num">4</div><div class="label">Where it landed</div>
+    <div>Printed at rank <strong>9 of 25</strong> in Turf. Tier: <strong>standard</strong>. Stories ranked 8 through 25 are standard.</div></div>
+  <div class="audit-step"><div class="num">5</div><div class="label">Coverage</div>
+    <div>No other feed carried this story in the window.</div></div>
+  <div class="audit-step"><div class="num">i</div><div class="label">Source</div>
+    <div><a href="https://defector.com/feed">source feed</a> · <a href="runsheet.html#s-sports">this section in the runsheet</a></div></div>
+</div></details>
+  </div>
+</article>
+<article class="standard">
+  <div class="seed">10</div>
+  <div>
+    <h3><a href="https://defector.com/faa-ground-stoppage-ole-miss-oklahoma-sunday-start-time" target="_blank" rel="noopener">Did Ole Miss Simply Lack The Grit To Get To Their Game On Time?</a> <span class="tier-label standard">standard</span></h3>
+    <div class="meta">defector.com · 3.7h old · section rank 10 of 25</div>
+    <details class="audit"><summary>How did this story end up here? (step-by-step)</summary>
+<div class="audit-body">
+  <div class="audit-step"><div class="num">1</div><div class="label">Where it came from</div>
+    <div>Pulled from <strong>defector.com</strong>. This source is set to route to <strong>Turf</strong> by default.</div></div>
+  <div class="audit-step"><div class="num">2</div><div class="label">When it arrived</div>
+    <div>3.7h before the window closed.</div></div>
+  <div class="audit-step"><div class="num">3</div><div class="label">How it competed</div>
+    <div><strong>171</strong> stories competed for the <strong>25</strong> Turf slots.<br>By freshness, this story ranked <strong>165 of 171</strong>.<br><span class='check'>✓</span> Diversity check skipped: this source (defector.com) is set to <strong>print all</strong> by the policy <em>Whitelist defector.com — every story makes the edition, bypassing diversity caps. Exception: titles containing &#x27;Crossword&#x27;.</em>, so it bypasses the per-source cap.</div></div>
+  <div class="audit-step"><div class="num">4</div><div class="label">Where it landed</div>
+    <div>Printed at rank <strong>10 of 25</strong> in Turf. Tier: <strong>standard</strong>. Stories ranked 8 through 25 are standard.</div></div>
+  <div class="audit-step"><div class="num">5</div><div class="label">Coverage</div>
+    <div>No other feed carried this story in the window.</div></div>
+  <div class="audit-step"><div class="num">i</div><div class="label">Source</div>
+    <div><a href="https://defector.com/feed">source feed</a> · <a href="runsheet.html#s-sports">this section in the runsheet</a></div></div>
+</div></details>
+  </div>
+</article>
+</section>
+<section class="deck" id="sec-tech">
+  <h2>Atom <span class="pill">Indistinguishable From Magic</span>
+    <span class="pill tier">2 leads · 5 features · 8 standard</span></h2>
+  
+<article class="lead">
+  <div class="seed">1</div>
+  <div>
+    <h3><a href="https://www.theverge.com/ai-artificial-intelligence/1033984/congress-export-rules-ai-chips-china" target="_blank" rel="noopener">Congress wants to tighten export rules on AI chips after Nvidia spy scandal</a> <span class="tier-label lead">lead</span></h3>
+    <div class="meta">www.theverge.com · 8m old · section rank 1 of 15</div>
+    <details class="audit"><summary>How did this story end up here? (step-by-step)</summary>
+<div class="audit-body">
+  <div class="audit-step"><div class="num">1</div><div class="label">Where it came from</div>
+    <div>Pulled from <strong>www.theverge.com</strong>. This source is set to route to <strong>Atom</strong> by default.</div></div>
+  <div class="audit-step"><div class="num">2</div><div class="label">When it arrived</div>
+    <div>8m before the window closed.</div></div>
+  <div class="audit-step"><div class="num">3</div><div class="label">How it competed</div>
+    <div><strong>80</strong> stories competed for the <strong>15</strong> Atom slots.<br>By freshness, this story ranked <strong>1 of 80</strong>.<br><span class='check'>✓</span> Diversity check passed (no more than <strong>3</strong> stories per source per section).</div></div>
+  <div class="audit-step"><div class="num">4</div><div class="label">Where it landed</div>
+    <div>Printed at rank <strong>1 of 15</strong> in Atom. Tier: <strong>lead</strong>. The top <strong>2</strong> stories in each section become the leads.</div></div>
+  <div class="audit-step"><div class="num">5</div><div class="label">Coverage</div>
+    <div>No other feed carried this story in the window.</div></div>
+  <div class="audit-step"><div class="num">i</div><div class="label">Source</div>
+    <div><a href="https://www.theverge.com/rss/index.xml">source feed</a> · <a href="runsheet.html#s-tech">this section in the runsheet</a></div></div>
+</div></details>
+  </div>
+</article>
+<article class="lead">
+  <div class="seed">2</div>
+  <div>
+    <h3><a href="https://www.engadget.com/2313821/what-is-fn-lock-icon-how-to-use/" target="_blank" rel="noopener">What is the Fn Lock icon used for and how do you turn it off and on?</a> <span class="tier-label lead">lead</span></h3>
+    <div class="meta">www.engadget.com · 8m old · section rank 2 of 15</div>
+    <details class="audit"><summary>How did this story end up here? (step-by-step)</summary>
+<div class="audit-body">
+  <div class="audit-step"><div class="num">1</div><div class="label">Where it came from</div>
+    <div>Pulled from <strong>www.engadget.com</strong>. This source is set to route to <strong>Atom</strong> by default.</div></div>
+  <div class="audit-step"><div class="num">2</div><div class="label">When it arrived</div>
+    <div>8m before the window closed.</div></div>
+  <div class="audit-step"><div class="num">3</div><div class="label">How it competed</div>
+    <div><strong>80</strong> stories competed for the <strong>15</strong> Atom slots.<br>By freshness, this story ranked <strong>2 of 80</strong>.<br><span class='check'>✓</span> Diversity check passed (no more than <strong>3</strong> stories per source per section).</div></div>
+  <div class="audit-step"><div class="num">4</div><div class="label">Where it landed</div>
+    <div>Printed at rank <strong>2 of 15</strong> in Atom. Tier: <strong>lead</strong>. The top <strong>2</strong> stories in each section become the leads.</div></div>
+  <div class="audit-step"><div class="num">5</div><div class="label">Coverage</div>
+    <div>No other feed carried this story in the window.</div></div>
+  <div class="audit-step"><div class="num">i</div><div class="label">Source</div>
+    <div><a href="https://www.engadget.com/rss.xml">source feed</a> · <a href="runsheet.html#s-tech">this section in the runsheet</a></div></div>
+</div></details>
+  </div>
+</article>
+<article class="feature">
+  <div class="seed">3</div>
+  <div>
+    <h3><a href="https://www.polygon.com/monster-hunter-wilds-nintendo-switch-2-release-date/" target="_blank" rel="noopener">Nintendo Switch 2 Is Finally Getting Capcom’s Fastest-Selling Game Ever</a> <span class="tier-label feature">feature</span></h3>
+    <div class="meta">www.polygon.com · 23m old · section rank 3 of 15</div>
+    <details class="audit"><summary>How did this story end up here? (step-by-step)</summary>
+<div class="audit-body">
+  <div class="audit-step"><div class="num">1</div><div class="label">Where it came from</div>
+    <div>Pulled from <strong>www.polygon.com</strong>. This source is set to route to <strong>Atom</strong> by default.</div></div>
+  <div class="audit-step"><div class="num">2</div><div class="label">When it arrived</div>
+    <div>23m before the window closed.</div></div>
+  <div class="audit-step"><div class="num">3</div><div class="label">How it competed</div>
+    <div><strong>80</strong> stories competed for the <strong>15</strong> Atom slots.<br>By freshness, this story ranked <strong>3 of 80</strong>.<br><span class='check'>✓</span> Diversity check passed (no more than <strong>3</strong> stories per source per section).</div></div>
+  <div class="audit-step"><div class="num">4</div><div class="label">Where it landed</div>
+    <div>Printed at rank <strong>3 of 15</strong> in Atom. Tier: <strong>feature</strong>. Stories ranked 3 through 7 become features.</div></div>
+  <div class="audit-step"><div class="num">5</div><div class="label">Coverage</div>
+    <div>No other feed carried this story in the window.</div></div>
+  <div class="audit-step"><div class="num">i</div><div class="label">Source</div>
+    <div><a href="https://www.polygon.com/rss/index.xml">source feed</a> · <a href="runsheet.html#s-tech">this section in the runsheet</a></div></div>
+</div></details>
+  </div>
+</article>
+<article class="feature">
+  <div class="seed">4</div>
+  <div>
+    <h3><a href="https://www.engadget.com/2313818/how-to-generate-edit-gifs-with-chatgpt/" target="_blank" rel="noopener">You can now generate and edit GIFs with ChatGPT - here&#x27;s how</a> <span class="tier-label feature">feature</span></h3>
+    <div class="meta">www.engadget.com · 23m old · section rank 4 of 15</div>
+    <details class="audit"><summary>How did this story end up here? (step-by-step)</summary>
+<div class="audit-body">
+  <div class="audit-step"><div class="num">1</div><div class="label">Where it came from</div>
+    <div>Pulled from <strong>www.engadget.com</strong>. This source is set to route to <strong>Atom</strong> by default.</div></div>
+  <div class="audit-step"><div class="num">2</div><div class="label">When it arrived</div>
+    <div>23m before the window closed.</div></div>
+  <div class="audit-step"><div class="num">3</div><div class="label">How it competed</div>
+    <div><strong>80</strong> stories competed for the <strong>15</strong> Atom slots.<br>By freshness, this story ranked <strong>4 of 80</strong>.<br><span class='check'>✓</span> Diversity check passed (no more than <strong>3</strong> stories per source per section).</div></div>
+  <div class="audit-step"><div class="num">4</div><div class="label">Where it landed</div>
+    <div>Printed at rank <strong>4 of 15</strong> in Atom. Tier: <strong>feature</strong>. Stories ranked 3 through 7 become features.</div></div>
+  <div class="audit-step"><div class="num">5</div><div class="label">Coverage</div>
+    <div>No other feed carried this story in the window.</div></div>
+  <div class="audit-step"><div class="num">i</div><div class="label">Source</div>
+    <div><a href="https://www.engadget.com/rss.xml">source feed</a> · <a href="runsheet.html#s-tech">this section in the runsheet</a></div></div>
+</div></details>
+  </div>
+</article>
+<article class="feature">
+  <div class="seed">5</div>
+  <div>
+    <h3><a href="https://www.engadget.com/2313815/facebook-instagram-meta-accounts-what-happens-when-owner-dies/" target="_blank" rel="noopener">What happens to Facebook and Instagram accounts when the owner dies?</a> <span class="tier-label feature">feature</span></h3>
+    <div class="meta">www.engadget.com · 38m old · section rank 5 of 15</div>
+    <details class="audit"><summary>How did this story end up here? (step-by-step)</summary>
+<div class="audit-body">
+  <div class="audit-step"><div class="num">1</div><div class="label">Where it came from</div>
+    <div>Pulled from <strong>www.engadget.com</strong>. This source is set to route to <strong>Atom</strong> by default.</div></div>
+  <div class="audit-step"><div class="num">2</div><div class="label">When it arrived</div>
+    <div>38m before the window closed.</div></div>
+  <div class="audit-step"><div class="num">3</div><div class="label">How it competed</div>
+    <div><strong>80</strong> stories competed for the <strong>15</strong> Atom slots.<br>By freshness, this story ranked <strong>5 of 80</strong>.<br><span class='check'>✓</span> Diversity check passed (no more than <strong>3</strong> stories per source per section).</div></div>
+  <div class="audit-step"><div class="num">4</div><div class="label">Where it landed</div>
+    <div>Printed at rank <strong>5 of 15</strong> in Atom. Tier: <strong>feature</strong>. Stories ranked 3 through 7 become features.</div></div>
+  <div class="audit-step"><div class="num">5</div><div class="label">Coverage</div>
+    <div>No other feed carried this story in the window.</div></div>
+  <div class="audit-step"><div class="num">i</div><div class="label">Source</div>
+    <div><a href="https://www.engadget.com/rss.xml">source feed</a> · <a href="runsheet.html#s-tech">this section in the runsheet</a></div></div>
+</div></details>
+  </div>
+</article>
+<article class="feature">
+  <div class="seed">6</div>
+  <div>
+    <h3><a href="https://www.polygon.com/gta-6-platinum-trophy-mythic-achievement-time-to-get/" target="_blank" rel="noopener">GTA 6 Trophy Count and Full Completion Time Leaks in New Reports</a> <span class="tier-label feature">feature</span></h3>
+    <div class="meta">www.polygon.com · 42m old · section rank 6 of 15</div>
+    <details class="audit"><summary>How did this story end up here? (step-by-step)</summary>
+<div class="audit-body">
+  <div class="audit-step"><div class="num">1</div><div class="label">Where it came from</div>
+    <div>Pulled from <strong>www.polygon.com</strong>. This source is set to route to <strong>Atom</strong> by default.</div></div>
+  <div class="audit-step"><div class="num">2</div><div class="label">When it arrived</div>
+    <div>42m before the window closed.</div></div>
+  <div class="audit-step"><div class="num">3</div><div class="label">How it competed</div>
+    <div><strong>80</strong> stories competed for the <strong>15</strong> Atom slots.<br>By freshness, this story ranked <strong>6 of 80</strong>.<br><span class='check'>✓</span> Diversity check passed (no more than <strong>3</strong> stories per source per section).</div></div>
+  <div class="audit-step"><div class="num">4</div><div class="label">Where it landed</div>
+    <div>Printed at rank <strong>6 of 15</strong> in Atom. Tier: <strong>feature</strong>. Stories ranked 3 through 7 become features.</div></div>
+  <div class="audit-step"><div class="num">5</div><div class="label">Coverage</div>
+    <div>No other feed carried this story in the window.</div></div>
+  <div class="audit-step"><div class="num">i</div><div class="label">Source</div>
+    <div><a href="https://www.polygon.com/rss/index.xml">source feed</a> · <a href="runsheet.html#s-tech">this section in the runsheet</a></div></div>
+</div></details>
+  </div>
+</article>
+<article class="feature">
+  <div class="seed">7</div>
+  <div>
+    <h3><a href="https://www.polygon.com/fortnite-chapter-7-mini-season-c7ms-map-fragment-locations/" target="_blank" rel="noopener">All map fragment locations in the Fortnite Chapter 7 mini season</a> <span class="tier-label feature">feature</span></h3>
+    <div class="meta">www.polygon.com · 45m old · section rank 7 of 15</div>
+    <details class="audit"><summary>How did this story end up here? (step-by-step)</summary>
+<div class="audit-body">
+  <div class="audit-step"><div class="num">1</div><div class="label">Where it came from</div>
+    <div>Pulled from <strong>www.polygon.com</strong>. This source is set to route to <strong>Atom</strong> by default.</div></div>
+  <div class="audit-step"><div class="num">2</div><div class="label">When it arrived</div>
+    <div>45m before the window closed.</div></div>
+  <div class="audit-step"><div class="num">3</div><div class="label">How it competed</div>
+    <div><strong>80</strong> stories competed for the <strong>15</strong> Atom slots.<br>By freshness, this story ranked <strong>7 of 80</strong>.<br><span class='check'>✓</span> Diversity check passed (no more than <strong>3</strong> stories per source per section).</div></div>
+  <div class="audit-step"><div class="num">4</div><div class="label">Where it landed</div>
+    <div>Printed at rank <strong>7 of 15</strong> in Atom. Tier: <strong>feature</strong>. Stories ranked 3 through 7 become features.</div></div>
+  <div class="audit-step"><div class="num">5</div><div class="label">Coverage</div>
+    <div>No other feed carried this story in the window.</div></div>
+  <div class="audit-step"><div class="num">i</div><div class="label">Source</div>
+    <div><a href="https://www.polygon.com/rss/index.xml">source feed</a> · <a href="runsheet.html#s-tech">this section in the runsheet</a></div></div>
+</div></details>
+  </div>
+</article>
+<article class="standard">
+  <div class="seed">8</div>
+  <div>
+    <h3><a href="https://www.bleepingcomputer.com/news/security/fbi-warns-artex-ai-hacking-tool-is-powering-global-cyberattacks/" target="_blank" rel="noopener">FBI warns ARTEX AI hacking tool is powering global cyberattacks</a> <span class="tier-label standard">standard</span></h3>
+    <div class="meta">www.bleepingcomputer.com · 53m old · section rank 8 of 15</div>
+    <details class="audit"><summary>How did this story end up here? (step-by-step)</summary>
+<div class="audit-body">
+  <div class="audit-step"><div class="num">1</div><div class="label">Where it came from</div>
+    <div>Pulled from <strong>www.bleepingcomputer.com</strong>. This source is set to route to <strong>Atom</strong> by default.</div></div>
+  <div class="audit-step"><div class="num">2</div><div class="label">When it arrived</div>
+    <div>53m before the window closed.</div></div>
+  <div class="audit-step"><div class="num">3</div><div class="label">How it competed</div>
+    <div><strong>80</strong> stories competed for the <strong>15</strong> Atom slots.<br>By freshness, this story ranked <strong>9 of 80</strong>.<br><span class='check'>✓</span> Diversity check passed (no more than <strong>3</strong> stories per source per section).</div></div>
+  <div class="audit-step"><div class="num">4</div><div class="label">Where it landed</div>
+    <div>Printed at rank <strong>8 of 15</strong> in Atom. Tier: <strong>standard</strong>. Stories ranked 8 through 15 are standard.</div></div>
+  <div class="audit-step"><div class="num">5</div><div class="label">Coverage</div>
+    <div>No other feed carried this story in the window.</div></div>
+  <div class="audit-step"><div class="num">i</div><div class="label">Source</div>
+    <div><a href="https://www.bleepingcomputer.com/feed/">source feed</a> · <a href="runsheet.html#s-tech">this section in the runsheet</a></div></div>
+</div></details>
+  </div>
+</article>
+<article class="standard">
+  <div class="seed">9</div>
+  <div>
+    <h3><a href="https://techcrunch.com/2026/11/15/flaming-hydras-new-kickstarter-campaign-rethinks-e-book-ownership-and-digital-lending/" target="_blank" rel="noopener">Flaming Hydra’s new Kickstarter campaign rethinks e-book ownership and digital lending</a> <span class="tier-label standard">standard</span></h3>
+    <div class="meta">techcrunch.com · 54m old · section rank 9 of 15</div>
+    <details class="audit"><summary>How did this story end up here? (step-by-step)</summary>
+<div class="audit-body">
+  <div class="audit-step"><div class="num">1</div><div class="label">Where it came from</div>
+    <div>Pulled from <strong>techcrunch.com</strong>. This source is set to route to <strong>Atom</strong> by default.</div></div>
+  <div class="audit-step"><div class="num">2</div><div class="label">When it arrived</div>
+    <div>54m before the window closed.</div></div>
+  <div class="audit-step"><div class="num">3</div><div class="label">How it competed</div>
+    <div><strong>80</strong> stories competed for the <strong>15</strong> Atom slots.<br>By freshness, this story ranked <strong>10 of 80</strong>.<br><span class='check'>✓</span> Diversity check passed (no more than <strong>3</strong> stories per source per section).</div></div>
+  <div class="audit-step"><div class="num">4</div><div class="label">Where it landed</div>
+    <div>Printed at rank <strong>9 of 15</strong> in Atom. Tier: <strong>standard</strong>. Stories ranked 8 through 15 are standard.</div></div>
+  <div class="audit-step"><div class="num">5</div><div class="label">Coverage</div>
+    <div>No other feed carried this story in the window.</div></div>
+  <div class="audit-step"><div class="num">i</div><div class="label">Source</div>
+    <div><a href="https://techcrunch.com/feed/">source feed</a> · <a href="runsheet.html#s-tech">this section in the runsheet</a></div></div>
+</div></details>
+  </div>
+</article>
+<article class="standard">
+  <div class="seed">10</div>
+  <div>
+    <h3><a href="https://securityaffairs.com/203174/laws-and-regulations/meta-fined-e805-million-in-italy-over-facebooks-default-photo-gallery-access.html" target="_blank" rel="noopener">Meta Fined €805 Million in Italy Over Facebook’s Default Photo Gallery Access</a> <span class="tier-label standard">standard</span></h3>
+    <div class="meta">securityaffairs.co · 1.2h old · section rank 10 of 15</div>
+    <details class="audit"><summary>How did this story end up here? (step-by-step)</summary>
+<div class="audit-body">
+  <div class="audit-step"><div class="num">1</div><div class="label">Where it came from</div>
+    <div>Pulled from <strong>securityaffairs.co</strong>. This source is set to route to <strong>Atom</strong> by default.</div></div>
+  <div class="audit-step"><div class="num">2</div><div class="label">When it arrived</div>
+    <div>1.2h before the window closed.</div></div>
+  <div class="audit-step"><div class="num">3</div><div class="label">How it competed</div>
+    <div><strong>80</strong> stories competed for the <strong>15</strong> Atom slots.<br>By freshness, this story ranked <strong>12 of 80</strong>.<br><span class='check'>✓</span> Diversity check passed (no more than <strong>3</strong> stories per source per section).</div></div>
+  <div class="audit-step"><div class="num">4</div><div class="label">Where it landed</div>
+    <div>Printed at rank <strong>10 of 15</strong> in Atom. Tier: <strong>standard</strong>. Stories ranked 8 through 15 are standard.</div></div>
+  <div class="audit-step"><div class="num">5</div><div class="label">Coverage</div>
+    <div>No other feed carried this story in the window.</div></div>
+  <div class="audit-step"><div class="num">i</div><div class="label">Source</div>
+    <div><a href="https://securityaffairs.co/wordpress/feed">source feed</a> · <a href="runsheet.html#s-tech">this section in the runsheet</a></div></div>
+</div></details>
+  </div>
+</article>
+<article class="standard">
+  <div class="seed">11</div>
+  <div>
+    <h3><a href="https://www.androidpolice.com/google-messages-tricks-cut-down-daily-texting-friction/" target="_blank" rel="noopener">5 Google Messages tricks that cut down my daily texting friction</a> <span class="tier-label standard">standard</span></h3>
+    <div class="meta">www.androidpolice.com · 1.4h old · section rank 11 of 15</div>
+    <details class="audit"><summary>How did this story end up here? (step-by-step)</summary>
+<div class="audit-body">
+  <div class="audit-step"><div class="num">1</div><div class="label">Where it came from</div>
+    <div>Pulled from <strong>www.androidpolice.com</strong>. This source is set to route to <strong>Atom</strong> by default.</div></div>
+  <div class="audit-step"><div class="num">2</div><div class="label">When it arrived</div>
+    <div>1.4h before the window closed.</div></div>
+  <div class="audit-step"><div class="num">3</div><div class="label">How it competed</div>
+    <div><strong>80</strong> stories competed for the <strong>15</strong> Atom slots.<br>By freshness, this story ranked <strong>14 of 80</strong>.<br><span class='check'>✓</span> Diversity check passed (no more than <strong>3</strong> stories per source per section).</div></div>
+  <div class="audit-step"><div class="num">4</div><div class="label">Where it landed</div>
+    <div>Printed at rank <strong>11 of 15</strong> in Atom. Tier: <strong>standard</strong>. Stories ranked 8 through 15 are standard.</div></div>
+  <div class="audit-step"><div class="num">5</div><div class="label">Coverage</div>
+    <div>No other feed carried this story in the window.</div></div>
+  <div class="audit-step"><div class="num">i</div><div class="label">Source</div>
+    <div><a href="https://www.androidpolice.com/feed/">source feed</a> · <a href="runsheet.html#s-tech">this section in the runsheet</a></div></div>
+</div></details>
+  </div>
+</article>
+<article class="standard">
+  <div class="seed">12</div>
+  <div>
+    <h3><a href="https://www.androidpolice.com/video/this-is-the-perfect-upgrade-cadence-video/" target="_blank" rel="noopener">This is the perfect upgrade cadence. [Video]</a> <span class="tier-label standard">standard</span></h3>
+    <div class="meta">www.androidpolice.com · 1.8h old · section rank 12 of 15</div>
+    <details class="audit"><summary>How did this story end up here? (step-by-step)</summary>
+<div class="audit-body">
+  <div class="audit-step"><div class="num">1</div><div class="label">Where it came from</div>
+    <div>Pulled from <strong>www.androidpolice.com</strong>. This source is set to route to <strong>Atom</strong> by default.</div></div>
+  <div class="audit-step"><div class="num">2</div><div class="label">When it arrived</div>
+    <div>1.8h before the window closed.</div></div>
+  <div class="audit-step"><div class="num">3</div><div class="label">How it competed</div>
+    <div><strong>80</strong> stories competed for the <strong>15</strong> Atom slots.<br>By freshness, this story ranked <strong>18 of 80</strong>.<br><span class='check'>✓</span> Diversity check passed (no more than <strong>3</strong> stories per source per section).</div></div>
+  <div class="audit-step"><div class="num">4</div><div class="label">Where it landed</div>
+    <div>Printed at rank <strong>12 of 15</strong> in Atom. Tier: <strong>standard</strong>. Stories ranked 8 through 15 are standard.</div></div>
+  <div class="audit-step"><div class="num">5</div><div class="label">Coverage</div>
+    <div>No other feed carried this story in the window.</div></div>
+  <div class="audit-step"><div class="num">i</div><div class="label">Source</div>
+    <div><a href="https://www.androidpolice.com/feed/">source feed</a> · <a href="runsheet.html#s-tech">this section in the runsheet</a></div></div>
+</div></details>
+  </div>
+</article>
+<article class="standard">
+  <div class="seed">13</div>
+  <div>
+    <h3><a href="https://techcrunch.com/2026/11/15/techcrunch-mobility-the-nvidia-backup-plan-for-chinas-self-driving-industry/" target="_blank" rel="noopener">TechCrunch Mobility: The Nvidia backup plan for China’s self-driving industry</a> <span class="tier-label standard">standard</span></h3>
+    <div class="meta">techcrunch.com · 2.3h old · section rank 13 of 15</div>
+    <details class="audit"><summary>How did this story end up here? (step-by-step)</summary>
+<div class="audit-body">
+  <div class="audit-step"><div class="num">1</div><div class="label">Where it came from</div>
+    <div>Pulled from <strong>techcrunch.com</strong>. This source is set to route to <strong>Atom</strong> by default.</div></div>
+  <div class="audit-step"><div class="num">2</div><div class="label">When it arrived</div>
+    <div>2.3h before the window closed.</div></div>
+  <div class="audit-step"><div class="num">3</div><div class="label">How it competed</div>
+    <div><strong>80</strong> stories competed for the <strong>15</strong> Atom slots.<br>By freshness, this story ranked <strong>21 of 80</strong>.<br><span class='check'>✓</span> Diversity check passed (no more than <strong>3</strong> stories per source per section).</div></div>
+  <div class="audit-step"><div class="num">4</div><div class="label">Where it landed</div>
+    <div>Printed at rank <strong>13 of 15</strong> in Atom. Tier: <strong>standard</strong>. Stories ranked 8 through 15 are standard.</div></div>
+  <div class="audit-step"><div class="num">5</div><div class="label">Coverage</div>
+    <div>No other feed carried this story in the window.</div></div>
+  <div class="audit-step"><div class="num">i</div><div class="label">Source</div>
+    <div><a href="https://techcrunch.com/feed/">source feed</a> · <a href="runsheet.html#s-tech">this section in the runsheet</a></div></div>
+</div></details>
+  </div>
+</article>
+<article class="standard">
+  <div class="seed">14</div>
+  <div>
+    <h3><a href="https://www.androidpolice.com/i-turned-off-these-google-messages-features-to-bring-back-simpler-texting/" target="_blank" rel="noopener">I turned off these Google Messages features to bring back simpler texting</a> <span class="tier-label standard">standard</span></h3>
+    <div class="meta">www.androidpolice.com · 2.4h old · section rank 14 of 15</div>
+    <details class="audit"><summary>How did this story end up here? (step-by-step)</summary>
+<div class="audit-body">
+  <div class="audit-step"><div class="num">1</div><div class="label">Where it came from</div>
+    <div>Pulled from <strong>www.androidpolice.com</strong>. This source is set to route to <strong>Atom</strong> by default.</div></div>
+  <div class="audit-step"><div class="num">2</div><div class="label">When it arrived</div>
+    <div>2.4h before the window closed.</div></div>
+  <div class="audit-step"><div class="num">3</div><div class="label">How it competed</div>
+    <div><strong>80</strong> stories competed for the <strong>15</strong> Atom slots.<br>By freshness, this story ranked <strong>23 of 80</strong>.<br><span class='check'>✓</span> Diversity check passed (no more than <strong>3</strong> stories per source per section).</div></div>
+  <div class="audit-step"><div class="num">4</div><div class="label">Where it landed</div>
+    <div>Printed at rank <strong>14 of 15</strong> in Atom. Tier: <strong>standard</strong>. Stories ranked 8 through 15 are standard.</div></div>
+  <div class="audit-step"><div class="num">5</div><div class="label">Coverage</div>
+    <div>No other feed carried this story in the window.</div></div>
+  <div class="audit-step"><div class="num">i</div><div class="label">Source</div>
+    <div><a href="https://www.androidpolice.com/feed/">source feed</a> · <a href="runsheet.html#s-tech">this section in the runsheet</a></div></div>
+</div></details>
+  </div>
+</article>
+<article class="standard">
+  <div class="seed">15</div>
+  <div>
+    <h3><a href="https://www.theverge.com/tech/1033968/apples-first-smart-glasses-are-coming-together" target="_blank" rel="noopener">Apple’s first smart glasses are coming together</a> <span class="tier-label standard">standard</span></h3>
+    <div class="meta">www.theverge.com · 2.4h old · section rank 15 of 15</div>
+    <details class="audit"><summary>How did this story end up here? (step-by-step)</summary>
+<div class="audit-body">
+  <div class="audit-step"><div class="num">1</div><div class="label">Where it came from</div>
+    <div>Pulled from <strong>www.theverge.com</strong>. This source is set to route to <strong>Atom</strong> by default.</div></div>
+  <div class="audit-step"><div class="num">2</div><div class="label">When it arrived</div>
+    <div>2.4h before the window closed.</div></div>
+  <div class="audit-step"><div class="num">3</div><div class="label">How it competed</div>
+    <div><strong>80</strong> stories competed for the <strong>15</strong> Atom slots.<br>By freshness, this story ranked <strong>25 of 80</strong>.<br><span class='check'>✓</span> Diversity check passed (no more than <strong>3</strong> stories per source per section).</div></div>
+  <div class="audit-step"><div class="num">4</div><div class="label">Where it landed</div>
+    <div>Printed at rank <strong>15 of 15</strong> in Atom. Tier: <strong>standard</strong>. Stories ranked 8 through 15 are standard.</div></div>
+  <div class="audit-step"><div class="num">5</div><div class="label">Coverage</div>
+    <div>No other feed carried this story in the window.</div></div>
+  <div class="audit-step"><div class="num">i</div><div class="label">Source</div>
+    <div><a href="https://www.theverge.com/rss/index.xml">source feed</a> · <a href="runsheet.html#s-tech">this section in the runsheet</a></div></div>
+</div></details>
+  </div>
+</article>
+</section>
+<section class="deck" id="sec-culture">
+  <h2>Gala <span class="pill">Bread &amp; Circuses</span>
+    <span class="pill tier">2 leads · 5 features · 8 standard</span></h2>
+  
+<article class="lead">
+  <div class="seed">1</div>
+  <div>
+    <h3><a href="https://pagesix.com/2026/11/15/celebrity-news/chad-lowes-daughter-mabel-celebrates-sister-fionas-14th-heavenly-birthday/" target="_blank" rel="noopener">Chad Lowe’s daughter Mabel celebrates sister Fiona’s 14th birthday after her tragic death: ‘I miss you’</a> <span class="tier-label lead">lead</span></h3>
+    <div class="meta">pagesix.com · 1m old · section rank 1 of 15</div>
+    <details class="audit"><summary>How did this story end up here? (step-by-step)</summary>
+<div class="audit-body">
+  <div class="audit-step"><div class="num">1</div><div class="label">Where it came from</div>
+    <div>Pulled from <strong>pagesix.com</strong>. This source is set to route to <strong>Gala</strong> by default.</div></div>
+  <div class="audit-step"><div class="num">2</div><div class="label">When it arrived</div>
+    <div>1m before the window closed.</div></div>
+  <div class="audit-step"><div class="num">3</div><div class="label">How it competed</div>
+    <div><strong>72</strong> stories competed for the <strong>15</strong> Gala slots.<br>By freshness, this story ranked <strong>1 of 72</strong>.<br><span class='check'>✓</span> Diversity check passed (no more than <strong>3</strong> stories per source per section).</div></div>
+  <div class="audit-step"><div class="num">4</div><div class="label">Where it landed</div>
+    <div>Printed at rank <strong>1 of 15</strong> in Gala. Tier: <strong>lead</strong>. The top <strong>2</strong> stories in each section become the leads.</div></div>
+  <div class="audit-step"><div class="num">5</div><div class="label">Coverage</div>
+    <div>No other feed carried this story in the window.</div></div>
+  <div class="audit-step"><div class="num">i</div><div class="label">Source</div>
+    <div><a href="https://pagesix.com/feed/">source feed</a> · <a href="runsheet.html#s-culture">this section in the runsheet</a></div></div>
+</div></details>
+  </div>
+</article>
+<article class="lead">
+  <div class="seed">2</div>
+  <div>
+    <h3><a href="https://deadline.com/2026/11/kevin-feige-x-men-avengerss-fun-way-celebrate-25-years-1237224515/" target="_blank" rel="noopener">Kevin Feige Felt Bringing X-Men Into ‘Avengers’ Franchise Was “Fun Way” To Celebrate 25 Years</a> <span class="tier-label lead">lead</span></h3>
+    <div class="meta">deadline.com · 1m old · section rank 2 of 15</div>
+    <details class="audit"><summary>How did this story end up here? (step-by-step)</summary>
+<div class="audit-body">
+  <div class="audit-step"><div class="num">1</div><div class="label">Where it came from</div>
+    <div>Pulled from <strong>deadline.com</strong>. This source is set to route to <strong>Gala</strong> by default.</div></div>
+  <div class="audit-step"><div class="num">2</div><div class="label">When it arrived</div>
+    <div>1m before the window closed.</div></div>
+  <div class="audit-step"><div class="num">3</div><div class="label">How it competed</div>
+    <div><strong>72</strong> stories competed for the <strong>15</strong> Gala slots.<br>By freshness, this story ranked <strong>2 of 72</strong>.<br><span class='check'>✓</span> Diversity check passed (no more than <strong>3</strong> stories per source per section).</div></div>
+  <div class="audit-step"><div class="num">4</div><div class="label">Where it landed</div>
+    <div>Printed at rank <strong>2 of 15</strong> in Gala. Tier: <strong>lead</strong>. The top <strong>2</strong> stories in each section become the leads.</div></div>
+  <div class="audit-step"><div class="num">5</div><div class="label">Coverage</div>
+    <div>No other feed carried this story in the window.</div></div>
+  <div class="audit-step"><div class="num">i</div><div class="label">Source</div>
+    <div><a href="https://deadline.com/feed">source feed</a> · <a href="runsheet.html#s-culture">this section in the runsheet</a></div></div>
+</div></details>
+  </div>
+</article>
+<article class="feature">
+  <div class="seed">3</div>
+  <div>
+    <h3><a href="https://variety.com/2026/music/news/phil-collins-rock-roll-hall-of-fame-induction-health-1236948171/" target="_blank" rel="noopener">Phil Collins Says He’s a ‘Well Man’ Now and Hints at the ‘Possibility of Doing Some Shows’ Amid Health Battle: ‘You Haven’t Heard the Last of Me’</a> <span class="tier-label feature">feature</span></h3>
+    <div class="meta">variety.com · 11m old · section rank 3 of 15</div>
+    <details class="audit"><summary>How did this story end up here? (step-by-step)</summary>
+<div class="audit-body">
+  <div class="audit-step"><div class="num">1</div><div class="label">Where it came from</div>
+    <div>Pulled from <strong>variety.com</strong>. This source is set to route to <strong>Gala</strong> by default.</div></div>
+  <div class="audit-step"><div class="num">2</div><div class="label">When it arrived</div>
+    <div>11m before the window closed.</div></div>
+  <div class="audit-step"><div class="num">3</div><div class="label">How it competed</div>
+    <div><strong>72</strong> stories competed for the <strong>15</strong> Gala slots.<br>By freshness, this story ranked <strong>3 of 72</strong>.<br><span class='check'>✓</span> Diversity check passed (no more than <strong>3</strong> stories per source per section).</div></div>
+  <div class="audit-step"><div class="num">4</div><div class="label">Where it landed</div>
+    <div>Printed at rank <strong>3 of 15</strong> in Gala. Tier: <strong>feature</strong>. Stories ranked 3 through 7 become features.</div></div>
+  <div class="audit-step"><div class="num">5</div><div class="label">Coverage</div>
+    <div>No other feed carried this story in the window.</div></div>
+  <div class="audit-step"><div class="num">i</div><div class="label">Source</div>
+    <div><a href="https://variety.com/feed">source feed</a> · <a href="runsheet.html#s-culture">this section in the runsheet</a></div></div>
+</div></details>
+  </div>
+</article>
+<article class="feature">
+  <div class="seed">4</div>
+  <div>
+    <h3><a href="https://www.hollywoodreporter.com/movies/movie-news/tallinn-film-satire-when-i-existed-uruguay-pensioner-dead-1236753960/" target="_blank" rel="noopener">A Man Has Just Retired, But the Government Insists He Is Dead. Welcome to ‘When I Existed’! (Exclusive Trailer, Plus Chat With the Directors)</a> <span class="tier-label feature">feature</span></h3>
+    <div class="meta">www.hollywoodreporter.com · 11m old · section rank 4 of 15</div>
+    <details class="audit"><summary>How did this story end up here? (step-by-step)</summary>
+<div class="audit-body">
+  <div class="audit-step"><div class="num">1</div><div class="label">Where it came from</div>
+    <div>Pulled from <strong>www.hollywoodreporter.com</strong>. This source is set to route to <strong>Gala</strong> by default.</div></div>
+  <div class="audit-step"><div class="num">2</div><div class="label">When it arrived</div>
+    <div>11m before the window closed.</div></div>
+  <div class="audit-step"><div class="num">3</div><div class="label">How it competed</div>
+    <div><strong>72</strong> stories competed for the <strong>15</strong> Gala slots.<br>By freshness, this story ranked <strong>4 of 72</strong>.<br><span class='check'>✓</span> Diversity check passed (no more than <strong>3</strong> stories per source per section).</div></div>
+  <div class="audit-step"><div class="num">4</div><div class="label">Where it landed</div>
+    <div>Printed at rank <strong>4 of 15</strong> in Gala. Tier: <strong>feature</strong>. Stories ranked 3 through 7 become features.</div></div>
+  <div class="audit-step"><div class="num">5</div><div class="label">Coverage</div>
+    <div>No other feed carried this story in the window.</div></div>
+  <div class="audit-step"><div class="num">i</div><div class="label">Source</div>
+    <div><a href="https://www.hollywoodreporter.com/c/movies/feed/">source feed</a> · <a href="runsheet.html#s-culture">this section in the runsheet</a></div></div>
+</div></details>
+  </div>
+</article>
+<article class="feature">
+  <div class="seed">5</div>
+  <div>
+    <h3><a href="https://pagesix.com/2026/11/15/celebrity-news/phil-collins-75-teases-return-to-live-performances-amid-health-woes/" target="_blank" rel="noopener">Phil Collins, 75, teases return to stage — but reveals he won’t be able to perform famous part of routine</a> <span class="tier-label feature">feature</span></h3>
+    <div class="meta">pagesix.com · 12m old · section rank 5 of 15</div>
+    <details class="audit"><summary>How did this story end up here? (step-by-step)</summary>
+<div class="audit-body">
+  <div class="audit-step"><div class="num">1</div><div class="label">Where it came from</div>
+    <div>Pulled from <strong>pagesix.com</strong>. This source is set to route to <strong>Gala</strong> by default.</div></div>
+  <div class="audit-step"><div class="num">2</div><div class="label">When it arrived</div>
+    <div>12m before the window closed.</div></div>
+  <div class="audit-step"><div class="num">3</div><div class="label">How it competed</div>
+    <div><strong>72</strong> stories competed for the <strong>15</strong> Gala slots.<br>By freshness, this story ranked <strong>5 of 72</strong>.<br><span class='check'>✓</span> Diversity check passed (no more than <strong>3</strong> stories per source per section).</div></div>
+  <div class="audit-step"><div class="num">4</div><div class="label">Where it landed</div>
+    <div>Printed at rank <strong>5 of 15</strong> in Gala. Tier: <strong>feature</strong>. Stories ranked 3 through 7 become features.</div></div>
+  <div class="audit-step"><div class="num">5</div><div class="label">Coverage</div>
+    <div>No other feed carried this story in the window.</div></div>
+  <div class="audit-step"><div class="num">i</div><div class="label">Source</div>
+    <div><a href="https://pagesix.com/feed/">source feed</a> · <a href="runsheet.html#s-culture">this section in the runsheet</a></div></div>
+</div></details>
+  </div>
+</article>
+<article class="feature">
+  <div class="seed">6</div>
+  <div>
+    <h3><a href="https://variety.com/2026/film/box-office/box-office-domestic-ticket-sales-increase-hunger-games-dune-3-avengers-doomsday-1236948160/" target="_blank" rel="noopener">Box Office: Domestic Ticket Sales Up 20% From Last Year as Hollywood Awaits ‘Hunger Games’ Prequel, ‘Dune 3’ and ‘Avengers: Doomsday’</a> <span class="tier-label feature">feature</span></h3>
+    <div class="meta">variety.com · 19m old · section rank 6 of 15</div>
+    <details class="audit"><summary>How did this story end up here? (step-by-step)</summary>
+<div class="audit-body">
+  <div class="audit-step"><div class="num">1</div><div class="label">Where it came from</div>
+    <div>Pulled from <strong>variety.com</strong>. This source is set to route to <strong>Gala</strong> by default.</div></div>
+  <div class="audit-step"><div class="num">2</div><div class="label">When it arrived</div>
+    <div>19m before the window closed.</div></div>
+  <div class="audit-step"><div class="num">3</div><div class="label">How it competed</div>
+    <div><strong>72</strong> stories competed for the <strong>15</strong> Gala slots.<br>By freshness, this story ranked <strong>6 of 72</strong>.<br><span class='check'>✓</span> Diversity check passed (no more than <strong>3</strong> stories per source per section).</div></div>
+  <div class="audit-step"><div class="num">4</div><div class="label">Where it landed</div>
+    <div>Printed at rank <strong>6 of 15</strong> in Gala. Tier: <strong>feature</strong>. Stories ranked 3 through 7 become features.</div></div>
+  <div class="audit-step"><div class="num">5</div><div class="label">Coverage</div>
+    <div>No other feed carried this story in the window.</div></div>
+  <div class="audit-step"><div class="num">i</div><div class="label">Source</div>
+    <div><a href="https://variety.com/feed">source feed</a> · <a href="runsheet.html#s-culture">this section in the runsheet</a></div></div>
+</div></details>
+  </div>
+</article>
+<article class="feature">
+  <div class="seed">7</div>
+  <div>
+    <h3><a href="https://www.rollingstone.com/music/music-news/slayer-tom-araya-pauses-concert-reprimand-unruly-fans-1235658570/" target="_blank" rel="noopener">Slayer’s Tom Araya Pauses Concert to Reprimand Unruly Fans: ‘Maintain Yourself’</a> <span class="tier-label feature">feature</span></h3>
+    <div class="meta">www.rollingstone.com · 22m old · section rank 7 of 15</div>
+    <details class="audit"><summary>How did this story end up here? (step-by-step)</summary>
+<div class="audit-body">
+  <div class="audit-step"><div class="num">1</div><div class="label">Where it came from</div>
+    <div>Pulled from <strong>www.rollingstone.com</strong>. This source is set to route to <strong>Gala</strong> by default.</div></div>
+  <div class="audit-step"><div class="num">2</div><div class="label">When it arrived</div>
+    <div>22m before the window closed.</div></div>
+  <div class="audit-step"><div class="num">3</div><div class="label">How it competed</div>
+    <div><strong>72</strong> stories competed for the <strong>15</strong> Gala slots.<br>By freshness, this story ranked <strong>7 of 72</strong>.<br><span class='check'>✓</span> Diversity check passed (no more than <strong>3</strong> stories per source per section).</div></div>
+  <div class="audit-step"><div class="num">4</div><div class="label">Where it landed</div>
+    <div>Printed at rank <strong>7 of 15</strong> in Gala. Tier: <strong>feature</strong>. Stories ranked 3 through 7 become features.</div></div>
+  <div class="audit-step"><div class="num">5</div><div class="label">Coverage</div>
+    <div>No other feed carried this story in the window.</div></div>
+  <div class="audit-step"><div class="num">i</div><div class="label">Source</div>
+    <div><a href="https://www.rollingstone.com/feed">source feed</a> · <a href="runsheet.html#s-culture">this section in the runsheet</a></div></div>
+</div></details>
+  </div>
+</article>
+<article class="standard">
+  <div class="seed">8</div>
+  <div>
+    <h3><a href="https://variety.com/2026/music/news/rock-roll-hall-fame-induction-ceremony-2026-performances-1236948068/" target="_blank" rel="noopener">Rock &amp; Roll Hall of Fame Ceremony Gets Fired Up With Live-Wire Numbers From U2, the Chili Peppers, Usher, Cynthia Erivo, Sienna Spiro, Aerosmith and More</a> <span class="tier-label standard">standard</span></h3>
+    <div class="meta">variety.com · 50m old · section rank 8 of 15</div>
+    <details class="audit"><summary>How did this story end up here? (step-by-step)</summary>
+<div class="audit-body">
+  <div class="audit-step"><div class="num">1</div><div class="label">Where it came from</div>
+    <div>Pulled from <strong>variety.com</strong>. This source is set to route to <strong>Gala</strong> by default.</div></div>
+  <div class="audit-step"><div class="num">2</div><div class="label">When it arrived</div>
+    <div>50m before the window closed.</div></div>
+  <div class="audit-step"><div class="num">3</div><div class="label">How it competed</div>
+    <div><strong>72</strong> stories competed for the <strong>15</strong> Gala slots.<br>By freshness, this story ranked <strong>8 of 72</strong>.<br><span class='check'>✓</span> Diversity check passed (no more than <strong>3</strong> stories per source per section).</div></div>
+  <div class="audit-step"><div class="num">4</div><div class="label">Where it landed</div>
+    <div>Printed at rank <strong>8 of 15</strong> in Gala. Tier: <strong>standard</strong>. Stories ranked 8 through 15 are standard.</div></div>
+  <div class="audit-step"><div class="num">5</div><div class="label">Coverage</div>
+    <div>No other feed carried this story in the window.</div></div>
+  <div class="audit-step"><div class="num">i</div><div class="label">Source</div>
+    <div><a href="https://variety.com/feed">source feed</a> · <a href="runsheet.html#s-culture">this section in the runsheet</a></div></div>
+</div></details>
+  </div>
+</article>
+<article class="standard">
+  <div class="seed">9</div>
+  <div>
+    <h3><a href="https://www.rollingstone.com/music/music-country/stephen-wilson-jr-sings-wonderwall-oasis-rock-hall-1235658561/" target="_blank" rel="noopener">Watch Stephen Wilson Jr. Interpret ‘Wonderwall’ for Oasis at Rock Hall Induction</a> <span class="tier-label standard">standard</span></h3>
+    <div class="meta">www.rollingstone.com · 1.3h old · section rank 9 of 15</div>
+    <details class="audit"><summary>How did this story end up here? (step-by-step)</summary>
+<div class="audit-body">
+  <div class="audit-step"><div class="num">1</div><div class="label">Where it came from</div>
+    <div>Pulled from <strong>www.rollingstone.com</strong>. This source is set to route to <strong>Gala</strong> by default.</div></div>
+  <div class="audit-step"><div class="num">2</div><div class="label">When it arrived</div>
+    <div>1.3h before the window closed.</div></div>
+  <div class="audit-step"><div class="num">3</div><div class="label">How it competed</div>
+    <div><strong>72</strong> stories competed for the <strong>15</strong> Gala slots.<br>By freshness, this story ranked <strong>9 of 72</strong>.<br><span class='check'>✓</span> Diversity check passed (no more than <strong>3</strong> stories per source per section).</div></div>
+  <div class="audit-step"><div class="num">4</div><div class="label">Where it landed</div>
+    <div>Printed at rank <strong>9 of 15</strong> in Gala. Tier: <strong>standard</strong>. Stories ranked 8 through 15 are standard.</div></div>
+  <div class="audit-step"><div class="num">5</div><div class="label">Coverage</div>
+    <div>No other feed carried this story in the window.</div></div>
+  <div class="audit-step"><div class="num">i</div><div class="label">Source</div>
+    <div><a href="https://www.rollingstone.com/feed">source feed</a> · <a href="runsheet.html#s-culture">this section in the runsheet</a></div></div>
+</div></details>
+  </div>
+</article>
+<article class="standard">
+  <div class="seed">10</div>
+  <div>
+    <h3><a href="https://deadline.com/2026/11/box-office-global-ebenezer-ramayana-godzilla-minus-zero-1237224479/" target="_blank" rel="noopener">Johnny Depp’s ‘Ebenezer’ Richer Abroad At $42M WW; ‘Ramayana’ Nears $150M WW; ‘Godzilla Minus Zero’ Roars Past $100M WW; ‘Wildwood’ $70M – Global Box Office</a> <span class="tier-label standard">standard</span></h3>
+    <div class="meta">deadline.com · 1.4h old · section rank 10 of 15</div>
+    <details class="audit"><summary>How did this story end up here? (step-by-step)</summary>
+<div class="audit-body">
+  <div class="audit-step"><div class="num">1</div><div class="label">Where it came from</div>
+    <div>Pulled from <strong>deadline.com</strong>. This source is set to route to <strong>Gala</strong> by default.</div></div>
+  <div class="audit-step"><div class="num">2</div><div class="label">When it arrived</div>
+    <div>1.4h before the window closed.</div></div>
+  <div class="audit-step"><div class="num">3</div><div class="label">How it competed</div>
+    <div><strong>72</strong> stories competed for the <strong>15</strong> Gala slots.<br>By freshness, this story ranked <strong>11 of 72</strong>.<br><span class='check'>✓</span> Diversity check passed (no more than <strong>3</strong> stories per source per section).</div></div>
+  <div class="audit-step"><div class="num">4</div><div class="label">Where it landed</div>
+    <div>Printed at rank <strong>10 of 15</strong> in Gala. Tier: <strong>standard</strong>. Stories ranked 8 through 15 are standard.</div></div>
+  <div class="audit-step"><div class="num">5</div><div class="label">Coverage</div>
+    <div>No other feed carried this story in the window.</div></div>
+  <div class="audit-step"><div class="num">i</div><div class="label">Source</div>
+    <div><a href="https://deadline.com/feed">source feed</a> · <a href="runsheet.html#s-culture">this section in the runsheet</a></div></div>
+</div></details>
+  </div>
+</article>
+<article class="standard">
+  <div class="seed">11</div>
+  <div>
+    <h3><a href="https://pagesix.com/2026/11/15/celebrity-news/inside-the-low-security-prison-where-russell-brand-is-serving-10-year-rape-sentence/" target="_blank" rel="noopener">Inside the low-security prison where Russell Brand is serving 10-year rape sentence: Yoga, bowling and more</a> <span class="tier-label standard">standard</span></h3>
+    <div class="meta">pagesix.com · 1.4h old · section rank 11 of 15</div>
+    <details class="audit"><summary>How did this story end up here? (step-by-step)</summary>
+<div class="audit-body">
+  <div class="audit-step"><div class="num">1</div><div class="label">Where it came from</div>
+    <div>Pulled from <strong>pagesix.com</strong>. This source is set to route to <strong>Gala</strong> by default.</div></div>
+  <div class="audit-step"><div class="num">2</div><div class="label">When it arrived</div>
+    <div>1.4h before the window closed.</div></div>
+  <div class="audit-step"><div class="num">3</div><div class="label">How it competed</div>
+    <div><strong>72</strong> stories competed for the <strong>15</strong> Gala slots.<br>By freshness, this story ranked <strong>12 of 72</strong>.<br><span class='check'>✓</span> Diversity check passed (no more than <strong>3</strong> stories per source per section).</div></div>
+  <div class="audit-step"><div class="num">4</div><div class="label">Where it landed</div>
+    <div>Printed at rank <strong>11 of 15</strong> in Gala. Tier: <strong>standard</strong>. Stories ranked 8 through 15 are standard.</div></div>
+  <div class="audit-step"><div class="num">5</div><div class="label">Coverage</div>
+    <div>No other feed carried this story in the window.</div></div>
+  <div class="audit-step"><div class="num">i</div><div class="label">Source</div>
+    <div><a href="https://pagesix.com/feed/">source feed</a> · <a href="runsheet.html#s-culture">this section in the runsheet</a></div></div>
+</div></details>
+  </div>
+</article>
+<article class="standard">
+  <div class="seed">12</div>
+  <div>
+    <h3><a href="https://deadline.com/2026/11/behemoth-humanity-pedro-pascal-hope-amid-ai-boom-1237224503/" target="_blank" rel="noopener">‘Behemoth!’s Humanity Gave Pedro Pascal “Tremendous Amount Of Hope” Amid AI Boom, Tony Gilroy Wants To “Blow Up AI Centers… At The Voting Box”</a> <span class="tier-label standard">standard</span></h3>
+    <div class="meta">deadline.com · 1.5h old · section rank 12 of 15</div>
+    <details class="audit"><summary>How did this story end up here? (step-by-step)</summary>
+<div class="audit-body">
+  <div class="audit-step"><div class="num">1</div><div class="label">Where it came from</div>
+    <div>Pulled from <strong>deadline.com</strong>. This source is set to route to <strong>Gala</strong> by default.</div></div>
+  <div class="audit-step"><div class="num">2</div><div class="label">When it arrived</div>
+    <div>1.5h before the window closed.</div></div>
+  <div class="audit-step"><div class="num">3</div><div class="label">How it competed</div>
+    <div><strong>72</strong> stories competed for the <strong>15</strong> Gala slots.<br>By freshness, this story ranked <strong>13 of 72</strong>.<br><span class='check'>✓</span> Diversity check passed (no more than <strong>3</strong> stories per source per section).</div></div>
+  <div class="audit-step"><div class="num">4</div><div class="label">Where it landed</div>
+    <div>Printed at rank <strong>12 of 15</strong> in Gala. Tier: <strong>standard</strong>. Stories ranked 8 through 15 are standard.</div></div>
+  <div class="audit-step"><div class="num">5</div><div class="label">Coverage</div>
+    <div>No other feed carried this story in the window.</div></div>
+  <div class="audit-step"><div class="num">i</div><div class="label">Source</div>
+    <div><a href="https://deadline.com/feed">source feed</a> · <a href="runsheet.html#s-culture">this section in the runsheet</a></div></div>
+</div></details>
+  </div>
+</article>
+<article class="standard">
+  <div class="seed">13</div>
+  <div>
+    <h3><a href="https://mashable.com/tech/elon-musk-and-marquees-brownlee-feud-over-cybercab-bet" target="_blank" rel="noopener">Elon Musk and Marquees Brownlee feud over Cybercab bet</a> <span class="tier-label standard">standard</span></h3>
+    <div class="meta">mashable.com · 2.0h old · section rank 13 of 15</div>
+    <details class="audit"><summary>How did this story end up here? (step-by-step)</summary>
+<div class="audit-body">
+  <div class="audit-step"><div class="num">1</div><div class="label">Where it came from</div>
+    <div>Pulled from <strong>mashable.com</strong>. This source is set to route to <strong>Gala</strong> by default.</div></div>
+  <div class="audit-step"><div class="num">2</div><div class="label">When it arrived</div>
+    <div>2.0h before the window closed.</div></div>
+  <div class="audit-step"><div class="num">3</div><div class="label">How it competed</div>
+    <div><strong>72</strong> stories competed for the <strong>15</strong> Gala slots.<br>By freshness, this story ranked <strong>16 of 72</strong>.<br><span class='check'>✓</span> Diversity check passed (no more than <strong>3</strong> stories per source per section).</div></div>
+  <div class="audit-step"><div class="num">4</div><div class="label">Where it landed</div>
+    <div>Printed at rank <strong>13 of 15</strong> in Gala. Tier: <strong>standard</strong>. Stories ranked 8 through 15 are standard.</div></div>
+  <div class="audit-step"><div class="num">5</div><div class="label">Coverage</div>
+    <div>No other feed carried this story in the window.</div></div>
+  <div class="audit-step"><div class="num">i</div><div class="label">Source</div>
+    <div><a href="https://mashable.com/feed">source feed</a> · <a href="runsheet.html#s-culture">this section in the runsheet</a></div></div>
+</div></details>
+  </div>
+</article>
+<article class="standard">
+  <div class="seed">14</div>
+  <div>
+    <h3><a href="https://mashable.com/life/ao3-back-online" target="_blank" rel="noopener">AO3 urges users to take security precautions after site comes back online</a> <span class="tier-label standard">standard</span></h3>
+    <div class="meta">mashable.com · 2.1h old · section rank 14 of 15</div>
+    <details class="audit"><summary>How did this story end up here? (step-by-step)</summary>
+<div class="audit-body">
+  <div class="audit-step"><div class="num">1</div><div class="label">Where it came from</div>
+    <div>Pulled from <strong>mashable.com</strong>. This source is set to route to <strong>Gala</strong> by default.</div></div>
+  <div class="audit-step"><div class="num">2</div><div class="label">When it arrived</div>
+    <div>2.1h before the window closed.</div></div>
+  <div class="audit-step"><div class="num">3</div><div class="label">How it competed</div>
+    <div><strong>72</strong> stories competed for the <strong>15</strong> Gala slots.<br>By freshness, this story ranked <strong>17 of 72</strong>.<br><span class='check'>✓</span> Diversity check passed (no more than <strong>3</strong> stories per source per section).</div></div>
+  <div class="audit-step"><div class="num">4</div><div class="label">Where it landed</div>
+    <div>Printed at rank <strong>14 of 15</strong> in Gala. Tier: <strong>standard</strong>. Stories ranked 8 through 15 are standard.</div></div>
+  <div class="audit-step"><div class="num">5</div><div class="label">Coverage</div>
+    <div>No other feed carried this story in the window.</div></div>
+  <div class="audit-step"><div class="num">i</div><div class="label">Source</div>
+    <div><a href="https://mashable.com/feed">source feed</a> · <a href="runsheet.html#s-culture">this section in the runsheet</a></div></div>
+</div></details>
+  </div>
+</article>
+<article class="standard">
+  <div class="seed">15</div>
+  <div>
+    <h3><a href="https://www.rollingstone.com/tv-movies/tv-movie-news/billy-evans-you-can-see-everything-first-tv-interview-1235658546/" target="_blank" rel="noopener">Despite Fallout, Billy Evans Would ‘100%’ Do ‘You Can See Everything’ Again</a> <span class="tier-label standard">standard</span></h3>
+    <div class="meta">www.rollingstone.com · 2.5h old · section rank 15 of 15</div>
+    <details class="audit"><summary>How did this story end up here? (step-by-step)</summary>
+<div class="audit-body">
+  <div class="audit-step"><div class="num">1</div><div class="label">Where it came from</div>
+    <div>Pulled from <strong>www.rollingstone.com</strong>. This source is set to route to <strong>Gala</strong> by default.</div></div>
+  <div class="audit-step"><div class="num">2</div><div class="label">When it arrived</div>
+    <div>2.5h before the window closed.</div></div>
+  <div class="audit-step"><div class="num">3</div><div class="label">How it competed</div>
+    <div><strong>72</strong> stories competed for the <strong>15</strong> Gala slots.<br>By freshness, this story ranked <strong>20 of 72</strong>.<br><span class='check'>✓</span> Diversity check passed (no more than <strong>3</strong> stories per source per section).</div></div>
+  <div class="audit-step"><div class="num">4</div><div class="label">Where it landed</div>
+    <div>Printed at rank <strong>15 of 15</strong> in Gala. Tier: <strong>standard</strong>. Stories ranked 8 through 15 are standard.</div></div>
+  <div class="audit-step"><div class="num">5</div><div class="label">Coverage</div>
+    <div>No other feed carried this story in the window.</div></div>
+  <div class="audit-step"><div class="num">i</div><div class="label">Source</div>
+    <div><a href="https://www.rollingstone.com/feed">source feed</a> · <a href="runsheet.html#s-culture">this section in the runsheet</a></div></div>
+</div></details>
+  </div>
+</article>
+</section>
+<section class="nerds">
+  <h2>Stats for nerds — the honest funnel</h2>
+  <p class="muted">The whole record is on the <a href="runsheet.html">runsheet page</a>, or as data: <a href="runsheet.jsonl.gz">runsheet.jsonl.gz</a>.</p>
+  <h3>Funnel</h3>
+  <table>
+    <tr><th>candidates in the window (last 24h)</th><td class="num">782</td></tr>
+    <tr><th>excluded by your policies</th><td class="num">16</td></tr>
+    <tr><th>duplicates folded into another story</th><td class="num">34</td></tr>
+    <tr><th>competed for slots</th><td class="num">732</td></tr>
+    <tr><th>cut by the per-source cap</th><td class="num">283</td></tr>
+    <tr><th>cut by section capacity</th><td class="num">384</td></tr>
+    <tr><th>printed</th><td class="num">65</td></tr>
+  </table>
+  <h3>Per-section yield</h3>
+  <table><tr><th>section</th><th class="num">filled</th><th class="num">cut: per-source cap</th><th class="num">cut: capacity</th></tr><tr><td>Beat (news)</td><td class="num">25 of 25</td><td class="num">0</td><td class="num">0</td></tr><tr><td>Turf (sports)</td><td class="num">10 of 25</td><td class="num">0</td><td class="num">0</td></tr><tr><td>Atom (tech)</td><td class="num">15 of 15</td><td class="num">0</td><td class="num">0</td></tr><tr><td>Gala (culture)</td><td class="num">15 of 15</td><td class="num">0</td><td class="num">0</td></tr></table>
+  <h3>Feeds that delivered nothing (29 of 90)</h3>
+  <div class="scroll-wrap"><table><tr><th>feed</th><th class="num">items</th></tr><tr class="flag"><td>https://americandebunk.substack.com/feed</td><td class="num">0</td></tr><tr class="flag"><td>https://aws.amazon.com/blogs/machine-learning/feed/</td><td class="num">0</td></tr><tr class="flag"><td>https://blogs.nvidia.com/feed/</td><td class="num">0</td></tr><tr class="flag"><td>https://deepmind.google/blog/rss.xml</td><td class="num">0</td></tr><tr class="flag"><td>https://gizmodo.com/rss</td><td class="num">0</td></tr><tr class="flag"><td>https://googleprojectzero.blogspot.com/feeds/posts/default</td><td class="num">0</td></tr><tr class="flag"><td>https://greenwald.substack.com/feed</td><td class="num">0</td></tr><tr class="flag"><td>https://huggingface.co/blog/feed.xml</td><td class="num">0</td></tr><tr class="flag"><td>https://krebsonsecurity.com/feed/</td><td class="num">0</td></tr><tr class="flag"><td>https://lastweekin.ai/feed</td><td class="num">0</td></tr><tr class="flag"><td>https://lifehacker.com/rss</td><td class="num">0</td></tr><tr class="flag"><td>https://lwn.net/headlines/full_text?key=6804e49d958d5519</td><td class="num">0</td></tr><tr class="flag"><td>https://machinelearningmastery.com/feed/</td><td class="num">0</td></tr><tr class="flag"><td>https://nealstephenson.substack.com/feed</td><td class="num">0</td></tr><tr class="flag"><td>https://openai.com/blog/rss.xml</td><td class="num">0</td></tr><tr class="flag"><td>https://openai.com/news/rss.xml</td><td class="num">0</td></tr><tr class="flag"><td>https://research.checkpoint.com/feed/</td><td class="num">0</td></tr><tr class="flag"><td>https://securelist.com/feed/</td><td class="num">0</td></tr><tr class="flag"><td>https://simonwillison.net/atom/entries/</td><td class="num">0</td></tr><tr class="flag"><td>https://therecord.media/feed</td><td class="num">0</td></tr><tr class="flag"><td>https://unit42.paloaltonetworks.com/feed/</td><td class="num">0</td></tr><tr class="flag"><td>https://www.cisa.gov/uscert/ncas/alerts.xml</td><td class="num">0</td></tr><tr class="flag"><td>https://www.cisa.gov/uscert/ncas/current-activity.xml</td><td class="num">0</td></tr><tr class="flag"><td>https://www.crowdstrike.com/blog/feed/</td><td class="num">0</td></tr><tr class="flag"><td>https://www.darkreading.com/rss.xml</td><td class="num">0</td></tr><tr class="flag"><td>https://www.gamingonlinux.com/article_rss.php</td><td class="num">0</td></tr><tr class="flag"><td>https://www.microsoft.com/security/blog/feed/</td><td class="num">0</td></tr><tr class="flag"><td>https://www.troyhunt.com/rss/</td><td class="num">0</td></tr><tr class="flag"><td>https://www.washingtontimes.com/rss/headlines/</td><td class="num">0</td></tr></table></div>
+</section><footer>fishwrap · edition 2026-11-15 · engine ad8c416 · window closed Sunday, November 15, 2026 · 11:23 PST</footer>
+  </div>
+</body>
+</html>
