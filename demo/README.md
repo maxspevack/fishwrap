@@ -15,20 +15,20 @@ A Fishwrap instance is a directory with three editorial files plus generated sta
 
 ## The Vanilla and the Daily Clamour
 
-This instance publishes as [The Vanilla](https://fishwrap.org/demo/vanilla/), and it is the [Daily Clamour](https://dailyclamour.com)'s dev edition. The Vanilla builds from `main` every day. The Clamour builds from a released image. The two carry the same feed list and the same source-to-section routing, so a feed that goes quiet here has gone quiet there, and a feed or routing change is tried here before the Clamour prints it.
+This instance publishes as [The Vanilla](https://fishwrap.org/demo/vanilla/), and it is the [Daily Clamour](https://dailyclamour.com)'s dev edition. The Vanilla builds from `main` every day. The Clamour builds from a released image. The two carry the same feed list and the same source-to-section routing, so what a feed does here predicts what it does there, and a feed or routing change is tried here before the Clamour prints it.
 
 1. Change `[feeds]` or `[source_sections]` here first.
-2. Make the same change in the Clamour's `config.py` (`FEEDS` and `SOURCE_SECTIONS`). `make feeds-check` in that repo compares the two and exits 1 on any difference.
+2. Make the same change in the Clamour's `config.py` (`FEEDS` and `SOURCE_SECTIONS`). `make feeds-check` in the Clamour's repository (`maxspevack/dailyclamour.com`, private) compares the two and exits 1 on any difference.
 
 The feeds page counts the consecutive editions a feed delivered nothing and says "dead?" at seven. That is a prompt to look at the feed, not a verdict:
 
 | What you find | What to do |
 |---|---|
 | Unreachable, unparseable, undated, or no new item in 90 days | Remove it. |
-| Fresh items from a laptop, and the fetch fails on the runner in every edition | Remove it. The site refuses GitHub's addresses, and the Clamour builds on the same runners. Add it back if that changes. |
+| Fresh items from your own machine; nothing on the GitHub Actions runner in every edition | Remove it. The site refuses GitHub's addresses, and the Clamour builds on the same runners. Add it back if that changes. |
 | The runner fetches it and its newest item is under 90 days old | Keep it. It posts rarely. |
 
-What differs between the two papers is the engine version, the theme, the Clamour's own scoring rules and policies, and Defector, which the Clamour fetches signed in.
+What differs between the two papers is the engine version, the theme, each paper's policies, the Clamour's scoring rules, and Defector, which the Clamour fetches with a logged-in session cookie and the Vanilla without one.
 
 ## Customization
 
