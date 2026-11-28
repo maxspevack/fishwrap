@@ -259,11 +259,11 @@ keywords = [
 [source_sections]
 "9to5google.com" = "tech"
 "aljazeera.com" = "news"
-"americandebunk.substack.com" = "news"
 "americanthinker" = "news"
 "androidauthority.com" = "tech"
 "androidpolice.com" = "tech"
 "arstechnica.com" = "tech"
+"arxiv.org" = "tech"
 "aws.amazon.com" = "tech"
 "axios" = "news"
 "babylonbee" = "news"
@@ -284,9 +284,7 @@ keywords = [
 "freebeacon" = "news"
 "gamingonlinux.com" = "tech"
 "gatewaypundit" = "news"
-"gizmodo.com" = "culture"
 "googleprojectzero" = "tech"
-"greenwald.substack.com" = "news"
 "helpnetsecurity.com" = "tech"
 "hollywoodreporter.com" = "culture"
 "hotair" = "news"
@@ -301,7 +299,6 @@ keywords = [
 "machinelearningmastery.com" = "tech"
 "mashable.com" = "culture"
 "natesilver.net" = "news"
-"nealstephenson.substack.com" = "culture"
 "notthebee" = "news"
 "npr" = "news"
 "nypost" = "news"
@@ -333,16 +330,20 @@ keywords = [
 "troyhunt.com" = "tech"
 "twitchy" = "news"
 "variety.com" = "culture"
-"washingtontimes" = "news"
 "wired.com" = "tech"
 "zerohedge" = "news"
 
 # Source feeds. The publisher's source list.
+#
+# This list and the routing table above are also the Daily Clamour's. The
+# Vanilla is the Clamour's dev edition: it builds main every day, the Clamour
+# builds a released image, and the feeds are the same so that what a feed does
+# here predicts what it does there. Change a feed here first, then there.
+# See demo/README.md.
 [feeds]
 urls = [
   "http://feed.androidauthority.com/",
   "https://9to5google.com/feed/",
-  "https://americandebunk.substack.com/feed",
   "https://aws.amazon.com/blogs/machine-learning/feed/",
   "https://babylonbee.com/feed",
   "https://blogs.nvidia.com/feed/",
@@ -350,6 +351,10 @@ urls = [
   "https://deadline.com/feed",
   "https://deepmind.google/blog/rss.xml",
   "https://defector.com/feed",
+  "https://export.arxiv.org/rss/cs.AI",
+  "https://export.arxiv.org/rss/cs.CL",
+  "https://export.arxiv.org/rss/cs.LG",
+  "https://export.arxiv.org/rss/stat.ML",
   "https://feeds.arstechnica.com/arstechnica/index",
   "https://feeds.bbci.co.uk/news/world/rss.xml",
   "https://feeds.feedburner.com/TheHackersNews",
@@ -361,9 +366,7 @@ urls = [
   "https://feeds.npr.org/1001/rss.xml",
   "https://feeds.npr.org/1014/rss.xml",
   "https://freebeacon.com/feed/",
-  "https://gizmodo.com/rss",
   "https://googleprojectzero.blogspot.com/feeds/posts/default",
-  "https://greenwald.substack.com/feed",
   "https://hotair.com/feed",
   "https://huggingface.co/blog/feed.xml",
   "https://instapundit.com/feed",
@@ -375,7 +378,6 @@ urls = [
   "https://lwn.net/headlines/full_text?key=6804e49d958d5519",
   "https://machinelearningmastery.com/feed/",
   "https://mashable.com/feed",
-  "https://nealstephenson.substack.com/feed",
   "https://notthebee.com/feed",
   "https://nypost.com/opinion/feed/",
   "https://nypost.com/politics/feed/",
@@ -428,6 +430,5 @@ urls = [
   "https://www.rollingstone.com/feed",
   "https://www.theverge.com/rss/index.xml",
   "https://www.troyhunt.com/rss/",
-  "https://www.washingtontimes.com/rss/headlines/",
   "https://www.wired.com/feed/rss",
 ]

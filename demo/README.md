@@ -13,6 +13,23 @@ A Fishwrap instance is a directory with three editorial files plus generated sta
 *   **`output/`** — one directory per edition date (`output/YYYY-MM-DD/`): `runsheet.jsonl.gz` (the editor's record), `index.html` (the paper), `runsheet.html`, `feeds.html`, `morgue.html`; plus `output/index.html`, a redirect to the newest edition. Gitignored.
 *   **`themes/basic/`** — brand-asset reference (CSS + logo). Currently unused by the printer (the engine renders inline HTML) and held for the next Daily Clamour migration.
 
+## The Vanilla and the Daily Clamour
+
+This instance publishes as [The Vanilla](https://fishwrap.org/demo/vanilla/), and it is the [Daily Clamour](https://dailyclamour.com)'s dev edition. The Vanilla builds from `main` every day. The Clamour builds from a released image. The two carry the same feed list and the same source-to-section routing, so a feed that goes quiet here has gone quiet there, and a feed or routing change is tried here before the Clamour prints it.
+
+1. Change `[feeds]` or `[source_sections]` here first.
+2. Make the same change in the Clamour's `config.py` (`FEEDS` and `SOURCE_SECTIONS`). `make feeds-check` in that repo compares the two and exits 1 on any difference.
+
+The feeds page counts the consecutive editions a feed delivered nothing and says "dead?" at seven. That is a prompt to look at the feed, not a verdict:
+
+| What you find | What to do |
+|---|---|
+| Unreachable, unparseable, undated, or no new item in 90 days | Remove it. |
+| Fresh items from a laptop, and the fetch fails on the runner in every edition | Remove it. The site refuses GitHub's addresses, and the Clamour builds on the same runners. Add it back if that changes. |
+| The runner fetches it and its newest item is under 90 days old | Keep it. It posts rarely. |
+
+What differs between the two papers is the engine version, the theme, the Clamour's own scoring rules and policies, and Defector, which the Clamour fetches signed in.
+
 ## Customization
 
 ### Adding feeds
