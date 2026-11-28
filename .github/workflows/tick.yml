@@ -1,0 +1,53 @@
+# Hourly tick: dispatch the day's demo build when it is due.
+#
+# GitHub starts scheduled runs hours late and the lag drifts, so a daily cron
+# cannot hold a time of day (demo.yml's 13:17 UTC cron started a median of
+# 7.5 hours late in 2026-11). This workflow runs every hour and asks one
+# question: is it past 05:00 in the masthead's timezone, and has an edition
+# been built since? If not, it dispatches demo.yml. The ticks are late too,
+# but one lands every hour. The decision and its tests are scripts/demo_tick.py
+# and scripts/test_demo_tick.py.
+#
+# demo.yml has no schedule of its own: this is what runs it daily.
+
+name: tick
+
+on:
+  schedule:
+    - cron: '23 * * * *'
+  workflow_dispatch:
+    inputs:
+      now:
+        description: 'Pretend it is this UTC instant (ISO 8601). For testing the dispatch path.'
+        required: false
+        default: ''
+
+permissions:
+  actions: write   # read demo.yml's runs and dispatch it
+  contents: read
+
+concurrency:
+  group: tick
+  cancel-in-progress: false
+
+jobs:
+  tick:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Checkout the tick script
+        uses: actions/checkout@v7
+        with:
+          sparse-checkout: scripts/demo_tick.py
+          sparse-checkout-cone-mode: false
+
+      - name: Dispatch the demo build if it is due
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+          TICK_NOW: ${{ inputs.now }}
+        run: |
+          # America/Los_Angeles is the demo masthead's timezone (demo/masthead.toml).
+          python3 scripts/demo_tick.py --workflow demo.yml \
+            --timezone America/Los_Angeles --due 05:00 --max-attempts 3 \
+            ${TICK_NOW:+--now "$TICK_NOW"}

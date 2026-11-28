@@ -30,6 +30,7 @@ test:
 	@$(PYTHON) scripts/test_demo_instance.py
 	@$(PYTHON) scripts/test_printer_output.py
 	@$(PYTHON) scripts/test_demo_archive.py
+	@$(PYTHON) scripts/test_demo_tick.py
 	@echo "✅ All Tests Passed."
 
 # --- The Publisher's loop ---

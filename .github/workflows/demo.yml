@@ -1,4 +1,8 @@
-# Fishwrap demo: build HEAD every day and publish fishwrap.org.
+# Fishwrap demo: build HEAD and publish fishwrap.org.
+#
+# Runs on every push to main, on dispatch, and once a day: tick.yml dispatches
+# it when the day's edition is due (05:00 in the masthead's timezone). There is
+# no cron here, because GitHub starts scheduled runs hours late.
 #
 # This is the engine's integration environment. Every run:
 #   1. installs the engine from source at this commit (make setup),
@@ -19,15 +23,9 @@
 name: demo
 
 on:
-  schedule:
-    # Daily. Off the top of the hour: GitHub queues scheduled runs and the
-    # :00 slot runs hours late under load (the 2026-11-02 and 11-03 runs
-    # fired at 22:02 and 19:54 UTC). The edition date comes from the
-    # masthead's timezone, not from when this fires.
-    - cron: '17 13 * * *'   # 13:17 UTC (05:17 PST / 06:17 PDT)
   push:
     branches: [main]
-  workflow_dispatch:
+  workflow_dispatch:   # tick.yml, daily; or by hand
 
 permissions:
   contents: write   # push to the state branch
