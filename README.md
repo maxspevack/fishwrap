@@ -6,7 +6,7 @@
 
 <br>
 
-Fishwrap is the engine for the morning paper. RSS feeds, Reddit threads, and Hacker News go in. One edition of HTML comes out. Then it stops. Every editorial decision is recorded in an audit log the reader can open.
+Fishwrap is the engine for the morning paper. RSS and Atom feeds go in. One edition of HTML comes out. Then it stops. Every editorial decision is recorded in an audit log the reader can open.
 
 The engine is a signed OCI image at `ghcr.io/maxspevack/fishwrap`. A publication is a config file and a theme. [Daily Clamour](https://dailyclamour.com) is the worked example; everything else is yours.
 
@@ -18,22 +18,18 @@ The engine is a signed OCI image at `ghcr.io/maxspevack/fishwrap`. A publication
 
 ## Quickstart
 
-You need Docker or Podman.
+You need `git`, `make`, and Python 3.12 or newer with the `venv` module (on Debian and Ubuntu, the `python3-venv` package).
 
 ```bash
 git clone https://github.com/maxspevack/fishwrap.git
 cd fishwrap
-mkdir -p output
-docker run --rm \
-    -v $(pwd)/demo:/cfg \
-    -v $(pwd)/output:/output \
-    ghcr.io/maxspevack/fishwrap:2.0 \
-    fishwrap-build --config /cfg/config.py
+make setup
+make run-vanilla
 ```
 
-The rendered edition lands at `output/index.html`. Open it.
+`make run-vanilla` fetches the demo's feeds and builds one edition in under two minutes. Open `demo/output/index.html`. It redirects to the newest edition, `demo/output/<YYYY-MM-DD>/index.html`, dated in Pacific time.
 
-The full consumer contract (every input, every output path, every CLI surface, the versioning policy, the pinning recommendation) is in [`docs/IMAGE_CONTRACT.md`](docs/IMAGE_CONTRACT.md).
+These commands run the engine from the `main` branch, the same code that builds The Vanilla. The released image, `ghcr.io/maxspevack/fishwrap:2.0`, contains the older 2.0 engine. That engine reads `demo/config.py`, which exists at the `v2.0.2` tag and not on `main`. The image's instructions are in the README at that tag.
 
 ---
 
@@ -41,7 +37,7 @@ The full consumer contract (every input, every output path, every CLI surface, t
 
 The Glass Box is what we call the working surfaces. Every editorial decision is named and logged. The reader can open the log.
 
-*   **The Fetcher** scours your defined feeds (RSS, JSON, Reddit) using concurrent I/O. Failed feeds are logged, not hidden.
+*   **The Fetcher** scours your defined feeds (RSS and Atom) using concurrent I/O. Failed feeds are logged, not hidden.
 *   **The Editor** classifies each article into a section (by source-default or keyword fallback), folds duplicates into the newest copy and counts how many sources carried the story, applies the diversity cap per source per section, truncates to the section's edition size, and assigns each item a tier (lead / feature / standard). The signed policies in your masthead can drop articles (source/title/topic bans), bypass diversity caps (whitelist), or promote stories to the lead tier (section_lead_preference) — every policy that fires is named on the story. It writes **the runsheet**: one record per candidate (where it came from, how it competed, where it landed) plus a header naming the engine commit, the window, and the fingerprints of your three editorial files. Nothing downstream recomputes a decision.
 *   **The Printer** renders from the runsheet alone: the paper with a per-story audit drawer, the runsheet as a readable page (what came in, what was cut and why, what led and why, every feed's yield), a read-only feeds page, and The Morgue (every prior version of your masthead, dossier, and policies).
 *   **Replay** re-runs any archived runsheet's candidates under your masthead as it is now and prints what moved. Change a dial, replay yesterday, read the consequence. `make replay DATE=YYYY-MM-DD`.
@@ -67,7 +63,7 @@ The two contracts that govern a fork:
 ## Repository structure
 
 *   `fishwrap/`. The stateless engine.
-*   `demo/`. The reference configuration (`config.py`) and the `basic` theme.
+*   `demo/`. The Vanilla's editorial files (`masthead.toml`, `dossier.md`, `policies.jsonl`) and the `basic` theme.
 *   `docs/`. The source for [fishwrap.org](https://fishwrap.org), plus the consumer contract, ADRs, schema reference, and release notes.
 *   `Dockerfile`. The release artifact recipe.
 *   `.github/workflows/`. Release and demo refresh workflows.
