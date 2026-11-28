@@ -81,6 +81,77 @@ class DecideTests(unittest.TestCase):
         runs = [run("2026-11-28T13:25:00", conclusion="failure"), run("2026-11-28T14:25:00")]
         self.assertEqual(decide("2026-11-28T15:30:00", runs), "done")
 
+    def test_a_run_created_exactly_at_due_counts(self):
+        self.assertEqual(decide("2026-11-28T13:30:00", [run("2026-11-28T13:00:00")]), "done")
+
+    def test_cancelled_and_skipped_runs_count_as_attempts(self):
+        runs = [run("2026-11-28T13:25:00", conclusion=c) for c in ("cancelled", "skipped", "failure")]
+        self.assertEqual(decide("2026-11-28T16:30:00", runs), "give-up")
+
+    def test_a_run_still_going_from_before_due_does_not_block(self):
+        # Only runs created since DUE are this edition's.
+        self.assertEqual(decide("2026-11-28T13:05:00", [run("2026-11-28T12:58:00", "in_progress", None)]), "dispatch")
+
+
+class MainTests(unittest.TestCase):
+    """main() with gh stubbed out: what gets dispatched, and the exit status."""
+
+    def _main(self, runs, *extra):
+        calls = []
+        real_runs, real_run, real_sleep = dt.recent_runs, dt.subprocess.run, dt.time_module.sleep
+        dt.recent_runs = lambda workflow: runs
+        dt.subprocess.run = lambda cmd, **kw: calls.append(cmd)
+        dt.time_module.sleep = lambda s: calls.append(["sleep", s])
+        try:
+            code = dt.main(["--workflow", "demo.yml", "--timezone", TZ, "--due", "05:00", *extra])
+        finally:
+            dt.recent_runs, dt.subprocess.run, dt.time_module.sleep = real_runs, real_run, real_sleep
+        return code, calls
+
+    def test_dispatch_runs_the_workflow_then_holds(self):
+        code, calls = self._main([], "--now", "2026-11-28T13:30:00Z")
+        self.assertEqual(code, 0)
+        self.assertEqual(calls[0], ["gh", "workflow", "run", "demo.yml", "--ref", "main"])
+        self.assertEqual(calls[1][0], "sleep")
+
+    def test_dry_run_dispatches_nothing(self):
+        code, calls = self._main([], "--now", "2026-11-28T13:30:00Z", "--dry-run")
+        self.assertEqual((code, calls), (0, []))
+
+    def test_done_and_wait_dispatch_nothing(self):
+        self.assertEqual(self._main([run("2026-11-28T13:25:00")], "--now", "2026-11-28T15:00:00Z"), (0, []))
+        self.assertEqual(self._main([], "--now", "2026-11-28T12:00:00Z"), (0, []))
+
+    def test_give_up_exits_1_and_dispatches_nothing(self):
+        failed = [run(f"2026-11-28T{h}:25:00", conclusion="failure") for h in (13, 14, 15)]
+        self.assertEqual(self._main(failed, "--now", "2026-11-28T16:30:00Z"), (1, []))
+
+    def test_now_without_an_offset_is_utc(self):
+        self.assertEqual(self._main([], "--now", "2026-11-28T12:00:00"), (0, []))
+
+    def test_a_gh_failure_is_not_swallowed(self):
+        real = dt.recent_runs
+        def boom(workflow):
+            raise dt.subprocess.CalledProcessError(1, ["gh"])
+        dt.recent_runs = boom
+        try:
+            with self.assertRaises(dt.subprocess.CalledProcessError):
+                dt.main(["--workflow", "demo.yml", "--timezone", TZ, "--due", "05:00"])
+        finally:
+            dt.recent_runs = real
+
+
+class WorkflowTests(unittest.TestCase):
+    def test_tick_uses_the_demo_mastheads_timezone(self):
+        import re
+        import tomllib
+        root = os.path.dirname(HERE)
+        with open(os.path.join(root, "demo", "masthead.toml"), "rb") as f:
+            masthead_tz = tomllib.load(f)["identity"]["timezone"]
+        with open(os.path.join(root, ".github", "workflows", "tick.yml"), encoding="utf-8") as f:
+            tick_tz = re.search(r"--timezone (\S+)", f.read()).group(1)
+        self.assertEqual(tick_tz, masthead_tz)
+
 
 if __name__ == "__main__":
     unittest.main()

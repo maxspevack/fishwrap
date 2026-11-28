@@ -15,7 +15,7 @@ workflow's recent runs:
   wait      it is not yet DUE today
   done      a run created since DUE succeeded
   running   a run created since DUE is queued or in progress
-  give-up   --max-attempts runs since DUE and none succeeded
+  give-up   --max-attempts runs since DUE and none succeeded (exits 1)
   dispatch  otherwise
 
 Usage (tick.yml):
@@ -32,7 +32,8 @@ from zoneinfo import ZoneInfo
 
 
 def _utc(iso: str) -> datetime:
-    return datetime.fromisoformat(iso.replace("Z", "+00:00"))
+    d = datetime.fromisoformat(iso.replace("Z", "+00:00"))
+    return d if d.tzinfo else d.replace(tzinfo=timezone.utc)
 
 
 def due_instant(now: datetime, tz: str, due: time) -> datetime:
@@ -61,7 +62,7 @@ def recent_runs(workflow: str) -> list[dict]:
     out = subprocess.run(
         ["gh", "run", "list", "--workflow", workflow, "--limit", "40",
          "--json", "createdAt,status,conclusion"],
-        check=True, capture_output=True, text=True,
+        check=True, stdout=subprocess.PIPE, text=True,
     ).stdout
     return json.loads(out)
 
@@ -83,7 +84,10 @@ def main(argv=None) -> int:
     print(f"[TICK] now {now:%Y-%m-%dT%H:%MZ}, due {due_instant(now, a.timezone, due):%Y-%m-%dT%H:%MZ}: {action}")
 
     if action == "give-up":
-        print(f"::warning::{a.workflow} has failed {a.max_attempts} times since it came due; not dispatching again today")
+        # A dispatched build runs as github-actions[bot], so its failure
+        # notifies nobody. The tick is the scheduled run, so it goes red.
+        print(f"::error::{a.workflow} has failed {a.max_attempts} times since it came due; not dispatching again today")
+        return 1
     if action == "dispatch" and not a.dry_run:
         subprocess.run(["gh", "workflow", "run", a.workflow, "--ref", a.ref], check=True)
         print(f"[TICK] dispatched {a.workflow} on {a.ref}")

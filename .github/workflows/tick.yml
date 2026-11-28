@@ -48,6 +48,6 @@ jobs:
           TICK_NOW: ${{ inputs.now }}
         run: |
           # America/Los_Angeles is the demo masthead's timezone (demo/masthead.toml).
-          python3 scripts/demo_tick.py --workflow demo.yml \
+          python3 -u scripts/demo_tick.py --workflow demo.yml \
             --timezone America/Los_Angeles --due 05:00 --max-attempts 3 \
             ${TICK_NOW:+--now "$TICK_NOW"}
